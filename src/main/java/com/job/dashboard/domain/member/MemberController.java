@@ -16,6 +16,6 @@ public class MemberController {
     @GetMapping("/signup")
     public String signupView() {
         System.out.println("test!!");
-        return null;
+        return "jsp/index";
     }
 }
