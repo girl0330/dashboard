@@ -1,1 +1,27 @@
-spring.application.name=jobDashboard
+spring:
+  # Mysql
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mysql://localhost:3306/jobDashboard
+    username: root
+    password: root
+
+  # JSP
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+
+# Mybatis
+mybatis:
+  # mapper location
+  mapper-locations: classpath:mappers/*/*.xml
+  # column name to camel case
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    root=info:
