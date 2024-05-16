@@ -11,7 +11,7 @@
 </head>
 <body>
 <!-- header start -->
-<header class="header header-transparent">
+<header class="header bg-dark">
   <tiles:insertAttribute name="header" />
 </header>
 <!--  header end -->

@@ -15,7 +15,7 @@ import java.util.Map;
 public class MemberController {
     @GetMapping("/signup")
     public String signupView() {
-        System.out.println("test!!");
-        return "jsp/index";
+        System.out.println("====회원가입 페이지====");
+        return "jsp/register";
     }
 }

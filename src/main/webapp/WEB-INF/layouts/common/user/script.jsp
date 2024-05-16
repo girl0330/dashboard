@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <!-- JS Global Compulsory (Do not remove)-->
-<script src="/js/jquery-3.6.0.min.js"></script>
+<script src="/js/jquery-3.7.1.min.js"></script>
 <script src="/js/popper/popper.min.js"></script>
 <script src="/js/bootstrap/bootstrap.min.js"></script>
 
