@@ -5,111 +5,118 @@
   //회원 로그인 실행
   let personal_register = {
     init : function () {
-      // if (!this.emptyChkFn()) {
-      //   return;
-      // }
-      // if (!this.checkFn()) {
-      //   return;
-      // }
-      // if (!this.validationChk) {
-      //   return;
-      // }
-
+      if (!this.emptyChkFn()) {
+        return;
+      }
+      if (!this.validationChk()) {
+        return;
+      }
+      if (!this.checkFn()) {
+        return;
+      }
       this.formSubmit();
     },
     /*공백 검사*/
     emptyChkFn : function () {
-      alert("공배검사")
       let valid = true;
-      const form = document.getElementById("personalForm");
-      const password = document.getElementById("password");
-      const password2 = document.getElementById("password2");
-      const inputs = form.querySelectorAll("input[type='text'], input[type='password']");
+      const form = $('#personalForm');
+      const inputs = form.find("input[type='text'], input[type='password']");
 
-      for (const input of inputs) {
-        const removeBlankData = input.value.replace(/\s*/, "");
-        const removeB1 = password.value.replace(/\s*/, "");
-        const removeB2 = password2.value.replace(/\s*/, "");
-        if (removeBlankData === "" || removeB1 === "" || removeB2 === "") {
-          let text = input.dataset.name;
-          let text2 = removeB1.dataset.name;
-          let text3 = removeB2.dataset.name;
-          alert(text + "은/는 필수로 입력 값입니다." || text2 + "은/는 필수로 입력 값입니다." || text3 + "은/는 필수로 입력 값입니다.")
-          input.focus();
-          removeB1.focus();
-          removeB2.focus();
+      inputs.each(function() {
+        const $input = $(this);
+        const removeBlankData = $input.val().replace(/\s*/g, "");
+        if (removeBlankData === "") {
+          let text = $input.data('name');
+          alert(text + "은/는 필수로 입력 값입니다.");
+          $input.focus();
           valid = false;
-          break;
+          return false;  // each 루프 중지
         }
-      }
+      });
+
       return valid;
     },
 
+    //validationChk 함수 정의
     validationChk : function () {
-      alert("유효성검사")
       let valid = true;
-      const memberId = $('#memberId').val(); // 비밀번호1
-      const password = $('#password').val(); // 비밀번호2
+      const id = $('#memberId').val();
+      const name = $('#memberName').val();
+      const password = $('#password').val();
       const password2 = $('#password2').val();
       const email = $('#email').val();
       const phone = $('#phone').val();
-
-      // id validation
+      // 아이디 조건, 길이
       let idRegex = /^[a-zA-Z0-9]+$/;
-      if (!idRegex.test(memberId)) {
+      if (!idRegex.test(id)) {
         alert("아이디 형식을 확인해주세요")
+        $('#memberId').focus()
         valid = false;
         return valid;
-      }
-      if (userId.length > 12 || userId.length < 2) {
-        alert("아이디를 2~12자로 사용해주세요")
+      } // 이상무
+      if (id.length > 12 ||id.length < 2) {
+        alert("아이디는 2~12자 사이로 입력해주세요")
+        $('#memberId').focus()
         valid = false;
         return valid;
-      }
-      // pw validation
-      let passwordRegex = /^[a-zA-z0-9.@$!%*?&]+$/; // 정규표현식
-      if (!passwordRegex.test(password)) {
-        alert(" 영문 대소문자, 숫자, 그리고 특수 문자가 반드시 하나 이상 포함해야합니다.")
-        valid = false;
-        return valid;
-      }
+      }// 이상무
 
+      // 이름 한글만
+      let nameRegex = /^[가-힣]+$/;
+      if (!nameRegex.test(name)) {
+        alert("한글만 입력해주세요");
+        $('#memberName').focus();  // 입력 필드에 포커스 설정
+        valid = false;
+        return valid;
+      }//이상무
+
+      // 비밀번호 조건, 길이, 비밀번호 확인
+      let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
+      if (!pwRegex.test(password)) {
+        alert("비밀번호 형식을 확인해주세요")
+        $('#password').focus()
+        valid = false;
+        return valid;
+      }
       if (password.length > 15 || password.length < 8) {
         alert("비밀번호를 8~15자로 사용해주세요")
+        $('#password').focus()
         valid = false;
         return valid;
       }
-
       if (password !== password2) {
-        alert("비밀번호가 일치 하지 않습니다.")
+        alert("비밀번호를 확인해주세요")
+        $('#password2').focus()
         valid = false;
         return valid;
-      }
+      } //이상무
 
       // email validation
-      let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(email)) {
-        alert("이메일 형식을 확인해주세요")
+        alert("비밀번호 형식을 확인해주세요")
+        $('#email').focus()
         valid = false;
         return valid;
-      }
+      } //이상무
 
       // phone validation
       let phoneRegex = /^010\d{4}\d{4}$/;
       if (!phoneRegex.test(phone)) {
-        alert("핸드폰 형식을 확인해주세요")
+        alert("비밀번호 형식을 확인해주세요")
+        $('#phone').focus()
         valid = false;
         return valid;
       }
       return valid;
     },
-    // 체크 검사 함수 정의
+
     checkFn : function () {
-      alert("체크 검사")
       let valid = true;
-      const terms = document.getElementById("terms");
-      const checkBox = terms.querySelector("input[type='checkbox']");
-      const isChecked = checkBox.checked;
+      const form = $('#personalForm');
+      const checkBox = form.find("input[type='checkbox']");
+      const isChecked = checkBox.prop('checked');
+      console.log("x:::  "+JSON.stringify(isChecked));
 
       if (!isChecked) {
         alert("동의여부는 필수 입력 값입니다.");
@@ -117,11 +124,12 @@
         return valid;
       }
       return valid;
-    },
+    }, // 이상무
+
+
     // 전송 함수 정의
     formSubmit : function() {
-      alert("클릭")
-      const formData = $("#personal_register").serializeArray();
+      const formData = $("#personalForm").serializeArray();
 
       console.log("x:::  "+JSON.stringify(formData));
 
@@ -133,10 +141,9 @@
 
       // 체크박스 값 추가
       jsonData['terms'] = $('#terms').is(':checked');
-
       console.log(jsonData);
 
-      const url = "/member/register";
+      const url = "/member/signupInsert";
 
       $.ajax({
         url: url, // Spring 컨트롤러 URL
@@ -146,11 +153,11 @@
         success: function(data) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
           console.log(JSON.stringify(data));
-          if(data.code === "error") {
+          if(data.code === 'error') {
             alert(data.message);
-          } else {
+          } else if (data.code === 'success'){
             alert(data.message);
-            location.href='/user/login'
+            location.href='/'
           }
         },
         error: function(xhr, status, error) {
@@ -163,7 +170,188 @@
 
   let business_register = {
     init : function () {
+      // alert("1")
+      // if (!this.emptyChkFn()) {
+      //   return;
+      // }
+      alert("2")
+      if (!this.validationChk()) {
+        return;
+      }
+      alert("3")
+      if (!this.checkFn()) {
+        return;
+      }
 
+      alert("4")
+      this.formSubmit();
+    },
+    /*공백 검사*/
+    // emptyChkFn : function () {
+    //   alert("5")
+    //   let valid = true;
+    //   const form = $('#businessForm');
+    //   const inputs = form.find("input[type='text'], input[type='password']");
+    //
+    //   inputs.each(function() {
+    //     const $input = $(this);
+    //     const removeBlankData = $input.val().replace(/\s*/g, "");
+    //     if (removeBlankData === "") {
+    //       let text = $input.data('name');
+    //       alert(text + "은/는 필수로 입력 값입니다.");
+    //       $input.focus();
+    //       valid = false;
+    //       return false;  // each 루프 중지
+    //     }
+    //   });
+    //
+    //   return valid;
+    // },
+
+    //validationChk 함수 정의
+    validationChk : function () {
+      alert("6")
+      let valid = true;
+      const id = $('#memberId').val();
+      const name = $('#memberName').val();
+      const password = $('#password').val();
+      const password2 = $('#password2').val();
+      const email = $('#email').val();
+      const phone = $('#phone').val();
+      const businessRegistrationNumber = $('#businessRegistrationNumber').val();
+      // 아이디 조건, 길이
+      let idRegex = /^[a-zA-Z0-9]+$/;
+      if (!idRegex.test(id)) {
+        alert("아이디 형식을 확인해주세요")
+        $('#memberId').focus()
+        valid = false;
+        return valid;
+      } // 이상무
+      alert("7")
+      if (id.length > 12 ||id.length < 2) {
+        alert("아이디는 2~12자 사이로 입력해주세요")
+        $('#memberId').focus()
+        valid = false;
+        return valid;
+      }// 이상무
+
+      // 이름 한글만
+      let nameRegex = /^[가-힣]+$/;
+      if (!nameRegex.test(name)) {
+        alert("한글만 입력해주세요");
+        $('#memberName').focus();  // 입력 필드에 포커스 설정
+        valid = false;
+        return valid;
+      }//이상무
+      alert("8")
+
+      // 비밀번호 조건, 길이, 비밀번호 확인
+      let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
+      if (!pwRegex.test(password)) {
+        alert("비밀번호 형식을 확인해주세요")
+        $('#password').focus()
+        valid = false;
+        return valid;
+      }
+      alert("9")
+      if (password.length > 15 || password.length < 8) {
+        alert("비밀번호를 8~15자로 사용해주세요")
+        $('#password').focus()
+        valid = false;
+        return valid;
+      }
+      alert("10")
+      if (password !== password2) {
+        alert("비밀번호를 확인해주세요")
+        $('#password2').focus()
+        valid = false;
+        return valid;
+      } //이상무
+      alert("11")
+      // email validation
+      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        alert("비밀번호 형식을 확인해주세요")
+        $('#email').focus()
+        valid = false;
+        return valid;
+      } //이상무
+      alert("12")
+      // phone validation
+      let phoneRegex = /^010\d{4}\d{4}$/;
+      if (!phoneRegex.test(phone)) {
+        alert("비밀번호 형식을 확인해주세요")
+        $('#phone').focus()
+        valid = false;
+        return valid;
+      }
+      alert("13")
+      // businessRegistrationNumber validation
+      letbusinessRNumberRegex = /^\d{10}$/;
+      if (!letbusinessRNumberRegex.test(businessRegistrationNumber)) {
+        alert("'-'을 제외한 10자로 입력해주세요")
+        valid = false;
+        return valid;
+      }
+      return valid;
+    },
+
+    checkFn : function () {
+      alert("14")
+      let valid = true;
+      const form = $('#businessForm');
+      const checkBox = form.find("input[type='checkbox']");
+      const isChecked = checkBox.prop('checked');
+      console.log("x:::  "+JSON.stringify(isChecked));
+
+      if (!isChecked) {
+        alert("동의여부는 필수 입력 값입니다.");
+        valid = false;
+        return valid;
+      }
+      return valid;
+    }, // 이상무
+
+
+    // 전송 함수 정의
+    formSubmit : function() {
+      alert("15")
+      const formData = $("#businessForm").serializeArray();
+
+      console.log("x:::  "+JSON.stringify(formData));
+
+      // JSON 객체로 변환
+      let jsonData = {};
+      $.each(formData, function() {
+        jsonData[this.name] = this.value;
+      });
+
+      // 체크박스 값 추가
+      jsonData['terms'] = $('#terms').is(':checked');
+      console.log(jsonData);
+
+      const url = "/member/signupInsertB";
+
+      $.ajax({
+        url: url, // Spring 컨트롤러 URL
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
+        success: function(data) {
+          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+          console.log(JSON.stringify(data));
+          if(data.code === 'error') {
+            alert(data.message);
+          } else if (data.code === 'success'){
+            alert(data.message);
+            location.href='/'
+          }
+        },
+        error: function(xhr, status, error) {
+          // 오류 발생 시 실행할 코드
+          console.error(error);
+        }
+      });
     }
   }
 
@@ -185,10 +373,6 @@
 
 
 
-<!--=================================
-header -->
-<!--=================================
-header -->
 
 <!--=================================
 inner banner -->
@@ -222,7 +406,7 @@ Register -->
             <legend class="px-2">Choose your Account Type</legend>
             <ul class="nav nav-tabs nav-tabs-border d-flex" role="tablist">
               <li class="nav-item me-4">
-                <a class="nav-link active"  data-bs-toggle="tab" href="/#candidate" role="tab" >
+                <a class="nav-link active"  data-bs-toggle="tab" href="/#candidate" role="tab"  >
                   <div class="d-flex">
                     <div class="tab-icon">
                       <i class="flaticon-users"></i>
@@ -251,13 +435,14 @@ Register -->
             <div class="tab-pane active" id="candidate" role="tabpanel">
               <form class="mt-4" id="personalForm" name="personalForm">
                 <div class="row">
+                  <input type="hidden" name="gradeCode" id="gradeCode" value="10">
                   <div class="mb-3 col-md-6">
                     <label class="form-label" for="memberId">아이디 *</label>
                     <input type="text" class="form-control" id="memberId" name="memberId" data-name="아이디">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label class="form-label"for="memberName">이름 *</label>
-                    <input type="text" class="form-control" id="memberName" name="memberName" data-name="이름">
+                    <label class="form-label"for="name">이름 *</label>
+                    <input type="text" class="form-control" id="name" name="name" data-name="이름">
                   </div>
                   <div class="mb-3 col-md-6">
                     <label class="form-label"for="password">비밀번호 *</label>
@@ -272,8 +457,8 @@ Register -->
                     <input type="text" class="form-control" id="email" name="email" data-name="이메일">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label class="form-label" for="phone">핸드폰 *</label>
-                    <input type="text" class="form-control" id="phone" name="phone" data-name="핸드폰">
+                    <label class="form-label" for="phoneNumber">핸드폰 *</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" data-name="핸드폰">
                   </div>
                   <div class="mb-3 col-12">
                     <div class="form-check">
@@ -297,13 +482,14 @@ Register -->
             <div class="tab-pane fade" id="employer" role="tabpanel">
               <form class="mt-4" id="businessForm" name="businessForm">
                 <div class="row">
+                  <input type="hidden" name="gradeCode" id="gradeCode" value="20">
                   <div class="mb-3 col-md-6">
                     <label class="form-label" for="memberId">아이디 *</label>
                     <input type="text" class="form-control" id="memberId" name="memberId" data-name="아이디">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label class="form-label"for="memberName">이름 *</label>
-                    <input type="text" class="form-control" id="memberName" name="memberName" data-name="이름">
+                    <label class="form-label"for="name">이름 *</label>
+                    <input type="text" class="form-control" id="name" name="name" data-name="이름">
                   </div>
                   <div class="mb-3 col-md-6">
                     <label class="form-label"for="password">비밀번호 *</label>
@@ -318,8 +504,8 @@ Register -->
                     <input type="text" class="form-control" id="email" name="email" data-name="이메일">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label class="form-label" for="phone">핸드폰 *</label>
-                    <input type="text" class="form-control" id="phone" name="phone" data-name="핸드폰">
+                    <label class="form-label" for="phoneNumber">핸드폰 *</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" data-name="핸드폰">
                   </div>
                   <div class="mb-3 col-12">
                     <label class="form-label" for="businessRegistrationNumber">사업자 번호 *</label>

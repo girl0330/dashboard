@@ -7,6 +7,7 @@ public class MemberDTO {
     private int uuid;
     private String memberId;
     private String password;
+    private String password2;
     private String name;
     private String email;
     private String phoneNumber;
