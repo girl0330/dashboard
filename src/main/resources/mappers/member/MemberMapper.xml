@@ -23,7 +23,7 @@
     <insert id="insert" parameterType="com.job.dashboard.domain.member.MemberDTO">
         INSERT INTO member_info (member_id, password, name, email, phon_number, business_registration_number,
                                  grade_code, registrar_id, modifier_id)
-        VALUES (#{memberId}, #{password}, #{name}, #{email}, #{phoneNumber}, #{gradeCode}, businessRegistrationNumber,
+        VALUES (#{memberId}, #{password}, #{name}, #{email}, #{phoneNumber}, #{gradeCode}, #{businessRegistrationNumber},
                 #{registrarId}, #{modifierId})
     </insert>
 </mapper>

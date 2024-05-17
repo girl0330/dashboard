@@ -41,11 +41,11 @@
     validationChk : function () {
       let valid = true;
       const id = $('#memberId').val();
-      const name = $('#memberName').val();
+      const name = $('#name').val();
       const password = $('#password').val();
       const password2 = $('#password2').val();
       const email = $('#email').val();
-      const phone = $('#phone').val();
+      const phoneNumber = $('#phoneNumber').val();
       // 아이디 조건, 길이
       let idRegex = /^[a-zA-Z0-9]+$/;
       if (!idRegex.test(id)) {
@@ -65,7 +65,7 @@
       let nameRegex = /^[가-힣]+$/;
       if (!nameRegex.test(name)) {
         alert("한글만 입력해주세요");
-        $('#memberName').focus();  // 입력 필드에 포커스 설정
+        $('#name').focus();  // 입력 필드에 포커스 설정
         valid = false;
         return valid;
       }//이상무
@@ -102,9 +102,9 @@
 
       // phone validation
       let phoneRegex = /^010\d{4}\d{4}$/;
-      if (!phoneRegex.test(phone)) {
+      if (!phoneRegex.test(phoneNumber)) {
         alert("비밀번호 형식을 확인해주세요")
-        $('#phone').focus()
+        $('#phoneNumber').focus()
         valid = false;
         return valid;
       }
@@ -131,7 +131,7 @@
     formSubmit : function() {
       const formData = $("#personalForm").serializeArray();
 
-      console.log("x:::  "+JSON.stringify(formData));
+      console.log("x:::1111111111  "+JSON.stringify(formData));
 
       // JSON 객체로 변환
       let jsonData = {};
@@ -170,20 +170,15 @@
 
   let business_register = {
     init : function () {
-      // alert("1")
       // if (!this.emptyChkFn()) {
       //   return;
       // }
-      alert("2")
       if (!this.validationChk()) {
         return;
       }
-      alert("3")
-      if (!this.checkFn()) {
-        return;
-      }
-
-      alert("4")
+      // if (!this.checkFn()) {
+      //   return;
+      // }
       this.formSubmit();
     },
     /*공백 검사*/
@@ -212,34 +207,43 @@
     validationChk : function () {
       alert("6")
       let valid = true;
-      const id = $('#memberId').val();
-      const name = $('#memberName').val();
-      const password = $('#password').val();
-      const password2 = $('#password2').val();
-      const email = $('#email').val();
-      const phone = $('#phone').val();
+      const memberId = $('#businessMemberId').val();
+      const name = $('#businessName').val();
+      const password = $('#businessPassword').val();
+      const password2 = $('#businessPassword2').val();
+      const email = $('#businessEmail').val();
+      const phoneNumber = $('#businessPhoneNumber').val();
       const businessRegistrationNumber = $('#businessRegistrationNumber').val();
+      console.log("memberId''''''''''"+memberId);
+      console.log("name'''''''''''"+name);
+      console.log("password''''''''''''"+password);
+      console.log("password2''''''''''''"+password2);
+      console.log("email''''''''''''"+email);
+      console.log("phoneNumber''''''''''''''"+phoneNumber);
+      console.log("businessRegistrationNumber'''''''''''''"+businessRegistrationNumber);
+
       // 아이디 조건, 길이
       let idRegex = /^[a-zA-Z0-9]+$/;
-      if (!idRegex.test(id)) {
+      console.log(idRegex.test(memberId)+"<<<<<");
+      if (!idRegex.test(memberId)) {
         alert("아이디 형식을 확인해주세요")
-        $('#memberId').focus()
+        $('#businessMemberId').focus()
         valid = false;
         return valid;
       } // 이상무
       alert("7")
-      if (id.length > 12 ||id.length < 2) {
+      if (memberId.length > 12 ||memberId.length < 2) {
         alert("아이디는 2~12자 사이로 입력해주세요")
-        $('#memberId').focus()
+        $('#businessMemberId').focus()
         valid = false;
         return valid;
       }// 이상무
-
+      alert("72")
       // 이름 한글만
       let nameRegex = /^[가-힣]+$/;
       if (!nameRegex.test(name)) {
         alert("한글만 입력해주세요");
-        $('#memberName').focus();  // 입력 필드에 포커스 설정
+        $('#businessName').focus();  // 입력 필드에 포커스 설정
         valid = false;
         return valid;
       }//이상무
@@ -249,21 +253,21 @@
       let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
       if (!pwRegex.test(password)) {
         alert("비밀번호 형식을 확인해주세요")
-        $('#password').focus()
+        $('#businessPassword').focus()
         valid = false;
         return valid;
       }
       alert("9")
       if (password.length > 15 || password.length < 8) {
         alert("비밀번호를 8~15자로 사용해주세요")
-        $('#password').focus()
+        $('#businessPassword').focus()
         valid = false;
         return valid;
       }
       alert("10")
       if (password !== password2) {
         alert("비밀번호를 확인해주세요")
-        $('#password2').focus()
+        $('#businessPassword2').focus()
         valid = false;
         return valid;
       } //이상무
@@ -272,16 +276,16 @@
       let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(email)) {
         alert("비밀번호 형식을 확인해주세요")
-        $('#email').focus()
+        $('#businessEmail').focus()
         valid = false;
         return valid;
       } //이상무
       alert("12")
       // phone validation
       let phoneRegex = /^010\d{4}\d{4}$/;
-      if (!phoneRegex.test(phone)) {
-        alert("비밀번호 형식을 확인해주세요")
-        $('#phone').focus()
+      if (!phoneRegex.test(phoneNumber)) {
+        alert("핸드폰 번호를 정확히 입력해주세요")
+        $('#businessPhoneNumber').focus()
         valid = false;
         return valid;
       }
@@ -315,7 +319,7 @@
 
     // 전송 함수 정의
     formSubmit : function() {
-      alert("15")
+      alert("전솓ㅇ시박ㄹ")
       const formData = $("#businessForm").serializeArray();
 
       console.log("x:::  "+JSON.stringify(formData));
@@ -482,30 +486,30 @@ Register -->
             <div class="tab-pane fade" id="employer" role="tabpanel">
               <form class="mt-4" id="businessForm" name="businessForm">
                 <div class="row">
-                  <input type="hidden" name="gradeCode" id="gradeCode" value="20">
+                  <input type="hidden" name="gradeCode" id="bgradeCode" value="20">
                   <div class="mb-3 col-md-6">
-                    <label class="form-label" for="memberId">아이디 *</label>
-                    <input type="text" class="form-control" id="memberId" name="memberId" data-name="아이디">
+                    <label class="form-label" for="businessMemberId">아이디 *</label>
+                    <input type="text" class="form-control" id="businessMemberId" name="memberId" data-name="아이디">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label class="form-label"for="name">이름 *</label>
-                    <input type="text" class="form-control" id="name" name="name" data-name="이름">
+                    <label class="form-label"for="businessName">이름 *</label>
+                    <input type="text" class="form-control" id="businessName" name="name" data-name="이름">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label class="form-label"for="password">비밀번호 *</label>
-                    <input type="password" class="form-control" id="password" name="password" data-name="비밀번호">
+                    <label class="form-label"for="businessPassword">비밀번호 *</label>
+                    <input type="password" class="form-control" id="businessPassword" name="password" data-name="비밀번호">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label class="form-label" for="password2">비밀번호 재입력 *</label>
-                    <input type="password" class="form-control" id="password2" name="password2" data-name="비밀번호 재입력">
+                    <label class="form-label" for="businessPassword2">비밀번호 재입력 *</label>
+                    <input type="password" class="form-control" id="businessPassword2" name="password2" data-name="비밀번호 재입력">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label class="form-label" for="email">이메일 *</label>
-                    <input type="text" class="form-control" id="email" name="email" data-name="이메일">
+                    <label class="form-label" for="businessEmail">이메일 *</label>
+                    <input type="text" class="form-control" id="businessEmail" name="email" data-name="이메일">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label class="form-label" for="phoneNumber">핸드폰 *</label>
-                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" data-name="핸드폰">
+                    <label class="form-label" for="businessPhoneNumber">핸드폰 *</label>
+                    <input type="text" class="form-control" id="businessPhoneNumber" name="phoneNumber" data-name="핸드폰">
                   </div>
                   <div class="mb-3 col-12">
                     <label class="form-label" for="businessRegistrationNumber">사업자 번호 *</label>
@@ -513,7 +517,7 @@ Register -->
                   </div>
                   <div class="mb-3 col-12">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="ture" id="terms" name="terms">
+                      <input class="form-check-input" type="checkbox" value="ture" id="businessTerms" name="terms">
                       <label class="form-check-label" for="terms">
                         <a href="이용약관_링크_주소_입력">이용약관</a>에 전체동의
                       </label>

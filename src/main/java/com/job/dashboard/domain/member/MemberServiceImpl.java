@@ -83,6 +83,8 @@ public class MemberServiceImpl implements MemberService{
         }
         System.out.println("이메일");
         //사업자번호 중복체크
+
+        System.out.println("사업자 번호는?????"+memberDTO.getBusinessRegistrationNumber());
         int businessNumCheck = memberMapper.businessNumCheck(memberDTO);
         if (businessNumCheck > 0) {
             map.put("code", "error");
@@ -104,6 +106,7 @@ public class MemberServiceImpl implements MemberService{
 
         //계정등록
         memberDTO.setPassword(encodedPassword);
+        memberDTO.setRegistrarId(memberDTO.getMemberId());
         memberMapper.insert(memberDTO);
         map.put("code","success");
         map.put("message","회원가입성공");
