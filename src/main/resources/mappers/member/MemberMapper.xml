@@ -21,9 +21,24 @@
     </select>
 
     <insert id="insert" parameterType="com.job.dashboard.domain.member.MemberDTO">
-        INSERT INTO member_info (member_id, password, name, email, phon_number, business_registration_number,
-                                 grade_code, registrar_id, modifier_id)
+        INSERT INTO member_info (member_id, password, name, email, phon_number,grade_code, business_registration_number,
+                                  registrar_id, modifier_id)
         VALUES (#{memberId}, #{password}, #{name}, #{email}, #{phoneNumber}, #{gradeCode}, #{businessRegistrationNumber},
                 #{registrarId}, #{modifierId})
     </insert>
+
+<!--  로그인 관련 쿼리  -->
+    <select id="getHashedPassword" parameterType="com.job.dashboard.domain.member.MemberDTO" resultType="java.lang.String">
+        SELECT password
+        FROM member_info
+        WHERE member_id = #{memberId}
+    </select>
+
+    <select id="selectMemberInfo" parameterType="com.job.dashboard.domain.member.MemberDTO" resultType="com.job.dashboard.domain.member.MemberDTO">
+        SELECT uuid, member_id, password, name, email, phon_number, business_registration_number,
+               grade_code, registrar_id, modifier_id, registrar_datetime, modifier_datetime
+        FROM member_info
+        WHERE member_id = #{memberId}
+          AND password = #{password}
+    </select>
 </mapper>

@@ -1,257 +1,251 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="keywords" content="HTML5 Template" />
-    <meta name="description" content="Jobber - Job Board HTML5 Template" />
-    <meta name="author" content="potenzaglobalsolutions.com" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Jobber - Job Board HTML5 Template</title>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-    <!-- Favicon -->
-    <link href="images/favicon.ico" rel="shortcut icon" />
+<script>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700" rel="stylesheet">
+  let personal_login = {
+    init : function () {
+    // 공백함수실행
+    //   alert("공백함수 실행??")
+      if (!this.emptyChkFn()) {
+        return;
+      }
+      //조건함수실행
+        alert("조건함수 실행??")
+      if (!this.validationChk()){
+        return;
+      }
+    // submit 함수 실행
+      this.formSubmit();
+    },
+    // 공백함수
+    emptyChkFn : function () {
+      // alert("공백합수 실행됨")
+      let valid = true;
+      const form = $('#personalForm')
+      const inputs = form.find("input[type='text'], input[type='password']");
 
-    <!-- CSS Global Compulsory (Do not remove)-->
-    <link rel="stylesheet" href="css/font-awesome/all.min.css" />
-    <link rel="stylesheet" href="css/flaticon/flaticon.css" />
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+      inputs.each(function() {
+        const input = $(this);
+        const removeBlankData = input.val().replace(/\s*/g, "");
+        if (removeBlankData === "") {
+          let text = input.data('name');
+          alert(text + "은/는 필수로 입력 값입니다.");
+          input.focus();
+          valid = false;
+          return false;  // each 루프 중지
+        }
+      });
 
-    <!-- Template Style -->
-    <link rel="stylesheet" href="css/style.css" />
+      return valid;
+    },
 
-  </head>
-<body>
+    //validation 함수 실행
+    validationChk : function () {
+        alert("조건함수 실행!!!")
+      let valid = true;
+      const memberId = $('#personalMemberId').val();
+      const password = $('#personalPassword').val();
 
-<!--=================================
-header -->
-<header class="header bg-dark">
-  <nav class="navbar navbar-static-top navbar-expand-lg header-sticky">
-    <div class="container-fluid">
-      <button id="nav-icon4" type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
-          <span></span>
-          <span></span>
-          <span></span>
-      </button>
-      <a class="navbar-brand" href="index.html">
-        <img class="img-fluid" src="images/logo.svg" alt="logo">
-      </a>
-      <div class="navbar-collapse collapse justify-content-start">
-        <ul class="nav navbar-nav">
-          <li class="nav-item dropdown">
-            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Home<i class="fas fa-chevron-down fa-xs"></i></a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="index.html">index Default</a></li>
-              <li><a class="dropdown-item" href="index-02.html">index 02</a></li>
-              <li><a class="dropdown-item" href="index-03.html">index 03</a></li>
-              <li><a class="dropdown-item" href="index-map.html">index map</a></li>
-              <li><a class="dropdown-item" href="index-slider.html">index Slider</a></li>
-              <li><a class="dropdown-item" href="index-bg-video.html">index bg video</a></li>
-              <li><a class="dropdown-item" href="index-splash.html">index splash</a></li>
-            </ul>
-          </li>
-          <li class="dropdown nav-item active">
-            <a href="properties.html" class="nav-link" data-bs-toggle="dropdown">Pages<i class="fas fa-chevron-down fa-xs"></i></a>
-            <ul class="dropdown-menu megamenu dropdown-menu-lg">
-              <li>
-                <div class="row">
-                  <div class="col-sm-4 mb-2 mb-sm-0">
-                    <h6 class="mb-3 nav-title">Pages</h6>
-                    <ul class="list-unstyled mt-lg-3">
-                      <li><a href="about.html">About</a></li>
-                      <li><a href="services.html">Services</a></li>
-                      <li><a href="pricing.html">Pricing</a></li>
-                      <li><a href="career.html">Career</a></li>
-                      <li><a href="advertising.html">Advertising</a></li>
-                      <li><a href="contact-us.html">Contact Us</a></li>
-                    </ul>
-                  </div>
-                  <div class="col-sm-4 mb-2 mb-sm-0">
-                    <h6 class="mb-3 nav-title">Pages</h6>
-                    <ul class="list-unstyled mt-lg-3">
-                      <li><a href="blog.html">Blog</a></li>
-                      <li><a href="blog-detail.html">Blog Detail</a></li>
-                      <li><a href="post-a-job.html">Post a Job</a></li>
-                      <li><a href="faqs.html">Faq</a></li>
-                      <li><a href="browse-categories.html">Browse Categories</a></li>
-                      <li><a href="browse-locations.html">Browse Locations</a></li>
-                    </ul>
-                  </div>
-                  <div class="col-sm-4">
-                    <h6 class="mb-3 nav-title">Pages</h6>
-                    <ul class="list-unstyled mt-lg-3">
-                      <li class="active"><a href="login.html">Login</a></li>
-                      <li><a href="register.html">Register</a></li>
-                      <li><a href="coming-soon.html">Coming soon</a></li>
-                      <li><a href="404-error.html">404 Error</a></li>
-                      <li><a href="terms-and-conditions.html">T&C</a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="agency-logo pt-4 pb-3">
-                      <h6 class="mb-3 nav-title">Top Agency</h6>
-                      <ul class="list-unstyled">
-                        <li>
-                          <div class="job-list">
-                            <div class="job-list-logo">
-                              <img class="img-fluid" src="images/svg/07.svg" alt="">
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="job-list">
-                            <div class="job-list-logo">
-                              <img class="img-fluid" src="images/svg/06.svg" alt="">
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="job-list">
-                            <div class="job-list-logo">
-                              <img class="img-fluid" src="images/svg/05.svg" alt="">
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="job-list">
-                            <div class="job-list-logo">
-                              <img class="img-fluid" src="images/svg/04.svg" alt="">
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="job-list">
-                            <div class="job-list-logo">
-                              <img class="img-fluid" src="images/svg/03.svg" alt="">
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Listing <i class="fas fa-chevron-down fa-xs"></i>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="job-grid.html">Job Grid</a></li>
-              <li><a class="dropdown-item" href="job-listing.html">Job Listing</a></li>
-              <li><a class="dropdown-item" href="job-detail.html">Job Detail</a></li>
-              <li><a class="dropdown-item" href="job-listing-map.html">Job Listing Map</a></li>
-            </ul>
-          </li>
-          <li class="dropdown nav-item mega-menu">
-            <a href="javascript:void(0)" class="nav-link" data-bs-toggle="dropdown">Elements<i class="fas fa-chevron-down fa-xs"></i></a>
-            <ul class="dropdown-menu megamenu">
-              <li>
-                <div class="row">
-                  <div class="col-sm-6 col-lg-5 mb-3 mb-lg-0">
-                    <h6 class="mb-3 nav-title">Search Types</h6>
-                    <ul class="list-unstyled mt-lg-3">
-                      <li><a href="search-style-under-banner.html">Search style under banner</a></li>
-                      <li><a href="search-style-above-banner.html">Search style above banner</a></li>
-                      <li><a href="search-style-below-banner.html">Search style below banner</a></li>
-                      <li><a href="search-style-advanced.html">Advanced Search style</a></li>
-                      <li><a href="search-style-classic.html">Search style classic</a></li>
-                      <li><a href="search-style-with-filter.html">Search style with filter</a></li>
-                      <li><a href="search-style-advanced-02.html">Advanced Search style 02 </a></li>
-                      <li><a href="search-style-advanced-03.html">Advanced Search style 03 </a></li>
-                    </ul>
-                  </div>
-                  <div class="col-sm-6 col-lg-3 mb-3 mb-sm-0">
-                    <h6 class="mb-3 nav-title">Elements</h6>
-                    <ul class="list-unstyled mt-lg-3">
-                      <li><a href="element-feature-box.html">Feature box</a></li>
-                      <li><a href="element-testimonials.html">Testimonials</a></li>
-                      <li><a href="element-accordion.html">Accordion</a></li>
-                      <li><a href="element-tabs.html">Tabs</a></li>
-                      <li><a href="element-typography.html">Typography</a></li>
-                      <li><a href="element-counter.html">counter</a></li>
-                      <li><a href="element-countdown.html">Countdown</a></li>
-                      <li><a href="element-category.html">Category</a></li>
-                    </ul>
-                  </div>
-                  <div class="col-sm-6 col-lg-4">
-                    <div class="menu-banner bg-dark p-3 pt-4 text-center border-radius h-100 d-none d-lg-block">
-                        <h5 class="text-primary mb-3 pt-2">Advertise your job with us</h5>
-                        <span class="text-light"> Starting from</span>
-                        <h3 class="text-white my-3">$99 <small>/mo</small></h3>
-                        <p class="text-primary p-2 small text-white">Save 30% for new customer</p>
-                        <a class="btn btn-light btn-sm" href="post-a-job.html">Post a job now!</a>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Employer <i class="fas fa-chevron-down fa-xs"></i>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="employer-grid.html">Employer Grid</a></li>
-              <li><a class="dropdown-item" href="employer-listing.html">Employer list</a></li>
-              <li><a class="dropdown-item" href="employer-detail.html">Employer detail</a></li>
-              <li><a class="dropdown-item" href="employer-listing-map.html">Employer Listing Map</a></li>
-              <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="javascript:void(0)">Dashboard <i class="fas fa-chevron-right fa-xs"></i></a>
-                <ul class="dropdown-menu left-side">
-                  <li><a class="dropdown-item" href="dashboard-employer.html">Dashboard</a></li>
-                  <li><a class="dropdown-item" href="dashboard-employer-my-profile.html">Profile</a></li>
-                  <li><a class="dropdown-item" href="dashboard-employer-change-password.html">Change Password </a></li>
-                  <li><a class="dropdown-item" href="dashboard-employer-manage-candidates.html">Manage Candidates</a></li>
-                  <li><a class="dropdown-item" href="dashboard-employer-manage-jobs.html">Manage Jobs</a></li>
-                  <li><a class="dropdown-item" href="dashboard-employer-post-new-job.html">Post New Job</a></li>
-                  <li><a class="dropdown-item" href="dashboard-employer-pricing.html">Pricing</a></li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Candidates <i class="fas fa-chevron-down fa-xs"></i>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="candidates-grid.html">Candidates Grid</a></li>
-              <li><a class="dropdown-item" href="candidates-listing.html">Candidates list</a></li>
-              <li><a class="dropdown-item" href="candidate-detail.html">Candidates detail</a></li>
-              <li><a class="dropdown-item" href="candidates-listing-map.html">Candidates Listing Map</a></li>
-              <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="javascript:void(0)">Dashboard <i class="fas fa-chevron-right fa-xs"></i></a>
-                <ul class="dropdown-menu left-side">
-                  <li><a class="dropdown-item" href="dashboard-candidates.html">Dashboard</a></li>
-                  <li><a class="dropdown-item" href="dashboard-candidates-my-profile.html">Profile</a></li>
-                  <li><a class="dropdown-item" href="dashboard-candidates-change-password.html">Change Password </a></li>
-                  <li><a class="dropdown-item" href="dashboard-candidates-my-resume.html">My Resume</a></li>
-                  <li><a class="dropdown-item" href="dashboard-candidates-manage-jobs.html">Manage Jobs</a></li>
-                  <li><a class="dropdown-item" href="dashboard-candidates-saved-jobs.html">Saved Jobs</a></li>
-                  <li><a class="dropdown-item" href="dashboard-candidates-pricing.html">Pricing</a></li>
-                </ul>
-              </li>
-              <li><a class="dropdown-item" href="my-resume.html">My Resume <span class="badge bg-danger ms-2">CV</span></a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <div class="add-listing">
-          <div class="login d-inline-block me-4">
-            <a href="#"><i class="far fa-user pe-2"></i>Sign in</a>
-          </div>
-          <a class="btn btn-white btn-md" href="post-a-job.html"> <i class="fas fa-plus-circle"></i>Post a job</a>
-        </div>
-    </div>
-  </nav>
-</header>
-  <!--=================================
-  header -->
+      console.log("아이디 확인"+ memberId)
+      console.log("비밀번호 확인"+ password)
+
+      // 아이디 조건, 길이
+      let idRegex = /^[a-zA-Z0-9]+$/;
+      if (!idRegex.test(memberId)) {
+        alert("아이디 형식을 확인해주세요")
+        $('#personalMemberId').focus()
+        valid = false;
+        return valid;
+      } // 이상무
+      if (memberId.length > 12 ||memberId.length < 2) {
+        alert("아이디는 2~12자 사이로 입력해주세요")
+        $('#personalMemberId').focus()
+        valid = false;
+        return valid;
+      }// 이상무
+
+      // 비밀번호 조건, 길이, 비밀번호 확인
+      let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
+      if (!pwRegex.test(password)) {
+        alert("비밀번호 형식을 확인해주세요")
+        $('#password').focus()
+        valid = false;
+        return valid;
+      }
+      if (password.length > 15 || password.length < 8) {
+        alert("비밀번호를 8~15자로 사용해주세요")
+        $('#password').focus()
+        valid = false;
+        return valid;
+      }
+      return valid;
+    },
+
+    //submit 함수
+    formSubmit : function () {
+      const formData = $("#personalForm").serializeArray();
+      console.log("data check :::" + JSON.stringify(formData));
+
+      // JSON 객체로 변환
+      let jsonData = {};
+      $.each(formData, function() {
+        jsonData[this.name] = this.value;
+      });
+
+      const url = "/member/personalMemberLogin";
+
+      $.ajax({
+        url: url, // Spring 컨트롤러 URL
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
+        success: function(data) {
+          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+          console.log(JSON.stringify(data));
+          if(data.code === 'error') {
+            alert(data.message);
+          } else if (data.code === 'success'){
+            alert(data.message);
+            location.href='/'
+          }
+        },
+        error: function(xhr, status, error) {
+          // 오류 발생 시 실행할 코드
+          console.error(error);
+        }
+      });
+    }
+  }
+
+  let business_login = {
+    init : function () {
+      // 공백함수실행
+      //   alert("공백함수 실행??")
+      if (!this.emptyChkFn()) {
+        return;
+      }
+      //조건함수실행
+      alert("조건함수 실행??")
+      if (!this.validationChk()){
+        return;
+      }
+      // submit 함수 실행
+      this.formSubmit();
+    },
+    // 공백함수
+    emptyChkFn : function () {
+      // alert("공백합수 실행됨")
+      let valid = true;
+      const form = $('#businessForm')
+      const inputs = form.find("input[type='text'], input[type='password']");
+
+      inputs.each(function() {
+        const input = $(this);
+        const removeBlankData = input.val().replace(/\s*/g, "");
+        if (removeBlankData === "") {
+          let text = input.data('name');
+          alert(text + "은/는 필수로 입력 값입니다.");
+          input.focus();
+          valid = false;
+          return false;  // each 루프 중지
+        }
+      });
+
+      return valid;
+    },
+
+    //validation 함수 실행
+    validationChk : function () {
+      alert("조건함수 실행!!!")
+      let valid = true;
+      const memberId = $('#businessMemberId').val();
+      const password = $('#businessPassword').val();
+
+      console.log("아이디 확인"+ memberId)
+      console.log("비밀번호 확인"+ password)
+
+      // 아이디 조건, 길이
+      let idRegex = /^[a-zA-Z0-9]+$/;
+      if (!idRegex.test(memberId)) {
+        alert("아이디 형식을 확인해주세요")
+        $('#businessMemberId').focus()
+        valid = false;
+        return valid;
+      } // 이상무
+      if (memberId.length > 12 ||memberId.length < 2) {
+        alert("아이디는 2~12자 사이로 입력해주세요")
+        $('#businessMemberId').focus()
+        valid = false;
+        return valid;
+      }// 이상무
+
+      // 비밀번호 조건, 길이, 비밀번호 확인
+      let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
+      if (!pwRegex.test(password)) {
+        alert("비밀번호 형식을 확인해주세요")
+        $('#businessPassword').focus()
+        valid = false;
+        return valid;
+      }
+      if (password.length > 15 || password.length < 8) {
+        alert("비밀번호를 8~15자로 사용해주세요")
+        $('#businessPassword').focus()
+        valid = false;
+        return valid;
+      }
+      return valid;
+    },
+
+    //submit 함수
+    formSubmit : function () {
+      const formData = $("#businessForm").serializeArray();
+      console.log("data check :::" + JSON.stringify(formData));
+
+      // JSON 객체로 변환
+      let jsonData = {};
+      $.each(formData, function() {
+        jsonData[this.name] = this.value;
+      });
+
+      const url = "/member/businessMemberLogin";
+
+      $.ajax({
+        url: url, // Spring 컨트롤러 URL
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
+        success: function(data) {
+          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+          console.log(JSON.stringify(data));
+          if(data.code === 'error') {
+            alert(data.message);
+          } else if (data.code === 'success'){
+            alert(data.message);
+            location.href='/'
+          }
+        },
+        error: function(xhr, status, error) {
+          // 오류 발생 시 실행할 코드
+          console.error(error);
+        }
+      });
+    }
+
+
+  }
+
+  //DOM이 실행 후 실행 됨
+  document.addEventListener('DOMContentLoaded', function (){
+    document.getElementById("personal_login").addEventListener("click",function () {
+      personal_login.init();
+    });
+
+    document.getElementById("business_login").addEventListener("click",function () {
+      business_login.init();
+    });
+  });
+</script>
 
 <!--=================================
 inner banner -->
@@ -261,7 +255,7 @@ inner banner -->
       <div class="col-12">
         <h2 class="text-primary">Login</h2>
         <ol class="breadcrumb mb-0 p-0">
-          <li class="breadcrumb-item"><a href="index.html"> Home </a></li>
+          <li class="breadcrumb-item"><a href="/"> Home </a></li>
           <li class="breadcrumb-item active"> <i class="fas fa-chevron-right"></i> <span> Login </span></li>
         </ol>
       </div>
@@ -279,10 +273,10 @@ Signin -->
       <div class="col-xl-8 col-lg-10 col-md-12">
         <div class="login-register">
           <div class="section-title">
-           <h4 class="text-center">Login to Your Account</h4>
+           <h4 class="text-center">로그인 하기</h4>
           </div>
           <fieldset>
-            <legend class="px-2">Choose your Account Type</legend>
+            <legend class="px-2">로그인할 계정 타입 선택</legend>
             <ul class="nav nav-tabs nav-tabs-border d-flex" role="tablist">
               <li class="nav-item me-4">
                 <a class="nav-link active"  data-bs-toggle="tab" href="#candidate" role="tab" aria-selected="false">
@@ -291,8 +285,8 @@ Signin -->
                       <i class="flaticon-users"></i>
                     </div>
                     <div class="ms-3">
-                      <h6 class="mb-0">Candidate</h6>
-                      <p class="mb-0">Log in as Candidate</p>
+                      <h6 class="mb-0">개인회원</h6>
+                      <p class="mb-0">개인회원으로 로그인하기</p>
                     </div>
                   </div>
                 </a>
@@ -304,8 +298,8 @@ Signin -->
                       <i class="flaticon-suitcase"></i>
                     </div>
                     <div class="ms-3">
-                      <h6 class="mb-0">Employer</h6>
-                      <p class="mb-0">Log in as Employer</p>
+                      <h6 class="mb-0">기업회원</h6>
+                      <p class="mb-0">기업으로 로그인하기</p>
                     </div>
                   </div>
                 </a>
@@ -314,20 +308,21 @@ Signin -->
           </fieldset>
           <div class="tab-content">
             <div class="tab-pane active" id="candidate" role="tabpanel">
-              <form class="mt-4">
+              <form class="mt-4" id="personalForm" name="personalForm">
                 <div class="row">
+                  <input type="hidden" name="gradeCode" id="personalGradeCode" value="10">
                   <div class="mb-3 col-12">
-                    <label class="form-label" for="Email2">Username / Email Address</label>
-                    <input type="text" class="form-control" id="Email22">
+                    <label class="form-label" for="personalMemberId">아이디 *</label>
+                    <input type="text" class="form-control" id="personalMemberId" name="memberId" data-name="아이디">
                   </div>
                   <div class="mb-3 col-12">
-                    <label class="form-label" for="password2">Password*</label>
-                    <input type="password" class="form-control" id="password32">
+                    <label class="form-label" for="personalPassword">비밀번호 *</label>
+                    <input type="password" class="form-control" id="personalPassword" name="password" data-name="비밀번호">
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6">
-                    <a class="btn btn-primary d-grid" href="#">Sign In</a>
+                    <a class="btn btn-primary d-block" id="personal_login" name="personal_login">로그인</a>
                   </div>
                   <div class="col-md-6">
                     <div class="mt-3 mt-md-0 forgot-pass">
@@ -339,20 +334,21 @@ Signin -->
               </form>
             </div>
             <div class="tab-pane fade" id="employer" role="tabpanel">
-              <form class="mt-4">
+              <form class="mt-4" id="businessForm" name="businessForm">
                 <div class="row">
+                  <input type="hidden" name="gradeCode" id="BusinessGradeCode" value="20">
                   <div class="mb-3 col-12">
-                    <label class="form-label" for="Email2">Username / Email Address</label>
-                    <input type="text" class="form-control" id="Email2">
+                    <label class="form-label" for="businessMemberId">아이디 *</label>
+                    <input type="text" class="form-control" id="businessMemberId" name="memberId" data-name="아이디">
                   </div>
                   <div class="mb-3 col-12">
-                    <label class="form-label" for="password2">Password *</label>
-                    <input type="password" class="form-control" id="password2">
+                    <label class="form-label" for="businessPassword">비밀번호 *</label>
+                    <input type="password" class="form-control" id="businessPassword" name="password" data-name="비밀번호">
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6">
-                    <a class="btn btn-primary d-grid" href="#">Sign up</a>
+                    <a class="btn btn-primary d-block" id="business_login" name="business_login">로그인</a>
                   </div>
                   <div class="col-md-6">
                     <div class="ms-md-3 mt-3 mt-md-0">
@@ -431,123 +427,7 @@ feature-info -->
 <!--=================================
 feature-info-->
 
-<!--=================================
-footer-->
-<footer class="footer bg-light">
-  <div class="position-relative">
-    <svg class="footer-shape"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      width="100%" height="85px">
-      <path fill-rule="evenodd"  fill="rgb(255, 255, 255)"
-        d="M-0.000,-0.001 L1923.000,-0.001 L1923.000,84.999 C1608.914,41.669 1279.532,19.653 962.500,19.000 C635.773,18.326 323.692,40.344 -0.000,84.999 C-0.000,-83.334 -0.000,168.332 -0.000,-0.001 Z"/>
-      </svg>
-    </div>
-    <div class="container pt-5">
-      <div class="row mt-5">
-        <div class="col-lg-3 col-md-6">
-          <div class="footer-link">
-            <h5 class="text-dark mb-4">Trending Job</h5>
-            <ul class="list-unstyled">
-              <li><a href="#">Browse Jobs</a></li>
-              <li><a href="#">Browse Categories</a></li>
-              <li><a href="#">Submit Resume</a></li>
-              <li><a href="#">Candidate Dashboard</a></li>
-              <li><a href="#">Job Alerts</a></li>
-              <li><a href="#">My Bookmarks</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 mt-4 mt-md-0">
-          <div class="footer-link">
-            <h5 class="text-dark mb-4">Trending Companies</h5>
-            <ul class="list-unstyled">
-              <li><a href="#">Shortcodes</a></li>
-              <li><a href="#">Job Page</a></li>
-              <li><a href="#">Job Page Alternative</a></li>
-              <li><a href="#">Resume Page</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 mt-4 mt-lg-0">
-          <h5 class="text-dark mb-4">Subscribe Us</h5>
-          <div class="footer-subscribe">
-            <p>Sign Up to our Newsletter to get the latest news and offers.</p>
-            <form>
-              <div class="mb-3">
-                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-              </div>
-              <button type="submit" class="btn btn-primary btn-md">Get Notified</button>
-            </form>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 mt-4 mt-lg-0">
-          <h5 class="text-dark mb-4">Download App</h5>
-          <div class="footer-subscribe">
-            <p>Download the latest Slick new job apps now</p>
-            <div class="d-inline-block">
-              <a class="btn btn-white btn-sm btn-app " href="#">
-                <i class="fab fa-apple"></i>
-                <div class="btn-text text-start">
-                  <small class="fw-normal">Download on the </small>
-                  <span class="mb-0 d-block">App Store</span>
-                </div>
-              </a>
-              <a class="btn btn-white btn-sm btn-app mt-3" href="#">
-                <i class="fab fa-google-play"></i>
-                <div class="btn-text text-start">
-                  <small class="fw-normal">Get it on  </small>
-                  <span class="mb-0 d-block">Google Play</span>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom bg-dark mt-5">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 ">
-            <div class="d-flex justify-content-md-start justify-content-center">
-              <ul class="list-unstyled d-flex mb-0">
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="#">Team</a></li>
-                <li><a href="contact-us.html">Contact</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-6 text-center text-md-end mt-4 mt-md-0">
-            <p class="mb-0"> &copy;Copyright <span id="copyright"> <script>document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))</script></span> <a href="#"> Jobber </a> All Rights Reserved </p>
-          </div>
-        </div>
-      </div>
-    </div>
-</footer>
-<!--=================================
-footer-->
 
-<!--=================================
-Back To Top-->
-   <div id="back-to-top" class="back-to-top">
-     <i class="fas fa-angle-up"></i>
-   </div>
-<!--=================================
-Back To Top-->
 
-<!--=================================
-Javascript -->
 
-    <!-- JS Global Compulsory (Do not remove)-->
-    <script src="js/jquery-3.6.0.min.js"></script>
-    <script src="js/popper/popper.min.js"></script>
-    <script src="js/bootstrap/bootstrap.min.js"></script>
 
-    <!-- Template Scripts (Do not remove)-->
-    <script src="js/custom.js"></script>
-
-</body>
-</html>

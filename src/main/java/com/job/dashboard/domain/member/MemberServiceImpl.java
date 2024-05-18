@@ -113,4 +113,82 @@ public class MemberServiceImpl implements MemberService{
         System.out.println("계정등록");
         return map;
     }
+
+    //개인 로그인
+    public Map<Object, Object> personalLogin(MemberDTO memberDTO) {
+        System.out.println("====serviceImple====");
+        Map<Object, Object> map = new HashMap<>();
+        String id = memberDTO.getMemberId();
+        String password = memberDTO.getPassword();
+
+        //아이디로 저장된 비밀번호가 있는지 확인
+        String hashedPassword = memberMapper.getHashedPassword(id);
+        System.out.println("hashedPassword 확인:::"+ hashedPassword);
+
+        if (hashedPassword == null) {
+            System.out.println("해당 아이디는 없음");
+            map.put("code", "error");
+            map.put("message", "아이디가 존재하지 않거나, 일치하지 않습니다.");
+            return map;
+        }
+
+        //비밀번호 일치확인
+        boolean pwCheck = passwordEncoder.matches(password, hashedPassword); // 일치하는지 확인
+        System.out.println(pwCheck); // 일치하면 ture 반환
+        if (!pwCheck) {
+            System.out.println("해당 비밀번호는 없음");
+            map.put("code", "error");
+            map.put("message", "비밀번호가 존재하지 않거나, 일치하지 않습니다.");
+            return map;
+        }
+        System.out.println("비밀번호가 존재함");
+        memberDTO.setPassword(hashedPassword); // 암호화된 비밀번호로 바꿈
+
+        //정보가져오기
+        MemberDTO memberInfo = memberMapper.selectMemberInfo(memberDTO);
+        System.out.println("selectMemberInfo의 결과:::"+memberInfo);
+        map.put("userInfo",memberInfo);
+        map.put("code","success");
+        map.put("message","로그인 성공!");
+        return map;
+    }
+
+    //기업 로그인
+    public Map<Object, Object> businessLogin(MemberDTO memberDTO) {
+        System.out.println("====serviceImple====");
+        Map<Object, Object> map = new HashMap<>();
+        String id = memberDTO.getMemberId();
+        String password = memberDTO.getPassword();
+
+        //아이디로 저장된 비밀번호가 있는지 확인
+        String hashedPassword = memberMapper.getHashedPassword(id);
+        System.out.println("hashedPassword 확인:::"+ hashedPassword);
+
+        if (hashedPassword == null) {
+            System.out.println("해당 아이디는 없음");
+            map.put("code", "error");
+            map.put("message", "아이디가 존재하지 않거나, 일치하지 않습니다.");
+            return map;
+        }
+
+        //비밀번호 일치확인
+        boolean pwCheck = passwordEncoder.matches(password, hashedPassword); // 일치하는지 확인
+        System.out.println(pwCheck); // 일치하면 ture 반환
+        if (!pwCheck) {
+            System.out.println("해당 비밀번호는 없음");
+            map.put("code", "error");
+            map.put("message", "비밀번호가 존재하지 않거나, 일치하지 않습니다.");
+            return map;
+        }
+        System.out.println("비밀번호가 존재함");
+        memberDTO.setPassword(hashedPassword); // 암호화된 비밀번호로 바꿈
+
+        //정보가져오기
+        MemberDTO memberInfo = memberMapper.selectMemberInfo(memberDTO);
+        System.out.println("selectMemberInfo의 결과:::"+memberInfo);
+        map.put("userInfo",memberInfo);
+        map.put("code","success");
+        map.put("message","로그인 성공!");
+        return map;
+    }
 }

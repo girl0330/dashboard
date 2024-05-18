@@ -12,4 +12,7 @@ public interface MemberMapper {
 
     void insert(MemberDTO memberDTO);
 
+    String getHashedPassword(String id);
+
+    MemberDTO selectMemberInfo(MemberDTO memberDTO);
 }

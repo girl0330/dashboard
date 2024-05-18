@@ -7,4 +7,8 @@ public interface MemberService {
     Map<Object, Object> insert(MemberDTO memberDTO);
 
     Map<Object, Object> insertB(MemberDTO memberDTO);
+
+    Map<Object, Object> personalLogin(MemberDTO memberDTO);
+
+    Map<Object, Object> businessLogin(MemberDTO memberDTO);
 }

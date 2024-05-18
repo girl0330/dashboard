@@ -5,62 +5,74 @@
   //회원 로그인 실행
   let personal_register = {
     init : function () {
-      if (!this.emptyChkFn()) {
-        return;
-      }
+
+      // if (!this.emptyChkFn()) {
+      //   return;
+      // }
+      alert("a")
       if (!this.validationChk()) {
         return;
       }
+      alert("b")
       if (!this.checkFn()) {
         return;
       }
+      alert("c")
       this.formSubmit();
     },
     /*공백 검사*/
-    emptyChkFn : function () {
-      let valid = true;
-      const form = $('#personalForm');
-      const inputs = form.find("input[type='text'], input[type='password']");
-
-      inputs.each(function() {
-        const $input = $(this);
-        const removeBlankData = $input.val().replace(/\s*/g, "");
-        if (removeBlankData === "") {
-          let text = $input.data('name');
-          alert(text + "은/는 필수로 입력 값입니다.");
-          $input.focus();
-          valid = false;
-          return false;  // each 루프 중지
-        }
-      });
-
-      return valid;
-    },
+    // emptyChkFn : function () {
+    //   let valid = true;
+    //   const form = $('#personalForm');
+    //   const inputs = form.find("input[type='text'], input[type='password']");
+    //
+    //   inputs.each(function() {
+    //     const input = $(this);
+    //     const removeBlankData = input.val().replace(/\s*/g, "");
+    //     if (removeBlankData === "") {
+    //       let text = input.data('name');
+    //       alert(text + "은/는 필수로 입력 값입니다.");
+    //       input.focus();
+    //       valid = false;
+    //       return false;  // each 루프 중지
+    //     }
+    //   });
+    //
+    //   return valid;
+    // },
 
     //validationChk 함수 정의
     validationChk : function () {
+      alert("111")
       let valid = true;
-      const id = $('#memberId').val();
+      const memberId = $('#memberId').val();
       const name = $('#name').val();
       const password = $('#password').val();
       const password2 = $('#password2').val();
       const email = $('#email').val();
       const phoneNumber = $('#phoneNumber').val();
+      console.log("id"+memberId);
+      console.log("name"+name);
+      console.log("password"+password);
+      console.log("password2"+password2);
+      console.log("email"+email);
+      console.log("phoneNumber"+phoneNumber);
       // 아이디 조건, 길이
       let idRegex = /^[a-zA-Z0-9]+$/;
-      if (!idRegex.test(id)) {
+      if (!idRegex.test(memberId)) {
         alert("아이디 형식을 확인해주세요")
         $('#memberId').focus()
         valid = false;
         return valid;
       } // 이상무
-      if (id.length > 12 ||id.length < 2) {
+      alert("222")
+      if (memberId.length > 12 ||memberId.length < 2) {
         alert("아이디는 2~12자 사이로 입력해주세요")
         $('#memberId').focus()
         valid = false;
         return valid;
       }// 이상무
-
+      alert("333")
       // 이름 한글만
       let nameRegex = /^[가-힣]+$/;
       if (!nameRegex.test(name)) {
@@ -69,7 +81,7 @@
         valid = false;
         return valid;
       }//이상무
-
+      alert("444")
       // 비밀번호 조건, 길이, 비밀번호 확인
       let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
       if (!pwRegex.test(password)) {
@@ -78,19 +90,21 @@
         valid = false;
         return valid;
       }
+      alert("555")
       if (password.length > 15 || password.length < 8) {
         alert("비밀번호를 8~15자로 사용해주세요")
         $('#password').focus()
         valid = false;
         return valid;
       }
+      alert("666")
       if (password !== password2) {
         alert("비밀번호를 확인해주세요")
         $('#password2').focus()
         valid = false;
         return valid;
       } //이상무
-
+      alert("777")
       // email validation
       let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(email)) {
@@ -99,7 +113,7 @@
         valid = false;
         return valid;
       } //이상무
-
+      alert("888")
       // phone validation
       let phoneRegex = /^010\d{4}\d{4}$/;
       if (!phoneRegex.test(phoneNumber)) {
@@ -108,10 +122,12 @@
         valid = false;
         return valid;
       }
+      alert("999")
       return valid;
     },
 
     checkFn : function () {
+      alert("체크함수")
       let valid = true;
       const form = $('#personalForm');
       const checkBox = form.find("input[type='checkbox']");
@@ -129,6 +145,7 @@
 
     // 전송 함수 정의
     formSubmit : function() {
+      alert("전송함수")
       const formData = $("#personalForm").serializeArray();
 
       console.log("x:::1111111111  "+JSON.stringify(formData));
@@ -176,36 +193,34 @@
       if (!this.validationChk()) {
         return;
       }
-      // if (!this.checkFn()) {
-      //   return;
-      // }
+      if (!this.checkFn()) {
+        return;
+      }
       this.formSubmit();
     },
     /*공백 검사*/
-    // emptyChkFn : function () {
-    //   alert("5")
-    //   let valid = true;
-    //   const form = $('#businessForm');
-    //   const inputs = form.find("input[type='text'], input[type='password']");
-    //
-    //   inputs.each(function() {
-    //     const $input = $(this);
-    //     const removeBlankData = $input.val().replace(/\s*/g, "");
-    //     if (removeBlankData === "") {
-    //       let text = $input.data('name');
-    //       alert(text + "은/는 필수로 입력 값입니다.");
-    //       $input.focus();
-    //       valid = false;
-    //       return false;  // each 루프 중지
-    //     }
-    //   });
-    //
-    //   return valid;
-    // },
+    emptyChkFn : function () {
+      let valid = true;
+      const form = $('#businessForm');
+      const inputs = form.find("input[type='text'], input[type='password']");
+
+      inputs.each(function() {
+        const input = $(this);
+        const removeBlankData = input.val().replace(/\s*/g, "");
+        if (removeBlankData === "") {
+          let text = input.data('name');
+          alert(text + "은/는 필수로 입력 값입니다.");
+          input.focus();
+          valid = false;
+          return false;  // each 루프 중지
+        }
+      });
+
+      return valid;
+    },
 
     //validationChk 함수 정의
     validationChk : function () {
-      alert("6")
       let valid = true;
       const memberId = $('#businessMemberId').val();
       const name = $('#businessName').val();
@@ -214,13 +229,6 @@
       const email = $('#businessEmail').val();
       const phoneNumber = $('#businessPhoneNumber').val();
       const businessRegistrationNumber = $('#businessRegistrationNumber').val();
-      console.log("memberId''''''''''"+memberId);
-      console.log("name'''''''''''"+name);
-      console.log("password''''''''''''"+password);
-      console.log("password2''''''''''''"+password2);
-      console.log("email''''''''''''"+email);
-      console.log("phoneNumber''''''''''''''"+phoneNumber);
-      console.log("businessRegistrationNumber'''''''''''''"+businessRegistrationNumber);
 
       // 아이디 조건, 길이
       let idRegex = /^[a-zA-Z0-9]+$/;
@@ -231,14 +239,12 @@
         valid = false;
         return valid;
       } // 이상무
-      alert("7")
       if (memberId.length > 12 ||memberId.length < 2) {
         alert("아이디는 2~12자 사이로 입력해주세요")
         $('#businessMemberId').focus()
         valid = false;
         return valid;
       }// 이상무
-      alert("72")
       // 이름 한글만
       let nameRegex = /^[가-힣]+$/;
       if (!nameRegex.test(name)) {
@@ -247,7 +253,6 @@
         valid = false;
         return valid;
       }//이상무
-      alert("8")
 
       // 비밀번호 조건, 길이, 비밀번호 확인
       let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
@@ -257,21 +262,18 @@
         valid = false;
         return valid;
       }
-      alert("9")
       if (password.length > 15 || password.length < 8) {
         alert("비밀번호를 8~15자로 사용해주세요")
         $('#businessPassword').focus()
         valid = false;
         return valid;
       }
-      alert("10")
       if (password !== password2) {
         alert("비밀번호를 확인해주세요")
         $('#businessPassword2').focus()
         valid = false;
         return valid;
       } //이상무
-      alert("11")
       // email validation
       let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(email)) {
@@ -280,7 +282,6 @@
         valid = false;
         return valid;
       } //이상무
-      alert("12")
       // phone validation
       let phoneRegex = /^010\d{4}\d{4}$/;
       if (!phoneRegex.test(phoneNumber)) {
@@ -289,7 +290,6 @@
         valid = false;
         return valid;
       }
-      alert("13")
       // businessRegistrationNumber validation
       letbusinessRNumberRegex = /^\d{10}$/;
       if (!letbusinessRNumberRegex.test(businessRegistrationNumber)) {
@@ -301,7 +301,6 @@
     },
 
     checkFn : function () {
-      alert("14")
       let valid = true;
       const form = $('#businessForm');
       const checkBox = form.find("input[type='checkbox']");
@@ -319,7 +318,6 @@
 
     // 전송 함수 정의
     formSubmit : function() {
-      alert("전솓ㅇ시박ㄹ")
       const formData = $("#businessForm").serializeArray();
 
       console.log("x:::  "+JSON.stringify(formData));

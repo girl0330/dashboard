@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -38,4 +39,30 @@ public class MemberController {
         System.out.println("넘어온 정보 확인"+map);
         return map;
     }
+
+    // 로그인
+    @GetMapping("/login")
+    public String loginView() {
+        System.out.println("====로그인 화면====");
+        return "jsp/login";
+    }
+
+    @PostMapping("/personalMemberLogin")
+    @ResponseBody
+    public Map<Object,Object> personalMemberLogin (@RequestBody MemberDTO memberDTO) {
+        System.out.println("====회원가입 api===="+memberDTO);
+        Map<Object, Object> map = memberService.personalLogin(memberDTO);
+        System.out.println("map확인::: "+map);
+        return map;
+    }
+
+    @PostMapping("/businessMemberLogin")
+    @ResponseBody
+    public Map<Object,Object> businessMemberLogin (@RequestBody MemberDTO memberDTO) {
+        System.out.println("====회원가입 api===="+memberDTO);
+        Map<Object, Object> map = memberService.businessLogin(memberDTO);
+        System.out.println("map확인::: "+map);
+        return map;
+    }
+
 }
