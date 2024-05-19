@@ -6,9 +6,9 @@
   let personal_register = {
     init : function () {
 
-      // if (!this.emptyChkFn()) {
-      //   return;
-      // }
+      if (!this.emptyChkFn()) {
+        return;
+      }
       alert("a")
       if (!this.validationChk()) {
         return;
@@ -187,9 +187,9 @@
 
   let business_register = {
     init : function () {
-      // if (!this.emptyChkFn()) {
-      //   return;
-      // }
+      if (!this.emptyChkFn()) {
+        return;
+      }
       if (!this.validationChk()) {
         return;
       }

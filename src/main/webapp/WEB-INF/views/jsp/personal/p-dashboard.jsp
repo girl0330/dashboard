@@ -1,51 +1,6 @@
 <!--=================================
-inner banner -->
-<div class="header-inner bg-light">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="candidates-user-info">
-                    <div class="jobber-user-info">
-                        <div class="profile-avatar">
-                            <img class="img-fluid " src="/images/avatar/04.jpg" alt="">
-                            <i class="fas fa-pencil-alt"></i>
-                        </div>
-                        <div class="profile-avatar-info ms-4">
-                            <h3>Felica Queen</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width:85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                        <span class="progress-bar-number">85%</span>
-                    </div>
-                </div>
-                <div class="candidates-skills">
-                    <div class="candidates-skills-info">
-                        <h3 class="text-primary">85%</h3>
-                        <span class="d-block">Skills increased by job Title.</span>
-                    </div>
-                    <div class="candidates-required-skills ms-auto mt-sm-0 mt-3">
-                        <a class="btn btn-dark" href="#">Complete Required Skills</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--=================================
-inner banner -->
-
-<!--=================================
-Dashboard Nav -->
-<section>
-    <%@ include file="personalMenuInclude.jsp"%>
-</section>
-<!--=================================
-Dashboard Nav -->
-
+inner banner ,Dashboard Nav -->
+<%@ include file="personalMenuInclude.jsp"%>
 <!--=================================
 Candidates Dashboard -->
 <section>
@@ -91,10 +46,6 @@ Candidates Dashboard -->
                                 <h3 class="mb-0 text-white">00</h3>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="user-dashboard-info-box">
-                    <div id="chart">
                     </div>
                 </div>
                 <div class="user-dashboard-info-box mb-0 pb-4">

@@ -145,12 +145,13 @@ public class MemberServiceImpl implements MemberService{
         memberDTO.setPassword(hashedPassword); // 암호화된 비밀번호로 바꿈
 
         //정보가져오기
-        MemberDTO memberInfo = memberMapper.selectMemberInfo(memberDTO);
-        System.out.println("selectMemberInfo의 결과:::"+memberInfo);
-        map.put("userInfo",memberInfo);
+        MemberDTO personalInfo = memberMapper.selectMemberInfo(memberDTO); //가져온 정보 dto 객체로 저장함.
+        System.out.println("selectMemberInfo의 결과:::"+personalInfo);
+        map.put("personalInfo",personalInfo); //info라는 이름으로 dto타입 persoanlInfo가 map에 저장됨.
         map.put("code","success");
         map.put("message","로그인 성공!");
         return map;
+
     }
 
     //기업 로그인
@@ -184,9 +185,9 @@ public class MemberServiceImpl implements MemberService{
         memberDTO.setPassword(hashedPassword); // 암호화된 비밀번호로 바꿈
 
         //정보가져오기
-        MemberDTO memberInfo = memberMapper.selectMemberInfo(memberDTO);
-        System.out.println("selectMemberInfo의 결과:::"+memberInfo);
-        map.put("userInfo",memberInfo);
+        MemberDTO businessInfo = memberMapper.selectMemberInfo(memberDTO);
+        System.out.println("selectMemberInfo의 결과:::"+businessInfo);
+        map.put("info",businessInfo);
         map.put("code","success");
         map.put("message","로그인 성공!");
         return map;
