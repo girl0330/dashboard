@@ -67,13 +67,8 @@ Dashboard Nav -->
 <script>
     $(document).ready(function() {
         const path = window.location.pathname;
-        $('#menu li a').each(function() {
-            const href = $(this).attr('href');
-            if (path === href) {
-                $(this).addClass('active');
-            } else {
-                $(this).removeClass('active');
-            }
-        });
+        $('#menu li a').removeClass('active').filter(function() {
+            return $(this).attr('href') === path;
+        }).addClass('active');
     });
 </script>
