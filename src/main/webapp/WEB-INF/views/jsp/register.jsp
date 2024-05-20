@@ -9,41 +9,41 @@
       if (!this.emptyChkFn()) {
         return;
       }
-      alert("a")
+      // alert("a")
       if (!this.validationChk()) {
         return;
       }
-      alert("b")
+      // alert("b")
       if (!this.checkFn()) {
         return;
       }
-      alert("c")
+      // alert("c")
       this.formSubmit();
     },
     /*공백 검사*/
-    // emptyChkFn : function () {
-    //   let valid = true;
-    //   const form = $('#personalForm');
-    //   const inputs = form.find("input[type='text'], input[type='password']");
-    //
-    //   inputs.each(function() {
-    //     const input = $(this);
-    //     const removeBlankData = input.val().replace(/\s*/g, "");
-    //     if (removeBlankData === "") {
-    //       let text = input.data('name');
-    //       alert(text + "은/는 필수로 입력 값입니다.");
-    //       input.focus();
-    //       valid = false;
-    //       return false;  // each 루프 중지
-    //     }
-    //   });
-    //
-    //   return valid;
-    // },
+    emptyChkFn : function () {
+      let valid = true;
+      const form = $('#personalForm');
+      const inputs = form.find("input[type='text'], input[type='password']");
+
+      inputs.each(function() {
+        const input = $(this);
+        const removeBlankData = input.val().replace(/\s*/g, "");
+        if (removeBlankData === "") {
+          let text = input.data('name');
+          alert(text + "은/는 필수로 입력 값입니다.");
+          input.focus();
+          valid = false;
+          return false;  // each 루프 중지
+        }
+      });
+
+      return valid;
+    },
 
     //validationChk 함수 정의
     validationChk : function () {
-      alert("111")
+      // alert("111")
       let valid = true;
       const memberId = $('#memberId').val();
       const name = $('#name').val();
@@ -65,14 +65,14 @@
         valid = false;
         return valid;
       } // 이상무
-      alert("222")
+      // alert("222")
       if (memberId.length > 12 ||memberId.length < 2) {
         alert("아이디는 2~12자 사이로 입력해주세요")
         $('#memberId').focus()
         valid = false;
         return valid;
       }// 이상무
-      alert("333")
+      // alert("333")
       // 이름 한글만
       let nameRegex = /^[가-힣]+$/;
       if (!nameRegex.test(name)) {
@@ -81,7 +81,7 @@
         valid = false;
         return valid;
       }//이상무
-      alert("444")
+      // alert("444")
       // 비밀번호 조건, 길이, 비밀번호 확인
       let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
       if (!pwRegex.test(password)) {
@@ -90,21 +90,21 @@
         valid = false;
         return valid;
       }
-      alert("555")
+      // alert("555")
       if (password.length > 15 || password.length < 8) {
         alert("비밀번호를 8~15자로 사용해주세요")
         $('#password').focus()
         valid = false;
         return valid;
       }
-      alert("666")
+      // alert("666")
       if (password !== password2) {
         alert("비밀번호를 확인해주세요")
         $('#password2').focus()
         valid = false;
         return valid;
       } //이상무
-      alert("777")
+      // alert("777")
       // email validation
       let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(email)) {
@@ -113,7 +113,7 @@
         valid = false;
         return valid;
       } //이상무
-      alert("888")
+      // alert("888")
       // phone validation
       let phoneRegex = /^010\d{4}\d{4}$/;
       if (!phoneRegex.test(phoneNumber)) {
@@ -122,7 +122,7 @@
         valid = false;
         return valid;
       }
-      alert("999")
+      // alert("999")
       return valid;
     },
 
@@ -318,6 +318,7 @@
 
     // 전송 함수 정의
     formSubmit : function() {
+      alert("회원가입 폼 전송???")
       const formData = $("#businessForm").serializeArray();
 
       console.log("x:::  "+JSON.stringify(formData));
