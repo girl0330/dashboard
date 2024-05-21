@@ -20,9 +20,10 @@ public class BDashboardDTO {
     private String otherSalary;//
     private String workingHours;//
     private String workingDays;//
+    private String workingTime;//
     private String gender;//
     private String qualifications;//
-    private String experience;//
+    private String etc;//
     private String location;
     private int views;
     private int likes;

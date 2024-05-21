@@ -44,7 +44,7 @@
                                             <ul class="list-unstyled mt-lg-3">
                                                 <li><a href="/blog.html">Blog</a></li>
                                                 <li><a href="/blog-detail.html">Blog Detail</a></li>
-                                                <li><a href="/post-a-job.html">Post a Job</a></li>
+                                                <li><a href="/business/postAJob">Post a Job</a></li>
                                                 <li><a href="/faqs.html">Faq</a></li>
                                                 <li><a href="/browse-categories.html">Browse Categories</a></li>
                                                 <li><a href="/browse-locations.html">Browse Locations</a></li>
@@ -217,7 +217,7 @@
                     <div class="login d-inline-block me-4">
                         <a href="/login.html" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="far fa-user pe-2"></i>Sign in</a>
                     </div>
-                    <a class="btn btn-white btn-md" href="/post-a-job.html"> <i class="fas fa-plus-circle"></i>Post a job</a>
+                    <a class="btn btn-white btn-md" href="/business/postAJob"> <i class="fas fa-plus-circle"></i>Post a job</a>
                 </div>
             </div>
         </nav>
