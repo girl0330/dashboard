@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.business.BDashboardMapper">
     <insert id="insert" parameterType="com.job.dashboard.domain.business.BDashboardDTO">
-        INSERT INTO job_posting_tb (title, content, manager, email,dead_line,
+        INSERT INTO job_posting_tb (title, content, manager, store_name, store_call_number, email,dead_line,
                                     employment_type, number_of_staff, work_type, salary_type, salary,
                                     other_salary, working_hours, working_days, working_time,gender,
-                                    qualifications, etc, location, views, likes,
+                                    qualifications, etc, code_1, code_2, code_3, views, likes,
                                     registrar_id,modifier_id)
-        VALUES (#{title}, #{content}, #{manager}, #{email}, #{deadLine},
+        VALUES (#{title}, #{content}, #{manager},#{storeName},#{storeCallNumber}, #{email}, #{deadLine},
                 #{employmentType},#{numberOfStaff}, #{workType}, #{salaryType}, #{salary},
                 #{otherSalary}, #{workingHours}, #{workingDays}, #{workingTime}, #{gender},
-                #{qualifications}, #{etc},#{location}, #{views}, #{likes},
+                #{qualifications}, #{etc} ,#{code1}, #{code2}, #{code3}, #{views}, #{likes},
                 #{registrarId}, #{modifierId})
     </insert>
 
@@ -27,10 +27,10 @@
     </select>
 
     <select id="detail" resultType="com.job.dashboard.domain.business.BDashboardDTO" parameterType="Long">
-        SELECT title, content, manager, email,dead_line,
+        SELECT title, content, manager, store_name, store_call_number, email,dead_line,
                employment_type, number_of_staff, work_type, salary_type, salary,
                other_salary, working_hours, working_days, working_time,gender,
-               qualifications, etc, location, views, likes,
+               qualifications, etc, code_1, code_2, code_3, views, likes,
                registrar_id,modifier_id
         FROM job_posting_tb
         WHERE job_post_id = #{jobPostId}
@@ -41,6 +41,8 @@
         SET title= #{title}
           , content= #{content}
           , manager= #{manager}
+          , storeName= #{store_name}
+          , store_call_number= #{storeCallNumber}
           , email= #{email}
           , dead_line= #{deadLine}
           , employment_type= #{employmentType}
@@ -55,11 +57,39 @@
           , gender= #{gender}
           , qualifications= #{qualifications}
           , etc= #{etc}
-          , location= #{location}
           , views= #{views}
           , likes= #{likes}
           , registrar_id= #{registrarId}
           , modifier_id= #{modifierId}
         WHERE job_post_id = #{jobPostId}
     </update>
+
+    <select id="getSiGroupCode" parameterType="string" resultType="string">
+        /* BMapper.getSiGroupCode */
+        SELECT
+                distinct code_1
+        FROM
+            region_group
+    </select>
+
+    <select id="getGunGroupCode" parameterType="string" resultType="string">
+        /*BMapper.getGunGroupCode*/
+        SELECT
+            distinct code_2
+        FROM
+            region_group
+        WHERE
+            code_1 = #{gun}
+    </select>
+
+    <select id="getGuGroupCode" parameterType="string" resultType="string">
+        /*BMapper.getGuGroupCode*/
+        SELECT
+            distinct code_3
+        FROM
+            region_group
+        WHERE
+            code_2 = #{gu}
+    </select>
+
 </mapper>

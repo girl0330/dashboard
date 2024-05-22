@@ -10,7 +10,9 @@ public class BDashboardDTO {
     private String title; //
     private String content; //
     private String manager;//
+    private String storeName;
     private String email;//
+    private String storeCallNumber;
     private String deadLine;//
     private String employmentType;//
     private String numberOfStaff;//
@@ -24,7 +26,9 @@ public class BDashboardDTO {
     private String gender;//
     private String qualifications;//
     private String etc;//
-    private String location;
+    private String code1;
+    private String code2;
+    private String code3;
     private int views;
     private int likes;
     private String registrarId;

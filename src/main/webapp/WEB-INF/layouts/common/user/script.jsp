@@ -12,3 +12,6 @@
 
 <!-- Template Scripts (Do not remove)-->
 <script src="/js/custom.js"></script>
+
+<!-- Page JS Implementing Plugins (Remove the plugin script here if site does not use that feature)-->
+<script src="/js/select2/select2.full.js"></script>

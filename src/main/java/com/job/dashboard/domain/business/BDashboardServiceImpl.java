@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,4 +44,32 @@ public class BDashboardServiceImpl implements BDashboardService{
         System.out.println("게시글 등록 성공");
         return map;
     }
+    @Override
+    public List<String> getSiGroupCode(String si) {
+        List<String> siGroupDTO = dashboardMapper.getSiGroupCode(si);
+
+        System.out.println("::::::    "+siGroupDTO);
+
+
+        return siGroupDTO;
+    }
+
+    public List<String> getGunGroupCode(String gun) {
+        List<String> gunGroupDTO = dashboardMapper.getGunGroupCode(gun);
+
+        System.out.println("::::::    "+gunGroupDTO);
+
+
+        return gunGroupDTO;
+    }
+
+    public List<String> getGuGroupCode(String gu) {
+        List<String> guGroupDTO = dashboardMapper.getGuGroupCode(gu);
+
+        System.out.println("::::::    "+guGroupDTO);
+
+
+        return guGroupDTO;
+    }
+
 }

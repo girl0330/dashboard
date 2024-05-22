@@ -1,17 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <script>
+
     let postSave = {
         init : function () {
-            this.regionChose();
             this.formSubmit();
         },
-        //지역 선택
-        regionChose : function () {
 
-
-        },
         //전송 함수
         formSubmit : function () {
             alert("전송함수")
@@ -49,6 +44,62 @@
 
     //DOM
     document.addEventListener('DOMContentLoaded', function () {
+        test();
+
+
+        function test() {
+            // 시 데이터 가져오기
+            $.ajax({
+                url: '/business/getSiGroup',
+                method: 'GET',
+                success: function (data) {
+                    console.log("data:::   " + data);
+                    data.forEach(function (si) {
+                        $('#code1').append('<option value="' + si + '">' + si + '</option>');
+                    });
+                }
+            });
+
+
+            // 시 값 선택  이벤트 처리
+            $('#code1').on('select2:select', function (e) {
+                const selectedValue = e.params.data.id; // 선택된 값의 ID
+                console.log("selectedValue_____"+selectedValue);
+
+                $.ajax({
+                    url: '/business/getGunGroup',
+                    data: {gun: selectedValue},
+                    method: 'GET',
+                    success: function (data) {
+                        console.log("시 data:::   " + data);
+                        data.forEach(function (gun) {
+                            $('#code2').append('<option value="' + gun + '">' + gun + '</option>');
+                        });
+                    }
+                });
+
+            });
+
+            $('#code2').on('select2:select', function (e) {
+                const selectedValue = e.params.data.id; // 선택된 값의 ID
+                console.log("selectedValue_____"+selectedValue);
+
+                $.ajax({
+                    url: '/business/getGuGroup',
+                    data: {gu: selectedValue},
+                    method: 'GET',
+                    success: function (data) {
+                        console.log("시 data:::   " + data);
+                        data.forEach(function (gu) {
+                            $('#code3').append('<option value="' + gu + '">' + gu + '</option>');
+                        });
+                    }
+                });
+
+            });
+        }
+
+
         document.getElementById("profile_sava_button").addEventListener("click",function () {
             postSave.init();
         });
@@ -118,6 +169,14 @@ tab -->
                                 <textarea class="form-control" rows="4" placeholder="상세모집내용을 작성해주세요"  name="content" id="content"></textarea>
                             </div>
                             <div class="form-group col-md-6 mb-3">
+                                <label class="mb-2">가게 이름 *</label>
+                                <input type="text" class="form-control" value="" placeholder="가게이름을 입력해주세요." name="storeName" id="storeName">
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label class="mb-2">가게 전화번호 *</label>
+                                <input type="text" class="form-control" value="" placeholder="연락처를 입력해주세요." name="storeCallNumber" id="storeCallNumber">
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
                                 <label class="mb-2">담당자 이름 *</label>
                                 <input type="text" class="form-control" value="" placeholder="이름을 입력해주세요." name="manager" id="manager">
                             </div>
@@ -133,19 +192,19 @@ tab -->
                             <div class="form-group col-md-4 select-border mb-3">
                                 <label class="mb-2"  for="workType">모집직종 *</label>
                                 <select class="form-control basic-select" id="workType" name="workType">
-                                    <option value="value 외식/음료" >외식/음료</option>
-                                    <option value="value 유통/판매" >유통/판매</option>
-                                    <option value="value 문화/여가/생활" >문화/여가/생활</option>
-                                    <option value="value 서비스" >서비스</option>
-                                    <option value="value 사무/회계" >사무/회계</option>
-                                    <option value="value 고객상담/영업/리서치" >고객상담/영업/리서치</option>
-                                    <option value="value 생산/건설/노무" >생산/건설/노무</option>
-                                    <option value="value IT/인터넷" >IT/인터넷</option>
-                                    <option value="value 교육/강사" >교육/강사</option>
-                                    <option value="value 디자인" >디자인</option>
-                                    <option value="value 미디어" >미디어</option>
-                                    <option value="value 운전/배달" >운전/배달</option>
-                                    <option value="value 병호/간호/연구" >병호/간호/연구</option>
+                                    <option value=" 외식/음료" >외식/음료</option>
+                                    <option value=" 유통/판매" >유통/판매</option>
+                                    <option value=" 문화/여가/생활" >문화/여가/생활</option>
+                                    <option value=" 서비스" >서비스</option>
+                                    <option value=" 사무/회계" >사무/회계</option>
+                                    <option value=" 고객상담/영업/리서치" >고객상담/영업/리서치</option>
+                                    <option value=" 생산/건설/노무" >생산/건설/노무</option>
+                                    <option value=" IT/인터넷" >IT/인터넷</option>
+                                    <option value=" 교육/강사" >교육/강사</option>
+                                    <option value=" 디자인" >디자인</option>
+                                    <option value=" 미디어" >미디어</option>
+                                    <option value=" 운전/배달" >운전/배달</option>
+                                    <option value=" 병호/간호/연구" >병호/간호/연구</option>
 
                                 </select>
                             </div>
@@ -158,235 +217,74 @@ tab -->
                                 </select>
                             </div>
                             <div class="form-group col-md-4 select-border mb-3">
-                                <label class="mb-2"  for="recruitment">모집인원 *</label>
-                                <select class="form-control basic-select" id="recruitment" name="recruitment">
-                                    <option value="value 1명" >1명</option>
-                                    <option value="value 0명(10명 미만)" >0명</option>
-                                    <option value="value 00명(100명 미만)" >00명</option>
+                                <label class="mb-2"  for="numberOfStaff">모집인원 *</label>
+                                <select class="form-control basic-select" id="numberOfStaff" name="numberOfStaff">
+                                    <option value=" 1명" >1명</option>
+                                    <option value=" 0명(10명 미만)" >0명</option>
+                                    <option value=" 00명(100명 미만)" >00명</option>
 
                                 </select>
                             </div>
                             <div class="form-group col-md-4 select-border mb-3">
                                 <label class="mb-2" for="gender">성별 *</label>
                                 <select class="form-control basic-select" id="gender" name="gender">
-                                    <option value="value 03">Male</option>
-                                    <option value="value 01">Female</option>
+                                    <option value="무관">무관</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4 select-border mb-3">
                                 <label class="mb-2"for="qualifications">학력 *</label>
                                 <select class="form-control basic-select" id="qualifications" name="qualifications">
-                                    <option value="value 03">무관</option>
-                                    <option value="value 01">고졸 이상</option>
-                                    <option value="value 01">대졸 이상</option>
+                                    <option value="무관">무관</option>
+                                    <option value="고졸 이상">고졸 이상</option>
+                                    <option value="대졸 이상">대졸 이상</option>
                                 </select>
                             </div>
                             <div class="form-group mb-12 col-md-12">
                                 <label class="d-block mb-3">우대사항</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="none" id="etc" value="none">
+                                    <input class="form-check-input" type="checkbox" name="none" id="etc" value="선택안함">
                                     <label class="form-check-label" for="etc">선택안함</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="industry-experience" id="etc" value="industry-experience">
+                                    <input class="form-check-input" type="checkbox" name="industry-experience" id="etc" value="동종업계 경력자">
                                     <label class="form-check-label" for="etc">동종업계 경력자</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="long-term" id="etc" value="long-term">
+                                    <input class="form-check-input" type="checkbox" name="long-term" id="etc" value="장기근무 가능자">
                                     <label class="form-check-label" for="etc">장기근무 가능자</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="local" id="etc" value="local">
+                                    <input class="form-check-input" type="checkbox" name="local" id="etc" value="인근거주자">
                                     <label class="form-check-label" for="etc">인근거주자</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="beginner" id="etc" value="beginner">
+                                    <input class="form-check-input" type="checkbox" name="beginner" id="etc" value="기타: 초보자가능">
                                     <label class="form-check-label" for="etc">기타: 초보자가능</label>
                                 </div>
                             </div>
+                            <div class="form-group col-md-4 select-border mb-3">
+                                <label class="mb-2"  for="code1">시</label>
+                                <select class="form-control basic-select" id="code1" name="code1">
+                                    <option value="선택">선택</option>
+                                </select>
+                            </div>
 
-                            <div class="form-group col-md-6 mb-md-0 mb-3 select-border">
-                                <label class="mb-2" for="region">지역</label>
-                                <select class="form-control basic-select" id="region" name="region">
-                                    <option value="서울" >서울</option>
-                                    <option value="경기" >경기</option>
-                                    <option value="인천" >인천</option>
-                                    <option value="대전" >대전</option>
-                                    <option value="대구" >대구</option>
-                                    <option value="부산" >부산</option>
-                                    <option value="울산" >울산</option>
-                                    <option value="광주" >광주</option>
-                                    <option value="강원" >강원</option>
-                                    <option value="세종" >세종</option>
-                                    <option value="충북" >충북</option>
-                                    <option value="충남" >충남</option>
-                                    <option value="경북" >경북</option>
-                                    <option value="경남" >경남</option>
-                                    <option value="전북" >전북</option>
-                                    <option value="전남" >전남</option>
-                                    <option value="제주" >제주</option>
-                                    <option value="전체" >전체</option>
+                            <div class="form-group col-md-4 select-border mb-3">
+                                <label class="mb-2"  for="code2">군</label>
+                                <select class="form-control basic-select" id="code2" name="code2">
+                                    <option value="선택">선택</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-6 mb-md-0 mb-3 select-border">
-                                <label class="mb-2" for="si-gun-gu">시/군/구</label>
-                                <select class="form-control basic-select" id="si-gun-gu" name="si-gun-gu">
-                                    <option value="">시/군/구를 선택하세요</option>
-                                    <!-- 서울 -->
-                                    <option value="강남구" data-region="서울">강남구</option>
-                                    <option value="서초구" data-region="서울">서초구</option>
-                                    <option value="송파구" data-region="서울">송파구</option>
-                                    <option value="강동구" data-region="서울">강동구</option>
-                                    <option value="중구" data-region="서울">중구</option>
-                                    <option value="동대문구" data-region="서울">동대문구</option>
-                                    <option value="성북구" data-region="서울">성북구</option>
-                                    <option value="관악구" data-region="서울">관악구</option>
-                                    <option value="서대문구" data-region="서울">서대문구</option>
-                                    <option value="강서구" data-region="서울">강서구</option>
-                                    <!-- 경기 -->
-                                    <option value="수원시" data-region="경기">수원시</option>
-                                    <option value="고양시" data-region="경기">고양시</option>
-                                    <option value="용인시" data-region="경기">용인시</option>
-                                    <option value="성남시" data-region="경기">성남시</option>
-                                    <option value="안양시" data-region="경기">안양시</option>
-                                    <option value="부천시" data-region="경기">부천시</option>
-                                    <option value="광명시" data-region="경기">광명시</option>
-                                    <option value="평택시" data-region="경기">평택시</option>
-                                    <option value="동두천시" data-region="경기">동두천시</option>
-                                    <option value="안산시" data-region="경기">안산시</option>
-                                    <!-- 인천 -->
-                                    <option value="중구" data-region="인천">중구</option>
-                                    <option value="동구" data-region="인천">동구</option>
-                                    <option value="미추홀구" data-region="인천">미추홀구</option>
-                                    <option value="연수구" data-region="인천">연수구</option>
-                                    <option value="남동구" data-region="인천">남동구</option>
-                                    <option value="부평구" data-region="인천">부평구</option>
-                                    <option value="계양구" data-region="인천">계양구</option>
-                                    <option value="서구" data-region="인천">서구</option>
-                                    <option value="강화군" data-region="인천">강화군</option>
-                                    <option value="옹진군" data-region="인천">옹진군</option>
-                                    <!-- 대전 -->
-                                    <option value="동구" data-region="대전">동구</option>
-                                    <option value="중구" data-region="대전">중구</option>
-                                    <option value="서구" data-region="대전">서구</option>
-                                    <option value="유성구" data-region="대전">유성구</option>
-                                    <option value="대덕구" data-region="대전">대덕구</option>
-                                    <!-- 대구 -->
-                                    <option value="중구" data-region="대구">중구</option>
-                                    <option value="동구" data-region="대구">동구</option>
-                                    <option value="서구" data-region="대구">서구</option>
-                                    <option value="남구" data-region="대구">남구</option>
-                                    <option value="북구" data-region="대구">북구</option>
-                                    <option value="수성구" data-region="대구">수성구</option>
-                                    <option value="달서구" data-region="대구">달서구</option>
-                                    <option value="달성군" data-region="대구">달성군</option>
-                                    <!-- 부산 -->
-                                    <option value="중구" data-region="부산">중구</option>
-                                    <option value="서구" data-region="부산">서구</option>
-                                    <option value="동구" data-region="부산">동구</option>
-                                    <option value="영도구" data-region="부산">영도구</option>
-                                    <option value="부산진구" data-region="부산">부산진구</option>
-                                    <option value="동래구" data-region="부산">동래구</option>
-                                    <option value="남구" data-region="부산">남구</option>
-                                    <option value="북구" data-region="부산">북구</option>
-                                    <option value="해운대구" data-region="부산">해운대구</option>
-                                    <option value="사하구" data-region="부산">사하구</option>
-                                    <!-- 울산 -->
-                                    <option value="중구" data-region="울산">중구</option>
-                                    <option value="남구" data-region="울산">남구</option>
-                                    <option value="동구" data-region="울산">동구</option>
-                                    <option value="북구" data-region="울산">북구</option>
-                                    <option value="울주군" data-region="울산">울주군</option>
-                                    <!-- 광주 -->
-                                    <option value="동구" data-region="광주">동구</option>
-                                    <option value="서구" data-region="광주">서구</option>
-                                    <option value="남구" data-region="광주">남구</option>
-                                    <option value="북구" data-region="광주">북구</option>
-                                    <option value="광산구" data-region="광주">광산구</option>
-                                    <!-- 강원 -->
-                                    <option value="춘천시" data-region="강원">춘천시</option>
-                                    <option value="원주시" data-region="강원">원주시</option>
-                                    <option value="강릉시" data-region="강원">강릉시</option>
-                                    <option value="동해시" data-region="강원">동해시</option>
-                                    <option value="태백시" data-region="강원">태백시</option>
-                                    <option value="속초시" data-region="강원">속초시</option>
-                                    <option value="삼척시" data-region="강원">삼척시</option>
-                                    <option value="홍천군" data-region="강원">홍천군</option>
-                                    <option value="횡성군" data-region="강원">횡성군</option>
-                                    <option value="영월군" data-region="강원">영월군</option>
-                                    <!-- 세종 -->
-                                    <option value="세종시" data-region="세종">세종시</option>
-                                    <!-- 충북 -->
-                                    <option value="청주시" data-region="충북">청주시</option>
-                                    <option value="충주시" data-region="충북">충주시</option>
-                                    <option value="제천시" data-region="충북">제천시</option>
-                                    <option value="보은군" data-region="충북">보은군</option>
-                                    <option value="옥천군" data-region="충북">옥천군</option>
-                                    <option value="영동군" data-region="충북">영동군</option>
-                                    <option value="증평군" data-region="충북">증평군</option>
-                                    <option value="진천군" data-region="충북">진천군</option>
-                                    <option value="괴산군" data-region="충북">괴산군</option>
-                                    <option value="음성군" data-region="충북">음성군</option>
-                                    <!-- 충남 -->
-                                    <option value="천안시" data-region="충남">천안시</option>
-                                    <option value="공주시" data-region="충남">공주시</option>
-                                    <option value="보령시" data-region="충남">보령시</option>
-                                    <option value="아산시" data-region="충남">아산시</option>
-                                    <option value="서산시" data-region="충남">서산시</option>
-                                    <option value="논산시" data-region="충남">논산시</option>
-                                    <option value="계룡시" data-region="충남">계룡시</option>
-                                    <option value="당진시" data-region="충남">당진시</option>
-                                    <option value="금산군" data-region="충남">금산군</option>
-                                    <option value="부여군" data-region="충남">부여군</option>
-                                    <!-- 경북 -->
-                                    <option value="포항시" data-region="경북">포항시</option>
-                                    <option value="경주시" data-region="경북">경주시</option>
-                                    <option value="김천시" data-region="경북">김천시</option>
-                                    <option value="안동시" data-region="경북">안동시</option>
-                                    <option value="구미시" data-region="경북">구미시</option>
-                                    <option value="영주시" data-region="경북">영주시</option>
-                                    <option value="영천시" data-region="경북">영천시</option>
-                                    <option value="상주시" data-region="경북">상주시</option>
-                                    <option value="문경시" data-region="경북">문경시</option>
-                                    <option value="경산시" data-region="경북">경산시</option>
-                                    <!-- 경남 -->
-                                    <option value="창원시" data-region="경남">창원시</option>
-                                    <option value="김해시" data-region="경남">김해시</option>
-                                    <option value="진주시" data-region="경남">진주시</option>
-                                    <option value="양산시" data-region="경남">양산시</option>
-                                    <option value="거제시" data-region="경남">거제시</option>
-                                    <option value="통영시" data-region="경남">통영시</option>
-                                    <option value="사천시" data-region="경남">사천시</option>
-                                    <option value="밀양시" data-region="경남">밀양시</option>
-                                    <option value="함안군" data-region="경남">함안군</option>
-                                    <option value="거창군" data-region="경남">거창군</option>
-                                    <!-- 전북 -->
-                                    <option value="전주시" data-region="전북">전주시</option>
-                                    <option value="군산시" data-region="전북">군산시</option>
-                                    <option value="익산시" data-region="전북">익산시</option>
-                                    <option value="정읍시" data-region="전북">정읍시</option>
-                                    <option value="남원시" data-region="전북">남원시</option>
-                                    <option value="김제시" data-region="전북">김제시</option>
-                                    <option value="완주군" data-region="전북">완주군</option>
-                                    <option value="진안군" data-region="전북">진안군</option>
-                                    <option value="무주군" data-region="전북">무주군</option>
-                                    <option value="장수군" data-region="전북">장수군</option>
-                                    <!-- 전남 -->
-                                    <option value="목포시" data-region="전남">목포시</option>
-                                    <option value="여수시" data-region="전남">여수시</option>
-                                    <option value="순천시" data-region="전남">순천시</option>
-                                    <option value="나주시" data-region="전남">나주시</option>
-                                    <option value="광양시" data-region="전남">광양시</option>
-                                    <option value="담양군" data-region="전남">담양군</option>
-                                    <option value="곡성군" data-region="전남">곡성군</option>
-                                    <option value="구례군" data-region="전남">구례군</option>
-                                    <option value="고흥군" data-region="전남">고흥군</option>
-                                    <option value="보성군" data-region="전남">보성군</option>
-                                    <!-- 제주 -->
-                                    <option value="제주시" data-region="제주">제주시</option>
-                                    <option value="서귀포시" data-region="제주">서귀포시</option>
+
+                            <div class="form-group col-md-4 select-border mb-3">
+                                <label class="mb-2"  for="code3">구</label>
+                                <select class="form-control basic-select" id="code3" name="code3">
+                                    <option value="선택">선택</option>
                                 </select>
                             </div>
+
                             <div class="row mt-4 mt-lg-5">
                                 <div class="col-12">
                                     <h5 class="mb-4">근무조건</h5>
@@ -445,18 +343,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-3 select-border mb-3">
                                 <label class="mb-2" for="workingHours">근무시간 *</label>
-                                <select class="form-control basic-select" id="workingHours" name="workingHours">
-                                    <option value="오전">오전</option>
-                                    <option value="오전~오후">오전~오후</option>
-                                    <option value="종일">종일</option>
-                                    <option value="오후">오후</option>
-                                    <option value="오후~저녁">오후~저녁</option>
-                                    <option value="저녁">저녁</option>
-                                    <option value="저녁~새벽">저녁~새벽</option>
-                                    <option value="새벽">새벽</option>
-                                    <option value="새벽~오전">새벽~오전</option>
-                                    <option value="시간협의">시간협의</option>
-                                </select>
+                                <input type="text" class="form-control" value="" placeholder="00:00~00:00로 입력해주세요" name="workingHours" id="workingHours">
                             </div>
 
                             <div class="form-group col-md-3 select-border mb-md-0 mb-3">
