@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
-    function goToDetail(jobPostId) {
-        alert("상세보기 " +jobPostId)
-        const url ="/business/detail?jobPostId="
-        window.location.href = url+jobPostId;
-    }
+    // function goToDetail(jobPostId) {
+    //     alert("상세보기 " +jobPostId)
+    //     const url ="/business/detail?jobPostId="
+    //     window.location.href = url+jobPostId;
+    // }
 </script>
 <!--=================================
 banner -->
@@ -286,8 +286,8 @@ banner -->
                 </div>
                     <div class="container">
                         <div class="row">
-                            <!--  <c:forEach items="${jobList}" var="job">
-                            <div class="col-12">
+                            <c:forEach items="${jobList}" var="jobList">
+                            <div class="col-12" onclick="location.href='/business/detail?jobPostId=${jobList.jobPostId}'">
                                 <div class="job-list ">
                                     <div class="job-list-logo">
                                         <img class="img-fluid" src="/images/svg/01.svg" alt="">
@@ -295,46 +295,39 @@ banner -->
                                     <div class="job-list-details">
                                         <div class="job-list-info">
                                             <div class="job-list-title">
-                                                <h5 class="mb-0"><a href="job-detail.html">${job.title}</a></h5>
+                                                <input type="hidden" id="jobPostId" name="jobPostId" value="${jobList.jobPostId}">
+                                                <h5 class="mb-0">${jobList.title}</h5>
                                             </div>
                                             <div class="job-list-option">
                                                 <ul class="list-unstyled">
-                                                    <li> <span>via</span> <a href="employer-detail.html">Fast Systems Consultants</a> </li>
-                                                    <li><i class="fas fa-map-marker-alt pe-1"></i>Wellesley Rd, London</li>
-                                                    <li><i class="fas fa-filter pe-1"></i>Accountancy</li>
-                                                    <li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>Freelance</a></li>
+                                                    <li> <a href="">${jobList.storeName}</a> </li>
+                                                </ul>
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fas fa-map-marker-alt pe-1"></i>${jobList.code1}${jobList.code2}</li>
+                                                    <li><i class="fas fa-filter pe-1"></i>${jobList.employmentType}</li>
+                                                    <li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>${jobList.salaryType}:${jobList.salary}</a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="job-list-favourite-time"> <a class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a> <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>1M ago</span> </div>
+                                    <div class="job-list-favourite-time"> <a class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a> <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${job.registrarDatetime}</span> </div>
                                 </div>
                             </div>
                             </c:forEach>
                             Job List Table-->
                             <div class="table-responsive">
                                 <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">No</th>
-                                        <th scope="col">공고제목</th>
-                                        <th scope="col">근무시간</th>
-                                        <th scope="col">급여타입</th>
-                                        <th scope="col">급여</th>
-                                        <th scope="col">등록일</th>
-                                    </tr>
-                                    </thead>
                                     <tbody>
-                                    <c:forEach items="${jobList}" var="job">
-                                        <tr onclick="goToDetail(${job.jobPostId});">
-                                            <th scope="row">${job.jobPostId}</th>
-                                            <td>${job.title}</td>
-                                            <td>${job.workingHours}</td>
-                                            <td>${job.salaryType}</td>
-                                            <td>${job.salary}</td>
-                                            <td>${job.registrarDatetime}</td>
-                                        </tr>
-                                    </c:forEach>
+<%--                                    <c:forEach items="${jobList}" var="job">--%>
+<%--                                        <tr onclick="goToDetail(${job.jobPostId});">--%>
+<%--                                            <th scope="row">${job.jobPostId}</th>--%>
+<%--                                            <td>${job.title}</td>--%>
+<%--                                            <td>${job.workingHours}</td>--%>
+<%--                                            <td>${job.salaryType}</td>--%>
+<%--                                            <td>${job.salary}</td>--%>
+<%--                                            <td>${job.registrarDatetime}</td>--%>
+<%--                                        </tr>--%>
+<%--                                    </c:forEach>--%>
                                     </tbody>
                                 </table>
                             </div>

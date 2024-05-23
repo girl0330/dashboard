@@ -1,6 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<script>
+  // let update = {
+  //   init : function (jobPostId) {
+  //     alert("id"+jobPostId );
+  //     this.update(jobPostId);
+  //   },
+  //   update : function () {
+  //
+  //     const url = "/business/updateView";
+  //     window.location.href = url;
+  //   }
+  // }
+// function goToUpdate(jobPostId) {
+//   alert("id"+jobPostId )
+//   const url = "/business/updateView";
+//   window.location.href =url;
+// }
+  //DOM 실행 후 안의 내용이 실행 됨
 
+  // document.addEventListener('DOMContentLoaded', function () {
+  //   $('#button_update').click(function() {
+  //     update.init();
+  //   });
+  // });
+
+</script>
 
 <!--=================================
 banner -->
@@ -42,171 +67,179 @@ job list -->
   <div class="container">
     <div class="row">
       <div class="col-lg-8">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="job-list border">
-              <div class=" job-list-logo">
-                <img class="img-fluid" src="/images/svg/10.svg" alt="">
-              </div>
-              <div class="job-list-details">
-                <div class="job-list-info">
-                  <div class="job-list-title">
-                    <h5 class="mb-0">${detail.storeName}</h5>
-                  </div>
-                  <div class="job-list-option">
-                    <ul class="list-unstyled">
-                      <li><i class="fas fa-map-marker-alt pe-1"></i>${detail.code1}${detail.code2}${detail.code3}</li>
-                      <li><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="ps-2">${detail.storeCallNumber}</span></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="job-list-favourite-time">
-                <a  class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a>
-                <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${detail.deadLine}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="border p-4 mt-4 mt-lg-5">
+        <form class="row" id="updateForm" name="updateForm">
           <div class="row">
+            <div class="col-md-12">
+              <div class="job-list border">
+                <div class=" job-list-logo">
+                  <img class="img-fluid" src="/images/svg/10.svg" alt="">
+                </div>
+                <div class="job-list-details">
+                  <div class="job-list-info">
+                    <div class="job-list-title">
+                      <h5 class="mb-0">${detail.storeName}</h5>
+                    </div>
+                    <div class="job-list-option">
+                      <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt pe-1"></i>${detail.code1}${detail.code2}${detail.code3}</li>
+                        <li><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="ps-2">${detail.storeCallNumber}</span></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="job-list-favourite-time">
+                  <a  class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a>
+                  <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${detail.deadLine}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border p-4 mt-4 mt-lg-5">
+            <div class="row">
+              <div class="my-4 my-lg-2">
+                <h5 class="mb-4">모집조건</h5>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">모집직종</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.workType}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">고용형태</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.employmentType}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">모집인원</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.numberOfStaff}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">성별</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.gender}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">학력</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.qualifications}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">우대사항</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.etc}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="my-4 my-lg-2">
+                <h5 class="mb-4">근무조건</h5>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">급여타입</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.salaryType}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">금액</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.salary}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">기타급여</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.otherSalary}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">근무기간</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.workingHours}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">근무요일</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.workingDays}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">근무시간</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.workingTime}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border p-4 mt-4 mt-lg-5">
             <div class="my-4 my-lg-2">
-              <h5 class="mb-4">모집조건</h5>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="d-flex">
-                <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                <div class="feature-info-content ps-3">
-                  <label class="mb-1">모집직종</label>
-                  <span class="mb-0 fw-bold d-block text-dark">${detail.workType}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="d-flex">
-                <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                <div class="feature-info-content ps-3">
-                  <label class="mb-1">고용형태</label>
-                  <span class="mb-0 fw-bold d-block text-dark">${detail.employmentType}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="d-flex">
-                <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                <div class="feature-info-content ps-3">
-                  <label class="mb-1">모집인원</label>
-                  <span class="mb-0 fw-bold d-block text-dark">${detail.numberOfStaff}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="d-flex">
-                <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                <div class="feature-info-content ps-3">
-                  <label class="mb-1">성별</label>
-                  <span class="mb-0 fw-bold d-block text-dark">${detail.gender}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="d-flex">
-                <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                <div class="feature-info-content ps-3">
-                  <label class="mb-1">학력</label>
-                  <span class="mb-0 fw-bold d-block text-dark">${detail.qualifications}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="d-flex">
-                <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                <div class="feature-info-content ps-3">
-                  <label class="mb-1">우대사항</label>
-                  <span class="mb-0 fw-bold d-block text-dark">${detail.etc}</span>
-                </div>
-              </div>
+              <h5 class="mb-3 mb-md-4">${detail.title}</h5>
+              <p>${detail.content}</p>
             </div>
           </div>
-          <hr>
-          <div class="row">
-            <div class="my-4 my-lg-2">
-              <h5 class="mb-4">근무조건</h5>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="d-flex">
-                <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                <div class="feature-info-content ps-3">
-                  <label class="mb-1">급여타입</label>
-                  <span class="mb-0 fw-bold d-block text-dark">${detail.salaryType}</span>
-                </div>
+          <div class="border p-4 mt-4 mt-lg-5">
+            <div class="company-address widget-box">
+              <div class="company-address-map">
+                <iframe src="/https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.95373531590414!3d-37.817323442021134!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1559039794237!5m2!1sen!2sin"  height="230" allowfullscreen></iframe>
               </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="d-flex">
-                <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                <div class="feature-info-content ps-3">
-                  <label class="mb-1">금액</label>
-                  <span class="mb-0 fw-bold d-block text-dark">${detail.salary}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="d-flex">
-                <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                <div class="feature-info-content ps-3">
-                  <label class="mb-1">기타급여</label>
-                  <span class="mb-0 fw-bold d-block text-dark">${detail.otherSalary}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="d-flex">
-                <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                <div class="feature-info-content ps-3">
-                  <label class="mb-1">근무기간</label>
-                  <span class="mb-0 fw-bold d-block text-dark">${detail.workingHours}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="d-flex">
-                <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                <div class="feature-info-content ps-3">
-                  <label class="mb-1">근무요일</label>
-                  <span class="mb-0 fw-bold d-block text-dark">${detail.workingDays}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="d-flex">
-                <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                <div class="feature-info-content ps-3">
-                  <label class="mb-1">근무시간</label>
-                  <span class="mb-0 fw-bold d-block text-dark">${detail.workingTime}</span>
-                </div>
-              </div>
+              <ul class="list-unstyled mt-3">
+                <li><a href="#"><i class="fas fa-link fa-fw"></i><span class="ps-2">www.infojob.com</span></a></li>
+                <li><a href="tel:+905389635487"><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="ps-2">+(456) 478-2589</span></a></li>
+                <li><a href="mailto:ali.potenza@job.com"><i class="fas fa-envelope fa-fw"></i><span class="ps-2">support@jobber.demo</span></a></li>
+              </ul>
             </div>
           </div>
-        </div>
-        <div class="border p-4 mt-4 mt-lg-5">
-          <div class="my-4 my-lg-2">
-            <h5 class="mb-3 mb-md-4">${detail.title}</h5>
-            <p>${detail.content}</p>
+          <div class="widget d-grid col-md-4" >
+            <a class="btn btn-primary " onclick="location.href='/business/updateView/${detail.jobPostId}'" id="button_update" name="button_update">수정하기</a>
           </div>
-        </div>
-        <div class="border p-4 mt-4 mt-lg-5">
-          <div class="company-address widget-box">
-            <div class="company-address-map">
-              <iframe src="/https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.95373531590414!3d-37.817323442021134!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1559039794237!5m2!1sen!2sin"  height="230" allowfullscreen></iframe>
-            </div>
-            <ul class="list-unstyled mt-3">
-              <li><a href="#"><i class="fas fa-link fa-fw"></i><span class="ps-2">www.infojob.com</span></a></li>
-              <li><a href="tel:+905389635487"><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="ps-2">+(456) 478-2589</span></a></li>
-              <li><a href="mailto:ali.potenza@job.com"><i class="fas fa-envelope fa-fw"></i><span class="ps-2">support@jobber.demo</span></a></li>
-            </ul>
+          <div class="widget d-grid col-md-4" >
+            <a class="btn btn-primary " onclick="location.href='/business/delete?id=${detail.jobPostId}'" id="button_delete" name="button_update">삭제하기</a>
           </div>
-        </div>
+        </form>
       </div>
       <!--=================================
       sidebar -->

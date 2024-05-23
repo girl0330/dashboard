@@ -416,6 +416,7 @@ Register -->
                     </div>
                     <div class="ms-3">
                       <h6 class="mb-0">개인 회원</h6>
+                      <p class="mb-0">개인으로 회원가입하기</p>
                     </div>
                   </div>
                 </a>
@@ -428,6 +429,7 @@ Register -->
                     </div>
                     <div class="ms-3">
                       <h6 class="mb-0">기업 회원</h6>
+                      <p class="mb-0">기업으로 회원가입하기</p>
                     </div>
                   </div>
                 </a>
@@ -439,29 +441,17 @@ Register -->
               <form class="mt-4" id="personalForm" name="personalForm">
                 <div class="row">
                   <input type="hidden" name="gradeCode" id="gradeCode" value="10">
-                  <div class="mb-3 col-md-6">
-                    <label class="form-label" for="memberId">아이디 *</label>
-                    <input type="text" class="form-control" id="memberId" name="memberId" data-name="아이디">
+                  <div class="mb-3 col-md-12">
+                    <label class="form-label" for="personalEmail">이메일 * <a href="중복검사">중복검사</a></label>
+                    <input type="text" class="form-control" id="personalEmail" name="email" data-name="이메일">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label class="form-label"for="name">이름 *</label>
-                    <input type="text" class="form-control" id="name" name="name" data-name="이름">
+                    <label class="form-label"for="personalPassword">비밀번호 *</label>
+                    <input type="password" class="form-control" id="personalPassword" name="password" data-name="비밀번호">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label class="form-label"for="password">비밀번호 *</label>
-                    <input type="password" class="form-control" id="password" name="password" data-name="비밀번호">
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <label class="form-label" for="password2">비밀번호 재입력 *</label>
-                    <input type="password" class="form-control" id="password2" name="password2" data-name="비밀번호 재입력">
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <label class="form-label" for="email">이메일 *</label>
-                    <input type="text" class="form-control" id="email" name="email" data-name="이메일">
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <label class="form-label" for="phoneNumber">핸드폰 *</label>
-                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" data-name="핸드폰">
+                    <label class="form-label" for="personalPassword2">비밀번호 재입력 *</label>
+                    <input type="password" class="form-control" id="personalPassword2" name="password2" data-name="비밀번호 재입력">
                   </div>
                   <div class="mb-3 col-12">
                     <div class="form-check">
@@ -487,12 +477,8 @@ Register -->
                 <div class="row">
                   <input type="hidden" name="gradeCode" id="bgradeCode" value="20">
                   <div class="mb-3 col-md-6">
-                    <label class="form-label" for="businessMemberId">아이디 *</label>
-                    <input type="text" class="form-control" id="businessMemberId" name="memberId" data-name="아이디">
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <label class="form-label"for="businessName">이름 *</label>
-                    <input type="text" class="form-control" id="businessName" name="name" data-name="이름">
+                    <label class="form-label" for="businessEmail">이메일 * <a href="중복검사">중복검사</a></label>
+                    <input type="text" class="form-control" id="businessEmail" name="email" data-name="이메일">
                   </div>
                   <div class="mb-3 col-md-6">
                     <label class="form-label"for="businessPassword">비밀번호 *</label>
@@ -501,18 +487,6 @@ Register -->
                   <div class="mb-3 col-md-6">
                     <label class="form-label" for="businessPassword2">비밀번호 재입력 *</label>
                     <input type="password" class="form-control" id="businessPassword2" name="password2" data-name="비밀번호 재입력">
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <label class="form-label" for="businessEmail">이메일 *</label>
-                    <input type="text" class="form-control" id="businessEmail" name="email" data-name="이메일">
-                  </div>
-                  <div class="mb-3 col-md-6">
-                    <label class="form-label" for="businessPhoneNumber">핸드폰 *</label>
-                    <input type="text" class="form-control" id="businessPhoneNumber" name="phoneNumber" data-name="핸드폰">
-                  </div>
-                  <div class="mb-3 col-12">
-                    <label class="form-label" for="businessRegistrationNumber">사업자 번호 *</label>
-                    <input type="text" class="form-control" id="businessRegistrationNumber" name="businessRegistrationNumber" data-name="사업자 번호">
                   </div>
                   <div class="mb-3 col-12">
                     <div class="form-check">

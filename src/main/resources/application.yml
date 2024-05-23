@@ -2,7 +2,7 @@ spring:
   # Mysql
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:mysql://localhost:3306/jobDashboard
+    url: jdbc:log4jdbc:mysql://localhost:3306/ptj
     username: root
     password: root
 

@@ -311,11 +311,11 @@ Signin -->
               <form class="mt-4" id="personalForm" name="personalForm">
                 <div class="row">
                   <input type="hidden" name="gradeCode" id="personalGradeCode" value="10">
-                  <div class="mb-3 col-12">
-                    <label class="form-label" for="personalMemberId">아이디 *</label>
-                    <input type="text" class="form-control" id="personalMemberId" name="memberId" data-name="아이디">
+                  <div class="mb-3 col-6">
+                    <label class="form-label" for="personalemail">아이디 *</label>
+                    <input type="text" class="form-control" id="personalemail" name="email" data-name="아이디">
                   </div>
-                  <div class="mb-3 col-12">
+                  <div class="mb-3 col-6">
                     <label class="form-label" for="personalPassword">비밀번호 *</label>
                     <input type="password" class="form-control" id="personalPassword" name="password" data-name="비밀번호">
                   </div>
@@ -326,8 +326,8 @@ Signin -->
                   </div>
                   <div class="col-md-6">
                     <div class="mt-3 mt-md-0 forgot-pass">
-                      <a href="#">Forgot Password?</a>
-                      <p class="mt-1">Don't have account? <a href="register.html">Sign Up here</a></p>
+                      <a href="#">비밀번호 찾기</a>
+                      <p class="mt-1">회원이 아니신가요? <a href="register.html"> 회원가입 하기</a></p>
                     </div>
                   </div>
                 </div>
