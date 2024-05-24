@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.job.dashboard.domain.personal.PersonalDashMapper">
+
+    <select id="checkProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.PersonalDTO">
+        SELECT *
+        FROM USER_PROFILE_INFO
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <select id="getProfileIdSeq" parameterType="int" resultType="int">
+        SELECT COALESCE(MAX(PROFILE_ID) + 1, 1) as profile_id_seq
+        FROM USER_PROFILE_INFO
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <insert id="saveProfile" parameterType="com.job.dashboard.domain.dto.PersonalDTO" >
+        INSERT INTO USER_PROFILE_INFO
+        (
+            PROFILE_ID,
+            USER_ID,
+            NAME,
+            PHONE,
+            BIRTH,
+            GENDER,
+            ADDRESS,
+            PART_TIME_EXPERIENCE,
+            SYSTEM_REGISTER_ID,
+            SYSTEM_UPDATER_ID
+        ) VALUES (
+            #{profileId},
+            #{userId},
+            #{name},
+            #{phone},
+            #{birth},
+            #{gender},
+            #{address},
+            #{partTimeExperience},
+            #{userId},
+            #{userId}
+        ) ON DUPLICATE KEY UPDATE
+             USER_ID =                #{userId},
+             NAME =                   #{name},
+             PHONE =                  #{phone},
+             BIRTH =                  #{birth},
+             GENDER =                 #{gender},
+             ADDRESS =                #{address},
+             PART_TIME_EXPERIENCE =   #{partTimeExperience},
+             SYSTEM_REGISTER_ID =     #{userId},
+             SYSTEM_UPDATER_ID =      #{userId}
+    </insert>
+
+    <select id="getProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.PersonalDTO">
+        SELECT
+            A.email,
+            A.user_type_code,
+            B.NAME,
+            B.PHONE,
+            B.BIRTH,
+            B.GENDER,
+            B.ADDRESS,
+            B.PART_TIME_EXPERIENCE
+        FROM
+            user_info A
+        INNER JOIN USER_PROFILE_INFO B ON A.user_id = B.USER_ID
+        WHERE A.user_id = #{userId}
+    </select>
+</mapper>

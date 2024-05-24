@@ -11,7 +11,7 @@ inner banner -->
                             <i class="fas fa-pencil-alt"></i>
                         </div>
                         <div class="profile-avatar-info ms-4">
-                            <h3>${personalInfo.name}</h3>
+                            <h3>${personalInfo.email}</h3>
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@ Dashboard Nav -->
                         <li><a href="/personal/manageJobs">Manage Jobs</a></li>
                         <li><a href="/personal/savedJobs">Saved Jobs</a></li>
                         <li><a href="/personal/pricingPlan">Pricing Plan</a></li>
-                        <li><a href="/member/Logout">Log Out</a></li>
+                        <li><a href="/user/logout">Log Out</a></li>
                     </ul>
                 </div>
             </div>

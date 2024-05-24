@@ -2,6 +2,7 @@ package com.job.dashboard.domain.user;
 
 import com.job.dashboard.domain.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +46,11 @@ public class UserController {
         System.out.println("====회원 로그인===="+userDTO);
         Map<Object, Object> map = userService.findAccount(userDTO);
         System.out.println("map 정보들을 잘 가져오나???? "+map);
-        session.setAttribute("account","account");
+        UserDTO userId = (UserDTO) map.get("account");
+        System.out.println("userId;;;;; "+userId.getUserId());
+        session.setAttribute("userId", userId.getUserId());// userId만 가져와서 session에 넣기
+        session.setAttribute("userEmail", userId.getEmail());
+        session.setAttribute("userTypeCode", userId.getUserTypeCode());
         return map;
     }
 

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
   let personal_register = {
     init: function () {
@@ -21,6 +22,9 @@
       // 성별 선택 값 추가
       jsonData['gender'] = $('input[name=gender]:checked').val();
 
+      // 알바경험 선택 값 추가
+      jsonData['partTimeExperience'] = $('input[name=partTimeExperience]:checked').val();
+
       // jsonData['gender'] = $('#gender').is(':checked').val();
       // var selectedGender = $('input[name="customRadio"]:checked').val();
       // if (selectedGender) {
@@ -30,7 +34,7 @@
       // }
 
       console.log("x:::1111111111  "+JSON.stringify(jsonData));
-      const url = "/personal/myProfile";
+      const url = "/personal/myProfileSave";
 
       $.ajax({
         url: url, // Spring 컨트롤러 URL
@@ -44,7 +48,7 @@
             alert(data.message);
           } else if (data.code === 'success'){
             alert(data.message);
-            location.href='/'
+            location.href='/personal/myProfile'
           }
         },
         error: function(xhr, status, error) {
@@ -99,7 +103,7 @@ My Profile -->
               <div class="form-group mb-3 col-md-6 datetimepickers">
                 <label class="form-label">Date of birth</label>
                 <div class="input-group date" id="datetimepicker-01" data-target-input="nearest">
-                  <input type="text" class="form-control datetimepicker-input" value="" data-target="#datetimepicker-01" id="birthDay" name="birthDay">
+                  <input type="text" class="form-control datetimepicker-input" value="" data-target="#datetimepicker-01" id="birth" name="birth">
                   <div class="input-group-append d-flex" data-target="#datetimepicker-01" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                   </div>
@@ -107,7 +111,7 @@ My Profile -->
               </div>
               <div class="form-group mb-3 col-md-6">
                 <label class="form-label">핸드폰 번호</label>
-                <input type="text" class="form-control" value="" id="phoneNumber" name="phoneNumber">
+                <input type="text" class="form-control" value="" id="phone" name="phone">
               </div>
               <div class="form-group mb-3 col-md-6" >
                 <label class="d-block mb-3">성별</label>
@@ -124,9 +128,16 @@ My Profile -->
                 <label class="form-label">주소</label>
                 <input type="text" class="form-control" value=""  name="address" id="address">
               </div>
-              <div class="form-group mb-0 col-md-12">
-                <label class="form-label">Description</label>
-                <textarea class="form-control" rows="5" placeholder="자신을 소개해주세요."  name="content" id="content"></textarea>
+              <div class="form-group mb-3 col-md-6" >
+                <label class="d-block mb-3">알바 경험</label>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" value="true" name="partTimeExperience" id="yes">
+                  <label class="form-check-label" for="yes">yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" value="false" name="partTimeExperience" id="no">
+                  <label class="form-check-label" for="no">no</label>
+                </div>
               </div>
             </div>
             <div class="row">

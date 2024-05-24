@@ -8,7 +8,7 @@
     </select>
 
     <insert id="accountInsert" parameterType="com.job.dashboard.domain.dto.UserDTO">
-        INSERT INTO user_info (email, password, user_type_code, system_register_id,system_updater_id)
+        INSERT INTO user_info (email, password , user_type_code, system_register_id,system_updater_id)
         VALUES (#{email}, #{password}, #{userTypeCode}, #{systemRegisterId}, #{systemUpdaterId})
     </insert>
 
