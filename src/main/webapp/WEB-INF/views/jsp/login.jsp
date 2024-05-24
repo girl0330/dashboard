@@ -44,38 +44,32 @@
     validationChk : function () {
         alert("조건함수 실행!!!")
       let valid = true;
-      const memberId = $('#personalMemberId').val();
-      const password = $('#personalPassword').val();
+      const personalLoginId = $('#personalEmail').val();
+      const personalLoginPassword = $('#personalPassword').val();
 
-      console.log("아이디 확인"+ memberId)
-      console.log("비밀번호 확인"+ password)
+      console.log("아이디 확인: "+ personalLoginId)
+      console.log("비밀번호 확인: "+ personalLoginPassword)
 
       // 아이디 조건, 길이
-      let idRegex = /^[a-zA-Z0-9]+$/;
-      if (!idRegex.test(memberId)) {
-        alert("아이디 형식을 확인해주세요")
-        $('#personalMemberId').focus()
-        valid = false;
-        return valid;
-      } // 이상무
-      if (memberId.length > 12 ||memberId.length < 2) {
-        alert("아이디는 2~12자 사이로 입력해주세요")
-        $('#personalMemberId').focus()
-        valid = false;
-        return valid;
-      }// 이상무
-
-      // 비밀번호 조건, 길이, 비밀번호 확인
-      let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
-      if (!pwRegex.test(password)) {
-        alert("비밀번호 형식을 확인해주세요")
-        $('#password').focus()
+      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(personalLoginId)) {
+        alert("이메일을 입력해주세요.")
+        $('#personalEmail').focus()
         valid = false;
         return valid;
       }
-      if (password.length > 15 || password.length < 8) {
+
+      // 비밀번호 조건, 길이, 비밀번호 확인
+      let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
+      if (!pwRegex.test(personalLoginPassword)) {
+        alert("비밀번호 형식을 확인해주세요")
+        $('#personalPassword').focus()
+        valid = false;
+        return valid;
+      }
+      if (personalLoginPassword.length > 15 || personalLoginPassword.length < 8) {
         alert("비밀번호를 8~15자로 사용해주세요")
-        $('#password').focus()
+        $('#personalLoginPassword').focus()
         valid = false;
         return valid;
       }
@@ -93,7 +87,7 @@
         jsonData[this.name] = this.value;
       });
 
-      const url = "/member/personalMemberLogin";
+      const url = "/user/doLogin";
 
       $.ajax({
         url: url, // Spring 컨트롤러 URL
@@ -159,37 +153,31 @@
     validationChk : function () {
       alert("조건함수 실행!!!")
       let valid = true;
-      const memberId = $('#businessMemberId').val();
-      const password = $('#businessPassword').val();
+      const businessLoginId = $('#businessEmail').val();
+      const businessLoginPassword = $('#businessPassword').val();
 
-      console.log("아이디 확인"+ memberId)
-      console.log("비밀번호 확인"+ password)
+      console.log("비지니스 아이디 확인"+ businessLoginId)
+      console.log("비지니스 비밀번호 확인"+ businessLoginPassword)
 
       // 아이디 조건, 길이
-      let idRegex = /^[a-zA-Z0-9]+$/;
-      if (!idRegex.test(memberId)) {
-        alert("아이디 형식을 확인해주세요")
-        $('#businessMemberId').focus()
+      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(businessLoginId)) {
+        alert("비지니스 이메일을 입력해주세요.")
+        $('#businessEmail').focus()
         valid = false;
         return valid;
-      } // 이상무
-      if (memberId.length > 12 ||memberId.length < 2) {
-        alert("아이디는 2~12자 사이로 입력해주세요")
-        $('#businessMemberId').focus()
-        valid = false;
-        return valid;
-      }// 이상무
+      }
 
       // 비밀번호 조건, 길이, 비밀번호 확인
       let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
-      if (!pwRegex.test(password)) {
-        alert("비밀번호 형식을 확인해주세요")
+      if (!pwRegex.test(businessLoginPassword)) {
+        alert("비지니스 비밀번호 형식을 확인해주세요")
         $('#businessPassword').focus()
         valid = false;
         return valid;
       }
-      if (password.length > 15 || password.length < 8) {
-        alert("비밀번호를 8~15자로 사용해주세요")
+      if (businessLoginPassword.length > 15 || businessLoginPassword.length < 8) {
+        alert("비지니스 비밀번호를 8~15자로 사용해주세요")
         $('#businessPassword').focus()
         valid = false;
         return valid;
@@ -208,7 +196,7 @@
         jsonData[this.name] = this.value;
       });
 
-      const url = "/member/businessMemberLogin";
+      const url = "/user/doLogin";
 
       $.ajax({
         url: url, // Spring 컨트롤러 URL
@@ -310,10 +298,10 @@ Signin -->
             <div class="tab-pane active" id="candidate" role="tabpanel">
               <form class="mt-4" id="personalForm" name="personalForm">
                 <div class="row">
-                  <input type="hidden" name="gradeCode" id="personalGradeCode" value="10">
+                  <input type="hidden" name="userTypeCode" id="personalUserTypeCode" value="10">
                   <div class="mb-3 col-6">
-                    <label class="form-label" for="personalemail">아이디 *</label>
-                    <input type="text" class="form-control" id="personalemail" name="email" data-name="아이디">
+                    <label class="form-label" for="personalEmail">아이디 *</label>
+                    <input type="text" class="form-control" id="personalEmail" name="email" data-name="아이디">
                   </div>
                   <div class="mb-3 col-6">
                     <label class="form-label" for="personalPassword">비밀번호 *</label>
@@ -337,11 +325,11 @@ Signin -->
               <form class="mt-4" id="businessForm" name="businessForm">
                 <div class="row">
                   <input type="hidden" name="gradeCode" id="BusinessGradeCode" value="20">
-                  <div class="mb-3 col-12">
-                    <label class="form-label" for="businessMemberId">아이디 *</label>
-                    <input type="text" class="form-control" id="businessMemberId" name="memberId" data-name="아이디">
+                  <div class="mb-3 col-6">
+                    <label class="form-label" for="businessEmail">아이디 *</label>
+                    <input type="text" class="form-control" id="businessEmail" name="email" data-name="아이디">
                   </div>
-                  <div class="mb-3 col-12">
+                  <div class="mb-3 col-6">
                     <label class="form-label" for="businessPassword">비밀번호 *</label>
                     <input type="password" class="form-control" id="businessPassword" name="password" data-name="비밀번호">
                   </div>

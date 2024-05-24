@@ -43,86 +43,46 @@
 
     //validationChk 함수 정의
     validationChk : function () {
-      // alert("111")
+      alert("111")
       let valid = true;
-      const memberId = $('#memberId').val();
-      const name = $('#name').val();
-      const password = $('#password').val();
-      const password2 = $('#password2').val();
-      const email = $('#email').val();
-      const phoneNumber = $('#phoneNumber').val();
-      console.log("id"+memberId);
-      console.log("name"+name);
-      console.log("password"+password);
-      console.log("password2"+password2);
-      console.log("email"+email);
-      console.log("phoneNumber"+phoneNumber);
+      const personalLoginId = $('#personalEmail').val();
+      const personalPassword = $('#personalPassword').val();
+      const personalPassword2 = $('#personalPassword2').val();
+      console.log("personalLoginId"+personalLoginId);
+      console.log("personalPassword"+personalPassword);
+      console.log("password2"+personalPassword2);
       // 아이디 조건, 길이
-      let idRegex = /^[a-zA-Z0-9]+$/;
-      if (!idRegex.test(memberId)) {
-        alert("아이디 형식을 확인해주세요")
-        $('#memberId').focus()
+      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(personalLoginId)) {
+        alert("이메일을 입력해주세요.")
+        $('#personalEmail').focus()
         valid = false;
         return valid;
-      } // 이상무
-      // alert("222")
-      if (memberId.length > 12 ||memberId.length < 2) {
-        alert("아이디는 2~12자 사이로 입력해주세요")
-        $('#memberId').focus()
-        valid = false;
-        return valid;
-      }// 이상무
-      // alert("333")
-      // 이름 한글만
-      let nameRegex = /^[가-힣]+$/;
-      if (!nameRegex.test(name)) {
-        alert("한글만 입력해주세요");
-        $('#name').focus();  // 입력 필드에 포커스 설정
-        valid = false;
-        return valid;
-      }//이상무
-      // alert("444")
+      } //이상무
+      alert("222")
       // 비밀번호 조건, 길이, 비밀번호 확인
       let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
-      if (!pwRegex.test(password)) {
+      if (!pwRegex.test(personalPassword)) {
         alert("비밀번호 형식을 확인해주세요")
-        $('#password').focus()
+        $('#personalPassword').focus()
         valid = false;
         return valid;
       }
-      // alert("555")
-      if (password.length > 15 || password.length < 8) {
+      alert("555")
+      if (personalPassword.length > 15 || personalPassword.length < 8) {
         alert("비밀번호를 8~15자로 사용해주세요")
-        $('#password').focus()
+        $('#personalPassword').focus()
         valid = false;
         return valid;
       }
-      // alert("666")
-      if (password !== password2) {
+      alert("666")
+      if (personalPassword !== personalPassword2) {
         alert("비밀번호를 확인해주세요")
-        $('#password2').focus()
+        $('#personalPassword2').focus()
         valid = false;
         return valid;
       } //이상무
-      // alert("777")
-      // email validation
-      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(email)) {
-        alert("비밀번호 형식을 확인해주세요")
-        $('#email').focus()
-        valid = false;
-        return valid;
-      } //이상무
-      // alert("888")
-      // phone validation
-      let phoneRegex = /^010\d{4}\d{4}$/;
-      if (!phoneRegex.test(phoneNumber)) {
-        alert("비밀번호 형식을 확인해주세요")
-        $('#phoneNumber').focus()
-        valid = false;
-        return valid;
-      }
-      // alert("999")
+      alert("777")
       return valid;
     },
 
@@ -160,7 +120,7 @@
       jsonData['terms'] = $('#terms').is(':checked');
       console.log(jsonData);
 
-      const url = "/member/signupInsert";
+      const url = "/user/signupInsert";
 
       $.ajax({
         url: url, // Spring 컨트롤러 URL
@@ -200,6 +160,7 @@
     },
     /*공백 검사*/
     emptyChkFn : function () {
+      alert("전송")
       let valid = true;
       const form = $('#businessForm');
       const inputs = form.find("input[type='text'], input[type='password']");
@@ -221,82 +182,46 @@
 
     //validationChk 함수 정의
     validationChk : function () {
+      alert("기업회원가입")
       let valid = true;
-      const memberId = $('#businessMemberId').val();
-      const name = $('#businessName').val();
-      const password = $('#businessPassword').val();
-      const password2 = $('#businessPassword2').val();
-      const email = $('#businessEmail').val();
-      const phoneNumber = $('#businessPhoneNumber').val();
-      const businessRegistrationNumber = $('#businessRegistrationNumber').val();
-
+      const businessLoginId = $('#businessEmail').val();
+      const businessPassword = $('#businessPassword').val();
+      const businessPassword2 = $('#businessPassword2').val();
+      console.log("businessLoginId: "+businessLoginId);
+      console.log("businessPassword: "+businessPassword);
+      console.log("businessPassword2: "+businessPassword2);
       // 아이디 조건, 길이
-      let idRegex = /^[a-zA-Z0-9]+$/;
-      console.log(idRegex.test(memberId)+"<<<<<");
-      if (!idRegex.test(memberId)) {
-        alert("아이디 형식을 확인해주세요")
-        $('#businessMemberId').focus()
+      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(businessLoginId)) {
+        alert("이메일을 입력해주세요.")
+        $('#businessEmail').focus()
         valid = false;
         return valid;
-      } // 이상무
-      if (memberId.length > 12 ||memberId.length < 2) {
-        alert("아이디는 2~12자 사이로 입력해주세요")
-        $('#businessMemberId').focus()
-        valid = false;
-        return valid;
-      }// 이상무
-      // 이름 한글만
-      let nameRegex = /^[가-힣]+$/;
-      if (!nameRegex.test(name)) {
-        alert("한글만 입력해주세요");
-        $('#businessName').focus();  // 입력 필드에 포커스 설정
-        valid = false;
-        return valid;
-      }//이상무
-
+      } //이상무
+      alert("222")
       // 비밀번호 조건, 길이, 비밀번호 확인
       let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
-      if (!pwRegex.test(password)) {
+      if (!pwRegex.test(businessPassword)) {
         alert("비밀번호 형식을 확인해주세요")
         $('#businessPassword').focus()
         valid = false;
         return valid;
       }
-      if (password.length > 15 || password.length < 8) {
+      alert("555")
+      if (businessPassword.length > 15 || businessPassword.length < 8) {
         alert("비밀번호를 8~15자로 사용해주세요")
         $('#businessPassword').focus()
         valid = false;
         return valid;
       }
-      if (password !== password2) {
+      alert("666")
+      if (businessPassword !== businessPassword2) {
         alert("비밀번호를 확인해주세요")
         $('#businessPassword2').focus()
         valid = false;
         return valid;
       } //이상무
-      // email validation
-      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(email)) {
-        alert("비밀번호 형식을 확인해주세요")
-        $('#businessEmail').focus()
-        valid = false;
-        return valid;
-      } //이상무
-      // phone validation
-      let phoneRegex = /^010\d{4}\d{4}$/;
-      if (!phoneRegex.test(phoneNumber)) {
-        alert("핸드폰 번호를 정확히 입력해주세요")
-        $('#businessPhoneNumber').focus()
-        valid = false;
-        return valid;
-      }
-      // businessRegistrationNumber validation
-      letbusinessRNumberRegex = /^\d{10}$/;
-      if (!letbusinessRNumberRegex.test(businessRegistrationNumber)) {
-        alert("'-'을 제외한 10자로 입력해주세요")
-        valid = false;
-        return valid;
-      }
+      alert("777")
       return valid;
     },
 
@@ -333,7 +258,7 @@
       jsonData['terms'] = $('#terms').is(':checked');
       console.log(jsonData);
 
-      const url = "/member/signupInsertB";
+      const url = "/user/signupInsert";
 
       $.ajax({
         url: url, // Spring 컨트롤러 URL
@@ -440,9 +365,9 @@ Register -->
             <div class="tab-pane active" id="candidate" role="tabpanel">
               <form class="mt-4" id="personalForm" name="personalForm">
                 <div class="row">
-                  <input type="hidden" name="gradeCode" id="gradeCode" value="10">
+                  <input type="hidden" name="userTypeCode" id="personalUserTypeCode" value="10">
                   <div class="mb-3 col-md-12">
-                    <label class="form-label" for="personalEmail">이메일 * <a href="중복검사">중복검사</a></label>
+                    <label class="form-label" for="personalEmail">이메일 * <a onclick="window.location.href='/user/signupInsert'" href=''>중복검사</a></label>
                     <input type="text" class="form-control" id="personalEmail" name="email" data-name="이메일">
                   </div>
                   <div class="mb-3 col-md-6">
@@ -475,8 +400,8 @@ Register -->
             <div class="tab-pane fade" id="employer" role="tabpanel">
               <form class="mt-4" id="businessForm" name="businessForm">
                 <div class="row">
-                  <input type="hidden" name="gradeCode" id="bgradeCode" value="20">
-                  <div class="mb-3 col-md-6">
+                  <input type="hidden" name="userTypeCode" id="businessUserTypeCode" value="20">
+                  <div class="mb-3 col-md-12">
                     <label class="form-label" for="businessEmail">이메일 * <a href="중복검사">중복검사</a></label>
                     <input type="text" class="form-control" id="businessEmail" name="email" data-name="이메일">
                   </div>
