@@ -1,8 +1,9 @@
 package com.job.dashboard.domain.personal;
 
-import com.job.dashboard.domain.dto.PersonalDTO;
+import com.job.dashboard.domain.dto.PersonalDashDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -14,36 +15,48 @@ import java.util.Map;
 public class PersonalDashServiceImpl implements PersonalDashService{
     private final PersonalDashMapper personalDashMapper;
 
-    public Map<Object, Object> saveProfile(PersonalDTO personalDTO, HttpSession session) {
+    //프로필이 저장 유무
+    public Boolean profileCheck(Integer userId) {
+        System.out.println("프로필 유무 체크");
+        boolean profileCheck;
+        int x = personalDashMapper.profileCheck(userId);
+        System.out.println("x ::::   "+x);
+        profileCheck = x > 0;
+
+        return profileCheck;
+    }
+
+    public PersonalDashDTO getProfile(Integer userId) {
+        System.out.println("====피로필 impl");
+        PersonalDashDTO profile = personalDashMapper.getProfile(userId);
+        System.out.println("profile;;;;::::   "+ profile);
+        return profile;
+    }
+    @Transactional
+    public Map<Object, String> saveProfile(PersonalDashDTO personalDashDTO, HttpSession session) {
         System.out.println("======impl====");
-        Map<Object,Object> map = new HashMap<>();
+        Map<Object,String> map = new HashMap<>();
         int userId = (int)session.getAttribute("userId");
 
-        List<PersonalDTO> profile = personalDashMapper.checkProfile(userId);
+        List<PersonalDashDTO> profile = personalDashMapper.checkProfile(userId);
 
         int x = profile.size();
 
         if (x == 0) {
             int profileSeq = personalDashMapper.getProfileIdSeq(userId);
-            personalDTO.setProfileId(profileSeq);
+            personalDashDTO.setProfileId(profileSeq);
         }else{
-            personalDTO.setProfileId(profile.get(0).getProfileId());
+            personalDashDTO.setProfileId(profile.get(0).getProfileId());
         }
-        personalDTO.setUserId(userId);
+        personalDashDTO.setUserId(userId);
 
         //pk가 없으면 insert 있으면 update
-        personalDashMapper.saveProfile(personalDTO);
+        personalDashMapper.saveProfile(personalDashDTO);
 
 
         map.put("code","success");
         map.put("message","프로필 저장 성공!");
-        return map;
-    }
 
-    public PersonalDTO getProfile(Integer userId) {
-        System.out.println("====피로필 impl");
-        PersonalDTO profile = personalDashMapper.getProfile(userId);
-        System.out.println("profile;;;;::::   "+ profile);
-        return null;
+        return map;
     }
 }

@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!--=================================
 inner banner -->
 <div class="header-inner bg-light">
@@ -11,7 +13,7 @@ inner banner -->
                             <i class="fas fa-pencil-alt"></i>
                         </div>
                         <div class="profile-avatar-info ms-4">
-                            <h3>${personalInfo.email}</h3>
+                            <h3>${userEmail}</h3>
                         </div>
                     </div>
                 </div>
@@ -45,14 +47,16 @@ Dashboard Nav -->
         <div class="col-md-12">
             <div class="sticky-top secondary-menu-sticky-top">
                 <div class="secondary-menu">
+                    <c:if  test="${userTypeCode == '10'}">
+
+                    </c:if>
                     <ul class="list-unstyled mb-0" id="menu">
                         <li><a href="/personal/dashboard">Dashboard</a></li>
-                        <li><a href="/personal/myProfile">My Profile</a></li>
-                        <li><a href="/personal/changePassword">Change Password</a></li>
-                        <li><a href="/personal/myResume">My Resume</a></li>
-                        <li><a href="/personal/manageJobs">Manage Jobs</a></li>
-                        <li><a href="/personal/savedJobs">Saved Jobs</a></li>
-                        <li><a href="/personal/pricingPlan">Pricing Plan</a></li>
+                        <li><a href="/personal/myProfile">나의 프로필</a></li>
+                        <li><a href="/personal/changePassword">비밀번호 변경</a></li>
+                        <li><a href="/personal/myResume">내 이력서</a></li>
+                        <li><a href="/personal/manageJobs">지원 현황</a></li>
+                        <li><a href="/personal/savedJobs">관심있는 공고</a></li>
                         <li><a href="/user/logout">Log Out</a></li>
                     </ul>
                 </div>

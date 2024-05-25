@@ -93,17 +93,17 @@ My Profile -->
             <div class="row">
               <div class="form-group mb-3 col-md-6">
                 <label class="form-label">이름</label>
-                <input type="text" class="form-control" value="" id="name" name="name">
+                <input type="text" class="form-control" value="${profile.name}" id="name" name="name">
               </div>
               <div class="form-group mb-3 col-md-6">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control" value="" id="email" name="email">
+                <input type="email" class="form-control" value="${profile.email}" id="email" name="email">
               </div>
 
               <div class="form-group mb-3 col-md-6 datetimepickers">
                 <label class="form-label">Date of birth</label>
                 <div class="input-group date" id="datetimepicker-01" data-target-input="nearest">
-                  <input type="text" class="form-control datetimepicker-input" value="" data-target="#datetimepicker-01" id="birth" name="birth">
+                  <input type="text" class="form-control datetimepicker-input" value="${profile.birth}" data-target="#datetimepicker-01" id="birth" name="birth">
                   <div class="input-group-append d-flex" data-target="#datetimepicker-01" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                   </div>
@@ -111,31 +111,31 @@ My Profile -->
               </div>
               <div class="form-group mb-3 col-md-6">
                 <label class="form-label">핸드폰 번호</label>
-                <input type="text" class="form-control" value="" id="phone" name="phone">
+                <input type="text" class="form-control" value="${profile.phone}" id="phone" name="phone">
               </div>
               <div class="form-group mb-3 col-md-6" >
                 <label class="d-block mb-3">성별</label>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" value="Male" name="gender" id="Male">
+                  <input class="form-check-input" type="radio" value="Male" name="gender" id="Male" ${profile.gender == "Male" ? "checked" : ""}>
                   <label class="form-check-label" for="Male">Male</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" value="Female" name="gender" id="Female">
+                  <input class="form-check-input" type="radio" value="Female" name="gender" id="Female" ${profile.gender == "Female" ? "checked" : ""}>
                   <label class="form-check-label" for="Female">Female</label>
                 </div>
               </div>
               <div class="form-group mb-3 col-md-6">
                 <label class="form-label">주소</label>
-                <input type="text" class="form-control" value=""  name="address" id="address">
+                <input type="text" class="form-control" value="${profile.address}"  name="address" id="address">
               </div>
               <div class="form-group mb-3 col-md-6" >
                 <label class="d-block mb-3">알바 경험</label>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" value="true" name="partTimeExperience" id="yes">
+                  <input class="form-check-input" type="radio" value="${profile.partTimeExperience}" name="partTimeExperience" id="yes">
                   <label class="form-check-label" for="yes">yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" value="false" name="partTimeExperience" id="no">
+                  <input class="form-check-input" type="radio" value="${profile.partTimeExperience}" name="partTimeExperience" id="no">
                   <label class="form-check-label" for="no">no</label>
                 </div>
               </div>

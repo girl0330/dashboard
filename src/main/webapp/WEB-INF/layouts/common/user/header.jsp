@@ -6,7 +6,7 @@
                     <span></span>
                     <span></span>
                 </button>
-                <a class="navbar-brand" href="/index.html">
+                <a class="navbar-brand" href="/">
                     <img class="img-fluid" src="/images/logo.svg" alt="logo">
                 </a>
                 <div class="navbar-collapse collapse justify-content-start">
@@ -14,7 +14,7 @@
                         <li class="nav-item dropdown active">
                             <a class="nav-link" href="/#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Home<i class="fas fa-chevron-down fa-xs"></i></a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="/index.html">index Default</a></li>
+                                <li><a class="dropdown-item" href="/">index Default</a></li>
                                 <li><a class="dropdown-item" href="/index-02.html">index 02</a></li>
                                 <li class="active"><a class="dropdown-item" href="/index-03.html">index 03</a></li>
                                 <li><a class="dropdown-item" href="/index-map.html">index map</a></li>

@@ -1,6 +1,6 @@
 package com.job.dashboard.domain.personal;
 
-import com.job.dashboard.domain.dto.PersonalDTO;
+import com.job.dashboard.domain.dto.PersonalDashDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -8,10 +8,12 @@ import java.util.List;
 @Mapper
 public interface PersonalDashMapper {
 
-    List<PersonalDTO> checkProfile(int userId);
+    int profileCheck(int userId);
+
+    List<PersonalDashDTO> checkProfile(int userId);
     int getProfileIdSeq(int userId);
 
-    PersonalDTO saveProfile(PersonalDTO personalDTO);
+    void saveProfile(PersonalDashDTO personalDashDTO);
 
-    PersonalDTO getProfile(int userId);
+    PersonalDashDTO getProfile(int userId);
 }

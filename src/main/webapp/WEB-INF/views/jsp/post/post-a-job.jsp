@@ -11,14 +11,17 @@
         formSubmit : function () {
             alert("전송함수")
             const formData = $("#postJobForm").serializeArray();
-            console.log("formDtat::: "+JSON.stringify(formData));
+
 
             let jsonData = {};
             $.each(formData, function () {
                 jsonData[this.name] = this.value;
             });
 
-            const url = "/business/postAJob";
+            console.log("formDtat::: "+JSON.stringify(jsonData));
+
+            const url = "/business/savePost";
+
             $.ajax({
                 url: url, // Spring 컨트롤러 URL
                 type: 'POST',
@@ -30,8 +33,11 @@
                     if(data.code === 'error') {
                         alert(data.message);
                     } else if (data.code === 'success'){
-                        alert(data.message);
-                        location.href='/business/list'
+                        //alert(data.message);
+                        //location.href='/business/list'
+
+                        $('#Job-detail-tab').addClass('disabled');
+                        $("#Confirm-tab").tab('show');
                     }
                 },
                 error: function(xhr, status, error) {
@@ -44,62 +50,6 @@
 
     //DOM
     document.addEventListener('DOMContentLoaded', function () {
-        test();
-
-
-        function test() {
-            // 시 데이터 가져오기
-            $.ajax({
-                url: '/business/getSiGroup',
-                method: 'GET',
-                success: function (data) {
-                    console.log("data:::   " + data);
-                    data.forEach(function (si) {
-                        $('#code1').append('<option value="' + si + '">' + si + '</option>');
-                    });
-                }
-            });
-
-
-            // 시 값 선택  이벤트 처리
-            $('#code1').on('select2:select', function (e) {
-                const selectedValue = e.params.data.id; // 선택된 값의 ID
-                console.log("selectedValue_____"+selectedValue);
-
-                $.ajax({
-                    url: '/business/getGunGroup',
-                    data: {gun: selectedValue},
-                    method: 'GET',
-                    success: function (data) {
-                        console.log("시 data:::   " + data);
-                        data.forEach(function (gun) {
-                            $('#code2').append('<option value="' + gun + '">' + gun + '</option>');
-                        });
-                    }
-                });
-
-            });
-
-            $('#code2').on('select2:select', function (e) {
-                const selectedValue = e.params.data.id; // 선택된 값의 ID
-                console.log("selectedValue_____"+selectedValue);
-
-                $.ajax({
-                    url: '/business/getGuGroup',
-                    data: {gu: selectedValue},
-                    method: 'GET',
-                    success: function (data) {
-                        console.log("시 data:::   " + data);
-                        data.forEach(function (gu) {
-                            $('#code3').append('<option value="' + gu + '">' + gu + '</option>');
-                        });
-                    }
-                });
-
-            });
-        }
-
-
         document.getElementById("profile_sava_button").addEventListener("click",function () {
             postSave.init();
         });
@@ -157,198 +107,117 @@ tab -->
                         <form class="row" id="postJobForm" name="postJobForm">
                             <div class="row mt-4 mt-lg-5">
                                 <div class="col-12">
-                                    <h5 class="mb-4">공고글 작성</h5>
+                                    <h5 class="mb-4"> 공고글 작성</h5>
                                 </div>
                             </div>
                             <div class="form-group col-md-12 mb-3">
-                                <label class="mb-2">공고 제목 *</label>
+                                <label class="mb-2"> 공고 제목 *</label>
                                 <input type="text" class="form-control" value="" placeholder="공고 제목을 입력해주세요." name="title" id="title">
                             </div>
                             <div class="form-group col-md-12 mb-3">
-                                <label class="mb-2">상세모집내용 </label>
-                                <textarea class="form-control" rows="4" placeholder="상세모집내용을 작성해주세요"  name="content" id="content"></textarea>
+                                <label class="mb-2"> 상세모집내용 </label>
+                                <textarea class="form-control" rows="4" value="" placeholder="상세모집내용을 작성해주세요"  name="description" id="description"></textarea>
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2">가게 이름 *</label>
-                                <input type="text" class="form-control" value="" placeholder="가게이름을 입력해주세요." name="storeName" id="storeName">
+                                <label class="mb-2"> 위치 </label>
+                                <input type="text" class="form-control" value="" placeholder="위치를 입력해주세요"  name="address" id="address">
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2">가게 전화번호 *</label>
-                                <input type="text" class="form-control" value="" placeholder="연락처를 입력해주세요." name="storeCallNumber" id="storeCallNumber">
+                                <label class="mb-2"> 담당자 연락처 </label>
+                                <input type="text" class="form-control" value="" placeholder="이름을 입력해주세요." name="managerNumber" id="managerNumber">
                             </div>
-                            <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2">담당자 이름 *</label>
-                                <input type="text" class="form-control" value="" placeholder="이름을 입력해주세요." name="manager" id="manager">
-                            </div>
-                            <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2">이메일 *</label>
-                                <input type="email" class="form-control" value="" placeholder="이메일을 입력해주세요." name="email" id="email">
-                            </div>
+
                             <div class="row mt-4 mt-lg-5">
                                 <div class="col-12">
-                                    <h5 class="mb-4">모집조건</h5>
+                                    <h5 class="mb-4"> 모집조건 </h5>
                                 </div>
                             </div>
-                            <div class="form-group col-md-4 select-border mb-3">
-                                <label class="mb-2"  for="workType">모집직종 *</label>
-                                <select class="form-control basic-select" id="workType" name="workType">
-                                    <option value=" 외식/음료" >외식/음료</option>
-                                    <option value=" 유통/판매" >유통/판매</option>
-                                    <option value=" 문화/여가/생활" >문화/여가/생활</option>
-                                    <option value=" 서비스" >서비스</option>
-                                    <option value=" 사무/회계" >사무/회계</option>
-                                    <option value=" 고객상담/영업/리서치" >고객상담/영업/리서치</option>
-                                    <option value=" 생산/건설/노무" >생산/건설/노무</option>
-                                    <option value=" IT/인터넷" >IT/인터넷</option>
-                                    <option value=" 교육/강사" >교육/강사</option>
-                                    <option value=" 디자인" >디자인</option>
-                                    <option value=" 미디어" >미디어</option>
-                                    <option value=" 운전/배달" >운전/배달</option>
-                                    <option value=" 병호/간호/연구" >병호/간호/연구</option>
+                            <div class="form-group col-md-6 select-border mb-3">
+                                <label class="mb-2" for="jobTypeCode"> 모집직종 </label>
+                                <select class="form-control basic-select" id="jobTypeCode" name="jobTypeCode">
+                                    <option value="SERV" >서빙</option>
+                                    <option value="CONV" >편의점</option>
+                                    <option value="KIT" >주방</option>
+                                    <option value="OFF" >사무</option>
+                                    <option value="EDU" >교육</option>
+                                    <option value="SAL" >판매</option>
+                                    <option value="PROD" >생산</option>
+                                    <option value="IT" >IT</option>
+                                    <option value="DES" >디자인</option>
+                                    <option value="MED" >의료</option>
+                                    <option value="DRIV" >운전</option>
+                                    <option value="CON" >건설</option>
+                                    <option value="OTH" >기타</option>
 
                                 </select>
                             </div>
-                            <div class="form-group col-md-4 select-border mb-3">
-                                <label class="mb-2"  for="employmentType">고용형태 *</label>
-                                <select class="form-control basic-select" id="employmentType" name="employmentType">
-                                    <option value="value 아르바이트" >아르바이트</option>
-                                    <option value="value 정직원" >정직원</option>
-
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4 select-border mb-3">
-                                <label class="mb-2"  for="numberOfStaff">모집인원 *</label>
+                            <div class="form-group col-md-6 select-border mb-3">
+                                <label class="mb-2"  for="numberOfStaff"> 모집인원 </label>
                                 <select class="form-control basic-select" id="numberOfStaff" name="numberOfStaff">
-                                    <option value=" 1명" >1명</option>
-                                    <option value=" 0명(10명 미만)" >0명</option>
-                                    <option value=" 00명(100명 미만)" >00명</option>
+                                    <option value="1" >1명</option>
+                                    <option value="0" >0명</option>
+                                    <option value="00" >00명</option>
 
                                 </select>
                             </div>
-                            <div class="form-group col-md-4 select-border mb-3">
-                                <label class="mb-2" for="gender">성별 *</label>
-                                <select class="form-control basic-select" id="gender" name="gender">
-                                    <option value="무관">무관</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4 select-border mb-3">
-                                <label class="mb-2"for="qualifications">학력 *</label>
-                                <select class="form-control basic-select" id="qualifications" name="qualifications">
-                                    <option value="무관">무관</option>
-                                    <option value="고졸 이상">고졸 이상</option>
-                                    <option value="대졸 이상">대졸 이상</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-12 col-md-12">
-                                <label class="d-block mb-3">우대사항</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="none" id="etc" value="선택안함">
-                                    <label class="form-check-label" for="etc">선택안함</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="industry-experience" id="etc" value="동종업계 경력자">
-                                    <label class="form-check-label" for="etc">동종업계 경력자</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="long-term" id="etc" value="장기근무 가능자">
-                                    <label class="form-check-label" for="etc">장기근무 가능자</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="local" id="etc" value="인근거주자">
-                                    <label class="form-check-label" for="etc">인근거주자</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="beginner" id="etc" value="기타: 초보자가능">
-                                    <label class="form-check-label" for="etc">기타: 초보자가능</label>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-4 select-border mb-3">
-                                <label class="mb-2"  for="code1">시</label>
-                                <select class="form-control basic-select" id="code1" name="code1">
-                                    <option value="선택">선택</option>
-                                </select>
+                            <div class="form-group col-md-12 mb-3">
+                                <label class="mb-2"> 우대 조건 </label>
+                                <textarea class="form-control" rows="4" value=""  name="requirement" id="requirement"></textarea>
                             </div>
 
-                            <div class="form-group col-md-4 select-border mb-3">
-                                <label class="mb-2"  for="code2">군</label>
-                                <select class="form-control basic-select" id="code2" name="code2">
-                                    <option value="선택">선택</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group col-md-4 select-border mb-3">
-                                <label class="mb-2"  for="code3">구</label>
-                                <select class="form-control basic-select" id="code3" name="code3">
-                                    <option value="선택">선택</option>
-                                </select>
-                            </div>
 
                             <div class="row mt-4 mt-lg-5">
                                 <div class="col-12">
-                                    <h5 class="mb-4">근무조건</h5>
+                                    <h5 class="mb-4"> 근무조건 </h5>
                                 </div>
                             </div>
-                            <div class="form-group col-md-4 select-border mb-3">
-                                <label class="mb-2"  for="salaryType">급여 타입 *</label>
-                                <select class="form-control basic-select" id="salaryType" name="salaryType">
+                            <div class="form-group col-md-6 select-border mb-3">
+                                <label class="mb-2"  for="salaryTypeCode"> 급여 타입 </label>
+                                <select class="form-control basic-select" id="salaryTypeCode" name="salaryTypeCode">
                                     <option value="시급">시급</option>
                                     <option value="일급">일급</option>
+                                    <option value="일급">주급</option>
                                     <option value="월급">월급</option>
 
                                 </select>
                             </div>
-                            <div class="form-group col-md-4 mb-3">
-                                <label class="mb-2" for="salary">급여 액수 *</label>
+                            <div class="form-group col-md-6 mb-3">
+                                <label class="mb-2" for="salary"> 급여 액수 </label>
                                 <input type="text" class="form-control" value="" placeholder="이름을 입력해주세요." name="salary" id="salary">
                             </div>
-                            <div class="form-group col-md-4 select-border mb-3">
-                                <label class="mb-2" for="otherSalary">기타 급여 *</label>
-                                <select class="form-control basic-select" id="otherSalary" name="otherSalary">
-                                    <option value=" " >선택안함</option>
-                                    <option value="식비 별도지급/식사제공" >식비 별도지급/식사제공</option>
-                                    <option value="차비 별도지급" >차비 별도지급</option>
+                            <div class="form-group col-md-3 select-border mb-3">
+                                <label class="mb-2"  for="employmentTypeCode"> 고용 유형 </label>
+                                <select class="form-control basic-select" id="employmentTypeCode" name="employmentTypeCode">
+                                    <option value="LONG">장기</option>
+                                    <option value="SHORT">단기</option>
 
                                 </select>
                             </div>
-                            <div class="form-group col-md-3 select-border mb-3">
-                                <label class="mb-2"  for="workingTime">근무기간 *</label>
-                                <select class="form-control basic-select" id="workingTime" name="workingTime">
-                                    <option value="1일">1일</option>
-                                    <option value="1주일 이내">1주일 이내</option>
-                                    <option value="1주일~1개월">1주일~1개월</option>
-                                    <option value="1개월~3개월">1개월~3개월</option>
-                                    <option value="3개월~6개월">3개월~6개월</option>
-                                    <option value="6개월~1년">6개월~1년</option>
-                                    <option value="1년이상">1년이상</option>
-
-                                </select>
+                            <div class="form-group col-md-6 mb-3">
+                                <label class="mb-2"> 근무시간 </label>
+                                <input type="text" class="form-control" value="" name="jobTime" id="jobTime">
                             </div>
                             <div class="form-group col-md-3 mb-3">
-                                <label class="mb-2" for="workingDays">근무요일 *</label>
-                                <select class="form-control basic-select" id="workingDays" name="workingDays">
-                                    <option value="평일(월,화,수,목,금)">평일(월,화,수,목,금)</option>
-                                    <option value="주말(토,일)">주말(토,일)</option>
-                                    <option value="월요일">월요일</option>
-                                    <option value="화요일">화요일</option>
-                                    <option value="수요일">수요일</option>
-                                    <option value="목요일">목요일</option>
-                                    <option value="금요일">금요일</option>
-                                    <option value="토요일">토요일</option>
-                                    <option value="일요일">일요일</option>
-                                    <option value="요일협의">요일협의</option>
+                                <label class="mb-2" for="jobDayTypeCode"> 근무요일 </label>
+                                <select class="form-control basic-select" id="jobDayTypeCode" name="jobDayTypeCode">
+                                    <option value="DAY">하루</option>
+                                    <option value="WK">일주일</option>
+                                    <option value="WEEKND">주말</option>
+                                    <option value="WDAY">평일</option>
+                                    <option value="MON">월</option>
+                                    <option value="TUE">화</option>
+                                    <option value="WED">수</option>
+                                    <option value="THU">목</option>
+                                    <option value="FRI">금</option>
+                                    <option value="SAT">토</option>
+                                    <option value="SUN">일</option>
+                                    <option value="OTH">기타</option>
 
                                 </select>
                             </div>
-                            <div class="form-group col-md-3 select-border mb-3">
-                                <label class="mb-2" for="workingHours">근무시간 *</label>
-                                <input type="text" class="form-control" value="" placeholder="00:00~00:00로 입력해주세요" name="workingHours" id="workingHours">
-                            </div>
-
-                            <div class="form-group col-md-3 select-border mb-md-0 mb-3">
-                                <label class="mb-2" for="deadLine">모집기한 *</label>
-                                <input type="text" class="form-control" value="" name="deadLine" id="deadLine">
+                            <div class="form-group col-md-12 mb-3">
+                                <label class="mb-2"> 기타사항 </label>
+                                <textarea class="form-control" rows="4" value="" name="etc" id="etc"></textarea>
                             </div>
                             <div class="col-md-12">
                                 <a class="btn btn-primary" id="profile_sava_button">작성완료</a>

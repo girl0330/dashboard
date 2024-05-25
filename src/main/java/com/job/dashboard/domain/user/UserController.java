@@ -45,9 +45,10 @@ public class UserController {
     public Map<Object, Object> accountLogin (@RequestBody UserDTO userDTO, HttpSession session) {
         System.out.println("====회원 로그인===="+userDTO);
         Map<Object, Object> map = userService.findAccount(userDTO);
-        System.out.println("map 정보들을 잘 가져오나???? "+map);
+        if (map.get("code") == "error") {
+            return map;
+        }
         UserDTO userId = (UserDTO) map.get("account");
-        System.out.println("userId;;;;; "+userId.getUserId());
         session.setAttribute("userId", userId.getUserId());// userId만 가져와서 session에 넣기
         session.setAttribute("userEmail", userId.getEmail());
         session.setAttribute("userTypeCode", userId.getUserTypeCode());

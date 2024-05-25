@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.job.dashboard.domain.business.BusinessDashMapper">
+    <insert id="saveJob" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
+        INSERT INTO job_post_info (
+            title,
+            description,
+            job_type_code,
+            address,
+            salary_type_code,
+            salary,
+            job_time,
+            job_day_type_code,
+            manager_number,
+            requirement,
+            number_of_staff,
+            employment_type_code,
+            etc,
+            system_register_id,
+            system_updater_id
+        ) VALUES (
+            #{title},
+            #{description},
+            #{jobTypeCode},
+            #{address},
+            #{salaryTypeCode},
+            #{salary},
+            #{jobTime},
+            #{jobDayTypeCode},
+            #{managerNumber},
+            #{requirement},
+            #{numberOfStaff},
+            #{employmentTypeCode},
+            #{etc},
+            #{systemRegisterId},
+            #{systemUpdaterId}
+        )
+    </insert>
+</mapper>

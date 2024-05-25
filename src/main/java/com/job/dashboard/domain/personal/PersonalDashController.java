@@ -1,7 +1,6 @@
 package com.job.dashboard.domain.personal;
 
-import com.job.dashboard.domain.dto.PersonalDTO;
-import com.job.dashboard.domain.dto.UserDTO;
+import com.job.dashboard.domain.dto.PersonalDashDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,41 +19,47 @@ public class PersonalDashController {
     public String dashboardView(HttpSession session, Model model)  {
         System.out.println("==== 개인 회원 대시보드====");
         Integer userId = (Integer) session.getAttribute("userId");
-        System.out.println("userId::::;     "+userId);
+        String userTypeCode = (String) session.getAttribute("userTypeCode");
+        String userEmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail;;;;::    " + userEmail);
+        System.out.println("userId::::;     " + userId);
             if (userId == null) {
                 return "redirect:/user/login";
             }
-//            UserDTO user =
-//        UserDTO accout = (UserDTO) session.getAttribute("account");
-//            MemberDTO memberProfile = .findPro(accout.getUserId());
-//            model.addAttribute("memberProfile",memberProfile);
-////            return "jsp/member/member_profile"; // 회원 프로필화면 반환.
+
+        Boolean profileCheck = personalDashService.profileCheck(userId);
+        System.out.println("profileCheck::::   " + profileCheck);
+
+
+        model.addAttribute("userTypeCode", "userTypeCode");
+        System.out.println("userTypeCode::::            " + userTypeCode);
         return "jsp/personal/p-dashboard";
     }
     @GetMapping("/myProfile")
-    public String myProfileView(HttpSession session) {
+    public String myProfileView(HttpSession session,Model model) {
         System.out.println("==== 개인 회원 myProfile====");
         Integer userId = (Integer) session.getAttribute("userId");
         System.out.println("userId::::;     "+userId);
         if (userId == null) {
             return "redirect:/user/login";
         }
-        PersonalDTO myProfile = personalDashService.getProfile(userId);
+        PersonalDashDTO myProfile = personalDashService.getProfile(userId);
+        model.addAttribute("profile",myProfile);
         return "jsp/personal/p-profile";
     }
 
     @PostMapping("/myProfileSave")
     @ResponseBody
-    public Map<Object, Object> profileSave(@RequestBody PersonalDTO personalDTO, Model model, HttpSession session) {
-        System.out.println("==== 프로필 저장 ====="+personalDTO);
-        Map<Object, Object> map = personalDashService.saveProfile(personalDTO, session);
+    public Map<Object, String> profileSave(@RequestBody PersonalDashDTO personalDashDTO, Model model, HttpSession session) {
+        System.out.println("==== 프로필 저장 ====="+ personalDashDTO);
+        Map<Object, String> map = personalDashService.saveProfile(personalDashDTO, session);
         System.out.println("map/////////     "+map);
 
         return map;
     }
 
     @GetMapping("/goMyProfile")
-    public PersonalDTO goMyProfile (@RequestBody PersonalDTO personalDTO, Model model) {
+    public PersonalDashDTO goMyProfile (@RequestBody PersonalDashDTO personalDashDTO, Model model) {
         System.out.println("==== 내 프로필 보기 ====");
 
         return null;
