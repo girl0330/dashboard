@@ -3,25 +3,45 @@
 <mapper namespace="com.job.dashboard.domain.personal.PersonalDashMapper">
 
     <select id="profileCheck" parameterType="int" resultType="int">
+    /*프로필 작성 유무 확인*/
         SELECT
         count(*) AS countuserId
         FROM USER_PROFILE_INFO
         WHERE USER_ID = #{userId}
     </select>
 
+    <select id="getProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.PersonalDashDTO">
+        /*기존 프로필 가져오기*/
+        SELECT
+            ui.email,
+            ui.user_type_code,
+            up.NAME,
+            up.PHONE,
+            up.BIRTH,
+            up.GENDER,
+            up.ADDRESS,
+            up.PART_TIME_EXPERIENCE
+        FROM
+            user_info ui
+                INNER JOIN USER_PROFILE_INFO up ON ui.user_id = up.USER_ID
+        WHERE ui.user_id = #{userId}
+    </select>
+
     <select id="checkProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.PersonalDashDTO">
+        /*기존 프로필 checkProfile*/
         SELECT *
         FROM USER_PROFILE_INFO
         WHERE USER_ID = #{userId}
     </select>
 
     <select id="getProfileIdSeq" parameterType="int" resultType="int">
+        /*getProfileIdSeq --------------------------------------------------------*/
         SELECT COALESCE(MAX(PROFILE_ID) + 1, 1) as profile_id_seq
         FROM USER_PROFILE_INFO
-        WHERE USER_ID = #{userId}
     </select>
 
     <insert id="saveProfile" parameterType="com.job.dashboard.domain.dto.PersonalDashDTO" >
+        /*saveProfile ------------------------------------------------------------*/
         INSERT INTO USER_PROFILE_INFO
         (
             PROFILE_ID,
@@ -55,19 +75,18 @@
              SYSTEM_UPDATER_ID =      #{userId}
     </insert>
 
-    <select id="getProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.PersonalDashDTO">
-        SELECT
-            ui.email,
-            ui.user_type_code,
-            up.NAME,
-            up.PHONE,
-            up.BIRTH,
-            up.GENDER,
-            up.ADDRESS,
-            up.PART_TIME_EXPERIENCE
-        FROM
-            user_info ui
-        INNER JOIN USER_PROFILE_INFO up ON ui.user_id = up.USER_ID
-        WHERE ui.user_id = #{userId}
+    <select id="getOldPassword" parameterType="int" resultType="com.job.dashboard.domain.dto.UserDTO">
+/*oldPassword로 예전 비밀번호 select 쿼리*/
+        SELECT password
+        FROM user_info
+        WHERE USER_ID = #{userId}
     </select>
+
+    <update id="updatePassword" parameterType="com.job.dashboard.domain.dto.UserDTO">
+        UPDATE user_info
+        SET
+            password = #{password}
+        WHERE
+            USER_ID = #{userId}
+    </update>
 </mapper>

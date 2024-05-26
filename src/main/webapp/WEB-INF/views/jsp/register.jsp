@@ -92,7 +92,7 @@
       const form = $('#personalForm');
       const checkBox = form.find("input[type='checkbox']");
       const isChecked = checkBox.prop('checked');
-      console.log("x:::  "+JSON.stringify(isChecked));
+      // console.log("x:::  "+JSON.stringify(isChecked));
 
       if (!isChecked) {
         alert("동의여부는 필수 입력 값입니다.");

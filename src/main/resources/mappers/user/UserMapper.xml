@@ -8,8 +8,20 @@
     </select>
 
     <insert id="accountInsert" parameterType="com.job.dashboard.domain.dto.UserDTO">
-        INSERT INTO user_info (email, password , user_type_code, system_register_id,system_updater_id)
-        VALUES (#{email}, #{password}, #{userTypeCode}, #{systemRegisterId}, #{systemUpdaterId})
+        INSERT INTO user_info
+        (
+            email,
+            password ,
+            user_type_code,
+            system_register_id,
+            system_updater_id
+        )  VALUES (
+            #{email},
+            #{password},
+            #{userTypeCode},
+            #{systemRegisterId},
+            #{systemUpdaterId}
+                    )
     </insert>
 
     <select id="getHashedPassword" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="java.lang.String">
@@ -19,7 +31,13 @@
     </select>
 
     <select id="findAccount" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="com.job.dashboard.domain.dto.UserDTO">
-        SELECT user_id, email, password, user_type_code, system_register_id, system_register_datetime, system_updater_id,
+        SELECT user_id,
+               email,
+               password,
+               user_type_code,
+               system_register_id,
+               system_register_datetime,
+               system_updater_id,
                system_update_datetime
         FROM user_info
         WHERE email = #{email}

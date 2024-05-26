@@ -8,6 +8,7 @@ public class UserDTO {
     private String email;
     private String password;
     private String password2;
+    private String newPassword;
     private String userTypeCode;
     private int systemRegisterId;
     private String systemRegisterDatetime;

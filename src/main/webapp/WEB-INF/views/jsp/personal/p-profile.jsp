@@ -25,19 +25,10 @@
       // 알바경험 선택 값 추가
       jsonData['partTimeExperience'] = $('input[name=partTimeExperience]:checked').val();
 
-      // jsonData['gender'] = $('#gender').is(':checked').val();
-      // var selectedGender = $('input[name="customRadio"]:checked').val();
-      // if (selectedGender) {
-      //   jsonData['gender'] = selectedGender;
-      // } else {
-      //   jsonData['gender'] = null; // 선택되지 않은 경우
-      // }
-
       console.log("x:::1111111111  "+JSON.stringify(jsonData));
-      const url = "/personal/myProfileSave";
 
       $.ajax({
-        url: url, // Spring 컨트롤러 URL
+        url: "/personal/myProfileSave", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
