@@ -287,7 +287,7 @@ banner -->
                     <div class="container">
                         <div class="row">
                             <c:forEach items="${jobList}" var="jobList">
-                            <div class="col-12" onclick="location.href='/business/detail?jobPostId=${jobList.jobPostId}'">
+                            <div class="col-12" onclick="location.href='/business/detail?jobId=${jobList.jobId}'">
                                 <div class="job-list ">
                                     <div class="job-list-logo">
                                         <img class="img-fluid" src="/images/svg/01.svg" alt="">
@@ -295,22 +295,21 @@ banner -->
                                     <div class="job-list-details">
                                         <div class="job-list-info">
                                             <div class="job-list-title">
-                                                <input type="hidden" id="jobPostId" name="jobPostId" value="${jobList.jobPostId}">
+                                                <input type="hidden" id="jobPostId" name="jobPostId" value="${jobList.jobId}">
                                                 <h5 class="mb-0">${jobList.title}</h5>
                                             </div>
                                             <div class="job-list-option">
                                                 <ul class="list-unstyled">
-                                                    <li> <a href="">${jobList.storeName}</a> </li>
+                                                    <li> <a href="">${jobList.jobTypeCode}</a> </li>
                                                 </ul>
                                                 <ul class="list-unstyled">
-                                                    <li><i class="fas fa-map-marker-alt pe-1"></i>${jobList.code1}${jobList.code2}</li>
-                                                    <li><i class="fas fa-filter pe-1"></i>${jobList.employmentType}</li>
-                                                    <li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>${jobList.salaryType}:${jobList.salary}</a></li>
+                                                    <li><i class="fas fa-map-marker-alt pe-1"></i>${jobList.address}</li>
+                                                    <li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>${jobList.salaryTypeCode}:${jobList.salary}</a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="job-list-favourite-time"> <a class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a> <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${job.registrarDatetime}</span> </div>
+                                    <div class="job-list-favourite-time"> <a class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a> <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${jobList.systemRegisterDatetime}</span> </div>
                                 </div>
                             </div>
                             </c:forEach>

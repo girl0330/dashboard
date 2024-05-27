@@ -49,7 +49,7 @@ public class UserController {
             return map;
         }
         UserDTO userId = (UserDTO) map.get("account");
-        session.setAttribute("userId", userId.getUserId());// userId만 가져와서 session에 넣기
+        session.setAttribute("userId", userId.getUserId());
         session.setAttribute("userEmail", userId.getEmail());
         session.setAttribute("userTypeCode", userId.getUserTypeCode());
         return map;

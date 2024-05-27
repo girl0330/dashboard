@@ -1,11 +1,13 @@
 package com.job.dashboard.domain.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class JobPostDTO {
+public class JobPostDTO extends UserDTO  {
 
     private int jobId; // 공고 번호
     private int userId; // 로그인한 회원 아이디

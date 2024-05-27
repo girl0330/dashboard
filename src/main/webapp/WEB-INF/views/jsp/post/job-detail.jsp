@@ -67,7 +67,7 @@ job list -->
   <div class="container">
     <div class="row">
       <div class="col-lg-8">
-        <form class="row" id="updateForm" name="updateForm">
+        <form class="col-md-12" id="updateForm" name="updateForm">
           <div class="row">
             <div class="col-md-12">
               <div class="job-list border">
@@ -77,43 +77,32 @@ job list -->
                 <div class="job-list-details">
                   <div class="job-list-info">
                     <div class="job-list-title">
-                      <h5 class="mb-0">${detail.storeName}</h5>
+                      <h5 class="mb-0">회사 이름</h5>
                     </div>
                     <div class="job-list-option">
                       <ul class="list-unstyled">
-                        <li><i class="fas fa-map-marker-alt pe-1"></i>${detail.code1}${detail.code2}${detail.code3}</li>
-                        <li><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="ps-2">${detail.storeCallNumber}</span></li>
+                        <li><i class="fas fa-map-marker-alt pe-1"></i>${detail.address}</li>
+                        <li><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="ps-2">${detail.managerNumber}</span></li>
                       </ul>
                     </div>
                   </div>
                 </div>
                 <div class="job-list-favourite-time">
                   <a  class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a>
-                  <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${detail.deadLine}</span>
+                  <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>마감날</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="border p-4 mt-4 mt-lg-5">
             <div class="row">
-              <div class="my-4 my-lg-2">
-                <h5 class="mb-4">모집조건</h5>
-              </div>
+              <h5 class="mb-4">모집조건</h5>
               <div class="col-md-4 col-sm-6 mb-4">
                 <div class="d-flex">
                   <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
                   <div class="feature-info-content ps-3">
                     <label class="mb-1">모집직종</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.workType}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-6 mb-4">
-                <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                  <div class="feature-info-content ps-3">
-                    <label class="mb-1">고용형태</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.employmentType}</span>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.jobTypeCode}</span>
                   </div>
                 </div>
               </div>
@@ -130,8 +119,8 @@ job list -->
                 <div class="d-flex">
                   <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
                   <div class="feature-info-content ps-3">
-                    <label class="mb-1">성별</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.gender}</span>
+                    <label class="mb-1">우대조건</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.requirement}</span>
                   </div>
                 </div>
               </div>
@@ -139,32 +128,21 @@ job list -->
                 <div class="d-flex">
                   <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
                   <div class="feature-info-content ps-3">
-                    <label class="mb-1">학력</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.qualifications}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-6 mb-4">
-                <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                  <div class="feature-info-content ps-3">
-                    <label class="mb-1">우대사항</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.etc}</span>
+                    <label class="mb-1">우대조건</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.requirement}</span>
                   </div>
                 </div>
               </div>
             </div>
             <hr>
             <div class="row">
-              <div class="my-4 my-lg-2">
-                <h5 class="mb-4">근무조건</h5>
-              </div>
+              <h5 class="mb-4">근무조건</h5>
               <div class="col-md-4 col-sm-6 mb-4">
                 <div class="d-flex">
                   <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
                   <div class="feature-info-content ps-3">
                     <label class="mb-1">급여타입</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.salaryType}</span>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.salaryTypeCode}</span>
                   </div>
                 </div>
               </div>
@@ -181,17 +159,8 @@ job list -->
                 <div class="d-flex">
                   <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
                   <div class="feature-info-content ps-3">
-                    <label class="mb-1">기타급여</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.otherSalary}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-6 mb-4">
-                <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                  <div class="feature-info-content ps-3">
-                    <label class="mb-1">근무기간</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.workingHours}</span>
+                    <label class="mb-1">근무유형</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.employmentTypeCode}</span>
                   </div>
                 </div>
               </div>
@@ -200,7 +169,7 @@ job list -->
                   <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
                   <div class="feature-info-content ps-3">
                     <label class="mb-1">근무요일</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.workingDays}</span>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.jobDayTypeCode}</span>
                   </div>
                 </div>
               </div>
@@ -209,7 +178,7 @@ job list -->
                   <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
                   <div class="feature-info-content ps-3">
                     <label class="mb-1">근무시간</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.workingTime}</span>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.jobTime}</span>
                   </div>
                 </div>
               </div>
@@ -218,7 +187,7 @@ job list -->
           <div class="border p-4 mt-4 mt-lg-5">
             <div class="my-4 my-lg-2">
               <h5 class="mb-3 mb-md-4">${detail.title}</h5>
-              <p>${detail.content}</p>
+              <p>${detail.description}</p>
             </div>
           </div>
           <div class="border p-4 mt-4 mt-lg-5">
@@ -233,11 +202,9 @@ job list -->
               </ul>
             </div>
           </div>
-          <div class="widget d-grid col-md-4" >
-            <a class="btn btn-primary " onclick="location.href='/business/updateView/${detail.jobPostId}'" id="button_update" name="button_update">수정하기</a>
-          </div>
-          <div class="widget d-grid col-md-4" >
-            <a class="btn btn-primary " onclick="location.href='/business/delete?id=${detail.jobPostId}'" id="button_delete" name="button_update">삭제하기</a>
+          <div class="col-12 text-center mt-4 mt-sm-5">
+            <a class="btn btn-outline-primary mb-3 mb-sm-0" onclick="location.href='/business/update?jobId=${detail.jobId}'" id="button_update" name="button_update">수정하기</a>
+            <a class="btn btn-outline-primary mb-3 mb-sm-0"  onclick="location.href='/business/delete?jobId=${detail.jobId}'" id="button_delete" name="button_delete">삭제하기</a>
           </div>
         </form>
       </div>

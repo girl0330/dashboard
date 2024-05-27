@@ -1,10 +1,26 @@
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
 
     let postSave = {
         init : function () {
+            // this.tabChange();
             this.formSubmit();
+
+        },
+
+        //tabChange 함수 실행
+        tabChange : function () {
+            alert("test");
+            $('.nav-item.active').removeClass('active');
+            $('.tab-pane.show.active').removeClass('show active');
+
+            $('#Confirm-tab').addClass('active');
+            $('#Confirm').addClass('show active');
+
+            // Job Detail 탭을 비활성화
+            $('#Job-detail-tab').addClass('disabled');
         },
 
         //전송 함수
@@ -20,10 +36,8 @@
 
             console.log("formDtat::: "+JSON.stringify(jsonData));
 
-            const url = "/business/savePost";
-
             $.ajax({
-                url: url, // Spring 컨트롤러 URL
+                url: "/business/savePost", // Spring 컨트롤러 URL
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
@@ -33,11 +47,8 @@
                     if(data.code === 'error') {
                         alert(data.message);
                     } else if (data.code === 'success'){
-                        //alert(data.message);
-                        //location.href='/business/list'
+                        alert(data.message);
 
-                        $('#Job-detail-tab').addClass('disabled');
-                        $("#Confirm-tab").tab('show');
                     }
                 },
                 error: function(xhr, status, error) {
@@ -49,9 +60,13 @@
     }
 
     //DOM
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById("profile_sava_button").addEventListener("click",function () {
+    $(document).ready(function (){
+        $("#post_sava_button").on("click", function () {
             postSave.init();
+        });
+
+        $(document).on('click', '.nav-item.disabled', function (e) {
+            e.preventDefault(); // 기본 동작을 방지
         });
     });
 </script>
@@ -74,14 +89,6 @@ tab -->
                                     <i class="flaticon-suitcase"></i>
                                 </div>
                                 <span>Job Detail</span>
-                            </a>
-                        </li>
-                        <li class="flex-fill">
-                            <a class="nav-item" id="Package-tab" data-bs-toggle="tab" href="#Package" role="tab" aria-controls="Package" aria-selected="false">
-                                <div class="feature-info-icon mb-3">
-                                    <i class="flaticon-debit-card"></i>
-                                </div>
-                                <span>Package &amp; Payments</span>
                             </a>
                         </li>
                         <li class="flex-fill">
@@ -220,95 +227,9 @@ tab -->
                                 <textarea class="form-control" rows="4" value="" name="etc" id="etc"></textarea>
                             </div>
                             <div class="col-md-12">
-                                <a class="btn btn-primary" id="profile_sava_button">작성완료</a>
+                                <a class="btn btn-primary" id="post_sava_button">작성완료</a>
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-    <div class="tab-pane fade show" id="Package" role="tabpanel" aria-labelledby="Package-tab">
-        <section class="space-ptb">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <h5 class="mb-4">Buy New Package</h5>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="table-responsive">
-                            <table class="table table-striped mb-0">
-                                <thead class="bg-light">
-                                <tr>
-                                    <th scope="col">Select</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Total Jobs</th>
-                                    <th scope="col">Job Expiry</th>
-                                    <th scope="col">Package Expiry</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="pachage-01">
-                                            <label class="custom-control-label" for="pachage-01"></label>
-                                        </div>
-                                    </td>
-                                    <th>Golden</th>
-                                    <td>$90.00</td>
-                                    <td>15</td>
-                                    <td>30 Days</td>
-                                    <td>30 Days</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="pachage-02">
-                                            <label class="custom-control-label" for="pachage-02"></label>
-                                        </div>
-                                    </td>
-                                    <th>Premium</th>
-                                    <td>$159.00</td>
-                                    <td>25</td>
-                                    <td>60 Days</td>
-                                    <td>60 Days</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="pachage-03">
-                                            <label class="custom-control-label" for="pachage-03"></label>
-                                        </div>
-                                    </td>
-                                    <th>Silver</th>
-                                    <td>$50.00</td>
-                                    <td>10</td>
-                                    <td>20 Days</td>
-                                    <td>20 Days</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="pachage-04">
-                                            <label class="custom-control-label" for="pachage-04"></label>
-                                        </div>
-                                    </td>
-                                    <th>Standard</th>
-                                    <td>Free</td>
-                                    <td>1</td>
-                                    <td>15 Days</td>
-                                    <td>15 Days</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-md-12 mt-4">
-                        <a class="btn btn-primary" href="#">Update Package</a>
                     </div>
                 </div>
             </div>
@@ -327,8 +248,8 @@ tab -->
                         <h6 class="mb-0 text-light">Email support@jobber.com</h6>
                     </div>
                     <div class="col-12 text-center mt-4 mt-sm-5">
-                        <a class="btn btn-outline-primary mb-3 mb-sm-0" href="#">Manage Jobs</a>
-                        <a class="btn btn-outline-primary mb-3 mb-sm-0" href="#">View Job</a>
+                        <a class="btn btn-outline-primary mb-3 mb-sm-0" href="#">공고 목록으로 이동</a>
+                        <a class="btn btn-outline-primary mb-3 mb-sm-0" href="#">공고 상세보기로 이동</a>
                     </div>
                 </div>
             </div>
