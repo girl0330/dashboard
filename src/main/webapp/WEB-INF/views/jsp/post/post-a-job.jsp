@@ -48,7 +48,7 @@
                         alert(data.message);
                     } else if (data.code === 'success'){
                         alert(data.message);
-
+                        location.href='/business/list'
                     }
                 },
                 error: function(xhr, status, error) {

@@ -1,12 +1,15 @@
 package com.job.dashboard.domain.business;
 
+import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.domain.dto.PersonalDashDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +43,7 @@ public class BusinessDashController {
     @ResponseBody
     public Map<Object, Object> savePost (@RequestBody JobPostDTO jobPostDTO, HttpSession session) {
         System.out.println("====공고 저장====");
-        Integer userId = (Integer) session.getAttribute("userId");
+        Integer userId = (Integer) session.getAttribute("userId"); //로그인한 id를 직접 넣을거임
         Map<Object, Object> map = businessDashService.saveJob(jobPostDTO,userId);
         System.out.println("map/::::::::::   "+ map);
         return map;
@@ -58,10 +61,13 @@ public class BusinessDashController {
 
     //공고 상세 페이지
     @GetMapping("/detail")
-    public String detail(@RequestParam("jobId") int id, Model model) {
+    public String detail(@RequestParam("jobId") int id, HttpSession session, Model model) {
         System.out.println("====상세페이지 ====");
+        Integer userId = (Integer) session.getAttribute("userId"); //로그인한 userId 가져옴
+        System.out.println("로그인한 userId확인 : "+userId);
         JobPostDTO detail = businessDashService.detail(id);
         System.out.println("detail?? "+detail);
+        model.addAttribute("loginUserId",userId);
         model.addAttribute("detail",detail);
         return "jsp/post/job-detail";
     }
@@ -77,9 +83,15 @@ public class BusinessDashController {
     *   데이터를 update쿼리로 수정한다.
     * */
     @GetMapping("/update")
-    public String update(@RequestParam("jobId") int id, Model model) {
+    public String update(@RequestParam("jobId") int id, HttpSession session, Model model) {
         System.out.println("수정하기 : id 확인"+id);
+        Integer userId = (Integer) session.getAttribute("userId"); //로그인한 userId 가져옴
         JobPostDTO old = businessDashService.detail(id);
+        if (old.getUserId() != userId) {
+            System.out.println("일치안함");
+            return "redirect:/";
+        }
+        System.out.println("일치함");
         System.out.println("old확인 : "+old);
         model.addAttribute("old",old);
         return "jsp/post/post-a-job-update";
@@ -87,23 +99,44 @@ public class BusinessDashController {
 
     @PostMapping("/postUpdate/{jobId}")
     @ResponseBody
-    public Map<Object, Object> updatePost (@PathVariable int jobId, @RequestBody JobPostDTO jobPostDTO) {
+    public Map<Object, Object> updatePost (@PathVariable int jobId, HttpSession session, @RequestBody JobPostDTO jobPostDTO ) {
         System.out.println("일단 데이터 확인부터..? "+jobId);
+
+        Integer userId = (Integer) session.getAttribute("userId");
+        System.out.println("userId확인해봦 ; "+userId);
         System.out.println("일단 데이터 확인부터..? "+jobPostDTO);
-        Map<Object, Object> map = businessDashService.update(jobId, jobPostDTO);
+        Map<Object, Object> map = businessDashService.update(userId, jobPostDTO);
         System.out.println(map);
         return map;
     }
 
     //게시글 삭제
+
+//    @GetMapping("/delete")
+//    public String delete (HttpSession session, @RequestParam("jobId") int jobId) {
+//        System.out.println("삭제합니다~");
+//        Integer userId = (Integer) session.getAttribute("userId");
+//        System.out.println("session 에서 가져온 id " + userId);
+//        System.out.println("jsp에서 가져온 jobId : "+jobId);
+//        Map<Object, Object> map = businessDashService.delete(jobId, userId);
+//        return "redirect:/list";
+//    }
+
     @GetMapping("/delete")
-    public Map<Object, Object> delete (HttpSession session, @RequestParam("jobId") int id) {
-        System.out.println("삭제합니다~");
+    public String delete(@RequestParam("jobId") int jobId, HttpSession session){
+        System.out.println("삭제");
         Integer userId = (Integer) session.getAttribute("userId");
         System.out.println("session 에서 가져온 id " + userId);
-        System.out.println("jsp에서 가져온 id : "+id);
-//        Map<Object, Object> map = businessDashService.delete();
-        return null;
+        System.out.println("jsp에서 가져온 jobId : "+jobId);
+        Map<Object, Object> map = businessDashService.delete(jobId, userId);
+        System.out.println("map"+map);
+        return "redirect:/business/list";
     }
 
+    @PostMapping("/apply")
+    @ResponseBody
+    public Map<String, Object> applyJob(@RequestBody int jobId, HttpSession session){
+        System.out.println("지원하기::");
+        return businessDashService.applyJob(jobId, session);
+    }
  }

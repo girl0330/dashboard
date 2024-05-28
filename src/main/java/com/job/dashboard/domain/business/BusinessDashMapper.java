@@ -1,6 +1,9 @@
 package com.job.dashboard.domain.business;
 
+import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.domain.dto.PersonalDashDTO;
+import com.job.dashboard.domain.dto.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -19,6 +22,24 @@ public interface BusinessDashMapper {
     JobPostDTO getJobDetail(int id);
 
     void updateJob(JobPostDTO jobPostDTO);
+
+    // 작성한 userId가져오기
+    Integer getWriteUserId(int jobId);
+
+    void delete(int jobId);
+
+    // 로그인 회원의 프로필 유무확인
+     PersonalDashDTO profileCheck(PersonalDashDTO personalDashDTO);
+
+    // 지원하기
+    String application(JobApplicationDTO jobApplicationDTO);
+
+    //회원 프로필 확인
+    int profileCount(int userId);
+
+    int applyCheck(Integer userId, int jobId);
+
+//    void delete(int jobId);
 
     //게시글 수정
 }

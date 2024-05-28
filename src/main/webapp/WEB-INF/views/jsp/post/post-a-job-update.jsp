@@ -46,6 +46,7 @@
                     console.log(JSON.stringify(data));
                     if(data.code === 'error') {
                         alert(data.message);
+
                     } else if (data.code === 'success'){
                         alert(data.message);
                         location.href='/business/list'
@@ -113,11 +114,13 @@ tab -->
                     <div class="col-12">
                         <form class="row" id="postJobForm" name="postJobForm">
                             <div class="row mt-4 mt-lg-5">
+
                                 <div class="col-12">
                                     <h5 class="mb-4"> 공고글 작성</h5>
                                 </div>
                             </div>
                             <div class="form-group col-md-12 mb-3">
+                                <input type="hidden" value="${old.userId}" name="userId" id="userId">
                                 <input type="hidden" value="${old.jobId}" name="jobId" id="jobId">
                                 <label class="mb-2"> 공고 제목 *</label>
                                 <input type="text" class="form-control" value="${old.title}" placeholder="공고 제목을 입력해주세요." name="title" id="title">

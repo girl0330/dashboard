@@ -35,11 +35,15 @@ public class PersonalDashController {
         if (!Objects.equals(userTypeCode, "10")) {
             return "redirect:/";
         }
-        Boolean profileCheck = personalDashService.profileCheck(userId);   //프로필이 작성 유무
-        System.out.println("profileCheck::::   " + profileCheck);
-            if (!profileCheck) { // 프로필 작성 후 이용가능
-                return "redirect:/personal/myProfile";
-            }
+//        Boolean profileCheck = personalDashService.profileCheck(userId);   //프로필이 작성 유무
+
+//        System.out.println("profileCheck::::   " + profileCheck);
+//
+//            if (!profileCheck) { // 프로필 작성 후 이용가능
+//                return "redirect:/personal/myProfile";
+//            } else {
+//
+//            }
         return "jsp/personal/p-dashboard";
     }
 

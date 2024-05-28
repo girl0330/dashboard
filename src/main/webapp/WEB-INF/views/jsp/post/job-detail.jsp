@@ -1,29 +1,61 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
-  // let update = {
-  //   init : function (jobPostId) {
-  //     alert("id"+jobPostId );
-  //     this.update(jobPostId);
-  //   },
-  //   update : function () {
-  //
-  //     const url = "/business/updateView";
-  //     window.location.href = url;
-  //   }
-  // }
-// function goToUpdate(jobPostId) {
-//   alert("id"+jobPostId )
-//   const url = "/business/updateView";
-//   window.location.href =url;
-// }
-  //DOM 실행 후 안의 내용이 실행 됨
+  let applyJob = {
+    init : function () {
+      this.applyJob();
+    },
+    applyJob : function () {
 
-  // document.addEventListener('DOMContentLoaded', function () {
-  //   $('#button_update').click(function() {
-  //     update.init();
-  //   });
-  // });
+      alert("수정함수")
+      /*
+      const jobId = $("#${detail.jobId}").val();
+
+      let jsonData = {};
+      jsonData.jobId = jobId;
+      */
+
+      const jsonData = {"jobId": $("#jobId").val()};
+
+      console.log("jobId::: "+JSON.stringify(jsonData));
+
+      $.ajax({
+        url: "/business/apply", // Spring 컨트롤러 URL
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
+        success: function(data) {
+          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+          console.log(JSON.stringify(data));
+          if(data.code === 'error') {
+            alert(data.message);
+
+          } else if (data.code === 'success'){
+            alert(data.message);
+            location.href='/business/list'
+          } else if (data.code === 'notProfile'){
+
+          }
+        },
+        error: function(xhr, status, error) {
+          // 오류 발생 시 실행할 코드
+          console.error(error);
+        }
+      });
+    }
+  }
+function goToUpdate(jobPostId) {
+  alert("id"+jobPostId )
+  const url = "/business/updateView";
+  window.location.href =url;
+}
+  // DOM 실행 후 안의 내용이 실행 됨
+
+  document.addEventListener('DOMContentLoaded', function () {
+    $('#button_apply').click(function() {
+      applyJob.init();
+    });
+  });
 
 </script>
 
@@ -77,6 +109,7 @@ job list -->
                 <div class="job-list-details">
                   <div class="job-list-info">
                     <div class="job-list-title">
+                      <input type="hidden" id="jobId" name="jobId" value="${detail.jobId}">
                       <h5 class="mb-0">회사 이름</h5>
                     </div>
                     <div class="job-list-option">
@@ -88,7 +121,7 @@ job list -->
                   </div>
                 </div>
                 <div class="job-list-favourite-time">
-                  <a  class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a>
+                  <a  class="job-list-favourite order-2" href="#" onclick=""><i class="far fa-heart"></i></a>
                   <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>마감날</span>
                 </div>
               </div>
@@ -202,10 +235,14 @@ job list -->
               </ul>
             </div>
           </div>
+          <c:if test="${detail.userId eq loginUserId}">
+
           <div class="col-12 text-center mt-4 mt-sm-5">
             <a class="btn btn-outline-primary mb-3 mb-sm-0" onclick="location.href='/business/update?jobId=${detail.jobId}'" id="button_update" name="button_update">수정하기</a>
             <a class="btn btn-outline-primary mb-3 mb-sm-0"  onclick="location.href='/business/delete?jobId=${detail.jobId}'" id="button_delete" name="button_delete">삭제하기</a>
           </div>
+
+          </c:if>
         </form>
       </div>
       <!--=================================
@@ -213,7 +250,7 @@ job list -->
       <div class="col-lg-4">
         <div class="sidebar mb-0">
           <div class="widget d-grid">
-            <a class="btn btn-primary" href="#"><i class="far fa-paper-plane"></i>Apply for job</a>
+            <a class="btn btn-primary" href="#" id="button_apply" name="button_apply"><i class="far fa-paper-plane"></i>지원하기</a>
           </div>
           <div class="widget">
             <div class="company-detail-meta">
