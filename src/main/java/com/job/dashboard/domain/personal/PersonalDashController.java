@@ -1,5 +1,7 @@
 package com.job.dashboard.domain.personal;
 
+import com.job.dashboard.domain.dto.JobApplicationDTO;
+import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.domain.dto.PersonalDashDTO;
 import com.job.dashboard.domain.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,9 +30,10 @@ public class PersonalDashController {
         String userEmail = (String) session.getAttribute("userEmail");
         System.out.println("userEmail;;;;::    " + userEmail);
         System.out.println("userId::::;     " + userId);
-            if (userId == null) { // 로그인 후 이용가능
+        if (userId == null) { // 로그인 후 이용가능
                 return "redirect:/user/login";
-            }
+        }
+
         model.addAttribute("userTypeCode", "userTypeCode"); //유저코드 '10' 이용가능
         System.out.println("userTypeCode::::            " + userTypeCode);
         if (!Objects.equals(userTypeCode, "10")) {
@@ -112,8 +116,39 @@ public class PersonalDashController {
     @GetMapping("/manageJobs")
     public String manageJobsView(HttpSession session, Model model) {
         System.out.println("==== 개인 회원 manageJobs====");
+        Integer userId = (Integer) session.getAttribute("userId");
+        String userTypeCode = (String) session.getAttribute("userTypeCode");
+        System.out.println("userId::::;     " + userId);
+        if (userId == null) { // 로그인 후 이용가능
+            return "redirect:/user/login";
+        }
+        System.out.println("userTypeCode::::            " + userTypeCode);
+        if (!Objects.equals(userTypeCode, "10")) {
+            return "redirect:/";
+        }
+        List<JobApplicationDTO> applyList = personalDashService.applyList(userId);
+        System.out.println("==========================> 지원 현황 리스트!"+applyList);
+        model.addAttribute("applyList", applyList);
         return "jsp/personal/p-manageJobs";
     }
+
+    @PostMapping("/applyListDelete")
+    @ResponseBody
+    public Map<String, Object> applyListDelete(@RequestBody int applicationId){
+        System.out.println("지원리스트 삭제"+applicationId);
+        Map<String, Object> map = personalDashService.applyListDelete(applicationId);
+        System.out.println("map확인 "+map);
+        return map;
+    }
+
+//    @PostMapping("/applyListLook")
+//    public String applyListLook(@RequestBody int jobId){
+//        System.out.println("지원리스트 자세히 보기 jobId"+jobId);
+//
+//        JobPostDTO postDetailView = personalDashService.postDetailView(jobId);
+//        return "jsp/post/job-detail";
+//    }
+
     @GetMapping("/savedJobs")
     public String savedJobsView(HttpSession session, Model model) {
         System.out.println("==== 개인 회원 savedJobs====");

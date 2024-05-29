@@ -3,6 +3,7 @@ package com.job.dashboard.domain.business;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.domain.dto.PersonalDashDTO;
+import com.job.dashboard.domain.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -111,17 +112,6 @@ public class BusinessDashController {
     }
 
     //게시글 삭제
-
-//    @GetMapping("/delete")
-//    public String delete (HttpSession session, @RequestParam("jobId") int jobId) {
-//        System.out.println("삭제합니다~");
-//        Integer userId = (Integer) session.getAttribute("userId");
-//        System.out.println("session 에서 가져온 id " + userId);
-//        System.out.println("jsp에서 가져온 jobId : "+jobId);
-//        Map<Object, Object> map = businessDashService.delete(jobId, userId);
-//        return "redirect:/list";
-//    }
-
     @GetMapping("/delete")
     public String delete(@RequestParam("jobId") int jobId, HttpSession session){
         System.out.println("삭제");
@@ -135,8 +125,19 @@ public class BusinessDashController {
 
     @PostMapping("/apply")
     @ResponseBody
-    public Map<String, Object> applyJob(@RequestBody int jobId, HttpSession session){
+    public Map<String, Object> applyJob(@RequestBody Integer jobId, HttpSession session){
         System.out.println("지원하기::");
-        return businessDashService.applyJob(jobId, session);
+        Map<String, Object> map = businessDashService.applyJob(jobId, session);
+        System.out.println("=========================>  map 확인 : "+map);
+        return map;
     }
+
+//    @PostMapping("/apply")
+//    @ResponseBody
+//    public Map<String, Object> applyJob1(@RequestBody int jobId, HttpSession session) {
+//        System.out.println("지원하기 "+ jobId);
+//        Map<String, Object> map = businessDashService.applyJob(jobId, session);
+//        System.out.println("넘어온 정보 확인" + map);
+//        return map;
+//    }
  }

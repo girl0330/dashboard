@@ -89,4 +89,28 @@
         WHERE
             USER_ID = #{userId}
     </update>
+
+    <select id="applyList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        SELECT
+            jai.application_id,
+            jai.job_id,
+            jai.user_id,
+            jpi.title,
+            jai.status_type_code,
+            jai.system_register_datetime
+        FROM
+            job_application_info jai
+                INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
+        WHERE
+            jai.user_id = #{userId}
+    </select>
+
+    <delete id="applyListDelete" parameterType="int">
+        /*job게시글 삭제하기*/
+        DELETE
+        FROM job_application_info
+        WHERE application_id = #{applicationId}
+    </delete>
+
+<!--    <select id="postFind"-->
 </mapper>

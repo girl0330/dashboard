@@ -1,9 +1,12 @@
 package com.job.dashboard.domain.personal;
 
+import com.job.dashboard.domain.dto.JobApplicationDTO;
+import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.domain.dto.PersonalDashDTO;
 import com.job.dashboard.domain.dto.UserDTO;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 
 public interface PersonalDashService {
@@ -19,6 +22,15 @@ public interface PersonalDashService {
 
     // 비밀번호 변경하기
     Map<Object, Object> changePassword(UserDTO userDTO);
+
+    // 지원 현황리스트
+    List<JobApplicationDTO> applyList(Integer userId);
+    // 지원 리스트 삭제
+    Map<String, Object> applyListDelete(int applicationId);
+    // 지원 리스트 보기
+//    JobPostDTO postDetailView(int jobId);
+
+//    Map<String, Object> applyListLook(int applicationId);
 
     // 비밀번호 업데이트
 }

@@ -27,5 +27,5 @@ public interface BusinessDashService {
     //삭제
     Map<Object, Object> delete(int jobId, Integer userId);
 
-    Map<String,Object> applyJob(int jobId, HttpSession session);
+    Map<String,Object> applyJob(Integer jobId, HttpSession session);
 }

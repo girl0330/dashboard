@@ -37,7 +37,12 @@ public interface BusinessDashMapper {
     //회원 프로필 확인
     int profileCount(int userId);
 
-    int applyCheck(Integer userId, int jobId);
+    //중복 지원 체크
+    int applyCheck(JobApplicationDTO jobApplicationDTO);
+
+    //공고 지원하기
+    void insertJobApplicationInfo(JobApplicationDTO jobApplicationDTO);
+
 
 //    void delete(int jobId);
 

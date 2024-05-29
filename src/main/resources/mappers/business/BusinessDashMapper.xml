@@ -118,21 +118,32 @@
         WHERE user_id = #{userId}
     </select>
 
-    <insert id="application" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
-        /*지원하기*/
-        INSERT INTO job_application_info (job_id,
-                                          user_id,
-                                          status_type_code,
-                                          systemRegisterId)
-        VALUES (#{jobId},
-                #{userId},
-                '지원중',
-                #{systemRegisterId}
-    </insert>
-
     <select id="profileCount" parameterType="int" resultType="int">
+ /*프로필 있는지 확인*/
         SELECT count(1)
         FROM user_profile_info
         WHERE USER_ID = #{userId}
     </select>
+
+    <select id="applyCheck" parameterType="int" resultType="int">
+        /*중복 지원하는지 체크*/
+        SELECT count(1)
+        FROM job_application_info
+        WHERE USER_ID = #{userId}
+        AND job_id = #{jobId}
+    </select>
+
+    <insert id="insertJobApplicationInfo" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        /*지원하기*/
+        INSERT INTO job_application_info (job_id,
+                                          user_id,
+                                          status_type_code,
+                                          system_register_id,
+                                          system_updater_id)
+        VALUES (#{jobId},
+                #{userId},
+                '지원중',
+                #{systemRegisterId},
+                #{userId})
+    </insert>
 </mapper>

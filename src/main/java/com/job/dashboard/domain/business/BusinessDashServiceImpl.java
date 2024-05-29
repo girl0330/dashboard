@@ -74,7 +74,7 @@ public class BusinessDashServiceImpl implements BusinessDashService {
         return map;
     }
 
-    public Map<String, Object> applyJob(int jobId, HttpSession session) {
+    public Map<String, Object> applyJob(Integer jobId, HttpSession session) {
 
         Map<String, Object> map = new HashMap<>();
 
@@ -96,15 +96,25 @@ public class BusinessDashServiceImpl implements BusinessDashService {
         }
 
         JobApplicationDTO jobApplicationDTO = new JobApplicationDTO();
-        /*
-        jobApplicationDTO.setJobId();
-        jobApplicationDTO.setUserId();
+        jobApplicationDTO.setJobId(jobId);
+        jobApplicationDTO.setUserId(userId);
         jobApplicationDTO.setStatusTypeCode("APPLY"); //APPLY:지원중, CLOSE:마감, HIRE:채용
-         */
+        jobApplicationDTO.setSystemRegisterId(userId);
+        jobApplicationDTO.setSystemUpdaterId(userId);
+        System.out.println("jobApplicationDTO 확인: "+ jobApplicationDTO);
         //중복지원인지 확인이 필요하잖아~! select count(1) from table where 조건=1 and 조건=2
-        int applyCheck = businessDashMapper.applyCheck(userId, jobId);
+        int applyCheck = businessDashMapper.applyCheck(jobApplicationDTO);
+        if (applyCheck == 1) {
+            map.put("code", "applyDubleError");
+            map.put("message", "이미 지원 하셨습니다.");
+            return map;
+        }
+        System.out.println("지원됨");
 
-        //지원하기(Insert)
-        return null;
+        //insert
+        businessDashMapper.insertJobApplicationInfo(jobApplicationDTO);
+        map.put("code", "success");
+        map.put("message", "지원 성공!");
+        return map;
     }
 }

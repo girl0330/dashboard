@@ -9,15 +9,26 @@
 
       alert("수정함수")
       /*
-      const jobId = $("#${detail.jobId}").val();
+      <%--const jobId = $("#${detail.jobId}").val();--%>
 
       let jsonData = {};
       jsonData.jobId = jobId;
       */
 
-      const jsonData = {"jobId": $("#jobId").val()};
+      //
+      // const jsonData = {"jobId": $("#jobId").val()};
+      //
+      // console.log("jobId::: "+JSON.stringify(jsonData));
 
-      console.log("jobId::: "+JSON.stringify(jsonData));
+      const jobIdValue = $("#jobId").val();
+
+      // 문자열을 정수로 변환
+      const jobIdInt = parseInt(jobIdValue, 10);
+
+      // 해당 값을 JSON 데이터로 변환
+      // const jsonData = {"jobId": jobIdInt};
+      const jsonData = jobIdInt;
+      console.log("jsonData: "+ JSON.stringify(jsonData));
 
       $.ajax({
         url: "/business/apply", // Spring 컨트롤러 URL
@@ -27,14 +38,16 @@
         success: function(data) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
           console.log(JSON.stringify(data));
-          if(data.code === 'error') {
+          if(data.code === 'loginError') {
             alert(data.message);
-
-          } else if (data.code === 'success'){
+            location.href='/user/login'
+          } else if (data.code === 'profileError'){
             alert(data.message);
-            location.href='/business/list'
-          } else if (data.code === 'notProfile'){
-
+            location.href='/personal/myProfile'
+          } else if (data.code === 'applyDubleError'){
+            alert(data.message);
+          }else if (data.code === 'success') {
+            alert(data.message);
           }
         },
         error: function(xhr, status, error) {
@@ -44,11 +57,6 @@
       });
     }
   }
-function goToUpdate(jobPostId) {
-  alert("id"+jobPostId )
-  const url = "/business/updateView";
-  window.location.href =url;
-}
   // DOM 실행 후 안의 내용이 실행 됨
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -235,14 +243,13 @@ job list -->
               </ul>
             </div>
           </div>
-          <c:if test="${detail.userId eq loginUserId}">
-
           <div class="col-12 text-center mt-4 mt-sm-5">
+            <a class="btn btn-outline-primary mb-3 mb-sm-0"  onclick="location.href='/business/list'" id="button_delete" name="button_delete">공고목록</a>
+          <c:if test="${detail.userId eq loginUserId}">
             <a class="btn btn-outline-primary mb-3 mb-sm-0" onclick="location.href='/business/update?jobId=${detail.jobId}'" id="button_update" name="button_update">수정하기</a>
             <a class="btn btn-outline-primary mb-3 mb-sm-0"  onclick="location.href='/business/delete?jobId=${detail.jobId}'" id="button_delete" name="button_delete">삭제하기</a>
-          </div>
-
           </c:if>
+          </div>
         </form>
       </div>
       <!--=================================
