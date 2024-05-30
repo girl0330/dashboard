@@ -120,7 +120,7 @@ tab -->
                                 </div>
                             </div>
                             <div class="form-group col-md-12 mb-3">
-                                <input type="hidden" value="${old.userId}" name="userId" id="userId">
+                                <input type="hidden" value="${old.userNo}" name="userNo" id="userNo">
                                 <input type="hidden" value="${old.jobId}" name="jobId" id="jobId">
                                 <label class="mb-2"> 공고 제목 *</label>
                                 <input type="text" class="form-control" value="${old.title}" placeholder="공고 제목을 입력해주세요." name="title" id="title">

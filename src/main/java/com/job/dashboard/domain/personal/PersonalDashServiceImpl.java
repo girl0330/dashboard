@@ -23,10 +23,10 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     //프로필이 작성 유무
-    public Boolean profileCheck(Integer userId) {
+    public Boolean profileCheck(Integer userNo) {
         System.out.println("프로필 유무 체크");
         boolean profileCheck;
-        int x = personalDashMapper.profileCheck(userId);
+        int x = personalDashMapper.profileCheck(userNo);
         System.out.println("x ::::   " + x);
         profileCheck = x > 0;
 
@@ -34,9 +34,9 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     }
 
     // 기존 작성된 프로필 가져오기
-    public PersonalDashDTO getProfile(Integer userId) {
+    public PersonalDashDTO getProfile(Integer userNo) {
         System.out.println("====피로필 impl");
-        PersonalDashDTO profile = personalDashMapper.getProfile(userId);
+        PersonalDashDTO profile = personalDashMapper.getProfile(userNo);
         System.out.println("profile;;;;::::   " + profile);
         return profile;
     }
@@ -46,23 +46,23 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     public Map<Object, String> saveProfile(PersonalDashDTO personalDashDTO, HttpSession session) {
         System.out.println("======profileSave === impl====");
         Map<Object, String> map = new HashMap<>();
-        int userId = personalDashDTO.getUserId();
-//        int userId = (int)session.getAttribute("userId");
-        System.out.println(userId + "            userId 확인해볼게요  ");
-        List<PersonalDashDTO> profile = personalDashMapper.checkProfile(userId); //userId를 가지고 프로필 존재 확인
+        int userNo = personalDashDTO.getUserNo();
+//        int userNo = (int)session.getAttribute("userNo");
+        System.out.println(userNo + "            userNo 확인해볼게요  ");
+        List<PersonalDashDTO> profile = personalDashMapper.checkProfile(userNo); //userNo를 가지고 프로필 존재 확인
         System.out.println("checkPfofile------>>     " + profile);
 
         int x = profile.size();
 
         if (x == 0) {
-            int profileSeq = personalDashMapper.getProfileIdSeq(userId);
+            int profileSeq = personalDashMapper.getProfileIdSeq(userNo);
             System.out.println("profileSeq????? " + profileSeq + "                      <<<<<<<<<<");
             personalDashDTO.setProfileId(profileSeq);
             System.out.println("personalDto 확인해봅시다...........   " + personalDashDTO);
         } else {
             personalDashDTO.setProfileId(profile.get(0).getProfileId());
         }
-        personalDashDTO.setUserId(userId);
+        personalDashDTO.setUserNo(userNo);
 
         //pk가 없으면 insert 있으면 update
         personalDashMapper.saveProfile(personalDashDTO);
@@ -77,7 +77,7 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     // 비밀번호 업데이트
     /*비밀번호 업데이트 하려면
      * 1. 내가 입력한 현재비밀번호와 저장된 내 비밀 번호가 일치 하는가?
-     *       입력한 dto에 같이 전달해준 userid를 저장해서
+     *       입력한 dto에 같이 전달해준 userNo를 저장해서
      *       서비스에서 저장된 id로 일치한 user정보를 저장
      *       저장한 해시비밀번호를 따로 가져옴
      *       가져온 해시비밀번호와 내가 입력한 비밀번호가 일치하는지 확인
@@ -90,8 +90,8 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         Map<Object, Object> map = new HashMap<>();
         String enteredPassword = userDTO.getPassword();
         System.out.println("입력한 비밀번호 : " + enteredPassword);
-        int userId = userDTO.getUserId();
-        String getPassword = personalDashMapper.getOldPassword(userId).getPassword();
+        int userNo = userDTO.getUserNo();
+        String getPassword = personalDashMapper.getOldPassword(userNo).getPassword();
         System.out.println("입력되어 있었던 비번 :: " + getPassword);
 
         boolean pwCheck = passwordEncoder.matches(enteredPassword, getPassword);
@@ -128,9 +128,9 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     }
 
     //지원형황 리스트
-    public List<JobApplicationDTO> applyList(Integer userId) {
+    public List<JobApplicationDTO> applyList(Integer userNo) {
         System.out.println("지원현황 리스트 임플");
-        return personalDashMapper.applyList(userId);
+        return personalDashMapper.applyList(userNo);
     }
 
     //지원 리스트 삭제
@@ -143,11 +143,11 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         return map;
     }
 
-//    //지원 리스트 보기
-//    public JobPostDTO postDetailView(int jobId) {
-//        JobPostDTO jobPostDTO = new JobPostDTO();
-//        JobPostDTO postFind = personalDashMapper.postFind(jobId);
-//    }
+    //지원 리스트 보기
+    public List<JobApplicationDTO> applyJobList(Integer userNo) {
+        System.out.println("지원한 리스트 임플");
+        return personalDashMapper.getApplyJobList(userNo);
+    }
 //    public Map<String, Object> applyListLook(int applicationId) {
 //
 //        System.out.println("지원 리스트 보기");

@@ -31,7 +31,7 @@
     </select>
 
     <select id="findAccount" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="com.job.dashboard.domain.dto.UserDTO">
-        SELECT user_id,
+        SELECT USER_NO,
                email,
                password,
                user_type_code,

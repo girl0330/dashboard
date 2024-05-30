@@ -122,11 +122,11 @@ My Profile -->
               <div class="form-group mb-3 col-md-6" >
                 <label class="d-block mb-3">알바 경험</label>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" value="${profile.partTimeExperience}" name="partTimeExperience" id="yes">
+                  <input class="form-check-input" type="radio" value="yes" name="partTimeExperience" id="yes" ${profile.partTimeExperience == "yes" ? "checked" : ""}>
                   <label class="form-check-label" for="yes">yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" value="${profile.partTimeExperience}" name="partTimeExperience" id="no">
+                  <input class="form-check-input" type="radio" value="no" name="partTimeExperience" id="no" ${profile.partTimeExperience == "no" ? "checked" : ""}>
                   <label class="form-check-label" for="no">no</label>
                 </div>
               </div>

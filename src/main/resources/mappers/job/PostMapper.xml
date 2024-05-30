@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.job.dashboard.domain.job.PostMapper">
+    <insert id="saveJob" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
+        /*job게시글 저장*/
+        INSERT INTO job_post_info (USER_NO,
+                                   title,
+                                   description,
+                                   job_type_code,
+                                   address,
+                                   salary_type_code,
+                                   salary,
+                                   job_time,
+                                   job_day_type_code,
+                                   manager_number,
+                                   requirement,
+                                   number_of_staff,
+                                   employment_type_code,
+                                   etc,
+                                   system_register_id)
+        VALUES (#{userNo},
+                #{title},
+                #{description},
+                #{jobTypeCode},
+                #{address},
+                #{salaryTypeCode},
+                #{salary},
+                #{jobTime},
+                #{jobDayTypeCode},
+                #{managerNumber},
+                #{requirement},
+                #{numberOfStaff},
+                #{employmentTypeCode},
+                #{etc},
+                #{systemRegisterId})
+    </insert>
+
+    <select id="getJobLists" resultType="com.job.dashboard.domain.dto.JobPostDTO">
+        /*job게시글 목록들 가져오기*/
+        SELECT job_id,
+               USER_NO,
+               title,
+               job_type_code,
+               address,
+               salary_type_code,
+               salary,
+               system_register_datetime,
+               job_time
+        FROM job_post_info
+        ORDER BY system_register_datetime DESC
+    </select>
+
+    <select id="getJobDetail" resultType="com.job.dashboard.domain.dto.JobPostDTO" parameterType="int">
+        /*job게시글 상세페이지 가져오기*/
+        SELECT
+            job_id,
+            USER_NO,
+            title,
+            description,
+            job_type_code,
+            address,
+            salary_type_code,
+            salary,
+            job_time,
+            job_day_type_code,
+            manager_number,
+            requirement,
+            number_of_staff,
+            employment_type_code,
+            etc,
+            system_register_id,
+            system_updater_id
+        FROM job_post_info
+        WHERE job_id = #{jobId}
+    </select>
+
+    <update id="updateJob" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
+        UPDATE job_post_info
+        SET
+            USER_NO = #{userNo},
+            title = #{title},
+            description = #{description},
+            job_type_code = #{jobTypeCode},
+            address = #{address},
+            salary_type_code = #{salaryTypeCode},
+            salary = #{salary},
+            job_time = #{jobTime},
+            job_day_type_code = #{jobDayTypeCode},
+            manager_number = #{managerNumber},
+            requirement = #{requirement},
+            number_of_staff = #{numberOfStaff},
+            employment_type_code = #{employmentTypeCode},
+            etc = #{etc},
+            system_updater_id = #{systemUpdaterId}
+        WHERE
+            job_id = #{jobId}
+    </update>
+
+    <select id="getWriteUserNo" resultType="int" parameterType="int">
+        /*job게시글 작성한 userNo 가져오기*/
+        SELECT
+            USER_NO
+        FROM job_post_info
+        WHERE job_id = #{jobId}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        /*job게시글 삭제하기*/
+        DELETE
+        FROM job_post_info
+        WHERE job_id = #{jobId}
+    </delete>
+
+    <select id="profileCheck" parameterType="com.job.dashboard.domain.dto.PersonalDashDTO" resultType="int">
+        /*회원 프로필 유무 확인*/
+        SELECT profile_id
+        FROM USER_PROFILE_INFO
+        WHERE USER_NO = #{userNo}
+    </select>
+
+    <select id="profileCount" parameterType="int" resultType="int">
+ /*프로필 있는지 확인*/
+        SELECT count(1)
+        FROM user_profile_info
+        WHERE USER_NO = #{userNo}
+    </select>
+
+    <select id="applyCheck" parameterType="int" resultType="int">
+        /*중복 지원하는지 체크*/
+        SELECT count(1)
+        FROM job_application_info
+        WHERE USER_NO = #{userNo}
+        AND job_id = #{jobId}
+    </select>
+
+    <insert id="insertJobApplicationInfo" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        /*지원하기*/
+        INSERT INTO job_application_info (job_id,
+                                          USER_NO,
+                                          status_type_code,
+                                          system_register_id,
+                                          system_updater_id)
+        VALUES (#{jobId},
+                #{userNo},
+                '지원중',
+                #{systemRegisterId},
+                #{userNo})
+    </insert>
+</mapper>

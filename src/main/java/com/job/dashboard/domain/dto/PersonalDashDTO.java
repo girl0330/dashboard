@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class PersonalDashDTO extends UserDTO{
     private int profileId;
-    private int userId;
+    private int userNo;
     private String name;
     private String phone;
     private String birth;

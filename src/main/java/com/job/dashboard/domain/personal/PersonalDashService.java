@@ -12,10 +12,10 @@ import java.util.Map;
 public interface PersonalDashService {
 
     //프로필이 작성 유무
-    Boolean profileCheck(Integer userId);
+    Boolean profileCheck(Integer userNo);
 
     // 기존 작성된 프로필 가져오기
-    PersonalDashDTO getProfile(Integer userId);
+    PersonalDashDTO getProfile(Integer userNo);
 
     // 프로필 저장하기
     Map<Object, String> saveProfile(PersonalDashDTO personalDashDTO, HttpSession session);
@@ -24,9 +24,12 @@ public interface PersonalDashService {
     Map<Object, Object> changePassword(UserDTO userDTO);
 
     // 지원 현황리스트
-    List<JobApplicationDTO> applyList(Integer userId);
+    List<JobApplicationDTO> applyList(Integer userNo);
     // 지원 리스트 삭제
     Map<String, Object> applyListDelete(int applicationId);
+
+    // 지원한 목록리스트
+    List<JobApplicationDTO> applyJobList(Integer userNo);
     // 지원 리스트 보기
 //    JobPostDTO postDetailView(int jobId);
 

@@ -8,10 +8,13 @@ import lombok.EqualsAndHashCode;
 public class JobApplicationDTO extends JobPostDTO{
     private int applicationId;
     private int jobId;
-    private int userId;
+    private int userNo;
     private String statusTypeCode;
     private int systemRegisterId;
     private String systemRegisterDatetime;
     private int systemUpdaterId;
     private String systemUpdateDatetime;
+    private String statusTypeCodeName;
+    private String jobTypeCodeName;
+    private String salaryTypeCodeName;
 }

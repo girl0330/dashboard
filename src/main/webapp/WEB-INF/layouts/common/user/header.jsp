@@ -51,13 +51,11 @@
                                             </ul>
                                         </div>
                                         <div class="col-sm-4">
-                                            <h6 class="mb-3 nav-title">Pages</h6>
+                                            <h6 class="mb-3 nav-title">계정</h6>
                                             <ul class="list-unstyled mt-lg-3">
-                                                <li><a href="/jsp/register.jsp">Login</a></li>
-                                                <li><a href="/register.html">Register</a></li>
-                                                <li><a href="/coming-soon.html">Coming soon</a></li>
-                                                <li><a href="/404-error.html">404 Error</a></li>
-                                                <li><a href="/terms-and-conditions.html">T&C</a></li>
+                                                <li><a href="/user/login">로그인</a></li>
+                                                <li><a href="/user/signup">회원가입</a></li>
+                                                <li><a href="/user/logout">로그아웃</a></li>
 
                                             </ul>
                                         </div>
@@ -176,13 +174,12 @@
                                 <li class="dropdown-submenu">
                                     <a class="dropdown-item dropdown-toggle" href="/javascript:void(0)">Dashboard <i class="fas fa-chevron-right fa-xs"></i></a>
                                     <ul class="dropdown-menu left-side">
-                                        <li><a class="dropdown-item" href="/dashboard-employer.html">Dashboard</a></li>
-                                        <li><a class="dropdown-item" href="/dashboard-employer-my-profile.html">Profile</a></li>
-                                        <li><a class="dropdown-item" href="/dashboard-employer-change-password.html">Change Password </a></li>
-                                        <li><a class="dropdown-item" href="/dashboard-employer-manage-candidates.html">Manage Candidates</a></li>
-                                        <li><a class="dropdown-item" href="/dashboard-employer-manage-jobs.html">Manage Jobs</a></li>
-                                        <li><a class="dropdown-item" href="/dashboard-employer-post-new-job.html">Post New Job</a></li>
-                                        <li><a class="dropdown-item" href="/dashboard-employer-pricing.html">Pricing</a></li>
+                                        <li><a class="dropdown-item" href="/business/dashboard">Dashboard</a></li>
+                                        <li><a class="dropdown-item" href="/business/profile">프로필</a></li>
+                                        <li><a class="dropdown-item" href="/business/changePassword">비밀번호 변경</a></li>
+                                        <li><a class="dropdown-item" href="/business/manageCandidate">지원자 관리</a></li>
+                                        <li><a class="dropdown-item" href="/business/managePostJob">게시글 관리</a></li>
+                                        <li><a class="dropdown-item" href="/business/postAJob">공고 작성하기</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -199,12 +196,12 @@
                                 <li class="dropdown-submenu">
                                     <a class="dropdown-item dropdown-toggle" href="/javascript:void(0)">Dashboard <i class="fas fa-chevron-right fa-xs"></i></a>
                                     <ul class="dropdown-menu left-side">
-                                        <li><a class="dropdown-item" href="/dashboard-candidates.html">Dashboard</a></li>
-                                        <li><a class="dropdown-item" href="/dashboard-candidates-my-profile.html">Profile</a></li>
-                                        <li><a class="dropdown-item" href="/dashboard-candidates-change-password.html">Change Password </a></li>
-                                        <li><a class="dropdown-item" href="/dashboard-candidates-my-resume.html">My Resume</a></li>
-                                        <li><a class="dropdown-item" href="/dashboard-candidates-manage-jobs.html">Manage Jobs</a></li>
-                                        <li><a class="dropdown-item" href="/dashboard-candidates-saved-jobs.html">Saved Jobs</a></li>
+                                        <li><a class="dropdown-item" href="/personal/dashboard">Dashboard</a></li>
+                                        <li><a class="dropdown-item" href="/personal/myProfile">프로필</a></li>
+                                        <li><a class="dropdown-item" href="/personal/changePassword">비밀번호 변경</a></li>
+                                        <li><a class="dropdown-item" href="/dashboard-candidates-my-resume.html">내 이력서</a></li>
+                                        <li><a class="dropdown-item" href="/personal/manageJobs">지원현황</a></li>
+                                        <li><a class="dropdown-item" href="/dashboard-candidates-saved-jobs.html">관심있는 공고</a></li>
                                         <li><a class="dropdown-item" href="/dashboard-candidates-pricing.html">Pricing</a></li>
                                     </ul>
                                 </li>
@@ -215,9 +212,10 @@
                 </div>
                 <div class="add-listing">
                     <div class="login d-inline-block me-4">
-                        <a href="/login.html" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="far fa-user pe-2"></i>Sign in</a>
+                        <a data-bs-toggle="modal" data-bs-target="#exampleModalCenter" href="/user/login"><i class="far fa-user pe-2"></i>Sign in</a>
                     </div>
                     <a class="btn btn-white btn-md" href="/business/postAJob"> <i class="fas fa-plus-circle"></i>Post a job</a>
+
                 </div>
             </div>
         </nav>

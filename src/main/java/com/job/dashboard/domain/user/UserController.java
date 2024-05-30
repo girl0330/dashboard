@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.user;
 
 import com.job.dashboard.domain.dto.UserDTO;
+import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
+    private final SessionUtil sessionUtil;
 
     //회원가입 페이지 이동
     @GetMapping("/signup")
@@ -42,26 +44,23 @@ public class UserController {
 
     @PostMapping("/doLogin")
     @ResponseBody
-    public Map<Object, Object> accountLogin (@RequestBody UserDTO userDTO, HttpSession session) {
+    public Map<Object, Object> accountLogin (@RequestBody UserDTO userDTO) {
         System.out.println("====회원 로그인===="+userDTO);
         Map<Object, Object> map = userService.findAccount(userDTO);
-        if (map.get("code") == "error") {
-            return map;
+
+        if (!"error".equals(map.get("code"))) {
+            sessionUtil.loginUser((UserDTO) map.get("account"));
         }
-        UserDTO userId = (UserDTO) map.get("account");
-        session.setAttribute("userId", userId.getUserId());
-        session.setAttribute("userEmail", userId.getEmail());
-        session.setAttribute("userTypeCode", userId.getUserTypeCode());
         return map;
     }
 
     //로그아웃
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout() {
         System.out.println("====로그아웃====");
         // 세션 제거
-        session.invalidate();
+        sessionUtil.logoutUser();
         // 로그아웃 후 리다이렉션할 페이지로 이동
-        return "redirect:/login?logout=true";
+        return "redirect:/login";
     }
 }

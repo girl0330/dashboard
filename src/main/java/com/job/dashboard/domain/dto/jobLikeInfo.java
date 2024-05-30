@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class jobLikeInfo {
     private int likeId;
-    private int userId;
+    private int userNo;
     private int jobId;
     private int systemRegisterId;
     private String systemRegisterDatetime;
