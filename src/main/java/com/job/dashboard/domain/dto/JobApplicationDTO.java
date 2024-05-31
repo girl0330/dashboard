@@ -10,11 +10,11 @@ public class JobApplicationDTO extends JobPostDTO{
     private int jobId;
     private int userNo;
     private String statusTypeCode;
+    private String statusTypeCodeName;
     private int systemRegisterId;
     private String systemRegisterDatetime;
     private int systemUpdaterId;
     private String systemUpdateDatetime;
-    private String statusTypeCodeName;
     private String jobTypeCodeName;
     private String salaryTypeCodeName;
 }

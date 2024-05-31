@@ -1,7 +1,60 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.business.BusinessDashMapper">
-    <select id="postList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobPostDTO">
-
+    <select id="checkBusinessProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.BusinessDashDTO">
+        /* BusinessDashMapper.checkBusinessProfile */
+        SELECT COMPANY_ID,
+               USER_NO,
+               COMPANY_NAME,
+               COMPANY_DESCRIPTION,
+               ADDRESS,
+               INDUSTRY_CODE,
+               BUSINESS_TYPE_CODE,
+               BUSINESS_NUMBER,
+               SYSTEM_REGISTER_ID,
+               SYSTEM_UPDATER_ID
+        FROM COMPANY_INFO
+        WHERE USER_NO = #{userNo}
     </select>
+
+    <select id="getCompanyIdSeq" parameterType="int" resultType="int">
+        /* BusinessDashMapper.getCompanyIdSeq */
+        SELECT COALESCE(MAX(COMPANY_ID) + 1, 1) as company_id_seq
+        FROM COMPANY_INFO
+    </select>
+
+    <insert id="saveBusinessProfile" parameterType="com.job.dashboard.domain.dto.BusinessDashDTO" >
+        /* BusinessDashMapper.saveBusinessProfile */
+        INSERT INTO company_info
+        (COMPANY_ID,
+            USER_NO,
+            COMPANY_NAME,
+            COMPANY_DESCRIPTION,
+            ADDRESS,
+            INDUSTRY_CODE,
+            BUSINESS_TYPE_CODE,
+            BUSINESS_NUMBER,
+            SYSTEM_REGISTER_ID,
+            system_updater_id
+        ) VALUES (
+                     #{companyId},
+                     #{userNo},
+                     #{companyName},
+                     #{companyDescription},
+                     #{address},
+                     #{industryCode},
+                     #{businessTypeCode},
+                     #{businessNumber},
+                     #{systemRegisterId},
+                     #{systemUpdaterId}
+                 ) ON DUPLICATE KEY UPDATE
+            COMPANY_NAME        = #{companyName},
+            COMPANY_DESCRIPTION = #{companyDescription},
+            ADDRESS             = #{address},
+            INDUSTRY_CODE       = #{industryCode},
+            BUSINESS_TYPE_CODE  = #{businessTypeCode},
+            BUSINESS_NUMBER     = #{businessNumber},
+            SYSTEM_REGISTER_ID  = #{systemRegisterId},
+            SYSTEM_UPDATER_ID   = #{systemRegisterId}
+    </insert>
 </mapper>

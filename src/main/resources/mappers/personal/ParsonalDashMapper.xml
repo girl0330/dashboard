@@ -3,7 +3,7 @@
 <mapper namespace="com.job.dashboard.domain.personal.PersonalDashMapper">
 
     <select id="profileCheck" parameterType="int" resultType="int">
-    /*프로필 작성 유무 확인*/
+        /*PersonalDashMapper.profileCheck*/
         SELECT
         count(*) AS countUserNo
         FROM USER_PROFILE_INFO
@@ -29,20 +29,31 @@
     </select>
 
     <select id="checkProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.PersonalDashDTO">
-        /*기존 프로필 checkProfile*/
-        SELECT *
+        /* PersonalDashMapper.checkProfile */
+        SELECT PROFILE_ID,
+               USER_NO,
+               NAME,
+               PHONE,
+               BIRTH,
+               GENDER,
+               ADDRESS,
+               PART_TIME_EXPERIENCE,
+               SYSTEM_REGISTER_ID,
+               SYSTEM_REGISTER_DATETIME,
+               SYSTEM_UPDATER_ID,
+               SYSTEM_UPDATE_DATETIME
         FROM USER_PROFILE_INFO
         WHERE USER_NO = #{userNo}
     </select>
 
     <select id="getProfileIdSeq" parameterType="int" resultType="int">
-        /*getProfileIdSeq --------------------------------------------------------*/
+        /* PersonalDashMapper.getProfileIdSeq */
         SELECT COALESCE(MAX(PROFILE_ID) + 1, 1) as profile_id_seq
         FROM USER_PROFILE_INFO
     </select>
 
     <insert id="saveProfile" parameterType="com.job.dashboard.domain.dto.PersonalDashDTO" >
-        /*saveProfile ------------------------------------------------------------*/
+        /* PersonalDashMapper.saveProfile */
         INSERT INTO USER_PROFILE_INFO
         (
             PROFILE_ID,
@@ -77,13 +88,14 @@
     </insert>
 
     <select id="getOldPassword" parameterType="int" resultType="com.job.dashboard.domain.dto.UserDTO">
-/*oldPassword로 예전 비밀번호 select 쿼리*/
+        /* PersonalDashMapper.getOldPassword */
         SELECT password
         FROM user_info
         WHERE USER_NO = #{userNo}
     </select>
 
     <update id="updatePassword" parameterType="com.job.dashboard.domain.dto.UserDTO">
+        /* PersonalDashMapper.updatePassword */
         UPDATE user_info
         SET
             password = #{password}
@@ -93,13 +105,18 @@
 
     <select id="applyList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
         SELECT
+            /* PersonalDashMapper.applyList */
             jai.application_id,
             jai.job_id,
             jai.USER_NO,
-            jpi.title,
             jai.status_type_code,
             (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_name = jai.status_type_code) AS status_type_code_name,
-            jai.system_register_datetime
+            DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
+            jpi.title,
+            jpi.address,
+            jpi.salary,
+            jpi.salary_type_code,
+            (SELECT detail_name FROM  code_detail WHERE group_code = 'salary_type' AND detail_name = jpi.salary_type_code) AS salary_type_code_name
         FROM
             job_application_info jai
                 INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
@@ -108,19 +125,28 @@
         ORDER BY jai.system_register_datetime DESC
     </select>
 
-    <delete id="applyListDelete" parameterType="int">
-        /*job게시글 삭제하기*/
-        DELETE
-        FROM job_application_info
-        WHERE application_id = #{applicationId}
-    </delete>
+<!--    <delete id="applyListDelete" parameterType="int">-->
+<!--        /* PersonalDashMapper.getProfile */-->
+<!--        DELETE-->
+<!--        FROM job_application_info-->
+<!--        WHERE application_id = #{applicationId}-->
+<!--    </delete>-->
+
+    <update id="applyListCancel" parameterType="int">
+        /* PersonalDashMapper.applyListCancel*/
+        UPDATE job_application_info
+        SET
+            STATUS_TYPE_CODE = '지원취소'
+        WHERE
+            APPLICATION_ID = #{applicationId}
+    </update>
 
     <select id="getApplyJobList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
         /*지원하 공고 목록들 가져오기*/
         SELECT
             jpi.title,
             jpi.job_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = jpi.job_type_code) AS job_type_code_name,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_name = jpi.job_type_code) AS job_type_code_name,
             jpi.address,
             jpi.salary_type_code,
             (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_name = jpi.salary_type_code) AS salary_type_code_name,

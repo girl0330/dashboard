@@ -18,13 +18,13 @@ public interface PersonalDashService {
     PersonalDashDTO getProfile(Integer userNo);
 
     // 프로필 저장하기
-    Map<Object, String> saveProfile(PersonalDashDTO personalDashDTO, HttpSession session);
+    Map<Object, String> saveProfile(PersonalDashDTO personalDashDTO);
 
     // 비밀번호 변경하기
     Map<Object, Object> changePassword(UserDTO userDTO);
 
     // 지원 현황리스트
-    List<JobApplicationDTO> applyList(Integer userNo);
+    List<JobApplicationDTO> applyList();
     // 지원 리스트 삭제
     Map<String, Object> applyListDelete(int applicationId);
 

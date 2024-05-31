@@ -29,7 +29,8 @@ public interface PersonalDashMapper {
     // 지원형황 리스트
     List<JobApplicationDTO> applyList(int userNo);
 
-    void applyListDelete(int applicationId);
+    // 지원한 공고 삭제
+    void applyListCancel(int applicationId);
 
 
     // 지원 공고 리스트 가져오기

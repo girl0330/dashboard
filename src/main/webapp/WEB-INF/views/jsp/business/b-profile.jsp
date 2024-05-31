@@ -1,5 +1,61 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<script>
+    let business_profile = {
+        init : function () {
+            this.formSubmit();
+        },
+
+        // 전송 함수 정의
+        formSubmit : function() {
+            alert("전송함수")
+            const formData = $("#businessSaveProfile").serializeArray();
+
+            // JSON 객체로 변환
+            let jsonData = {};
+            $.each(formData, function() {
+                jsonData[this.name] = this.value;
+            });
+
+            // 성별 선택 값 추가
+            jsonData['industryCodeName'] = $('select[name=industryCodeName]').val();
+
+            // 알바경험 선택 값 추가
+            jsonData['businessTypeCode'] = $('select[name=businessTypeCode]').val();
+
+            console.log("x:::  "+JSON.stringify(jsonData));
+
+            $.ajax({
+                url: "/business/profileSave", // Spring 컨트롤러 URL
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
+                success: function(data) {
+                    // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+                    console.log(JSON.stringify(data));
+                    if(data.code === 'error') {
+                        alert(data.message);
+                    } else if (data.code === 'success'){
+                        alert(data.message);
+                        location.href='/personal/myProfile'
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // 오류 발생 시 실행할 코드
+                    console.error(error);
+                }
+            });
+        }
+    }
+
+    //DOM이 실행 후 실행 됨
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById("business_profile_sava_button").addEventListener("click", function () {
+            business_profile.init();
+        });
+    });
+</script>
 <!--=================================
 Dashboard Nav -->
 <%@ include file="businessMenuInclude.jsp"%>
@@ -14,11 +70,11 @@ My Profile -->
             <div class="col-md-12">
                 <div class="user-dashboard-info-box">
                     <div class="section-title-02 mb-4">
-                        <h4>Basic Information</h4>
+                        <h4>기본 정보</h4>
                     </div>
                     <div class="cover-photo-contact">
                         <div class="cover-photo">
-                            <img class="img-fluid " src="images/bg/cover-bg.png" alt="">
+                            <img class="img-fluid " src="/images/bg/cover-bg.png" alt="">
                             <i class="fas fa-times-circle"></i>
                         </div>
                         <div class="upload-file">
@@ -26,94 +82,54 @@ My Profile -->
                             <input class="form-control" type="file" id="formFile">
                         </div>
                     </div>
-                    <form>
+                    <form id="businessSaveProfile" name="businessSaveProfile">
                         <div class="row">
                             <div class="form-group col-md-6 mb-3">
-                                <label class="form-label">Company Name</label>
-                                <input type="text" class="form-control" value="Fleet Improvements Pvt">
+                                <label class="form-label">기업 이름</label>
+                                <input type="text" class="form-control" value="${company.companyName}" id="companyName" name="companyName">
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" value="support@fleetimprovements.com">
-                            </div>
-                            <div class="form-group col-md-6 mb-3">
-                                <label class="form-label">First Name</label>
-                                <input type="text" class="form-control" value="Melissa">
-                            </div>
-                            <div class="form-group col-md-6 mb-3">
-                                <label class="form-label">Last Name</label>
-                                <input type="text" class="form-control" value="Doe">
-                            </div>
-                            <div class="form-group col-md-6 mb-3 datetimepickers">
-                                <label class="form-label">Date of Founded</label>
-                                <div class="input-group date" id="datetimepicker-01" data-target-input="nearest">
-                                    <input type="text" class="form-control datetimepicker-input" value="02/03/2012" data-target="#datetimepicker-01">
-                                    <div class="input-group-append d-flex" data-target="#datetimepicker-01" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-6 mb-3">
-                                <label class="form-label">Phone</label>
-                                <input type="text" class="form-control" value="+(123) 345-6789">
+                                <label class="form-label">주소</label>
+                                <input type="email" class="form-control" value="${company.address}"  name="address" id="address">
                             </div>
                             <div class="form-group col-md-6 mb-3 select-border">
-                                <label class="form-label">Sector</label>
-                                <select class="form-control basic-select">
-                                    <option value="value 01" selected="selected">Taunton, London</option>
-                                    <option value="value 02">Needham, MA</option>
-                                    <option value="value 03">New Castle, PA</option>
+                                <label class="form-label" for="industryCode">산업 번호</label>
+                                <select class="form-control basic-select" name="industryCode" id="industryCode" >
+                                    <option value="선택" selected="selected">선택</option>
+                                    <option value="IT">IT</option>
+                                    <option value="SELF">자영업</option>
+                                    <option value="MAN">제조업</option>
+                                    <option value="SER">서비스업</option>
+                                    <option value="FIN">금융업</option>
+                                    <option value="EDU">교육업</option>
+                                    <option value="CON">건설업</option>
+                                    <option value="MED">의료업</option>
+                                    <option value="AGR">농업</option>
+                                    <option value="DIS">유통업</option>
+                                    <option value="PUB">공공기관</option>
+                                    <option value="OTH">기타</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-6 mb-3 mb-md-0">
-                                <label class="form-label">Website</label>
-                                <input type="text" class="form-control" value="example.com">
-                            </div>
-                            <div class="form-group col-md-12 mb-0">
-                                <label class="form-label">Description</label>
-                                <textarea class="form-control" rows="5" placeholder="Use a past defeat as a motivator. Remind yourself you have nowhere to go except up as you have already been at the bottom"></textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="user-dashboard-info-box">
-                    <div class="section-title-02 mb-3">
-                        <h4>Social Links</h4>
-                    </div>
-                    <form>
-                        <div class="row">
-                            <div class="form-group col-md-6 mb-3">
-                                <label class="form-label">Facebook</label>
-                                <input type="text" class="form-control" value="https://www.facebook.com/">
+                            <div class="form-group col-md-6 mb-3 select-border">
+                                <label class="form-label" for="businessTypeCode">회사 타입</label>
+                                <select class="form-control basic-select" name="businessTypeCode" id="businessTypeCode">
+                                    <option value="선택" selected="selected">선택</option>
+                                    <option value="CORP">법인사업자</option>
+                                    <option value="GEN">일반사업자 </option>
+                                </select>
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="form-label">Twitter</label>
-                                <input type="email" class="form-control" value="https://www.twitter.com/">
+                                <label class="form-label">사업자 번호</label>
+                                <input type="text" class="form-control" value="${company.businessNumber}"  name="businessNumber" id="businessNumber">
                             </div>
-                            <div class="form-group col-md-12 mb-0">
-                                <label class="form-label">Linkedin</label>
-                                <input type="text" class="form-control" value="https://www.linkedin.com/">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="user-dashboard-info-box">
-                    <div class="section-title-02 mb-3">
-                        <h4>Address</h4>
-                    </div>
-                    <form>
-                        <div class="row">
                             <div class="form-group col-md-12 mb-3">
-                                <label class="form-label">Enter Your  location</label>
-                                <input type="text" class="form-control" value="214 West Arnold St. New York, NY 10002" placeholder="Enter Your  location">
+                                <label class="mb-2"> 회사 소개 </label>
+                                <textarea class="form-control" rows="4" value="${company.companyDescription}" name="companyDescription" id="companyDescription"></textarea>
                             </div>
-                        </div>
-                        <div class="location-map">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3027.6199313908783!2d-74.09468078428908!3d40.63826305005958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1s214+West+Arnold+St.+New+York%2C+NY+10002!5e0!3m2!1sen!2sin!4v1559195958100!5m2!1sen!2sin" height="370" style="border:0" allowfullscreen></iframe>
                         </div>
                     </form>
                 </div>
-                <a class="btn btn-md btn-primary" href="#">Save Settings</a>
+                <a class="btn btn-md btn-primary" id="business_profile_sava_button">저장</a>
             </div>
         </div>
     </div>

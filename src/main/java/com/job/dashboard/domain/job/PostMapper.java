@@ -17,7 +17,7 @@ public interface PostMapper {
     List<JobPostDTO> getJobLists();
 
     //게시글 상세페이지
-    JobPostDTO getJobDetail(int id);
+    JobPostDTO getJobDetail(int jobId);
 
     void updateJob(JobPostDTO jobPostDTO);
 

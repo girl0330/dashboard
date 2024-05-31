@@ -2,6 +2,7 @@ package com.job.dashboard.domain.job;
 
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +15,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
+    private final SessionUtil sessionUtil;
 
     // 구인 공고 저장
-    public Map<Object, Object> saveJob(JobPostDTO jobPostDTO, Integer userNo) {
+    public Map<Object, Object> saveJob(JobPostDTO jobPostDTO) {
         System.out.println("====저장 임플=====");
         Map<Object, Object> map = new HashMap<>();
 
+        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
         jobPostDTO.setUserNo(userNo);
         System.out.println("dto 확인하기 : " + jobPostDTO);
 
@@ -36,9 +39,9 @@ public class PostServiceImpl implements PostService {
     }
 
     // 구인 공고 상세페이지
-    public JobPostDTO detail(int id) {
+    public JobPostDTO detail(int jobId) {
         System.out.println("====상세페이지 impl 입니다. ====");
-        return postMapper.getJobDetail(id);
+        return postMapper.getJobDetail(jobId);
     }
 
     // 구인 공고 수정
@@ -64,27 +67,30 @@ public class PostServiceImpl implements PostService {
 //        return map;
 //    }
 
-    public Map<Object, Object> delete(int jobId, Integer userNo) {
+    // 구인 공고 삭제
+    public Map<Object, Object> delete(int jobId) {
         System.out.println("삭제 임플?!");
         Map<Object, Object> map = new HashMap<>();
+
         postMapper.delete(jobId);
         map.put("code", "success");
         map.put("message", "게시글 작성 성공!");
         return map;
     }
 
-    public Map<String, Object> applyJob(Integer jobId, HttpSession session) {
+    // 공고 지원
+    public Map<String, Object> applyJob(Integer jobId) {
 
         Map<String, Object> map = new HashMap<>();
 
         //로그인 확인
-        Integer userNo = (Integer) session.getAttribute("userNo");
-        System.out.println("userNo확인 : "+userNo);
-        if (userNo == null) {
+        if (!sessionUtil.loginUserCheck()) { // 로그인 체크
             map.put("code", "loginError");
             map.put("message","로그인이 필요합니다.");
             return map;
         }
+
+        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
         //프로필 확인(체크)
         int profileCount = postMapper.profileCount(userNo);
         //프로필값이 없으면 erorr, ajax
@@ -101,14 +107,16 @@ public class PostServiceImpl implements PostService {
         jobApplicationDTO.setSystemRegisterId(userNo);
         jobApplicationDTO.setSystemUpdaterId(userNo);
         System.out.println("jobApplicationDTO 확인: "+ jobApplicationDTO);
-        //중복지원인지 확인이 필요하잖아~! select count(1) from table where 조건=1 and 조건=2
+
+        //중복지원인지 확인 select count(1) from table where 조건=1 and 조건=2
         int applyCheck = postMapper.applyCheck(jobApplicationDTO);
         if (applyCheck == 1) {
-            map.put("code", "applyDubleError");
+            map.put("code", "applyError");
             map.put("message", "이미 지원 하셨습니다.");
             return map;
         }
-        System.out.println("지원됨");
+
+        System.out.println("지원했음.");
 
         //insert
         postMapper.insertJobApplicationInfo(jobApplicationDTO);

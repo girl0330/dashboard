@@ -81,14 +81,14 @@ Manage Jobs -->
                                     <input type="hidden" id="applicationId" name="applicationId" value="${applyList.applicationId}">
                                     <input type="hidden" id="jobId" name="jobId" value="${applyList.jobId}">
                                     <p class="mb-1 mt-2"> 지원한 날짜 : ${applyList.systemRegisterDatetime}</p>
-                                    <p class="mb-0">Address: Wellesley Rd, London</p>
+                                    <p class="mb-0"> ${applyList.address}</p>
                                 </th>
                                 <td>${applyList.statusTypeCode}</td>
                                 <td>
                                     <ul class="list-unstyled mb-0 d-flex">
                                         <li><a href="#" class="job-list-favourite order-2" id="interest" name="interest" data-bs-toggle="tooltip" title="관심" ><i class="far fa-star"></i></a></li>
                                         <li><a href="#" class="text-primary" onclick="location.href='/business/detail?jobId=${applyList.jobId}'" id="look" name="look" data-bs-toggle="tooltip" title="자세히"><i class="far fa-eye"></i></a></li>
-                                        <li><a href="#" class="text-danger" id="delete" name="delete" data-bs-toggle="tooltip" title="삭제" ><i class="far fa-trash-alt"></i></a>
+                                        <li><a href="#" class="text-danger" id="delete" name="delete" data-bs-toggle="tooltip" title="지원취소" ><i class="far fa-trash-alt"></i></a>
                                         </li>
                                     </ul>
                                 </td>

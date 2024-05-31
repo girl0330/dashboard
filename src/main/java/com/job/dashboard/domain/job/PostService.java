@@ -9,13 +9,13 @@ import java.util.Map;
 public interface PostService {
 
     //저장
-    Map<Object, Object> saveJob(JobPostDTO jobPostDTO, Integer userNo);
+    Map<Object, Object> saveJob(JobPostDTO jobPostDTO);
 
     //목록
     List<JobPostDTO> jobList();
 
     //상세
-    JobPostDTO detail(int id);
+    JobPostDTO detail(int jobId);
 
     //수정
     Map<Object, Object> update(int userNo, JobPostDTO jobPostDTO);
@@ -23,7 +23,7 @@ public interface PostService {
 //    void delete(int jobId, Integer userNo);
 
     //삭제
-    Map<Object, Object> delete(int jobId, Integer userNo);
+    Map<Object, Object> delete(int jobId);
 
-    Map<String,Object> applyJob(Integer jobId, HttpSession session);
+    Map<String,Object> applyJob(Integer jobId);
 }

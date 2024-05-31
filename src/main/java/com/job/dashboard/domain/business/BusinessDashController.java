@@ -1,14 +1,15 @@
 package com.job.dashboard.domain.business;
 
+import com.job.dashboard.domain.dto.BusinessDashDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Controller
@@ -23,7 +24,7 @@ public class BusinessDashController {
         System.out.println("대시보드");
 
         if(!sessionUtil.loginUserCheck()) {
-            System.out.println("로그인 화면으로 이동"); // 로그인 정보가 없으면 "로그인후 이용 가능합니다."라는 message를 보여주고싶음
+            System.out.println("로그인 화면으로 이동");
             return "redirect:/user/login?test=true";
         }
 
@@ -34,56 +35,65 @@ public class BusinessDashController {
     }
 
     @GetMapping("/profile")
-    public String profileView(HttpSession session)  {
+    public String profileView()  {
         System.out.println("프로필");
 
-        Integer userNo = (Integer) session.getAttribute("userNo");
-        if (userNo == null) {
+        if(!sessionUtil.loginUserCheck()) {
             System.out.println("로그인 화면으로 이동");
-            return "redirect:/user/login";
+            return "redirect:/user/login?test=true";
         }
+
+        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
         return "jsp/business/b-profile";
     }
+
+    @PostMapping("/profileSave")
+    @ResponseBody
+    public Map<Object, String> profileSave(@RequestBody BusinessDashDTO businessDashDTO) {
+        System.out.println("====기업 프로필 저장====");
+        System.out.println("입력한 정보 보기 : "+ businessDashDTO);
+
+        Map<Object, String> map = businessDashService.saveProfile(businessDashDTO);
+        System.out.println("map"+map);
+        return map;
+    }
+
     @GetMapping("/changePassword")
-    public String changePasswordView(HttpSession session)  {
+    public String changePasswordView()  {
         System.out.println("비번변경");
 
-        Integer userNo = (Integer) session.getAttribute("userNo");
-        if (userNo == null) {
+        if(!sessionUtil.loginUserCheck()) {
             System.out.println("로그인 화면으로 이동");
-            return "redirect:/user/login";
+            return "redirect:/user/login?test=true";
         }
         return "jsp/business/b-changePassword";
     }
     @GetMapping("/manageCandidate")
-    public String manageCandidateView(HttpSession session)  {
+    public String manageCandidateView()  {
         System.out.println("지원자관리");
 
-        Integer userNo = (Integer) session.getAttribute("userNo");
-        if (userNo == null) {
+        if(!sessionUtil.loginUserCheck()) {
             System.out.println("로그인 화면으로 이동");
-            return "redirect:/user/login";
+            return "redirect:/user/login?test=true";
         }
         return "jsp/business/b-manageCandidate";
     }
 
     //공고 관리
     @GetMapping("/managePostJob")
-    public String managePostJobView(HttpSession session)  {
+    public String managePostJobView()  {
         System.out.println("공고관리");
-        Integer userNo = (Integer) session.getAttribute("userNo");
-        if (userNo == null) {
+        if(!sessionUtil.loginUserCheck()) {
             System.out.println("로그인 화면으로 이동");
-            return "redirect:/user/login";
+            return "redirect:/user/login?test=true";
         }
 
-        String userTypeCode = (String) session.getAttribute("userTypeCode");
-        System.out.println("userTypeCode " +  userTypeCode);
-        if (!Objects.equals(userTypeCode, "20")) {
+        if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) {
             return "redirect:/";
         }
 
-        List<JobPostDTO> PostList = businessDashService.PostList(userNo);
+//        List<JobPostDTO> PostList = businessDashService.postList();
+
         return "jsp/business/b-managePostJob";
     }
 }

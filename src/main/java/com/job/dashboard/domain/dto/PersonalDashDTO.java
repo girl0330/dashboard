@@ -14,4 +14,8 @@ public class PersonalDashDTO extends UserDTO{
     private String gender;
     private String address;
     private boolean partTimeExperience;
+    private int systemRegisterId;
+    private String systemRegisterDatetime;
+    private int systemUpdaterId;
+    private String systemUpdateDatetime;
 }

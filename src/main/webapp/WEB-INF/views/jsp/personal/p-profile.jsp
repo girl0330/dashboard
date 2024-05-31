@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
-  let personal_register = {
+  let personal_profile = {
     init: function () {
       alert("??????")
       //제출 버튼
@@ -53,7 +53,7 @@
   //DOM이 실행 후 실행 됨
   document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("profile_sava_button").addEventListener("click", function () {
-      personal_register.init();
+      personal_profile.init();
     });
   });
 </script>
@@ -122,18 +122,18 @@ My Profile -->
               <div class="form-group mb-3 col-md-6" >
                 <label class="d-block mb-3">알바 경험</label>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" value="yes" name="partTimeExperience" id="yes" ${profile.partTimeExperience == "yes" ? "checked" : ""}>
+                  <input class="form-check-input" type="radio" value="true" name="partTimeExperience" id="yes" ${profile.partTimeExperience == "true" ? "checked" : ""}>
                   <label class="form-check-label" for="yes">yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" value="no" name="partTimeExperience" id="no" ${profile.partTimeExperience == "no" ? "checked" : ""}>
+                  <input class="form-check-input" type="radio" value="false" name="partTimeExperience" id="no" ${profile.partTimeExperience == "false" ? "checked" : ""}>
                   <label class="form-check-label" for="no">no</label>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6">
-                <a class="btn btn-md btn-primary" id="profile_sava_button">Save Settings</a>
+                <a class="btn btn-md btn-primary" id="profile_sava_button">저장</a>
               </div>
             </div>
           </form>

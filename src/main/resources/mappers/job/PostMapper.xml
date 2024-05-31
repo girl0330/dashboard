@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.job.PostMapper">
     <insert id="saveJob" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
-        /*job게시글 저장*/
+        /*PostMapper.saveJob*/
         INSERT INTO job_post_info (USER_NO,
                                    title,
                                    description,
@@ -36,45 +36,54 @@
     </insert>
 
     <select id="getJobLists" resultType="com.job.dashboard.domain.dto.JobPostDTO">
-        /*job게시글 목록들 가져오기*/
+        /*PostMapper.getJobLists*/
         SELECT job_id,
                USER_NO,
                title,
                job_type_code,
+               (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_name = status_type_code) AS status_type_code_name,
                address,
                salary_type_code,
+               (SELECT detail_name FROM  code_detail WHERE gruop_code = 'salary_type' AND detail_name = salary_type_code) AS salary_type_code_name,
                salary,
-               system_register_datetime,
+               DATE_FORMAT(system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
                job_time
         FROM job_post_info
         ORDER BY system_register_datetime DESC
     </select>
 
     <select id="getJobDetail" resultType="com.job.dashboard.domain.dto.JobPostDTO" parameterType="int">
-        /*job게시글 상세페이지 가져오기*/
+        /*PostMapper.getJobDetail*/
         SELECT
             job_id,
             USER_NO,
             title,
             description,
             job_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_name = job_type_code) AS status_type_code_name,
             address,
             salary_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_name = salary_type_code) AS status_type_code_name,
             salary,
             job_time,
             job_day_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'job_day_type' AND detail_name = job_day_type_code) AS status_type_code_name,
             manager_number,
             requirement,
             number_of_staff,
             employment_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'employment_type' AND detail_name = employment_type_code) AS status_type_code_name,
             etc,
             system_register_id,
-            system_updater_id
+            DATE_FORMAT(system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
+            system_updater_id,
+            DATE_FORMAT(system_updater_datetime, '%Y-%m-%d') AS system_updater_datetime
         FROM job_post_info
         WHERE job_id = #{jobId}
     </select>
 
     <update id="updateJob" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
+        /*PostMapper.updateJob*/
         UPDATE job_post_info
         SET
             USER_NO = #{userNo},
@@ -97,7 +106,7 @@
     </update>
 
     <select id="getWriteUserNo" resultType="int" parameterType="int">
-        /*job게시글 작성한 userNo 가져오기*/
+        /*PostMapper.getWriteUserNo*/
         SELECT
             USER_NO
         FROM job_post_info
@@ -105,7 +114,7 @@
     </select>
 
     <delete id="delete" parameterType="int">
-        /*job게시글 삭제하기*/
+        /*PostMapper.delete*/
         DELETE
         FROM job_post_info
         WHERE job_id = #{jobId}

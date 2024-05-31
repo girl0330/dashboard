@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 public class SessionUtil {
     public static final String SESSION_ATTR_USER_NO = "userNo";
     public static final String SESSION_ATTR_USER_TYPE_CODE = "userTypeCode";
+    public static final String SESSION_ATTR_NAME = "userName";
 
     private HttpSession getSession() {
         return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession();
