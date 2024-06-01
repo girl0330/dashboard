@@ -71,8 +71,6 @@ public class PersonalDashServiceImpl implements PersonalDashService {
 
         map.put("code", "success");
         map.put("message", "프로필 저장 성공!");
-        map.put("coed","update");
-        map.put("message", "프로필 업데이트 성공!");
 
         return map;
     }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!--=================================
 Dashboard Nav -->
 <%@ include file="businessMenuInclude.jsp"%>
@@ -30,23 +31,22 @@ Manage Jobs -->
                         <table class="table table-bordered">
                             <thead class="bg-light">
                             <tr >
-                                <th scope="col">Job Title</th>
-                                <th scope="col">Applications</th>
-                                <th scope="col">Featured</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">공고 제목</th>
+                                <th scope="col">공고 상태</th>
+                                <th scope="col">관리</th>
                             </tr>
                             </thead>
-                            <c:forEach items="${applyJobList}" var="applyJobList">
+                            <c:forEach items="${postList}" var="postList">
                             <tbody>
                             <tr>
-                                <th scope="row">Job 01
-                                    <p class="mb-1 mt-2">Expiry: 2020-04-15</p>
+                                <th scope="row">${postList.title}
+                                    <p class="mb-1 mt-2"> 작성한 날짜 : ${postList.systemRegisterDatetime}</p>
                                     <p class="mb-0">Address: Wellesley Rd, London</p>
                                 </th>
-                                <td>Applications</td>
-                                <td><i class="far fa-star"></i></td>
+                                <td>${postList.statusTypeCode}</td>
                                 <td>
                                     <ul class="list-unstyled mb-0 d-flex">
+                                        <i class="far fa-star"></i>
                                         <li><a href="#" class="text-primary" data-bs-toggle="tooltip" title="view"><i class="far fa-eye"></i></a></li>
                                         <li><a href="#" class="text-info" data-bs-toggle="tooltip" title="Edit"><i class="fas fa-pencil-alt"></i></a></li>
                                         <li><a href="#" class="text-danger" data-bs-toggle="tooltip" title="Delete"><i class="far fa-trash-alt"></i></a></li>

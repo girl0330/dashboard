@@ -5,6 +5,7 @@ import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -31,11 +32,11 @@ public class BusinessDashController {
         if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) {
             return "redirect:/";
         }
-        return "jsp/business/b-dashboard";
+        return "jsp/business/business-dashboard";
     }
 
     @GetMapping("/profile")
-    public String profileView()  {
+    public String profileView(Model model)  {
         System.out.println("프로필");
 
         if(!sessionUtil.loginUserCheck()) {
@@ -43,8 +44,12 @@ public class BusinessDashController {
             return "redirect:/user/login?test=true";
         }
 
-        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
-        return "jsp/business/b-profile";
+        BusinessDashDTO businessProfile = businessDashService.getBusinessProfile();
+        System.out.println("프로필 잘가져오기 있음. :"+ businessProfile);
+        model.addAttribute("company", businessProfile);
+
+
+        return "jsp/business/business-profile";
     }
 
     @PostMapping("/profileSave")
@@ -55,6 +60,7 @@ public class BusinessDashController {
 
         Map<Object, String> map = businessDashService.saveProfile(businessDashDTO);
         System.out.println("map"+map);
+
         return map;
     }
 
@@ -66,22 +72,14 @@ public class BusinessDashController {
             System.out.println("로그인 화면으로 이동");
             return "redirect:/user/login?test=true";
         }
-        return "jsp/business/b-changePassword";
+        return "jsp/business/business-changePassword";
     }
-    @GetMapping("/manageCandidate")
-    public String manageCandidateView()  {
-        System.out.println("지원자관리");
 
-        if(!sessionUtil.loginUserCheck()) {
-            System.out.println("로그인 화면으로 이동");
-            return "redirect:/user/login?test=true";
-        }
-        return "jsp/business/b-manageCandidate";
-    }
+    //비밀번호 변경
 
     //공고 관리
     @GetMapping("/managePostJob")
-    public String managePostJobView()  {
+    public String managePostJobView(Model model)  {
         System.out.println("공고관리");
         if(!sessionUtil.loginUserCheck()) {
             System.out.println("로그인 화면으로 이동");
@@ -92,8 +90,23 @@ public class BusinessDashController {
             return "redirect:/";
         }
 
-//        List<JobPostDTO> PostList = businessDashService.postList();
+        List<JobPostDTO> postJobList = businessDashService.postJobList();
+        System.out.println("postJobList"+postJobList);
+        model.addAttribute("postList", postJobList);
 
-        return "jsp/business/b-managePostJob";
+        return "jsp/business/business-managePostJob";
     }
+
+    //지원자관리
+    @GetMapping("/manageCandidate")
+    public String manageCandidateView()  {
+        System.out.println("지원자관리");
+
+        if(!sessionUtil.loginUserCheck()) {
+            System.out.println("로그인 화면으로 이동");
+            return "redirect:/user/login?test=true";
+        }
+        return "jsp/business/business-manageCandidate";
+    }
+
 }

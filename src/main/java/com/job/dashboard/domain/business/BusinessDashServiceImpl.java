@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.business;
 
 import com.job.dashboard.domain.dto.BusinessDashDTO;
+import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,15 +44,24 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
         map.put("code", "success");
         map.put("message", "프로필 저장 성공!");
-        map.put("coed","update");
-        map.put("message", "프로필 업데이트 성공!");
 
         return map;
     }
 
-    public List PostList(Integer userNo) {
+    // 기업프로필 가져오기
+    public BusinessDashDTO getBusinessProfile() {
+        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
+
+        return businessDashMapper.getBusinessProfile(userNo);
+    }
+
+    // 기업 작성한 공고 리스트
+    public List<JobPostDTO> postJobList() {
         System.out.println("공고 리스트 임플=====");
-        return businessDashMapper.postList(userNo);
+
+        int userNo =(int) sessionUtil.getAttribute("userNo");
+
+        return businessDashMapper.postJobList(userNo);
     }
 
 }

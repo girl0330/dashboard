@@ -27,6 +27,7 @@ public class JobPostDTO extends UserDTO  {
     private String employmentTypeCode; // 고용 유형 코드(단기, 장기등등)
     private String employmentTypeCodeName;
     private String etc; // 기타사항
+    private String  statusTypeCode;
     private int systemRegisterId;
     private String systemRegisterDatetime;
     private int systemUpdaterId;

@@ -57,4 +57,47 @@
             SYSTEM_REGISTER_ID  = #{systemRegisterId},
             SYSTEM_UPDATER_ID   = #{systemRegisterId}
     </insert>
+
+    <select id="getBusinessProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.BusinessDashDTO">
+        /* BusinessDashMapper.getBusinessProfile */
+        SELECT COMPANY_ID,
+               USER_NO,
+               COMPANY_NAME,
+               COMPANY_DESCRIPTION,
+               ADDRESS,
+               INDUSTRY_CODE,
+               BUSINESS_TYPE_CODE,
+               BUSINESS_NUMBER,
+               SYSTEM_REGISTER_ID,
+               SYSTEM_UPDATER_ID
+        FROM COMPANY_INFO
+        WHERE USER_NO = #{userNo}
+    </select>
+
+    <select id="getOldPassword" parameterType="int" resultType="com.job.dashboard.domain.dto.BusinessDashDTO">
+        /* BusinessDashMapper.getOldPassword */
+        SELECT password
+        FROM user_info
+        WHERE USER_NO = #{userNo}
+    </select>
+
+    <select id="postJobList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobPostDTO">
+        /* BusinessDashMapper.postJobList */
+        SELECT
+               title,
+               job_type_code,
+               address,
+               salary_type_code,
+               salary,
+               job_time,
+               job_day_type_code,
+               number_of_staff,
+               employment_type_code,
+               system_register_id,
+               system_updater_id,
+               DATE_FORMAT(system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
+               status_type_code
+        from job_post_info
+        WHERE USER_NO = #{userNo}
+    </select>
 </mapper>
