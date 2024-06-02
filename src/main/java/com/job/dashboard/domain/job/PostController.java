@@ -64,6 +64,7 @@ public class PostController {
     @GetMapping("/detail")
     public String detail(@RequestParam("jobId") int jobId, Model model) {
         System.out.println("====상세페이지 ====");
+        System.out.println("jobId??? "+ jobId);
 
         JobPostDTO detail = postService.detail(jobId);
         System.out.println("detail?? "+detail);

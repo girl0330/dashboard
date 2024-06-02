@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.business;
 
 import com.job.dashboard.domain.dto.BusinessDashDTO;
+import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
@@ -95,6 +96,16 @@ public class BusinessDashController {
         model.addAttribute("postList", postJobList);
 
         return "jsp/business/business-managePostJob";
+    }
+
+    // 해당 공고에 지원한 지원자목록
+    @GetMapping("/applicantList")
+    public String applicantList (@RequestParam("jobId") int jobId) {
+        System.out.println("jobId 확인 : "+ jobId);
+
+        List<JobApplicationDTO> applicantList = businessDashService.applicantList(jobId);
+        System.out.println("내가 작성한 "+jobId+"에 지원한 지원자들의 리스트 : "+applicantList);
+        return null;
     }
 
     //지원자관리

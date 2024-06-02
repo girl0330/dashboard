@@ -17,7 +17,7 @@ Manage Jobs -->
                     <div class="row mb-4">
                         <div class="col-md-7 col-sm-5 d-flex align-items-center">
                             <div class="section-title-02 mb-0 ">
-                                <h4 class="mb-0">Manage Jobs</h4>
+                                <h4 class="mb-0">공고 관리</h4>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-7 mt-3 mt-sm-0">
@@ -30,31 +30,28 @@ Manage Jobs -->
                     <div class="user-dashboard-table table-responsive">
                         <table class="table table-bordered">
                             <thead class="bg-light">
-                            <tr >
-                                <th scope="col">공고 제목</th>
-                                <th scope="col">공고 상태</th>
-                                <th scope="col">관리</th>
+                            <tr>
+                                <th scope="col">작성한 공고 제목</th>
+                                <th scope="col">공고 현황</th>
                             </tr>
                             </thead>
-                            <c:forEach items="${postList}" var="postList">
                             <tbody>
-                            <tr>
-                                <th scope="row">${postList.title}
-                                    <p class="mb-1 mt-2"> 작성한 날짜 : ${postList.systemRegisterDatetime}</p>
-                                    <p class="mb-0">Address: Wellesley Rd, London</p>
-                                </th>
-                                <td>${postList.statusTypeCode}</td>
-                                <td>
-                                    <ul class="list-unstyled mb-0 d-flex">
-                                        <i class="far fa-star"></i>
-                                        <li><a href="#" class="text-primary" data-bs-toggle="tooltip" title="view"><i class="far fa-eye"></i></a></li>
-                                        <li><a href="#" class="text-info" data-bs-toggle="tooltip" title="Edit"><i class="fas fa-pencil-alt"></i></a></li>
-                                        <li><a href="#" class="text-danger" data-bs-toggle="tooltip" title="Delete"><i class="far fa-trash-alt"></i></a></li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            </tbody>
+                            <c:forEach items="${postList}" var="postList">
+                                <tr>
+                                    <th scope="row">
+                                        <span class="clickable-title" onclick="location.href='/business/detail?jobId=${postList.jobId}'">
+                                                ${postList.title} (${postList.jobTypeCodeName})
+                                        </span>
+                                        <input type="hidden" id="jobId" name="jobId" value="${postList.jobId}">
+                                        <p class="mb-1 mt-2"> 급여  (${postList.salaryTypeCodeName} - ${postList.salary}) </p>
+                                        <p class="mb-1 mt-2"> 작성한 날짜 : ${postList.systemRegisterDatetime}</p>
+                                    </th>
+                                    <td>${postList.statusTypeCodeName}
+                                        <a href="#" class="text-primary" onclick="location.href = '/business/applicantList?jobId=${postList.jobId}'" id="look" name="look" data-bs-toggle="tooltip" title="자세히"><i class="far fa-eye"></i></a>
+                                    </td>
+                                </tr>
                             </c:forEach>
+                            </tbody>
                         </table>
                     </div>
                     <div class="row justify-content-center">

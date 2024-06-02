@@ -17,7 +17,8 @@
                                    number_of_staff,
                                    employment_type_code,
                                    etc,
-                                   system_register_id)
+                                   system_register_id,
+                                   status_type_code)
         VALUES (#{userNo},
                 #{title},
                 #{description},
@@ -32,7 +33,8 @@
                 #{numberOfStaff},
                 #{employmentTypeCode},
                 #{etc},
-                #{systemRegisterId})
+                #{systemRegisterId},
+                'OPEN')
     </insert>
 
     <select id="getJobLists" resultType="com.job.dashboard.domain.dto.JobPostDTO">
@@ -41,10 +43,10 @@
                USER_NO,
                title,
                job_type_code,
-               (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_name = status_type_code) AS status_type_code_name,
+               (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = job_type_code) AS job_type_code_name,
                address,
                salary_type_code,
-               (SELECT detail_name FROM  code_detail WHERE gruop_code = 'salary_type' AND detail_name = salary_type_code) AS salary_type_code_name,
+               (SELECT detail_name FROM  code_detail WHERE group_code = 'salary_type' AND detail_code = salary_type_code) AS salary_type_code_name,
                salary,
                DATE_FORMAT(system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
                job_time
@@ -76,8 +78,7 @@
             etc,
             system_register_id,
             DATE_FORMAT(system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
-            system_updater_id,
-            DATE_FORMAT(system_updater_datetime, '%Y-%m-%d') AS system_updater_datetime
+            system_updater_id
         FROM job_post_info
         WHERE job_id = #{jobId}
     </select>

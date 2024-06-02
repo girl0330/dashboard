@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.business;
 
 import com.job.dashboard.domain.dto.BusinessDashDTO;
+import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -25,6 +26,12 @@ public interface BusinessDashMapper {
     BusinessDashDTO getBusinessProfile(int userNo);
 
     List<JobPostDTO> postJobList(int userNo);
+
+    //지원자들의 userNo가져오기
+    JobApplicationDTO getApplicants(int jobId);
+
+    //지원자의 userNo로 지원자 정보 가져오기
+    List<JobApplicationDTO> getApplicantsList(JobApplicationDTO applicants);
 
     // 작성한 공고 리스트
 }

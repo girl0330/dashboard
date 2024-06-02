@@ -83,6 +83,7 @@ Candidates Dashboard -->
                                 </div>
                             </div>
                         </c:forEach>
+                    </div>
                     <div class="row">
                         <div class="col-12 text-center mt-4 mt-md-5">
                             <ul class="pagination justify-content-center mb-md-4 mb-0">

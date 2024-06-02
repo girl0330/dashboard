@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.business;
 
 import com.job.dashboard.domain.dto.BusinessDashDTO;
+import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +63,20 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         int userNo =(int) sessionUtil.getAttribute("userNo");
 
         return businessDashMapper.postJobList(userNo);
+    }
+
+    //작성한 공고에 지원한 지원자리스트
+    public List<JobApplicationDTO> applicantList(int jobId) {
+        System.out.println("지원한 지원자리스트 임플=====");
+
+        //지원자들의 userNo가져옴
+        JobApplicationDTO applicants = businessDashMapper.getApplicants(jobId);
+        System.out.println("지원자리스트로 가져왔는지 확인: "+applicants);
+
+        // 지원자의 userNo로 지원자들의 정보를 Applicants
+        List<JobApplicationDTO> applicantsList = businessDashMapper.getApplicantsList(applicants);
+        System.out.println("applicantList"+applicantsList);
+        return null;
     }
 
 }

@@ -181,10 +181,10 @@ tab -->
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2"  for="salaryTypeCode"> 급여 타입 </label>
                                 <select class="form-control basic-select" id="salaryTypeCode" name="salaryTypeCode">
-                                    <option value="시급">시급</option>
-                                    <option value="일급">일급</option>
-                                    <option value="일급">주급</option>
-                                    <option value="월급">월급</option>
+                                    <option value="HRLY">시급</option>
+                                    <option value="DLY">일급</option>
+                                    <option value="WKLY">주급</option>
+                                    <option value="MTHLY">월급</option>
 
                                 </select>
                             </div>

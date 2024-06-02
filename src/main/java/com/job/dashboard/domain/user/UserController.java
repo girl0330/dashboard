@@ -5,6 +5,7 @@ import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -44,13 +45,17 @@ public class UserController {
 
     @PostMapping("/doLogin")
     @ResponseBody
-    public Map<Object, Object> accountLogin (@RequestBody UserDTO userDTO) {
+    public Map<Object, Object> accountLogin (@RequestBody UserDTO userDTO, Model model) {
         System.out.println("====회원 로그인===="+userDTO);
         Map<Object, Object> map = userService.findAccount(userDTO);
 
         if (!"error".equals(map.get("code"))) {
             sessionUtil.loginUser((UserDTO) map.get("account"));
         }
+
+        System.out.println("??????????? "+map.get("account"));
+
+        model.addAttribute("loginUser", map.get("account"));
         return map;
     }
 

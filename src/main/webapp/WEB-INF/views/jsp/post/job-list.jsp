@@ -300,11 +300,11 @@ banner -->
                                             </div>
                                             <div class="job-list-option">
                                                 <ul class="list-unstyled">
-                                                    <li> <a href="">${jobList.jobTypeCode}</a> </li>
+                                                    <li> <a href="">${jobList.jobTypeCodeName}</a> </li>
                                                 </ul>
                                                 <ul class="list-unstyled">
                                                     <li><i class="fas fa-map-marker-alt pe-1"></i>${jobList.address}</li>
-                                                    <li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>${jobList.salaryTypeCode}:${jobList.salary}</a></li>
+                                                    <li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>${jobList.salaryTypeCodeName}:${jobList.salary}</a></li>
                                                 </ul>
                                             </div>
                                         </div>

@@ -110,13 +110,13 @@
             jai.job_id,
             jai.USER_NO,
             jai.status_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_name = jai.status_type_code) AS status_type_code_name,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jai.status_type_code) AS status_type_code_name,
             DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
             jpi.title,
             jpi.address,
             jpi.salary,
             jpi.salary_type_code,
-            (SELECT detail_name FROM  code_detail WHERE group_code = 'salary_type' AND detail_name = jpi.salary_type_code) AS salary_type_code_name
+            (SELECT detail_name FROM  code_detail WHERE group_code = 'salary_type' AND detail_code = jpi.salary_type_code) AS salary_type_code_name
         FROM
             job_application_info jai
                 INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
@@ -146,17 +146,17 @@
         SELECT
             jpi.title,
             jpi.job_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_name = jpi.job_type_code) AS job_type_code_name,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = jpi.job_type_code) AS job_type_code_name,
             jpi.address,
             jpi.salary_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_name = jpi.salary_type_code) AS salary_type_code_name,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_code = jpi.salary_type_code) AS salary_type_code_name,
             jpi.salary,
             jpi.system_register_datetime,
             jpi.job_time,
             jai.application_id,
             jai.job_id,
             jai.status_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_name = jai.status_type_code) AS status_type_code_name,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jai.status_type_code) AS status_type_code_name,
             jai.system_register_datetime
         FROM
             job_application_info jai

@@ -14,6 +14,7 @@ public class JobPostDTO extends UserDTO  {
     private String title; // 공고 제목 -
     private String description; // 공고 내용-
     private String jobTypeCode; // 일자리타입코드(서빙, 편의점, 주방 등등)-
+    private String jobTypeCodeName;
     private String address; // 일자리 주소
     private String salaryTypeCode; // 급여종류코드(일급, 주급, 시급, 월급 등등)-
     private String salaryTypeCodeName;
@@ -27,7 +28,8 @@ public class JobPostDTO extends UserDTO  {
     private String employmentTypeCode; // 고용 유형 코드(단기, 장기등등)
     private String employmentTypeCodeName;
     private String etc; // 기타사항
-    private String  statusTypeCode;
+    private String statusTypeCode;
+    private String statusTypeCodeName;
     private int systemRegisterId;
     private String systemRegisterDatetime;
     private int systemUpdaterId;

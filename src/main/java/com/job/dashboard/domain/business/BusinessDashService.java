@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.business;
 
 import com.job.dashboard.domain.dto.BusinessDashDTO;
+import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 
 import java.util.List;
@@ -16,4 +17,7 @@ public interface BusinessDashService {
 
     //기업 작성한 공고 리스트
     List<JobPostDTO> postJobList();
+
+    //작성한 공고 리스트에 지원한 지원자 리스트
+    List<JobApplicationDTO> applicantList(int jobId);
 }

@@ -86,7 +86,6 @@ Manage Jobs -->
                                 <td>${applyList.statusTypeCode}</td>
                                 <td>
                                     <ul class="list-unstyled mb-0 d-flex">
-                                        <li><a href="#" class="job-list-favourite order-2" id="interest" name="interest" data-bs-toggle="tooltip" title="관심" ><i class="far fa-star"></i></a></li>
                                         <li><a href="#" class="text-primary" onclick="location.href='/business/detail?jobId=${applyList.jobId}'" id="look" name="look" data-bs-toggle="tooltip" title="자세히"><i class="far fa-eye"></i></a></li>
                                         <li><a href="#" class="text-danger" id="delete" name="delete" data-bs-toggle="tooltip" title="지원취소" ><i class="far fa-trash-alt"></i></a>
                                         </li>
