@@ -102,21 +102,34 @@
                system_updater_id,
                DATE_FORMAT(system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
                status_type_code,
-               (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = status_type_code) AS status_type_code_name
+               (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = status_type_code) AS status_type_code_name_b
         from job_post_info jpi
         WHERE USER_NO = #{userNo}
     </select>
 
     <select id="getApplicants" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        SELECT user_no
-        FROM job_application_info
-        WHERE job_id = #{jobId}
+        SELECT
+            /* BusinessDashMapper.getApplicants */
+            jai.application_id,
+            jai.job_id,
+            jai.USER_NO,
+            jai.status_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jai.status_type_code) AS status_type_code_name_p,
+            DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
+            jpi.title,
+            jpi. status_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jpi.status_type_code) AS status_type_code_name_b
+        FROM
+            job_application_info jai
+                INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
+        WHERE
+            jai.job_id = #{jobId}
+        ORDER BY jai.system_register_datetime DESC
     </select>
 
-    <select id="getApplicantsList" resultType="com.job.dashboard.domain.dto.JobApplicationDTO" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
+    <select id="getApplicantsInfo" resultType="com.job.dashboard.domain.dto.JobApplicationDTO" parameterType="int">
         SELECT jai.*
         FROM job_application_info jai
-                 INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
         WHERE jpi.job_id = #{jobId}
           AND jai.user_no IN #{userNo};
     </select>

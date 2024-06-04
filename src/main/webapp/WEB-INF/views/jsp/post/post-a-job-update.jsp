@@ -11,30 +11,29 @@
         },
 
         //tabChange 함수 실행
-        tabChange : function () {
-            alert("test");
-            $('.nav-item.active').removeClass('active');
-            $('.tab-pane.show.active').removeClass('show active');
-
-            $('#Confirm-tab').addClass('active');
-            $('#Confirm').addClass('show active');
-
-            // Job Detail 탭을 비활성화
-            $('#Job-detail-tab').addClass('disabled');
-        },
+        // tabChange : function () {
+        //     alert("test");
+        //     $('.nav-item.active').removeClass('active');
+        //     $('.tab-pane.show.active').removeClass('show active');
+        //
+        //     $('#Confirm-tab').addClass('active');
+        //     $('#Confirm').addClass('show active');
+        //
+        //     // Job Detail 탭을 비활성화
+        //     $('#Job-detail-tab').addClass('disabled');
+        // },
 
         //전송 함수
         formSubmit : function () {
-            alert("수정함수")
             const formData = $("#postJobForm").serializeArray();
 
-
             let jsonData = {};
+
             $.each(formData, function () {
                 jsonData[this.name] = this.value;
             });
 
-            console.log("formDtat::: "+JSON.stringify(jsonData));
+            console.log("jsonData로 보기::: "+JSON.stringify(jsonData));
 
             $.ajax({
                 url: "/business/postUpdate/${old.jobId}", // Spring 컨트롤러 URL
@@ -66,9 +65,9 @@
             postSave.init();
         });
 
-        $(document).on('click', '.nav-item.disabled', function (e) {
-            e.preventDefault(); // 기본 동작을 방지
-        });
+        // $(document).on('click', '.nav-item.disabled', function (e) {
+        //     e.preventDefault(); // 기본 동작을 방지
+        // });
     });
 </script>
 <!--=================================
@@ -127,7 +126,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 상세모집내용 </label>
-                                <textarea class="form-control" rows="4" value="${old.description}" placeholder="상세모집내용을 작성해주세요"  name="description" id="description"></textarea>
+                                <textarea class="form-control" rows="4" placeholder="상세모집내용을 작성해주세요"  name="description" id="description">${old.description}</textarea>
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label class="mb-2"> 위치 </label>
@@ -173,7 +172,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 우대 조건 </label>
-                                <textarea class="form-control" rows="4" value="${old.requirement}"  name="requirement" id="requirement"></textarea>
+                                <textarea class="form-control" rows="4" name="requirement" id="requirement">${old.requirement}</textarea>
                             </div>
 
 
@@ -228,7 +227,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 기타사항 </label>
-                                <textarea class="form-control" rows="4" value="${old.etc}" name="etc" id="etc"></textarea>
+                                <textarea class="form-control" rows="4" name="etc" id="etc">${old.etc}</textarea>
                             </div>
                             <div class="col-md-12">
                                 <a class="btn btn-primary" id="post_update_button">수정완료</a>

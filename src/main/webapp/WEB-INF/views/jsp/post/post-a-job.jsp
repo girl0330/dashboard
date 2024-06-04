@@ -10,18 +10,17 @@
 
         },
 
-        //tabChange 함수 실행
-        tabChange : function () {
-            alert("test");
-            $('.nav-item.active').removeClass('active');
-            $('.tab-pane.show.active').removeClass('show active');
-
-            $('#Confirm-tab').addClass('active');
-            $('#Confirm').addClass('show active');
-
-            // Job Detail 탭을 비활성화
-            $('#Job-detail-tab').addClass('disabled');
-        },
+        // //tabChange 함수 실행
+        // tabChange : function () {
+        //     $('.nav-item.active').removeClass('active');
+        //     $('.tab-pane.show.active').removeClass('show active');
+        //
+        //     $('#Confirm-tab').addClass('active');
+        //     $('#Confirm').addClass('show active');
+        //
+        //     // Job Detail 탭을 비활성화
+        //     $('#Job-detail-tab').addClass('disabled');
+        // },
 
         //전송 함수
         formSubmit : function () {
@@ -49,6 +48,8 @@
                     } else if (data.code === 'success'){
                         alert(data.message);
                         location.href='/business/list'
+                    } else if (data.code === 'applyError') {
+                        alert(data.message);
                     }
                 },
                 error: function(xhr, status, error) {
@@ -65,9 +66,9 @@
             postSave.init();
         });
 
-        $(document).on('click', '.nav-item.disabled', function (e) {
-            e.preventDefault(); // 기본 동작을 방지
-        });
+        // $(document).on('click', '.nav-item.disabled', function (e) {
+        //     e.preventDefault(); // 기본 동작을 방지
+        // });
     });
 </script>
 <!--=================================
@@ -123,7 +124,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 상세모집내용 </label>
-                                <textarea class="form-control" rows="4" value="" placeholder="상세모집내용을 작성해주세요"  name="description" id="description"></textarea>
+                                <textarea class="form-control" rows="4" placeholder="상세모집내용을 작성해주세요"  name="description" id="description"></textarea>
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label class="mb-2"> 위치 </label>

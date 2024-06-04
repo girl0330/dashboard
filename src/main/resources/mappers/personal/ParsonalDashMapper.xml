@@ -3,9 +3,8 @@
 <mapper namespace="com.job.dashboard.domain.personal.PersonalDashMapper">
 
     <select id="profileCheck" parameterType="int" resultType="int">
-        /*PersonalDashMapper.profileCheck*/
-        SELECT
-        count(*) AS countUserNo
+        SELECT /*PersonalDashMapper.profileCheck*/
+        count(*) AS countProfile
         FROM USER_PROFILE_INFO
         WHERE USER_NO = #{userNo}
     </select>
@@ -88,8 +87,7 @@
     </insert>
 
     <select id="getOldPassword" parameterType="int" resultType="com.job.dashboard.domain.dto.UserDTO">
-        /* PersonalDashMapper.getOldPassword */
-        SELECT password
+        SELECT   /* PersonalDashMapper.getOldPassword */ password
         FROM user_info
         WHERE USER_NO = #{userNo}
     </select>
@@ -103,7 +101,7 @@
             USER_NO = #{userNo}
     </update>
 
-    <select id="applyList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
+    <select id="getCurrentApplyList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
         SELECT
             /* PersonalDashMapper.applyList */
             jai.application_id,
@@ -114,9 +112,7 @@
             DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
             jpi.title,
             jpi.address,
-            jpi.salary,
-            jpi.salary_type_code,
-            (SELECT detail_name FROM  code_detail WHERE group_code = 'salary_type' AND detail_code = jpi.salary_type_code) AS salary_type_code_name
+            jpi.salary
         FROM
             job_application_info jai
                 INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
@@ -141,9 +137,8 @@
             APPLICATION_ID = #{applicationId}
     </update>
 
-    <select id="getApplyJobList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        /*지원하 공고 목록들 가져오기*/
-        SELECT
+    <select id="recentlyApplyJobList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        SELECT /* PersonalDashMapper.getApplyJobList*/
             jpi.title,
             jpi.job_type_code,
             (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = jpi.job_type_code) AS job_type_code_name,
@@ -151,17 +146,15 @@
             jpi.salary_type_code,
             (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_code = jpi.salary_type_code) AS salary_type_code_name,
             jpi.salary,
-            jpi.system_register_datetime,
             jpi.job_time,
+            jpi.status_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jpi.status_type_code) AS status_type_code_name,
             jai.application_id,
             jai.job_id,
-            jai.status_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jai.status_type_code) AS status_type_code_name,
-            jai.system_register_datetime
+            DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime
         FROM
             job_application_info jai
-                INNER JOIN job_post_info jpi ON
-                jai.job_id = jpi.job_id
+        INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
         WHERE
             jai.USER_NO = #{userNo}
         ORDER BY jai.system_register_datetime DESC

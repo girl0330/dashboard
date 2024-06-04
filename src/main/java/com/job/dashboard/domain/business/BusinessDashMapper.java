@@ -28,10 +28,12 @@ public interface BusinessDashMapper {
     List<JobPostDTO> postJobList(int userNo);
 
     //지원자들의 userNo가져오기
-    JobApplicationDTO getApplicants(int jobId);
+    List<JobApplicationDTO> getApplicants(int jobId);
 
     //지원자의 userNo로 지원자 정보 가져오기
-    List<JobApplicationDTO> getApplicantsList(JobApplicationDTO applicants);
+//    List<JobApplicationDTO> getApplicantsList(JobApplicationDTO applicants);
+
+    List<JobApplicationDTO> getApplicantsInfo(int userNo);
 
     // 작성한 공고 리스트
 }

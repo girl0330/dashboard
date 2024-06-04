@@ -5,7 +5,6 @@
 
     passwordChange = {
         init : function () {
-            alert("click?")
             if (!this.validationChk()) {
                 return;
             }
@@ -60,12 +59,13 @@
         submitForm : function () {
             alert("비빌번호 전송");
             const formData = $('#changePassword').serializeArray();
-            console.log("formData " + JSON.stringify(formData));
 
             let jsonData = {};
             $.each(formData, function () {
                 jsonData[this.name] = this.value;
             });
+
+            console.log("formData " + JSON.stringify(jsonData));
 
             $.ajax({
                 url: "/personal/goChangePassword",
@@ -74,8 +74,12 @@
                 data: JSON.stringify(jsonData),
                 success: function (data) {
                     console.log(JSON.stringify(data));
-                    if (data.code === 'error') {
+                    if (data.code === 'existError') {
                         alert(data.message);
+
+                    } else if (data.code === 'checkError') {
+                        alert(data.message);
+
                     } else if (data.code === 'success') {
                         alert(data.message);
                         location.href='/personal/changePassword'

@@ -6,12 +6,10 @@
   let personal_login = {
     init : function () {
     // 공백함수실행
-    //   alert("공백함수 실행??")
       if (!this.emptyChkFn()) {
         return;
       }
       //조건함수실행
-        alert("조건함수 실행??")
       if (!this.validationChk()){
         return;
       }
@@ -20,7 +18,6 @@
     },
     // 공백함수
     emptyChkFn : function () {
-      // alert("공백합수 실행됨")
       let valid = true;
       const form = $('#personalForm')
       const inputs = form.find("input[type='text'], input[type='password']");
@@ -42,7 +39,6 @@
 
     //validation 함수 실행
     validationChk : function () {
-        alert("조건함수 실행!!!")
       let valid = true;
       const personalLoginId = $('#personalEmail').val();
       const personalLoginPassword = $('#personalPassword').val();
@@ -87,10 +83,10 @@
         jsonData[this.name] = this.value;
       });
 
-      const url = "/user/doLogin";
+      console.log("jsonData :" + JSON.stringify(jsonData));
 
       $.ajax({
-        url: url, // Spring 컨트롤러 URL
+        url: "/user/doLogin", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
@@ -115,12 +111,10 @@
   let business_login = {
     init : function () {
       // 공백함수실행
-      //   alert("공백함수 실행??")
       if (!this.emptyChkFn()) {
         return;
       }
       //조건함수실행
-      alert("조건함수 실행??")
       if (!this.validationChk()){
         return;
       }
@@ -129,7 +123,6 @@
     },
     // 공백함수
     emptyChkFn : function () {
-      // alert("공백합수 실행됨")
       let valid = true;
       const form = $('#businessForm')
       const inputs = form.find("input[type='text'], input[type='password']");
@@ -151,7 +144,6 @@
 
     //validation 함수 실행
     validationChk : function () {
-      alert("조건함수 실행!!!")
       let valid = true;
       const businessLoginId = $('#businessEmail').val();
       const businessLoginPassword = $('#businessPassword').val();
@@ -196,10 +188,10 @@
         jsonData[this.name] = this.value;
       });
 
-      const url = "/user/doLogin";
+      console.log("jsonData :" + JSON.stringify(jsonData));
 
       $.ajax({
-        url: url, // Spring 컨트롤러 URL
+        url: "/user/doLogin", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송

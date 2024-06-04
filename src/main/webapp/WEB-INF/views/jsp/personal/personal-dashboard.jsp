@@ -56,8 +56,8 @@ Candidates Dashboard -->
                         <h4>최근 지원한 공고 목록</h4>
                     </div>
                     <div class="row">
-                        <c:forEach items="${applyJobList}" var="applyJobList">
-                            <div class="col-12" onclick="location.href='/business/detail?jobId=${applyJobList.applicationId}'">
+                        <c:forEach items="${recentlyApplyJobList}" var="recentlyApplyJobList">
+                            <div class="col-12" onclick="location.href='/business/detail?jobId=${recentlyApplyJobList.applicationId}'">
                                 <div class="job-list ">
                                     <div class="job-list-logo">
                                         <img class="img-fluid" src="/images/svg/01.svg" alt="">
@@ -65,21 +65,24 @@ Candidates Dashboard -->
                                     <div class="job-list-details">
                                         <div class="job-list-info">
                                             <div class="job-list-title">
-                                                <input type="hidden" id="jobPostId" name="jobPostId" value="${applyJobList.applicationId}">
-                                                <h5 class="mb-0">${applyJobList.title}</h5>
+                                                <input type="hidden" id="jobPostId" name="jobPostId" value="${recentlyApplyJobList.applicationId}">
+                                                <h5 class="mb-0">${recentlyApplyJobList.title}</h5>
                                             </div>
                                             <div class="job-list-option">
                                                 <ul class="list-unstyled">
-                                                    <li> <a href="">${applyJobList.jobTypeCodeName}</a> </li>
+                                                    <li> <a href="">${recentlyApplyJobList.jobTypeCodeName}</a> </li>
+                                                    <li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>${recentlyApplyJobList.jobTime} ${recentlyApplyJobList.salaryTypeCodeName} : ${recentlyApplyJobList.salary}</a></li>
                                                 </ul>
                                                 <ul class="list-unstyled">
-                                                    <li><i class="fas fa-map-marker-alt pe-1"></i>${applyJobList.address}</li>
-                                                    <li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>${applyJobList.salaryTypeCodeName}:${applyJobList.salary}</a></li>
+                                                    <li><i class="fas fa-map-marker-alt pe-1"></i>${recentlyApplyJobList.address}</li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="job-list-favourite-time"> <a class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a> <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${applyJobList.systemRegisterDatetime}</span> </div>
+                                    <div class="job-list-favourite-time">
+                                        <a href="#">${recentlyApplyJobList.statusTypeCodeName}</a>
+                                        <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${recentlyApplyJobList.systemRegisterDatetime}</span>
+                                    </div>
                                 </div>
                             </div>
                         </c:forEach>

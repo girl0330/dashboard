@@ -68,15 +68,18 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     //작성한 공고에 지원한 지원자리스트
     public List<JobApplicationDTO> applicantList(int jobId) {
         System.out.println("지원한 지원자리스트 임플=====");
+//        JobApplicationDTO jobApplicationDTO = new JobApplicationDTO();
 
-        //지원자들의 userNo가져옴
-        JobApplicationDTO applicants = businessDashMapper.getApplicants(jobId);
-        System.out.println("지원자리스트로 가져왔는지 확인: "+applicants);
+        //지원자들의 userNo가져옴 businessDashDTO.setCompanyId(businessProfile.get(0).getCompanyId())
+        return businessDashMapper.getApplicants(jobId);
+//        System.out.println("지원자리스트로 가져왔는지 확인: "+applicants);
+//        System.out.println("applicationDto 확인 : "+jobApplicationDTO);
 
-        // 지원자의 userNo로 지원자들의 정보를 Applicants
-        List<JobApplicationDTO> applicantsList = businessDashMapper.getApplicantsList(applicants);
-        System.out.println("applicantList"+applicantsList);
-        return null;
+        // 지원자의 userNo로 지원자들의 정보를 Applicants applicants.get(0).getCompanyId()
+//        List<JobApplicationDTO> findInfo = businessDashMapper.getApplicantsInfo(applicants.get(0).getUserNo());
+//        JobApplicationDTO.setUserNo(applicants.get(0).getUserNo());
+//        System.out.println("");
+//        return null;
     }
 
 }

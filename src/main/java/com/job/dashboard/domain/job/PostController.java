@@ -1,5 +1,6 @@
 package com.job.dashboard.domain.job;
 
+import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +40,11 @@ public class PostController {
     //공고 작성
     @PostMapping("/savePost")
     @ResponseBody
-    public Map<Object, Object> savePost (@RequestBody JobPostDTO jobPostDTO) {
+    public Map<String, Object> savePost (@RequestBody JobPostDTO jobPostDTO) {
         System.out.println("====공고 저장====");
 
          //로그인한 id를 직접 넣을거임
-        Map<Object, Object> map = postService.saveJob(jobPostDTO);
+        Map<String, Object> map = postService.saveJob(jobPostDTO);
         System.out.println("map/::::::::::   "+ map);
         return map;
     }
@@ -93,13 +94,13 @@ public class PostController {
 
     @PostMapping("/postUpdate/{jobId}")
     @ResponseBody
-    public Map<Object, Object> updatePost (@PathVariable int jobId, @RequestBody JobPostDTO jobPostDTO ) {
+    public Map<String, Object> updatePost (@PathVariable int jobId, @RequestBody JobPostDTO jobPostDTO ) {
         System.out.println("일단 데이터 확인부터..? "+jobId);
 
         Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
         System.out.println("userNo 확인  ; "+userNo);
         System.out.println("일단 데이터 확인부터..? "+jobPostDTO);
-        Map<Object, Object> map = postService.update(userNo, jobPostDTO);
+        Map<String, Object> map = postService.update(userNo, jobPostDTO);
         System.out.println(map);
         return map;
     }
@@ -119,26 +120,25 @@ public class PostController {
             return "redirect:/";
         }
 
-        Map<Object, Object> map = postService.delete(jobId);
-        System.out.println("map"+map);
+        postService.delete(jobId);
         return "redirect:/business/list";
     }
 
     @PostMapping("/apply")
     @ResponseBody
-    public Map<String, Object> applyJob(@RequestBody Integer jobId){
-        System.out.println("지원하기::");
-        Map<String, Object> map = postService.applyJob(jobId);
+    public Map<String, Object> applyJob(@RequestBody JobApplicationDTO jobApplicationDTO){
+        System.out.println("지원하기::"+jobApplicationDTO);
+        Map<String, Object> map = postService.applyJob(jobApplicationDTO);
         System.out.println("=========================>  map 확인 : "+map);
         return map;
     }
 
-//    @PostMapping("/apply")
-//    @ResponseBody
-//    public Map<String, Object> applyJob1(@RequestBody int jobId, HttpSession session) {
-//        System.out.println("지원하기 "+ jobId);
-//        Map<String, Object> map = postService.applyJob(jobId, session);
-//        System.out.println("넘어온 정보 확인" + map);
-//        return map;
-//    }
+    @PostMapping("/applyCancel")
+    @ResponseBody
+    public Map<String, Object> applyCancelJob(@RequestBody Integer jobId){
+        System.out.println("지원취소하기::");
+        Map<String, Object> map = postService.applyCancelJob(jobId);
+        System.out.println("=========================>  map 확인 : "+map);
+        return map;
+    }
  }

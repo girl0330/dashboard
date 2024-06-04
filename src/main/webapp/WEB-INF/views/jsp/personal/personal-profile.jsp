@@ -3,14 +3,12 @@
 <script>
   let personal_profile = {
     init: function () {
-      alert("??????")
-      //제출 버튼
+      //프로필 저장 버튼
       this.formSubmit();
     },
 
     // 전송 함수 정의
     formSubmit : function() {
-      alert("전송함수")
       const formData = $("#saveProfile").serializeArray();
 
       // JSON 객체로 변환
@@ -25,7 +23,7 @@
       // 알바경험 선택 값 추가
       jsonData['partTimeExperience'] = $('input[name=partTimeExperience]:checked').val();
 
-      console.log("x:::1111111111  "+JSON.stringify(jsonData));
+      console.log("jsonData "+JSON.stringify(jsonData));
 
       $.ajax({
         url: "/personal/myProfileSave", // Spring 컨트롤러 URL
@@ -73,12 +71,6 @@ My Profile -->
         <div class="user-dashboard-info-box">
           <div class="section-title-02 mb-2 d-grid">
             <h4>기본 정보</h4>
-          </div>
-          <div class="cover-photo-contact">
-            <div class="upload-file">
-              <label for="formFile" class="form-label">Upload Cover Photo</label>
-              <input class="form-control" type="file" id="formFile">
-            </div>
           </div>
           <form class="mt-4" id="saveProfile" name="saveProfile">
             <div class="row">

@@ -17,4 +17,5 @@ public class JobApplicationDTO extends JobPostDTO{
     private String systemUpdateDatetime;
     private String jobTypeCodeName;
     private String salaryTypeCodeName;
+    private String motivationDescription;
 }

@@ -5,7 +5,6 @@
 
     passwordChange = {
         init : function () {
-            alert("click?")
             if (!this.validationChk()) {
                 return;
             }
@@ -58,7 +57,7 @@
         },
 
         submitForm : function () {
-            alert("비빌번호 전송");
+            // alert("비빌번호 전송");
             const formData = $('#changePassword').serializeArray();
             console.log("formData " + JSON.stringify(formData));
 

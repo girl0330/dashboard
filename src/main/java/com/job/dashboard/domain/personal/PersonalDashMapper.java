@@ -26,13 +26,13 @@ public interface PersonalDashMapper {
     UserDTO getOldPassword(int userNo);
     void updatePassword(UserDTO userDTO);
 
-    // 지원형황 리스트
-    List<JobApplicationDTO> applyList(int userNo);
+    // 현재 지원형황 리스트
+    List<JobApplicationDTO> getCurrentApplyList(int userNo);
 
     // 지원한 공고 삭제
     void applyListCancel(int applicationId);
 
 
-    // 지원 공고 리스트 가져오기
-    List<JobApplicationDTO> getApplyJobList(int userNo);
+    // 최근 지원 공고 리스트 가져오기
+    List<JobApplicationDTO> recentlyApplyJobList(int userNo);
 }

@@ -1,5 +1,6 @@
 package com.job.dashboard.domain.job;
 
+import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 
 import javax.servlet.http.HttpSession;
@@ -9,7 +10,7 @@ import java.util.Map;
 public interface PostService {
 
     //저장
-    Map<Object, Object> saveJob(JobPostDTO jobPostDTO);
+    Map<String, Object> saveJob(JobPostDTO jobPostDTO);
 
     //목록
     List<JobPostDTO> jobList();
@@ -18,12 +19,16 @@ public interface PostService {
     JobPostDTO detail(int jobId);
 
     //수정
-    Map<Object, Object> update(int userNo, JobPostDTO jobPostDTO);
+    Map<String, Object> update(int userNo, JobPostDTO jobPostDTO);
 
 //    void delete(int jobId, Integer userNo);
 
     //삭제
-    Map<Object, Object> delete(int jobId);
+    void delete(int jobId);
 
-    Map<String,Object> applyJob(Integer jobId);
+    //공고 지원
+    Map<String,Object> applyJob(JobApplicationDTO jobApplicationDTO);
+
+    //지원 취소하기
+    Map<String, Object> applyCancelJob(Integer jobId);
 }

@@ -17,20 +17,13 @@
             $.each(formData, function() {
                 jsonData[this.name] = this.value;
             });
+
             // 산업번호 선택 값 추가
             jsonData['industryCode'] = $('select[name=industryCode]').val();
 
             // // 사업종류 선택 값 추가
             jsonData['businessTypeCode'] = $('select[name=businessTypeCode]').val();
             //
-
-
-            // var industryCode = $('select[name="industryCode"]:selected').val();
-            // jsonData['industryCode'] = industryCode;
-
-            // 사업종류 선택 값 추가
-            // var businessTypeCode = $('select[name="businessTypeCode"] option:selected').val();
-            // jsonData['businessTypeCode'] = businessTypeCode;
 
             console.log("x:::  "+JSON.stringify(jsonData));
 

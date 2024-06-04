@@ -25,14 +25,10 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     //프로필이 작성 유무
-    public Boolean profileCheck(Integer userNo) {
+    public int profileCheck(int userNo) {
         System.out.println("프로필 유무 체크");
-        boolean profileCheck;
-        int x = personalDashMapper.profileCheck(userNo);
-        System.out.println("x ::::   " + x);
-        profileCheck = x > 0;
 
-        return profileCheck;
+        return personalDashMapper.profileCheck(userNo);
     }
 
     // 기존 작성된 프로필 가져오기
@@ -84,32 +80,36 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         System.out.println("입력한 비밀번호 : " + enteredPassword);
 
         int userNo = userDTO.getUserNo();
-        String getPassword = personalDashMapper.getOldPassword(userNo).getPassword();
-        System.out.println("입력되어 있었던 비번 :: " + getPassword);
+        String oldPassword = personalDashMapper.getOldPassword(userNo).getPassword();
+//        UserDTO oldPassword = personalDashMapper.getOldPassword(userNo);
+//        String password = oldPassword.getPassword();
+        System.out.println("이전 비번 :: " + oldPassword);
 
-        boolean pwCheck = passwordEncoder.matches(enteredPassword, getPassword);
+        boolean pwCheck = passwordEncoder.matches(enteredPassword, oldPassword);
         System.out.println("비밀번호 서로 맞는지 확인: " + pwCheck);
         if (!pwCheck) {
-            map.put("code", "error");
-            map.put("message", "비밀번호가 존재하지 않습니다.");
+            map.put("code", "existError");
+            map.put("message", "입력한 비밀번호가 존재하지 않습니다.");
             return map;
         }
+
+        System.out.println("userNewPassword 확ㅇ니 :: " + userDTO.getNewPassword());
 
         System.out.println("userDto 확ㅇ니::: " + userDTO);
         if (!userDTO.getNewPassword().equals(userDTO.getPassword2())) {
-            System.out.println("서로 일치 않아잖아~~~!!!!!");
-            map.put("code", "error");
+            System.out.println("불일치");
+            map.put("code", "checkError");
             map.put("message", "비밀번호가 일치하지 않습니다.");
             return map;
         }
-        System.out.println("새로 만든 비밀번호가 동일함. ");
+        System.out.println("일치. ");
 
-        System.out.println("userNewPassword 확ㅇ니 :: " + userDTO.getNewPassword());
+        // 새 비밀번호 암호화
         String encodedNewPassword = passwordEncoder.encode(userDTO.getNewPassword());
 
         userDTO.setPassword(encodedNewPassword);
         personalDashMapper.updatePassword(userDTO);
-        System.out.println("update문이 실행이 잘 됐나??" + userDTO);
+        System.out.println("update문이 실행??" + userDTO);
         map.put("code", "success");
         map.put("message", "비밀번호 변경 성공");
 
@@ -117,10 +117,10 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     }
 
     //지원형황 리스트
-    public List<JobApplicationDTO> applyList() {
-        System.out.println("지원현황 리스트 임플");
+    public List<JobApplicationDTO> currentApplyList() {
+        System.out.println("현재 지원현황 리스트 임플");
         Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
-        return personalDashMapper.applyList(userNo);
+        return personalDashMapper.getCurrentApplyList(userNo);
     }
 
     //지원 리스트 삭제 (취소, statusTypeCode를 취소로 바꾸기)
@@ -134,9 +134,9 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         return map;
     }
 
-    //지원 리스트 보기
-    public List<JobApplicationDTO> applyJobList(Integer userNo) {
-        System.out.println("지원한 리스트 임플");
-        return personalDashMapper.getApplyJobList(userNo);
+    //최근 지원 리스트 보기
+    public List<JobApplicationDTO> recentlyApplyJobList(int userNo) {
+        System.out.println("최근 지원한 리스트 임플");
+        return personalDashMapper.recentlyApplyJobList(userNo);
     }
 }

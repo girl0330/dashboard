@@ -212,10 +212,18 @@
                 </div>
                 <div class="add-listing">
                     <div class="login d-inline-block me-4">
-                        <a data-bs-toggle="modal" data-bs-target="#exampleModalCenter" href="/user/login"><i class="far fa-user pe-2"></i>Sign in</a>
+                        <a href="/user/login"><i class="far fa-user pe-2"></i>로그인</a>
                     </div>
-                    <a class="btn btn-white btn-md" href="/business/postAJob"> <i class="fas fa-plus-circle"></i>Post a job</a>
-
+                </div>
+                <div class="add-listing">
+                    <div class="login d-inline-block me-4">
+                        <a href="/user/signup"><i class="far fa-user pe-2"></i>회원가입</a>
+                    </div>
+                </div>
+                <div class="add-listing">
+                    <div>
+                        <a class="btn btn-white btn-md" href="/business/postAJob"> <i class="fas fa-plus-circle"></i>Post a job</a>
+                    </div>
                 </div>
             </div>
         </nav>

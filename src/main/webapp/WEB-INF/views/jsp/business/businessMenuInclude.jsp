@@ -29,15 +29,17 @@ Dashboard Nav -->
             <div class="col-md-12">
                 <div class="sticky-top secondary-menu-sticky-top">
                     <div class="secondary-menu">
-                        <ul class="list-unstyled mb-0" id="menu">
-                            <li><a href="/business/dashboard">Dashboard</a></li>
-                            <li><a href="/business/profile">나의 프로필</a></li>
-                            <li><a href="/business/changePassword">비밀번호 변경</a></li>
-                            <li><a href="/business/manageCandidate">지원자 관리</a></li>
-                            <li><a href="/business/managePostJob">공고 관리</a></li>
-                            <li><a href="/business/postAJob">새 공고 작성하기</a></li>
-                            <li><a href="/user/logout">Log Out</a></li>
-                        </ul>
+                        <c:if  test="${userTypeCode == '20'}">
+                            <ul class="list-unstyled mb-0" id="menu">
+                                <li><a href="/business/dashboard">Dashboard</a></li>
+                                <li><a href="/business/profile">나의 프로필</a></li>
+                                <li><a href="/business/changePassword">비밀번호 변경</a></li>
+    <%--                            <li><a href="/business/manageCandidate">지원자 관리</a></li>--%>
+                                <li><a href="/business/managePostJob">공고 관리</a></li>
+                                <li><a href="/business/postAJob">새 공고 작성하기</a></li>
+                                <li><a href="/user/logout">Log Out</a></li>
+                            </ul>
+                        </c:if>
                     </div>
                 </div>
             </div>

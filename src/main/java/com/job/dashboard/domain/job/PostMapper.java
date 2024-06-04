@@ -40,6 +40,8 @@ public interface PostMapper {
 
     //공고 지원하기
     void insertJobApplicationInfo(JobApplicationDTO jobApplicationDTO);
+    //공고 지원 취소하기
+    void deleteJobApplicationInfo(JobApplicationDTO jobApplicationDTO);
 
 
 //    void delete(int jobId);
