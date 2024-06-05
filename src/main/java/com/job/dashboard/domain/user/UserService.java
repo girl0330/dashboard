@@ -5,7 +5,10 @@ import com.job.dashboard.domain.dto.UserDTO;
 import java.util.Map;
 
 public interface UserService {
-    Map<Object, Object> accountInsert(UserDTO userDTO);
+    Map<String, Object> accountInsert(UserDTO userDTO);
 
-    Map<Object, Object> findAccount(UserDTO userDTO);
+    Map<String, Object> findAccount(UserDTO userDTO);
+
+    // 이메일 중복인지 확인
+    Map<String, Object> emailDuplicateCheck(UserDTO userDTO);
 }

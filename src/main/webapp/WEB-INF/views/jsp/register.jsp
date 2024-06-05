@@ -1,6 +1,75 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
+  let personalEmailDuplicateCheck = {
+    init : function () {
+      if (!this.emailEmptyChkFn()) {
+        return;
+      }
+      if (!this.emailValidationChk()) {
+        return;
+      }
+      this.personalDuplicateCheck();
+
+    },
+    emailEmptyChkFn: function () {
+      let valid = true;
+      const email = $('#personalEmail');
+      // const input = email.find("input[type='text']");
+
+      const removeBlankData = email.val().replace(/\s*/g, "");
+      if (removeBlankData === "") {
+        let text = email.data('name');
+        alert(text + "이 비어있습니다.");
+        email.focus();
+        valid = false;
+      }
+      return valid;
+    },
+    emailValidationChk: function () {
+    let valid = true;
+    const email = $('#personalEmail').val();
+    console.log("email"+email);
+
+    let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        alert("이메일을 올바르게 입력해주세요.")
+        $('#personalEmail').focus()
+        valid = false;
+      }
+      return valid;
+    },
+
+    personalDuplicateCheck : function () {
+      alert("test")
+      const email = $("#personalEmail").val();
+
+      let jsonData = {};
+      jsonData['email'] = email;
+      console.log("jsonData : "+JSON.stringify(jsonData));
+
+      $.ajax({
+        url: "/user/duplicateCheck", // Spring 컨트롤러 URL
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
+        success: function(data) {
+          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+          console.log(JSON.stringify(data));
+          if(data.code === 'error') {
+            alert(data.message);
+          } else if (data.code === 'success'){
+            alert(data.message);
+            location.href='/personal/myProfile'
+          }
+        },
+        error: function(xhr, status, error) {
+          // 오류 발생 시 실행할 코드
+          console.error(error);
+        }
+      });
+    }
+  }
 
   //회원 로그인 실행
   let personal_register = {
@@ -20,6 +89,9 @@
       // alert("c")
       this.formSubmit();
     },
+    /*중복검사*/
+
+
     /*공백 검사*/
     emptyChkFn : function () {
       let valid = true;
@@ -43,7 +115,6 @@
 
     //validationChk 함수 정의
     validationChk : function () {
-      alert("111")
       let valid = true;
       const personalLoginId = $('#personalEmail').val();
       const personalPassword = $('#personalPassword').val();
@@ -135,6 +206,76 @@
           } else if (data.code === 'success'){
             alert(data.message);
             location.href='/'
+          }
+        },
+        error: function(xhr, status, error) {
+          // 오류 발생 시 실행할 코드
+          console.error(error);
+        }
+      });
+    }
+  }
+
+  let businessEmailDuplicateCheck = {
+    init : function () {
+      if (!this.emailEmptyChkFn()) {
+        return;
+      }
+      if (!this.emailValidationChk()) {
+        return;
+      }
+      this.businessDuplicateCheck();
+
+    },
+    emailEmptyChkFn: function () {
+      let valid = true;
+      const email = $('#businessEmail');
+      // const input = email.find("input[type='text']");
+
+      const removeBlankData = email.val().replace(/\s*/g, "");
+      if (removeBlankData === "") {
+        let text = email.data('name');
+        alert(text + "이 비어있습니다.");
+        email.focus();
+        valid = false;
+      }
+      return valid;
+    },
+    emailValidationChk: function () {
+      let valid = true;
+      const email = $('#businessEmail').val();
+      console.log("email"+email);
+
+      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        alert("이메일을 올바르게 입력해주세요.")
+        $('#businessEmail').focus()
+        valid = false;
+      }
+      return valid;
+    },
+
+    businessDuplicateCheck : function () {
+      alert("test")
+      const email = $("#businessEmail").val();
+
+      let jsonData = {};
+      jsonData['email'] = email;
+      console.log("jsonData : "+JSON.stringify(jsonData));
+
+      $.ajax({
+        url: "/user/duplicateCheck", // Spring 컨트롤러 URL
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
+        success: function(data) {
+          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+          console.log(JSON.stringify(data));
+          if(data.code === 'error') {
+            alert(data.message);
+          } else if (data.code === 'success'){
+            alert(data.message);
+            location.href='/personal/myProfile'
           }
         },
         error: function(xhr, status, error) {
@@ -289,8 +430,16 @@
 
   //DOM이 실행 후 실행 됨
   document.addEventListener('DOMContentLoaded', function (){
+    $("#personalEmailDuplicateCheck").on("click", function() {
+      personalEmailDuplicateCheck.init();
+    });
+
     document.getElementById("personal_register").addEventListener("click",function () {
       personal_register.init();
+    });
+
+    $("#businessEmailDuplicateCheck").on("click", function() {
+      businessEmailDuplicateCheck.init();
     });
 
     document.getElementById("business_register").addEventListener("click",function () {
@@ -367,7 +516,7 @@ Register -->
                 <div class="row">
                   <input type="hidden" name="userTypeCode" id="personalUserTypeCode" value="10">
                   <div class="mb-3 col-md-12">
-                    <label class="form-label" for="personalEmail">이메일 * <a onclick="window.location.href='/user/signupInsert'" href=''>중복검사</a></label>
+                    <label class="form-label" for="personalEmail">이메일 * <a id="personalEmailDuplicateCheck" name="emailDuplicateCheck" href=''>중복검사</a></label>
                     <input type="text" class="form-control" id="personalEmail" name="email" data-name="이메일">
                   </div>
                   <div class="mb-3 col-md-6">
@@ -402,7 +551,7 @@ Register -->
                 <div class="row">
                   <input type="hidden" name="userTypeCode" id="businessUserTypeCode" value="20">
                   <div class="mb-3 col-md-12">
-                    <label class="form-label" for="businessEmail">이메일 * <a href="중복검사">중복검사</a></label>
+                    <label class="form-label" for="businessEmail">이메일 * <a id="businessEmailDuplicateCheck" name="emailDuplicateCheck" href=''>중복검사</a></label>
                     <input type="text" class="form-control" id="businessEmail" name="email" data-name="이메일">
                   </div>
                   <div class="mb-3 col-md-6">

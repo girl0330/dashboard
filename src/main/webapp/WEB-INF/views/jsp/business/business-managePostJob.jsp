@@ -46,7 +46,7 @@ Manage Jobs -->
                                         <p class="mb-1 mt-2"> 급여  (${postList.salaryTypeCodeName} - ${postList.salary}) </p>
                                         <p class="mb-1 mt-2"> 작성한 날짜 : ${postList.systemRegisterDatetime}</p>
                                     </th>
-                                    <td>${postList.statusTypeCodeNameB}
+                                    <td>${postList.statusTypeCodeName}
                                         <a href="#" class="text-primary" onclick="location.href = '/business/applicantList?jobId=${postList.jobId}'" id="look" name="look" data-bs-toggle="tooltip" title="자세히"><i class="far fa-eye"></i></a>
                                     </td>
                                 </tr>

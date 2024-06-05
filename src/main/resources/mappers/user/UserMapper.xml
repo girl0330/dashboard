@@ -2,15 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.user.UserMapper">
     <select id="check" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="int">
-        /*UserMapper.check*/
-        SELECT count(*) AS countemail
+        SELECT /*UserMapper.check*/ count(*) AS countemail
         FROM user_info
         WHERE email = #{email}
     </select>
 
     <insert id="accountInsert" parameterType="com.job.dashboard.domain.dto.UserDTO">
-        /*UserMapper.accountInsert*/
-        INSERT INTO user_info
+        INSERT INTO      /*UserMapper.accountInsert*/ user_info
         (
             email,
             password ,
@@ -27,15 +25,13 @@
     </insert>
 
     <select id="getHashedPassword" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="java.lang.String">
-        /*UserMapper.getHashedPassword*/
-        SELECT password
+        SELECT /*UserMapper.getHashedPassword*/ password
         FROM user_info
         WHERE email = #{email}
     </select>
 
     <select id="findAccount" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="com.job.dashboard.domain.dto.UserDTO">
-        /*UserMapper.findAccount*/
-        SELECT USER_NO,
+        SELECT /*UserMapper.findAccount*/ USER_NO,
                email,
                password,
                user_type_code,

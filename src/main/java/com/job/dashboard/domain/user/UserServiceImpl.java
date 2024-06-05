@@ -16,9 +16,23 @@ public class UserServiceImpl implements UserService{
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public Map<Object, Object> accountInsert(UserDTO userDTO) {
+    //이메일 중복인가 확인
+    public Map<String, Object> emailDuplicateCheck(UserDTO userDTO) {
+        System.out.println("====이메일 중복인가 확인 impl=====");
+        Map<String, Object> map = new HashMap<>();
+        int emailCheck = userMapper.check(userDTO);
+
+        if (emailCheck > 0) { // 동일한 이메일이 있다면
+            map.put("code","error");
+            map.put("message","이미 사용중인 이메일 입니다.");
+        }
+        return map;
+    }
+
+    // 회원가입
+    public Map<String, Object> accountInsert(UserDTO userDTO) {
         System.out.println("====계정 저장 impl=====");
-        Map<Object, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         //이메일 중복 체크
         int emailCheck = userMapper.check(userDTO);
@@ -51,9 +65,9 @@ public class UserServiceImpl implements UserService{
     }
 
     //로그인
-    public  Map<Object, Object> findAccount(UserDTO userDTO) {
+    public  Map<String, Object> findAccount(UserDTO userDTO) {
         System.out.println("로그인 임플====================================");
-        Map<Object, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         String email = userDTO.getEmail();
         String password = userDTO.getPassword();
 
@@ -82,7 +96,6 @@ public class UserServiceImpl implements UserService{
 
         //로그인하기
         UserDTO userAccount = userMapper.findAccount(userDTO);
-//        Map<Object, Object> userAccount = userMapper.findAccount(userDTO);
         System.out.println("이메일과 비밀번호로 계정 잘 가져왔나?????    ");
         System.out.println(userAccount);
         map.put("account",userAccount);

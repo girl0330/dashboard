@@ -25,13 +25,24 @@ public class UserController {
         return "jsp/register";
     }
 
+    // 이메일 중복 검사
+    @PostMapping("/duplicateCheck")
+    @ResponseBody
+    public Map<String, Object> emailDuplicateCheck (@RequestBody UserDTO userDTO) {
+        System.out.println("===email확인=== : "+userDTO);
+
+        Map<String, Object> map = userService.emailDuplicateCheck(userDTO);
+        System.out.println("넘어온 정보 확인" + map);
+        return map;
+    }
+
     //계정 등록
     @PostMapping("/signupInsert")
     @ResponseBody
-    public Map<Object, Object> insert(@RequestBody UserDTO userDTO) {
+    public Map<String, Object> insert(@RequestBody UserDTO userDTO) {
         System.out.println("회원정보 저장하는 api ");
         System.out.println("회원가입 입력 정보확인 ::::  " + userDTO);
-        Map<Object, Object> map = userService.accountInsert(userDTO);
+        Map<String, Object> map = userService.accountInsert(userDTO);
         System.out.println("넘어온 정보 확인" + map);
         return map;
     }
@@ -45,9 +56,10 @@ public class UserController {
 
     @PostMapping("/doLogin")
     @ResponseBody
-    public Map<Object, Object> accountLogin (@RequestBody UserDTO userDTO, Model model) {
+    public Map<String, Object> accountLogin (@RequestBody UserDTO userDTO, Model model) {
         System.out.println("====회원 로그인===="+userDTO);
-        Map<Object, Object> map = userService.findAccount(userDTO);
+
+        Map<String, Object> map = userService.findAccount(userDTO);
 
         if (!"error".equals(map.get("code"))) {
             sessionUtil.loginUser((UserDTO) map.get("account"));
