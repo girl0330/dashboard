@@ -102,7 +102,7 @@
                system_updater_id,
                DATE_FORMAT(system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
                status_type_code,
-               (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = status_type_code) AS status_type_code_name_b
+               (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = status_type_code) AS status_type_code_name
         from job_post_info jpi
         WHERE USER_NO = #{userNo}
     </select>
@@ -114,11 +114,10 @@
             jai.job_id,
             jai.USER_NO,
             jai.status_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jai.status_type_code) AS status_type_code_name_p,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jai.status_type_code) AS status_type_code_name,
             DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
-            jpi.title,
-            jpi. status_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jpi.status_type_code) AS status_type_code_name_b
+            jai.motivation_description,
+            jpi.title
         FROM
             job_application_info jai
                 INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
@@ -132,5 +131,13 @@
         FROM job_application_info jai
         WHERE jpi.job_id = #{jobId}
           AND jai.user_no IN #{userNo};
+    </select>
+
+    <select id="getCandidateApplyDetail" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        SELECT jai.MOTIVATION_DESCRIPTION,
+               upi.NAME
+        FROM job_application_info jai
+                 INNER JOIN user_profile_info upi ON jai.USER_NO = upi.USER_NO
+        WHERE jai.USER_NO = #{USER_NO}
     </select>
 </mapper>

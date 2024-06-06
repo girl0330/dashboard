@@ -17,7 +17,7 @@ Manage Jobs -->
                     <div class="row mb-4">
                         <div class="col-md-7 col-sm-5 d-flex align-items-center">
                             <div class="section-title-02 mb-0 ">
-                                <h4 class="mb-0">지원자 관리</h4>
+                                <h4 class="mb-0"> 지원자 관리</h4>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-7 mt-3 mt-sm-0">
@@ -40,17 +40,17 @@ Manage Jobs -->
                             <c:forEach items="${applicantList}" var="applicantList">
                                 <tr>
                                     <th scope="row">
-                                        <span class="clickable-title" onclick="location.href='/business/detail?jobId=${applicantList.jobId}'">
-                                                ${applicantList.title}
+                                        <span class="clickable-title">
+                                                <a href="#" onclick="location.href='/business/detail?jobId=${applicantList.jobId}'"><h6>${applicantList.title}</h6> </a>
                                         </span>
                                         <input type="hidden" id="jobId" name="jobId" value="${applicantList.jobId}">
                                     </th>
                                     <td> ${applicantList.userNo}
-                                        <a href="#" class="text-primary" onclick="location.href = '/business/applicantList?jobId=${applicantList.jobId}'" id="look" name="look" data-bs-toggle="tooltip" title="자세히"><i class="far fa-eye"></i></a>
-                                        -  ${applicantList.statusTypeCodeNameP} - ${applicantList.systemRegisterDatetime}
+                                        <a href="#" class="text-primary" onclick="location.href = '/business/candidateDetail?userNo=${applicantList.userNo}'" id="look" name="look" data-bs-toggle="tooltip" title="지원자 상세보기"><i class="far fa-eye"></i></a>
+                                        - ${applicantList.systemRegisterDatetime}
                                     </td>
                                     <td>
-                                            ${applicantList.statusTypeCodeNameB}
+                                            ${applicantList.statusTypeCodeName}
                                     </td>
                                 </tr>
                             </c:forEach>

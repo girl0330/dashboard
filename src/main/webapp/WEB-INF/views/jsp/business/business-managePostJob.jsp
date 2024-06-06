@@ -39,15 +39,15 @@ Manage Jobs -->
                             <c:forEach items="${postList}" var="postList">
                                 <tr>
                                     <th scope="row">
-                                        <span class="clickable-title" onclick="location.href='/business/detail?jobId=${postList.jobId}'">
-                                                ${postList.title} (${postList.jobTypeCodeName})
+                                        <span class="clickable-title">
+                                            <a href="#" onclick="location.href='/business/detail?jobId=${postList.jobId}'"><h5>${postList.title} (${postList.jobTypeCodeName})</h5></a>
                                         </span>
                                         <input type="hidden" id="jobId" name="jobId" value="${postList.jobId}">
                                         <p class="mb-1 mt-2"> 급여  (${postList.salaryTypeCodeName} - ${postList.salary}) </p>
                                         <p class="mb-1 mt-2"> 작성한 날짜 : ${postList.systemRegisterDatetime}</p>
                                     </th>
                                     <td>${postList.statusTypeCodeName}
-                                        <a href="#" class="text-primary" onclick="location.href = '/business/applicantList?jobId=${postList.jobId}'" id="look" name="look" data-bs-toggle="tooltip" title="자세히"><i class="far fa-eye"></i></a>
+                                        <a href="#" class="text-primary" onclick="location.href = '/business/applicantList?jobId=${postList.jobId}'" id="look" name="look" data-bs-toggle="tooltip" title="지원자 보기"><i class="far fa-eye"></i></a>
                                     </td>
                                 </tr>
                             </c:forEach>

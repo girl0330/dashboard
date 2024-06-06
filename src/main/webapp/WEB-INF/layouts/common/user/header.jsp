@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <nav class="navbar navbar-static-top navbar-expand-lg header-sticky">
             <div class="container-fluid">
                 <button id="nav-icon4" type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
@@ -210,16 +211,27 @@
                         </li>
                     </ul>
                 </div>
-                <div class="add-listing">
-                    <div class="login d-inline-block me-4">
-                        <a href="/user/login"><i class="far fa-user pe-2"></i>로그인</a>
+                <c:if test="${sessionScope.userNo == null || sessionScope.userNo == 0}">
+                    <div class="add-listing">
+                        <div class="login d-inline-block me-1">
+                            <a href="/user/login"><i class="far fa-user pe-2"></i>로그인</a>
+                        </div>
                     </div>
-                </div>
-                <div class="add-listing">
-                    <div class="login d-inline-block me-4">
-                        <a href="/user/signup"><i class="far fa-user pe-2"></i>회원가입</a>
+                </c:if>
+                <c:if test="${sessionScope.userNo != null && sessionScope.userNo != 0}">
+                    <div class="add-listing">
+                        <div class="login d-inline-block me-1">
+                            <a href="/user/logout"><i class="far fa-user pe-2"></i>로그아웃</a>
+                        </div>
                     </div>
-                </div>
+                </c:if>
+                <c:if test="${sessionScope.userNo == null || sessionScope.userNo == 0}">
+                    <div class="add-listing">
+                        <div class="login d-inline-block me-1">
+                            <a href="/user/signup"><i class="far fa-user pe-2"></i>회원가입</a>
+                        </div>
+                    </div>
+                </c:if>
                 <div class="add-listing">
                     <div>
                         <a class="btn btn-white btn-md" href="/business/postAJob"> <i class="fas fa-plus-circle"></i>Post a job</a>

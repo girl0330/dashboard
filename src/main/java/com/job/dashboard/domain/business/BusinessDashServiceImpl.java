@@ -82,4 +82,12 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 //        return null;
     }
 
+    //작성한 공고에 지원한 지원자 상세보기
+    public JobApplicationDTO getCandidateApplyDetail(int userNo) {
+        System.out.println("작성한 공고에 지원한 지원자 상세보기 impl");
+        //userNo에 일치한 application정보 가져오기
+
+        return businessDashMapper.getCandidateApplyDetail(userNo);
+    }
+
 }

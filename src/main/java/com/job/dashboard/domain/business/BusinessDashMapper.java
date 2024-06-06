@@ -35,5 +35,7 @@ public interface BusinessDashMapper {
 
     List<JobApplicationDTO> getApplicantsInfo(int userNo);
 
-    // 작성한 공고 리스트
+    //작성한 공고에 지원한 지원자 상세보기
+    JobApplicationDTO getCandidateApplyDetail(int userNo);
+
 }

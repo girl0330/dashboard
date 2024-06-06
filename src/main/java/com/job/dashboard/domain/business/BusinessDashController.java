@@ -101,12 +101,22 @@ public class BusinessDashController {
     // 해당 공고에 지원한 지원자목록
     @GetMapping("/applicantList")
     public String applicantList (@RequestParam("jobId") int jobId, Model model) {
-        System.out.println("jobId 확인 : "+ jobId);
+        System.out.println(" 해당 공고에 지원한 지원자목록/jobId 확인 : "+ jobId);
 
         List<JobApplicationDTO> applicantList = businessDashService.applicantList(jobId);
         System.out.println("내가 작성한 "+jobId+"에 지원한 지원자들의 리스트 : "+applicantList);
         model.addAttribute("applicantList", applicantList);
         return "jsp/business/business-manageCandidate";
+    }
+
+    // 지원한 지원자 상세보기
+    @GetMapping("/candidateDetail")
+    public String candidateDetail (@RequestParam("userNo") int userNo) {
+        System.out.println("지원한 지원자 상세보기"+userNo);
+
+        JobApplicationDTO jobApplicationDTO = businessDashService.getCandidateApplyDetail(userNo);
+        System.out.println("확인 : "+jobApplicationDTO);
+        return "jsp/business/business-candidateDetail";
     }
 
     //지원자관리
