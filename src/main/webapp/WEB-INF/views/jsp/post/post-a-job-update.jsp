@@ -229,6 +229,20 @@ tab -->
                                 <label class="mb-2"> 기타사항 </label>
                                 <textarea class="form-control" rows="4" name="etc" id="etc">${old.etc}</textarea>
                             </div>
+
+                            <div class="row mt-4 mt-lg-5">
+                                <div class="col-12">
+                                    <h5 class="mb-4"> 공고 상태 </h5>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-3 select-border mb-3">
+                                <select class="form-control basic-select" value="${old.statusTypeCode}" id="statusTypeCode" name="statusTypeCode">
+                                    <option value="OPEN">구인 중</option>
+                                    <option value="CLOSED">채용 마감</option>
+
+                                </select>
+                            </div>
+
                             <div class="col-md-12">
                                 <a class="btn btn-primary" id="post_update_button">수정완료</a>
                             </div>

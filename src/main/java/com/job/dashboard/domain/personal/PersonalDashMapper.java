@@ -1,8 +1,7 @@
 package com.job.dashboard.domain.personal;
 
 import com.job.dashboard.domain.dto.JobApplicationDTO;
-import com.job.dashboard.domain.dto.JobPostDTO;
-import com.job.dashboard.domain.dto.PersonalDashDTO;
+import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,12 +14,12 @@ public interface PersonalDashMapper {
     int profileCheck(int userNo);
 
     // 기존 작성된 프로필 가져오기
-    PersonalDashDTO getProfile(int userNo);
+    UserProfileInfoDTO getProfile(int userNo);
 
     // 저장된 프로필 있으면 가져오기
-    List<PersonalDashDTO> checkProfile(int userNo);
+    List<UserProfileInfoDTO> checkProfile(int userNo);
     int getProfileIdSeq(int userNo);
-    void saveProfile(PersonalDashDTO personalDashDTO);
+    void saveProfile(UserProfileInfoDTO userProfileInfoDTO);
 
     // 비밀번호
     UserDTO getOldPassword(int userNo);

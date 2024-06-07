@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.business.BusinessDashMapper">
-    <select id="checkBusinessProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.BusinessDashDTO">
+    <select id="checkBusinessProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.CompanyInfoDTO">
         /* BusinessDashMapper.checkBusinessProfile */
         SELECT COMPANY_ID,
                USER_NO,
@@ -23,7 +23,7 @@
         FROM COMPANY_INFO
     </select>
 
-    <insert id="saveBusinessProfile" parameterType="com.job.dashboard.domain.dto.BusinessDashDTO" >
+    <insert id="saveBusinessProfile" parameterType="com.job.dashboard.domain.dto.CompanyInfoDTO" >
         /* BusinessDashMapper.saveBusinessProfile */
         INSERT INTO company_info
         (COMPANY_ID,
@@ -35,7 +35,7 @@
             BUSINESS_TYPE_CODE,
             BUSINESS_NUMBER,
             SYSTEM_REGISTER_ID,
-            system_updater_id
+            SYSTEM_UPDATER_ID
         ) VALUES (
                      #{companyId},
                      #{userNo},
@@ -45,20 +45,20 @@
                      #{industryCode},
                      #{businessTypeCode},
                      #{businessNumber},
-                     #{systemRegisterId},
-                     #{systemUpdaterId}
+                     #{userNo},
+                     #{userNo}
                  ) ON DUPLICATE KEY UPDATE
+            USER_NO             = #{userNo},
             COMPANY_NAME        = #{companyName},
             COMPANY_DESCRIPTION = #{companyDescription},
             ADDRESS             = #{address},
             INDUSTRY_CODE       = #{industryCode},
             BUSINESS_TYPE_CODE  = #{businessTypeCode},
             BUSINESS_NUMBER     = #{businessNumber},
-            SYSTEM_REGISTER_ID  = #{systemRegisterId},
-            SYSTEM_UPDATER_ID   = #{systemRegisterId}
+            SYSTEM_UPDATER_ID   = #{userNo}
     </insert>
 
-    <select id="getBusinessProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.BusinessDashDTO">
+    <select id="getBusinessProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.CompanyInfoDTO">
         /* BusinessDashMapper.getBusinessProfile */
         SELECT COMPANY_ID,
                USER_NO,
@@ -74,7 +74,7 @@
         WHERE USER_NO = #{userNo}
     </select>
 
-    <select id="getOldPassword" parameterType="int" resultType="com.job.dashboard.domain.dto.BusinessDashDTO">
+    <select id="getOldPassword" parameterType="int" resultType="com.job.dashboard.domain.dto.CompanyInfoDTO">
         /* BusinessDashMapper.getOldPassword */
         SELECT password
         FROM user_info
@@ -117,10 +117,12 @@
             (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jai.status_type_code) AS status_type_code_name,
             DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
             jai.motivation_description,
-            jpi.title
+            jpi.title,
+            upi.NAME
         FROM
             job_application_info jai
                 INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
+        INNER JOIN user_profile_info upi ON jai.USER_NO = upi.USER_NO
         WHERE
             jai.job_id = #{jobId}
         ORDER BY jai.system_register_datetime DESC
@@ -130,14 +132,43 @@
         SELECT jai.*
         FROM job_application_info jai
         WHERE jpi.job_id = #{jobId}
-          AND jai.user_no IN #{userNo};
+          AND jai.user_no = #{userNo}
     </select>
 
     <select id="getCandidateApplyDetail" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        SELECT jai.MOTIVATION_DESCRIPTION,
-               upi.NAME
-        FROM job_application_info jai
-                 INNER JOIN user_profile_info upi ON jai.USER_NO = upi.USER_NO
-        WHERE jai.USER_NO = #{USER_NO}
+        SELECT
+            jai.JOB_ID,
+            jai.USER_NO,
+            jai.MOTIVATION_DESCRIPTION,
+            jai.SYSTEM_REGISTER_DATETIME,
+            jai.status_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jai.status_type_code) AS status_type_code_name,
+            upi.NAME,
+            upi.PHONE,
+            upi.BIRTH,
+            upi.GENDER
+        FROM
+            job_application_info jai
+                INNER JOIN user_profile_info upi ON
+                jai.USER_NO = upi.USER_NO
+        WHERE
+            jai.USER_NO = #{userNo}
+          AND jai.job_id = #{jobId}
     </select>
+
+    <update id="applyCandidate" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        UPDATE job_application_info
+        SET status_type_code = 'HIRED'
+        WHERE USER_NO = #{userNo}
+          AND job_id = #{jobId}
+--             ON DUPLICATE KEY UPDATE
+--             status_type_code = 'APPLIED'
+    </update>
+
+    <update id="applyCancelCandidate" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        UPDATE job_application_info
+        SET status_type_code = 'APPLIED'
+        WHERE USER_NO = #{userNo}
+          AND job_id = #{jobId}
+    </update>
 </mapper>

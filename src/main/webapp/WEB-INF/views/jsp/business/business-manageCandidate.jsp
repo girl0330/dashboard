@@ -45,18 +45,21 @@ Manage Jobs -->
                                         </span>
                                         <input type="hidden" id="jobId" name="jobId" value="${applicantList.jobId}">
                                     </th>
-                                    <td> ${applicantList.userNo}
-                                        <a href="#" class="text-primary" onclick="location.href = '/business/candidateDetail?userNo=${applicantList.userNo}'" id="look" name="look" data-bs-toggle="tooltip" title="지원자 상세보기"><i class="far fa-eye"></i></a>
+                                    <td>
+                                        <a href="#" onclick="location.href = '/business/candidateDetail?userNo=${applicantList.userNo}&jobId=${applicantList.jobId}'">
+                                            ${applicantList.name}
+                                        </a>
                                         - ${applicantList.systemRegisterDatetime}
                                     </td>
                                     <td>
-                                            ${applicantList.statusTypeCodeName}
+                                        ${applicantList.statusTypeCodeName}
                                     </td>
                                 </tr>
                             </c:forEach>
                             </tbody>
                         </table>
                     </div>
+                    <a class="btn btn-outline-primary mb-3 mb-sm-0"  onclick="location.href = '/business/managePostJob'">공고목록</a>
                     <div class="row justify-content-center">
                         <div class="col-12 text-center">
                             <ul class="pagination mt-3">

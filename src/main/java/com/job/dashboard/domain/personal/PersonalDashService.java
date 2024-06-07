@@ -1,11 +1,9 @@
 package com.job.dashboard.domain.personal;
 
 import com.job.dashboard.domain.dto.JobApplicationDTO;
-import com.job.dashboard.domain.dto.JobPostDTO;
-import com.job.dashboard.domain.dto.PersonalDashDTO;
+import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -15,10 +13,10 @@ public interface PersonalDashService {
     int profileCheck(int userNo);
 
     // 기존 작성된 프로필 가져오기
-    PersonalDashDTO getProfile(Integer userNo);
+    UserProfileInfoDTO getProfile(Integer userNo);
 
     // 프로필 저장하기
-    Map<Object, String> saveProfile(PersonalDashDTO personalDashDTO);
+    Map<Object, String> saveProfile(UserProfileInfoDTO userProfileInfoDTO);
 
     // 비밀번호 변경하기
     Map<Object, Object> changePassword(UserDTO userDTO);
@@ -28,7 +26,7 @@ public interface PersonalDashService {
     // 지원 리스트 삭제
     Map<String, Object> applyListDelete(int applicationId);
 
-    //최근 지원한 목록리스트
+    //최근 지원한 공고 목록 리스트
     List<JobApplicationDTO> recentlyApplyJobList(int userNo);
     // 지원 리스트 보기
 //    JobPostDTO postDetailView(int jobId);

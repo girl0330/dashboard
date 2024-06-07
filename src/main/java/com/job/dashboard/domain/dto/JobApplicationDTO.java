@@ -18,4 +18,8 @@ public class JobApplicationDTO extends JobPostDTO{
     private String jobTypeCodeName;
     private String salaryTypeCodeName;
     private String motivationDescription;
+    private String name;
+    private String phone;
+    private String birth;
+    private String gender;
 }

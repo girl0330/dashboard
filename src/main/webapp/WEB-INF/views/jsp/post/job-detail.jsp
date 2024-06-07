@@ -149,6 +149,7 @@ job list -->
                   <div class="job-list-info">
                     <div class="job-list-title">
                       <input type="hidden" id="jobId" name="jobId" value="${detail.jobId}">
+                      <input type="hidden" id="statusTypeCode" name="statusTypeCode" value="${detail.statusTypeCode}">
                       <h5 class="mb-0">회사 이름</h5>
                     </div>
                     <div class="job-list-option">

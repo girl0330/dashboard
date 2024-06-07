@@ -1,17 +1,14 @@
 package com.job.dashboard.domain.personal;
 
 import com.job.dashboard.domain.dto.JobApplicationDTO;
-import com.job.dashboard.domain.dto.JobPostDTO;
-import com.job.dashboard.domain.dto.PersonalDashDTO;
+import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -74,7 +71,7 @@ public class PersonalDashController {
         }
 
         Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
-        PersonalDashDTO myProfile = personalDashService.getProfile(userNo); // 기존 작성된 프로필 가져오기
+        UserProfileInfoDTO myProfile = personalDashService.getProfile(userNo); // 기존 작성된 프로필 가져오기
         if (myProfile == null) {
             System.out.println("null인가??");
             return "jsp/personal/personal-profile";
@@ -86,12 +83,12 @@ public class PersonalDashController {
 
     @PostMapping("/myProfileSave")
     @ResponseBody
-    public Map<Object, String> profileSave(@RequestBody PersonalDashDTO personalDashDTO) {
+    public Map<Object, String> profileSave(@RequestBody UserProfileInfoDTO userProfileInfoDTO) {
         System.out.println("==== 프로필 저장 =====");
 
-        System.out.println("입력한 dto------> "+personalDashDTO);
+        System.out.println("입력한 dto------> "+ userProfileInfoDTO);
 
-        Map<Object, String> map = personalDashService.saveProfile(personalDashDTO); // 프로필 저장하기
+        Map<Object, String> map = personalDashService.saveProfile(userProfileInfoDTO); // 프로필 저장하기
         System.out.println("map/////////     "+map);
         return map;
     }

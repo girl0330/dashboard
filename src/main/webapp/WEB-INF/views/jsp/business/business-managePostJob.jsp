@@ -32,6 +32,7 @@ Manage Jobs -->
                             <thead class="bg-light">
                             <tr>
                                 <th scope="col">작성한 공고 제목</th>
+                                <th scope="col">지원자 수</th>
                                 <th scope="col">공고 현황</th>
                             </tr>
                             </thead>
@@ -46,8 +47,12 @@ Manage Jobs -->
                                         <p class="mb-1 mt-2"> 급여  (${postList.salaryTypeCodeName} - ${postList.salary}) </p>
                                         <p class="mb-1 mt-2"> 작성한 날짜 : ${postList.systemRegisterDatetime}</p>
                                     </th>
-                                    <td>${postList.statusTypeCodeName}
+                                    <td>
+                                        지원자수 표시할 거임.
                                         <a href="#" class="text-primary" onclick="location.href = '/business/applicantList?jobId=${postList.jobId}'" id="look" name="look" data-bs-toggle="tooltip" title="지원자 보기"><i class="far fa-eye"></i></a>
+                                    </td>
+                                    <td>${postList.statusTypeCodeName}
+
                                     </td>
                                 </tr>
                             </c:forEach>

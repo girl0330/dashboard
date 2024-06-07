@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
+  //개인회원 이메일 중복검사
   let personalEmailDuplicateCheck = {
     init : function () {
       if (!this.emailEmptyChkFn()) {
@@ -9,8 +10,7 @@
       if (!this.emailValidationChk()) {
         return;
       }
-      this.personalDuplicateCheck();
-
+      this.personalEmailDuplicateCheck();
     },
     emailEmptyChkFn: function () {
       let valid = true;
@@ -26,6 +26,7 @@
       }
       return valid;
     },
+
     emailValidationChk: function () {
     let valid = true;
     const email = $('#personalEmail').val();
@@ -33,15 +34,14 @@
 
     let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(email)) {
-        alert("이메일을 올바르게 입력해주세요.")
+        alert("이메일 형식으로 입력해주세요.")
         $('#personalEmail').focus()
         valid = false;
       }
       return valid;
     },
 
-    personalDuplicateCheck : function () {
-      alert("test")
+    personalEmailDuplicateCheck : function () {
       const email = $("#personalEmail").val();
 
       let jsonData = {};
@@ -49,7 +49,7 @@
       console.log("jsonData : "+JSON.stringify(jsonData));
 
       $.ajax({
-        url: "/user/duplicateCheck", // Spring 컨트롤러 URL
+        url: "/user/emailDuplicateCheck", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
@@ -60,7 +60,6 @@
             alert(data.message);
           } else if (data.code === 'success'){
             alert(data.message);
-            location.href='/personal/myProfile'
           }
         },
         error: function(xhr, status, error) {
@@ -71,26 +70,21 @@
     }
   }
 
-  //회원 로그인 실행
+  //개인회원 로그인 실행
   let personal_register = {
     init : function () {
 
       if (!this.emptyChkFn()) {
         return;
       }
-      // alert("a")
       if (!this.validationChk()) {
         return;
       }
-      // alert("b")
       if (!this.checkFn()) {
         return;
       }
-      // alert("c")
       this.formSubmit();
     },
-    /*중복검사*/
-
 
     /*공백 검사*/
     emptyChkFn : function () {
@@ -116,54 +110,40 @@
     //validationChk 함수 정의
     validationChk : function () {
       let valid = true;
-      const personalLoginId = $('#personalEmail').val();
       const personalPassword = $('#personalPassword').val();
       const personalPassword2 = $('#personalPassword2').val();
-      console.log("personalLoginId"+personalLoginId);
-      console.log("personalPassword"+personalPassword);
-      console.log("password2"+personalPassword2);
-      // 아이디 조건, 길이
-      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(personalLoginId)) {
-        alert("이메일을 입력해주세요.")
-        $('#personalEmail').focus()
-        valid = false;
-        return valid;
-      } //이상무
-      alert("222")
+
       // 비밀번호 조건, 길이, 비밀번호 확인
       let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
       if (!pwRegex.test(personalPassword)) {
         alert("비밀번호 형식을 확인해주세요")
-        $('#personalPassword').focus()
+        $('#personalPassword').focus();
         valid = false;
         return valid;
       }
-      alert("555")
+
       if (personalPassword.length > 15 || personalPassword.length < 8) {
         alert("비밀번호를 8~15자로 사용해주세요")
-        $('#personalPassword').focus()
+        $('#personalPassword').focus();
         valid = false;
         return valid;
       }
-      alert("666")
+
       if (personalPassword !== personalPassword2) {
         alert("비밀번호를 확인해주세요")
-        $('#personalPassword2').focus()
+        $('#personalPassword2').focus();
         valid = false;
         return valid;
-      } //이상무
-      alert("777")
+      }
+
       return valid;
     },
 
     checkFn : function () {
-      alert("체크함수")
       let valid = true;
       const form = $('#personalForm');
       const checkBox = form.find("input[type='checkbox']");
       const isChecked = checkBox.prop('checked');
-      // console.log("x:::  "+JSON.stringify(isChecked));
 
       if (!isChecked) {
         alert("동의여부는 필수 입력 값입니다.");
@@ -176,13 +156,13 @@
 
     // 전송 함수 정의
     formSubmit : function() {
-      alert("전송함수")
       const formData = $("#personalForm").serializeArray();
 
-      console.log("x:::1111111111  "+JSON.stringify(formData));
+      console.log("formData : "+JSON.stringify(formData));
 
       // JSON 객체로 변환
       let jsonData = {};
+
       $.each(formData, function() {
         jsonData[this.name] = this.value;
       });
@@ -191,10 +171,8 @@
       jsonData['terms'] = $('#terms').is(':checked');
       console.log(jsonData);
 
-      const url = "/user/signupInsert";
-
       $.ajax({
-        url: url, // Spring 컨트롤러 URL
+        url: "/user/signupInsert", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
@@ -205,7 +183,7 @@
             alert(data.message);
           } else if (data.code === 'success'){
             alert(data.message);
-            location.href='/'
+            location.href='/user/login'
           }
         },
         error: function(xhr, status, error) {
@@ -224,7 +202,7 @@
       if (!this.emailValidationChk()) {
         return;
       }
-      this.businessDuplicateCheck();
+      this.businessEmailDuplicateCheck();
 
     },
     emailEmptyChkFn: function () {
@@ -255,8 +233,7 @@
       return valid;
     },
 
-    businessDuplicateCheck : function () {
-      alert("test")
+    businessEmailDuplicateCheck : function () {
       const email = $("#businessEmail").val();
 
       let jsonData = {};
@@ -264,7 +241,7 @@
       console.log("jsonData : "+JSON.stringify(jsonData));
 
       $.ajax({
-        url: "/user/duplicateCheck", // Spring 컨트롤러 URL
+        url: "/user/emailDuplicateCheck", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
@@ -275,7 +252,6 @@
             alert(data.message);
           } else if (data.code === 'success'){
             alert(data.message);
-            location.href='/personal/myProfile'
           }
         },
         error: function(xhr, status, error) {
@@ -299,9 +275,9 @@
       }
       this.formSubmit();
     },
+
     /*공백 검사*/
     emptyChkFn : function () {
-      alert("전송")
       let valid = true;
       const form = $('#businessForm');
       const inputs = form.find("input[type='text'], input[type='password']");
@@ -309,12 +285,13 @@
       inputs.each(function() {
         const input = $(this);
         const removeBlankData = input.val().replace(/\s*/g, "");
+
         if (removeBlankData === "") {
           let text = input.data('name');
           alert(text + "은/는 필수로 입력 값입니다.");
           input.focus();
           valid = false;
-          return false;  // each 루프 중지
+          return false;
         }
       });
 
@@ -323,23 +300,25 @@
 
     //validationChk 함수 정의
     validationChk : function () {
-      alert("기업회원가입")
       let valid = true;
       const businessLoginId = $('#businessEmail').val();
       const businessPassword = $('#businessPassword').val();
       const businessPassword2 = $('#businessPassword2').val();
+
       console.log("businessLoginId: "+businessLoginId);
       console.log("businessPassword: "+businessPassword);
       console.log("businessPassword2: "+businessPassword2);
+
       // 아이디 조건, 길이
       let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
       if (!emailRegex.test(businessLoginId)) {
         alert("이메일을 입력해주세요.")
         $('#businessEmail').focus()
         valid = false;
         return valid;
-      } //이상무
-      alert("222")
+      }
+
       // 비밀번호 조건, 길이, 비밀번호 확인
       let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
       if (!pwRegex.test(businessPassword)) {
@@ -348,21 +327,21 @@
         valid = false;
         return valid;
       }
-      alert("555")
+
       if (businessPassword.length > 15 || businessPassword.length < 8) {
         alert("비밀번호를 8~15자로 사용해주세요")
         $('#businessPassword').focus()
         valid = false;
         return valid;
       }
-      alert("666")
+
       if (businessPassword !== businessPassword2) {
         alert("비밀번호를 확인해주세요")
         $('#businessPassword2').focus()
         valid = false;
         return valid;
-      } //이상무
-      alert("777")
+      }
+
       return valid;
     },
 
@@ -371,7 +350,6 @@
       const form = $('#businessForm');
       const checkBox = form.find("input[type='checkbox']");
       const isChecked = checkBox.prop('checked');
-      console.log("x:::  "+JSON.stringify(isChecked));
 
       if (!isChecked) {
         alert("동의여부는 필수 입력 값입니다.");
@@ -379,15 +357,11 @@
         return valid;
       }
       return valid;
-    }, // 이상무
-
+    },
 
     // 전송 함수 정의
     formSubmit : function() {
-      alert("회원가입 폼 전송???")
       const formData = $("#businessForm").serializeArray();
-
-      console.log("x:::  "+JSON.stringify(formData));
 
       // JSON 객체로 변환
       let jsonData = {};
@@ -397,12 +371,11 @@
 
       // 체크박스 값 추가
       jsonData['terms'] = $('#terms').is(':checked');
-      console.log(jsonData);
 
-      const url = "/user/signupInsert";
+      console.log("jsonData :  "+JSON.stringify(jsonData));
 
       $.ajax({
-        url: url, // Spring 컨트롤러 URL
+        url: "/user/signupInsert",
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
@@ -413,9 +386,10 @@
             alert(data.message);
           } else if (data.code === 'success'){
             alert(data.message);
-            location.href='/'
+            location.href='/user/login'
           }
         },
+
         error: function(xhr, status, error) {
           // 오류 발생 시 실행할 코드
           console.error(error);
@@ -430,25 +404,27 @@
 
   //DOM이 실행 후 실행 됨
   document.addEventListener('DOMContentLoaded', function (){
+    //개인 이메일 중복검사 로직
     $("#personalEmailDuplicateCheck").on("click", function() {
       personalEmailDuplicateCheck.init();
     });
 
+    //개인 회원가입 로직
     document.getElementById("personal_register").addEventListener("click",function () {
       personal_register.init();
     });
 
+    //기업 이메일 중복검사 로직
     $("#businessEmailDuplicateCheck").on("click", function() {
       businessEmailDuplicateCheck.init();
     });
 
+    //기업 회원가입 로직
     document.getElementById("business_register").addEventListener("click",function () {
       business_register.init();
     });
   });
 </script>
-
-
 
 
 <!--=================================

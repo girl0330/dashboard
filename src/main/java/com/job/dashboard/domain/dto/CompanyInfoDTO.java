@@ -3,7 +3,7 @@ package com.job.dashboard.domain.dto;
 import lombok.Data;
 
 @Data
-public class BusinessDashDTO {
+public class CompanyInfoDTO {
     private int companyId;
     private int userNo;
     private String companyName;

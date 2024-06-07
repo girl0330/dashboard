@@ -48,8 +48,6 @@
                     } else if (data.code === 'success'){
                         alert(data.message);
                         location.href='/business/list'
-                    } else if (data.code === 'applyError') {
-                        alert(data.message);
                     }
                 },
                 error: function(xhr, status, error) {

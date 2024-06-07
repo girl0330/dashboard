@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService{
     public Map<String, Object> emailDuplicateCheck(UserDTO userDTO) {
         System.out.println("====이메일 중복인가 확인 impl=====");
         Map<String, Object> map = new HashMap<>();
-        int emailCheck = userMapper.check(userDTO);
+        int emailCheck = userMapper.emailDuplicateCheck(userDTO);
 
         if (emailCheck > 0) { // 동일한 이메일이 있다면
             map.put("code","error");
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService{
         Map<String, Object> map = new HashMap<>();
 
         //이메일 중복 체크
-        int emailCheck = userMapper.check(userDTO);
+        int emailCheck = userMapper.emailDuplicateCheck(userDTO);
 
         if (emailCheck > 0) { // 동일한 이메일이 있다면
             map.put("code","error");
@@ -57,10 +57,12 @@ public class UserServiceImpl implements UserService{
         System.out.println("인코딩된 비밀번호 확인 "+encodedPassword);
 
         userDTO.setPassword(encodedPassword);
+
         userMapper.accountInsert(userDTO);
         map.put("code", "success");
         map.put("message","회원가입성공");
         System.out.println("계정등록");
+
         return map;
     }
 
@@ -81,6 +83,7 @@ public class UserServiceImpl implements UserService{
             map.put("message", "아이디가 존재하지 않거나, 일치하지 않습니다.");
             return map;
         }
+
         //비밀번호 존재하는지, 일치하는지 확인
         boolean pwCheck = passwordEncoder.matches(password, hashedPassword); // 일치하는지 확인
         System.out.println(pwCheck); // 일치하면 ture 반환
@@ -90,6 +93,7 @@ public class UserServiceImpl implements UserService{
             map.put("message", "비밀번호가 존재하지 않거나, 일치하지 않습니다.");
             return map;
         }
+
         System.out.println("비밀번호가 존재함");
         userDTO.setPassword(hashedPassword);
         System.out.println("최종 dto확인 ;:::::  "+userDTO);

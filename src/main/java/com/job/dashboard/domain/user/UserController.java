@@ -18,7 +18,7 @@ public class UserController {
     private final UserService userService;
     private final SessionUtil sessionUtil;
 
-    //회원가입 페이지 이동
+    //회원가입 페이지
     @GetMapping("/signup")
     public String signupView() {
         System.out.println("====회원가입 페이지====");
@@ -26,9 +26,9 @@ public class UserController {
     }
 
     // 이메일 중복 검사
-    @PostMapping("/duplicateCheck")
+    @PostMapping("/emailDuplicateCheck")
     @ResponseBody
-    public Map<String, Object> emailDuplicateCheck (@RequestBody UserDTO userDTO) {
+    public Map<String, Object> emailDuplicateCheck(@RequestBody UserDTO userDTO) {
         System.out.println("===email확인=== : "+userDTO);
 
         Map<String, Object> map = userService.emailDuplicateCheck(userDTO);
@@ -39,7 +39,7 @@ public class UserController {
     //계정 등록
     @PostMapping("/signupInsert")
     @ResponseBody
-    public Map<String, Object> insert(@RequestBody UserDTO userDTO) {
+    public Map<String, Object> signupInsert(@RequestBody UserDTO userDTO) {
         System.out.println("회원정보 저장하는 api ");
         System.out.println("회원가입 입력 정보확인 ::::  " + userDTO);
         Map<String, Object> map = userService.accountInsert(userDTO);
@@ -47,16 +47,17 @@ public class UserController {
         return map;
     }
 
-    //로그인 페이지 이동
+    //로그인 페이지
     @GetMapping("/login")
     public String loginView() {
         System.out.println("====로그인 페이지====");
         return "jsp/login";
     }
 
+    //로그인
     @PostMapping("/doLogin")
     @ResponseBody
-    public Map<String, Object> accountLogin (@RequestBody UserDTO userDTO, Model model) {
+    public Map<String, Object> doLogin (@RequestBody UserDTO userDTO, Model model) {
         System.out.println("====회원 로그인===="+userDTO);
 
         Map<String, Object> map = userService.findAccount(userDTO);

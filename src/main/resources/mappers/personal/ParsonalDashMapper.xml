@@ -9,7 +9,7 @@
         WHERE USER_NO = #{userNo}
     </select>
 
-    <select id="getProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.PersonalDashDTO">
+    <select id="getProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.UserProfileInfoDTO">
         /*기존 프로필 가져오기*/
         SELECT /* PersonalDashMapper.getProfile */
             ui.email,
@@ -27,7 +27,7 @@
         WHERE ui.USER_NO = #{userNo}
     </select>
 
-    <select id="checkProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.PersonalDashDTO">
+    <select id="checkProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.UserProfileInfoDTO">
         /* PersonalDashMapper.checkProfile */
         SELECT PROFILE_ID,
                USER_NO,
@@ -51,7 +51,7 @@
         FROM USER_PROFILE_INFO
     </select>
 
-    <insert id="saveProfile" parameterType="com.job.dashboard.domain.dto.PersonalDashDTO" >
+    <insert id="saveProfile" parameterType="com.job.dashboard.domain.dto.UserProfileInfoDTO" >
         /* PersonalDashMapper.saveProfile */
         INSERT INTO USER_PROFILE_INFO
         (

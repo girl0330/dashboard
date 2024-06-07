@@ -1,8 +1,7 @@
 package com.job.dashboard.domain.personal;
 
 import com.job.dashboard.domain.dto.JobApplicationDTO;
-import com.job.dashboard.domain.dto.JobPostDTO;
-import com.job.dashboard.domain.dto.PersonalDashDTO;
+import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -32,38 +29,36 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     }
 
     // 기존 작성된 프로필 가져오기
-    public PersonalDashDTO getProfile(Integer userNo) {
+    public UserProfileInfoDTO getProfile(Integer userNo) {
         System.out.println("====피로필 impl");
-        PersonalDashDTO profile = personalDashMapper.getProfile(userNo);
+        UserProfileInfoDTO profile = personalDashMapper.getProfile(userNo);
         System.out.println("profile;;;;::::   " + profile);
         return profile;
     }
 
     // 프로필 저장하기
     @Transactional
-    public Map<Object, String> saveProfile(PersonalDashDTO personalDashDTO) {
+    public Map<Object, String> saveProfile(UserProfileInfoDTO userProfileInfoDTO) {
         System.out.println("======profileSave === impl====");
 
         Map<Object, String> map = new HashMap<>();
         Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
 
-        List<PersonalDashDTO> profile = personalDashMapper.checkProfile(userNo); //userNo를 가지고 프로필 존재 확인
-        System.out.println("checkPfofile------>>     " + profile);
+        List<UserProfileInfoDTO> profile = personalDashMapper.checkProfile(userNo); //userNo를 가지고 프로필 존재 확인
 
-        int x = profile.size();
+        int personalProfile = profile.size();
 
-        if (x == 0) {
+        if (personalProfile == 0) {
             int profileSeq = personalDashMapper.getProfileIdSeq(userNo);
-            System.out.println("profileSeq????? " + profileSeq + "                      <<<<<<<<<<");
-            personalDashDTO.setProfileId(profileSeq);
-            System.out.println("personalDto 확인해봅시다...........   " + personalDashDTO);
+            userProfileInfoDTO.setProfileId(profileSeq);
+
         } else {
-            personalDashDTO.setProfileId(profile.get(0).getProfileId());
+            userProfileInfoDTO.setProfileId(profile.get(0).getProfileId());
         }
-        personalDashDTO.setUserNo(userNo);
+        userProfileInfoDTO.setUserNo(userNo);
 
         // systemRegisterId, systemUpdaterId 데이터는?? //pk가 없으면 insert 있으면 update
-        personalDashMapper.saveProfile(personalDashDTO);
+        personalDashMapper.saveProfile(userProfileInfoDTO);
 
         map.put("code", "success");
         map.put("message", "프로필 저장 성공!");
@@ -83,6 +78,7 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         String oldPassword = personalDashMapper.getOldPassword(userNo).getPassword();
 //        UserDTO oldPassword = personalDashMapper.getOldPassword(userNo);
 //        String password = oldPassword.getPassword();
+
         System.out.println("이전 비번 :: " + oldPassword);
 
         boolean pwCheck = passwordEncoder.matches(enteredPassword, oldPassword);

@@ -2,7 +2,7 @@ package com.job.dashboard.domain.job;
 
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
-import com.job.dashboard.domain.dto.PersonalDashDTO;
+import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public interface PostMapper {
     void delete(int jobId);
 
     // 로그인 회원의 프로필 유무확인
-     PersonalDashDTO profileCheck(PersonalDashDTO personalDashDTO);
+     UserProfileInfoDTO profileCheck(UserProfileInfoDTO userProfileInfoDTO);
 
     // 지원하기
     String application(JobApplicationDTO jobApplicationDTO);

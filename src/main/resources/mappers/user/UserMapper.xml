@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.user.UserMapper">
-    <select id="check" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="int">
+    <select id="emailDuplicateCheck" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="int">
         SELECT /*UserMapper.check*/ count(*) AS countemail
         FROM user_info
         WHERE email = #{email}

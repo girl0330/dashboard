@@ -8,7 +8,7 @@ import java.util.Map;
 @Mapper
 public interface UserMapper {
     // 이메일 중복인가 확인
-    int check(UserDTO userDTO);
+    int emailDuplicateCheck(UserDTO userDTO);
 
     //계정 등록(회원가입    )
     void accountInsert(UserDTO userDTO);
