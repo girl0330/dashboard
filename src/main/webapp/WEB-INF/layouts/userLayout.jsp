@@ -14,6 +14,7 @@
 <header class="header bg-dark">
   <tiles:insertAttribute name="header" />
 </header>
+<tiles:insertAttribute name="script" />
 <!--  header end -->
 
 <!-- main start -->
@@ -34,6 +35,6 @@
 </div>
 <!-- Back To Top end -->
 
-<tiles:insertAttribute name="script" />
+
 </body>
 </html>

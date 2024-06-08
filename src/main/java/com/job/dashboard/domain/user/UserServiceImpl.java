@@ -72,6 +72,8 @@ public class UserServiceImpl implements UserService{
         Map<String, Object> map = new HashMap<>();
         String email = userDTO.getEmail();
         String password = userDTO.getPassword();
+        String enteredUserTypeCode = userDTO.getUserTypeCode();
+        System.out.println("유저 타입 코드 확인 : "+enteredUserTypeCode);
 
         //이메일이 있는지 확인
         String hashedPassword = userMapper.getHashedPassword(email);
@@ -98,11 +100,30 @@ public class UserServiceImpl implements UserService{
         userDTO.setPassword(hashedPassword);
         System.out.println("최종 dto확인 ;:::::  "+userDTO);
 
+        //타입코드가 맞는지 확인
+        String getUserTypeCode = userMapper.getUserTypeCode(email);
+        System.out.println("이메일로 가져온 타입코드: " + getUserTypeCode);
+        System.out.println("입력된 타입코드: " + enteredUserTypeCode);
+        if (!Objects.equals(getUserTypeCode, enteredUserTypeCode)) {
+            System.out.println("타입코드가 일치하지 않습니다.");
+            map.put("code", "error");
+            map.put("message", "로그인한 회원타입이 일치하지 않습니다, 로그인 할 타입을 확인해주세요");
+            return map;
+        }
+
         //로그인하기
         UserDTO userAccount = userMapper.findAccount(userDTO);
         System.out.println("이메일과 비밀번호로 계정 잘 가져왔나?????    ");
+
+        UserDTO user = new UserDTO();
+
+        user.setUserNo(userAccount.getUserNo());
+        user.setUserTypeCode(userAccount.getUserTypeCode());
+
+        System.out.println("user : "+user);
+
         System.out.println(userAccount);
-        map.put("account",userAccount);
+        map.put("account",user);
         map.put("code","success");
         map.put("message","로그인 성공!");
         return map;

@@ -35,7 +35,7 @@
     let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(email)) {
         alert("이메일 형식으로 입력해주세요.")
-        $('#personalEmail').focus()
+        $('#personalEmail').focus();
         valid = false;
       }
       return valid;

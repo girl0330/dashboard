@@ -30,6 +30,12 @@
         WHERE email = #{email}
     </select>
 
+    <select id="getUserTypeCode" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="java.lang.String">
+        SELECT /*UserMapper.getUserTypeCode*/ user_type_code
+        FROM user_info
+        WHERE email = #{email}
+    </select>
+
     <select id="findAccount" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="com.job.dashboard.domain.dto.UserDTO">
         SELECT /*UserMapper.findAccount*/ USER_NO,
                email,
@@ -43,5 +49,6 @@
         WHERE email = #{email}
           AND password = #{password}
     </select>
+
 </mapper>
 

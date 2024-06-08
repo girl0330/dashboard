@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <script>
-
   let personal_login = {
     init : function () {
     // 공백함수실행
@@ -42,6 +40,7 @@
       let valid = true;
       const personalLoginId = $('#personalEmail').val();
       const personalLoginPassword = $('#personalPassword').val();
+      const personalUserTypeCode = $('personalUserTypeCode').val();
 
       console.log("아이디 확인: "+ personalLoginId)
       console.log("비밀번호 확인: "+ personalLoginPassword)
@@ -49,7 +48,7 @@
       // 아이디 조건, 길이
       let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(personalLoginId)) {
-        alert("이메일을 입력해주세요.")
+        alert("이메일을 확인해주세요.")
         $('#personalEmail').focus()
         valid = false;
         return valid;
@@ -69,6 +68,7 @@
         valid = false;
         return valid;
       }
+
       return valid;
     },
 
@@ -96,7 +96,6 @@
           if(data.code === 'error') {
             alert(data.message);
           } else if (data.code === 'success'){
-            alert(data.message);
             location.href='/'
           }
         },
@@ -106,123 +105,20 @@
         }
       });
     }
-  }
-
-  let business_login = {
-    init : function () {
-      // 공백함수실행
-      if (!this.emptyChkFn()) {
-        return;
-      }
-      //조건함수실행
-      if (!this.validationChk()){
-        return;
-      }
-      // submit 함수 실행
-      this.formSubmit();
-    },
-    // 공백함수
-    emptyChkFn : function () {
-      let valid = true;
-      const form = $('#businessForm')
-      const inputs = form.find("input[type='text'], input[type='password']");
-
-      inputs.each(function() {
-        const input = $(this);
-        const removeBlankData = input.val().replace(/\s*/g, "");
-        if (removeBlankData === "") {
-          let text = input.data('name');
-          alert(text + "은/는 필수로 입력 값입니다.");
-          input.focus();
-          valid = false;
-          return false;  // each 루프 중지
-        }
-      });
-
-      return valid;
-    },
-
-    //validation 함수 실행
-    validationChk : function () {
-      let valid = true;
-      const businessLoginId = $('#businessEmail').val();
-      const businessLoginPassword = $('#businessPassword').val();
-
-      console.log("비지니스 아이디 확인"+ businessLoginId)
-      console.log("비지니스 비밀번호 확인"+ businessLoginPassword)
-
-      // 아이디 조건, 길이
-      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(businessLoginId)) {
-        alert("비지니스 이메일을 입력해주세요.")
-        $('#businessEmail').focus()
-        valid = false;
-        return valid;
-      }
-
-      // 비밀번호 조건, 길이, 비밀번호 확인
-      let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
-      if (!pwRegex.test(businessLoginPassword)) {
-        alert("비지니스 비밀번호 형식을 확인해주세요")
-        $('#businessPassword').focus()
-        valid = false;
-        return valid;
-      }
-      if (businessLoginPassword.length > 15 || businessLoginPassword.length < 8) {
-        alert("비지니스 비밀번호를 8~15자로 사용해주세요")
-        $('#businessPassword').focus()
-        valid = false;
-        return valid;
-      }
-      return valid;
-    },
-
-    //submit 함수
-    formSubmit : function () {
-      const formData = $("#businessForm").serializeArray();
-      console.log("data check :::" + JSON.stringify(formData));
-
-      // JSON 객체로 변환
-      let jsonData = {};
-      $.each(formData, function() {
-        jsonData[this.name] = this.value;
-      });
-
-      console.log("jsonData :" + JSON.stringify(jsonData));
-
-      $.ajax({
-        url: "/user/doLogin", // Spring 컨트롤러 URL
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
-        success: function(data) {
-          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-          console.log(JSON.stringify(data));
-          if(data.code === 'error') {
-            alert(data.message);
-          } else if (data.code === 'success'){
-            alert(data.message);
-            location.href='/'
-          }
-        },
-        error: function(xhr, status, error) {
-          // 오류 발생 시 실행할 코드
-          console.error(error);
-        }
-      });
-    }
-
-
   }
 
   //DOM이 실행 후 실행 됨
-  document.addEventListener('DOMContentLoaded', function (){
-    document.getElementById("personal_login").addEventListener("click",function () {
+  $(document).ready(function() {
+    $("#personal_login").on("click",function () {
       personal_login.init();
     });
 
-    document.getElementById("business_login").addEventListener("click",function () {
-      business_login.init();
+    $("#personalTypeCode").on("click",function () {
+      $("#userTypeCode").val("10");
+    });
+
+    $("#companyTypeCode").on("click",function () {
+      $("#userTypeCode").val("20");
     });
   });
 </script>
@@ -252,14 +148,11 @@ Signin -->
     <div class="row justify-content-center">
       <div class="col-xl-8 col-lg-10 col-md-12">
         <div class="login-register">
-          <div class="section-title">
-           <h4 class="text-center">로그인 하기</h4>
-          </div>
           <fieldset>
             <legend class="px-2">로그인할 계정 타입 선택</legend>
             <ul class="nav nav-tabs nav-tabs-border d-flex" role="tablist">
               <li class="nav-item me-4">
-                <a class="nav-link active"  data-bs-toggle="tab" href="#candidate" role="tab" aria-selected="false">
+                <a class="nav-link active" id="personalTypeCode" data-bs-toggle="tab" href="#candidate" role="tab" aria-selected="false">
                   <div class="d-flex">
                     <div class="tab-icon">
                       <i class="flaticon-users"></i>
@@ -272,7 +165,7 @@ Signin -->
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link"  data-bs-toggle="tab" href="#employer" role="tab" aria-selected="false">
+                <a class="nav-link" id="companyTypeCode" data-bs-toggle="tab" href="#candidate" role="tab" aria-selected="false">
                   <div class="d-flex">
                     <div class="tab-icon">
                       <i class="flaticon-suitcase"></i>
@@ -290,7 +183,7 @@ Signin -->
             <div class="tab-pane active" id="candidate" role="tabpanel">
               <form class="mt-4" id="personalForm" name="personalForm">
                 <div class="row">
-                  <input type="hidden" name="userTypeCode" id="personalUserTypeCode" value="10">
+                  <input type="hidden" name="userTypeCode" id="userTypeCode" value="">
                   <div class="mb-3 col-6">
                     <label class="form-label" for="personalEmail">아이디 *</label>
                     <input type="text" class="form-control" id="personalEmail" name="email" data-name="아이디">
@@ -313,35 +206,35 @@ Signin -->
                 </div>
               </form>
             </div>
-            <div class="tab-pane fade" id="employer" role="tabpanel">
-              <form class="mt-4" id="businessForm" name="businessForm">
-                <div class="row">
-                  <input type="hidden" name="gradeCode" id="BusinessGradeCode" value="20">
-                  <div class="mb-3 col-6">
-                    <label class="form-label" for="businessEmail">아이디 *</label>
-                    <input type="text" class="form-control" id="businessEmail" name="email" data-name="아이디">
-                  </div>
-                  <div class="mb-3 col-6">
-                    <label class="form-label" for="businessPassword">비밀번호 *</label>
-                    <input type="password" class="form-control" id="businessPassword" name="password" data-name="비밀번호">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <a class="btn btn-primary d-block" id="business_login" name="business_login">로그인</a>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="ms-md-3 mt-3 mt-md-0">
-                      <a href="#">Forgot Password?</a>
-                      <div class="form-check mt-2">
-                        <input class="form-check-input" type="checkbox" value="" id="Remember-02">
-                        <label class="form-check-label" for="Remember-02">Remember Password</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
+<%--            <div class="tab-pane fade" id="employer" role="tabpanel">--%>
+<%--              <form class="mt-4" id="businessForm" name="businessForm">--%>
+<%--                <div class="row">--%>
+<%--                  <input type="hidden" name="userTypeCode1" id="BusinessUserTypeCode" value="">--%>
+<%--                  <div class="mb-3 col-6">--%>
+<%--                    <label class="form-label" for="businessEmail">아이디 *</label>--%>
+<%--                    <input type="text" class="form-control" id="businessEmail" name="email" data-name="아이디">--%>
+<%--                  </div>--%>
+<%--                  <div class="mb-3 col-6">--%>
+<%--                    <label class="form-label" for="businessPassword">비밀번호 *</label>--%>
+<%--                    <input type="password" class="form-control" id="businessPassword" name="password" data-name="비밀번호">--%>
+<%--                  </div>--%>
+<%--                </div>--%>
+<%--                <div class="row">--%>
+<%--                  <div class="col-md-6">--%>
+<%--                    <a class="btn btn-primary d-block" id="business_login" name="business_login">로그인</a>--%>
+<%--                  </div>--%>
+<%--                  <div class="col-md-6">--%>
+<%--                    <div class="ms-md-3 mt-3 mt-md-0">--%>
+<%--                      <a href="#">Forgot Password?</a>--%>
+<%--                      <div class="form-check mt-2">--%>
+<%--                        <input class="form-check-input" type="checkbox" value="" id="Remember-02">--%>
+<%--                        <label class="form-check-label" for="Remember-02">Remember Password</label>--%>
+<%--                      </div>--%>
+<%--                    </div>--%>
+<%--                  </div>--%>
+<%--                </div>--%>
+<%--              </form>--%>
+<%--            </div>--%>
           </div>
           <div class="mt-4">
             <fieldset>
