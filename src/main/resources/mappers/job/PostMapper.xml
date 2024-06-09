@@ -161,8 +161,14 @@
     </insert>
 
     <delete id="deleteJobApplicationInfo" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        DELETE   /*PostMapper.deleteJobApplicationInfo*/
+        DELETE   /* PostMapper.deleteJobApplicationInfo */
         FROM job_application_info
         WHERE job_id = #{jobId} AND USER_NO = #{userNo}
     </delete>
+
+    <select id="profileExistCheck" parameterType="int" resultType="int">
+        SELECT /* PostMapper.profileExistCheck */ count(profile_id) AS countProfile
+        FROM user_profile_info
+        WHERE USER_NO = #{userNo}
+    </select>
 </mapper>

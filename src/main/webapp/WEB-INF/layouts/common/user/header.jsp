@@ -37,22 +37,13 @@
                             기업회원 <i class="fas fa-chevron-down fa-xs"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/employer-grid.html">Employer Grid</a></li>
-                            <li><a class="dropdown-item" href="/employer-listing.html">Employer list</a></li>
-                            <li><a class="dropdown-item" href="/employer-detail.html">Employer detail</a></li>
-                            <li><a class="dropdown-item" href="/employer-listing-map.html">Employer Listing Map</a></li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="/javascript:void(0)">Dashboard <i
-                                        class="fas fa-chevron-right fa-xs"></i></a>
-                                <ul class="dropdown-menu left-side">
-                                    <li><a class="dropdown-item" href="/business/dashboard">Dashboard</a></li>
-                                    <li><a class="dropdown-item" href="/business/profile">프로필</a></li>
-                                    <li><a class="dropdown-item" href="/business/changePassword">비밀번호 변경</a></li>
-                                    <li><a class="dropdown-item" href="/business/manageCandidate">지원자 관리</a></li>
-                                    <li><a class="dropdown-item" href="/business/managePostJob">게시글 관리</a></li>
-                                    <li><a class="dropdown-item" href="/business/postAJob">공고 작성하기</a></li>
-                                </ul>
-                            </li>
+                            <li><a class="dropdown-item" href="/business/dashboard">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="/business/profile">프로필</a></li>
+                            <li><a class="dropdown-item" href="/business/changePassword">비밀번호 변경</a></li>
+                            <li><a class="dropdown-item" href="/business/manageCandidate">지원자 관리</a></li>
+                            <li><a class="dropdown-item" href="/business/managePostJob">게시글 관리</a></li>
+                            <li><a class="dropdown-item" href="/business/postAJob">공고 작성하기</a></li>
+
                         </ul>
                     </li>
                 </c:if>
@@ -109,7 +100,7 @@
                             class="far fa-user pe-2"></i>회원가입</a>
                 </div>
             </c:if>
-            <c:if test="${sessionScope.userTypeCode == 10 }">
+            <c:if test="${sessionScope.userTypeCode == 20 }">
                 <a class="btn btn-white btn-md" href="/business/postAJob"> <i class="fas fa-plus-circle"></i>공고 작성</a>
             </c:if>
         </div>

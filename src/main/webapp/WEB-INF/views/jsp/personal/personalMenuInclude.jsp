@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!--=================================
 inner banner -->
 <div class="header-inner bg-light">
@@ -49,12 +50,11 @@ Dashboard Nav -->
                 <div class="secondary-menu">
                     <c:if  test="${userTypeCode == '10'}">
                         <ul class="list-unstyled mb-0" id="menu">
-                            <li><a href="/personal/dashboard">Dashboard</a></li>
-                            <li><a href="/personal/myProfile">나의 프로필</a></li>
+                            <li><a href="/personal/dashboard">공고 현황</a></li>
+                            <li><a href="/personal/myProfile">프로필</a></li>
                             <li><a href="/personal/changePassword">비밀번호 변경</a></li>
                             <li><a href="/personal/manageJobs">지원 현황</a></li>
                             <li><a href="/personal/savedJobs">관심있는 공고</a></li>
-                            <li><a href="/user/logout">Log Out</a></li>
                         </ul>
                     </c:if>
                 </div>

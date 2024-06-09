@@ -494,24 +494,14 @@ Apply Modal Popup -->
             <div class="login-register">
               <section>
                 <div class="container">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="user-dashboard-info-box">
-                        <div class="row">
-                          <div class="col-12">
-                            <form class="row">
-                              <div class="form-group mt-0 mb-3 col-md-12">
-                                <label class="form-label">내용</label>
-                                <textarea class="form-control" rows="4" id="motivationDescription" name="motivationDescription"></textarea>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                      <a class="btn btn-lg btn-primary" href="#" id="button_apply" name="button_apply">지원하기</a>
+                  <form class="row">
+                    <div class="form-group mt-0 mb-3 col-md-12">
+                      <label class="form-label">내용</label>
+                      <textarea class="form-control" rows="4" id="motivationDescription" name="motivationDescription"></textarea>
                     </div>
-                  </div>
+                  </form>
                 </div>
+                <a class="btn btn-lg btn-primary" href="#" id="button_apply" name="button_apply">지원하기</a>
               </section>
             </div>
           </div>

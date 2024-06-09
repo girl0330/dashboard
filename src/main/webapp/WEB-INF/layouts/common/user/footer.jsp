@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mt-4 mt-lg-0">
-                <div class="footer-contact-info bg-holder" style="background-image: url(images/google-map.png);">
+                <div class="footer-contact-info bg-holder" style="background-image: url(/images/google-map.png);">
                     <h5 class="text-dark mb-4">Contact Us</h5>
                     <ul class="list-unstyled mb-0">
                         <li> <i class="fas fa-map-marker-alt text-primary"></i><span>214 West Arnold St. New York, NY 10002</span> </li>

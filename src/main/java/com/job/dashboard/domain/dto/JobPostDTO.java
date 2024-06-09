@@ -15,7 +15,9 @@ public class JobPostDTO extends UserDTO  {
     private String description; // 공고 내용-
     private String jobTypeCode; // 일자리타입코드(서빙, 편의점, 주방 등등)-
     private String jobTypeCodeName;
-    private String address; // 일자리 주소
+    private String zipcode; //우편번호
+    private String address; //도로명주소
+    private String addressDetail; //상세주소
     private String salaryTypeCode; // 급여종류코드(일급, 주급, 시급, 월급 등등)-
     private String salaryTypeCodeName;
     private String salary; // 임금-

@@ -26,6 +26,9 @@ public class UserServiceImpl implements UserService{
             map.put("code","error");
             map.put("message","이미 사용중인 이메일 입니다.");
         }
+
+        map.put("code", "success");
+        map.put("message","사용가능한 이에일 입니다.");
         return map;
     }
 
@@ -118,6 +121,7 @@ public class UserServiceImpl implements UserService{
         UserDTO user = new UserDTO();
 
         user.setUserNo(userAccount.getUserNo());
+        user.setEmail(userAccount.getEmail());
         user.setUserTypeCode(userAccount.getUserTypeCode());
 
         System.out.println("user : "+user);

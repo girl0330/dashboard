@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     let business_profile = {
         init : function () {
@@ -55,6 +56,16 @@
         document.getElementById("business_profile_sava_button").addEventListener("click", function () {
             business_profile.init();
         });
+        $('#address, #zipcode').on("click", function() { // 클릭 이벤트 사용
+            new daum.Postcode({
+                oncomplete: function(data) { // 선택시 입력값 세팅
+                    console.log(":::::::: " + JSON.stringify(data));
+                    $('#zipcode').val(data.zonecode);
+                    $('#address').val(data.address); // 주소 넣기
+                    $('input[name=addressDetail]').focus(); // 상세입력 포커싱
+                }
+            }).open();
+        });
     });
 </script>
 <!--=================================
@@ -90,11 +101,11 @@ My Profile -->
                                 <input type="text" class="form-control" value="${company.companyName}" id="companyName" name="companyName">
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="form-label">주소</label>
-                                <input type="email" class="form-control" value="${company.address}"  name="address" id="address">
+                                <label class="form-label">기업 연락처</label>
+                                <input type="text" class="form-control" value="${company.officePhone}" id="officePhone" name="officePhone">
                             </div>
-                            <div class="form-group col-md-6 mb-3 select-border">
-                                <label class="form-label" for="industryCode">산업 번호</label>
+                            <div class="form-group col-md-4 mb-3 select-border">
+                                <label class="form-label" for="industryCode">산업종류</label>
                                 <select class="form-control basic-select" name="industryCode" id="industryCode" >
                                     <option value="선택" selected="selected">선택</option>
                                     <option value="IT" ${company.industryCode == 'IT' ? 'selected="selected"' : ''}>IT</option>
@@ -111,17 +122,29 @@ My Profile -->
                                     <option value="OTH" ${company.industryCode == 'OTH' ? 'selected="selected"' : ''}>기타</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-6 mb-3 select-border">
-                                <label class="form-label" for="businessTypeCode">회사 타입</label>
+                            <div class="form-group col-md-4 mb-3 select-border">
+                                <label class="form-label" for="businessTypeCode">회사종류</label>
                                 <select class="form-control basic-select" name="businessTypeCode" id="businessTypeCode">
                                     <option value="선택">선택</option>
                                     <option value="CORP" ${company.businessTypeCode == 'CORP' ? 'selected="selected"' : ''}>법인사업자</option>
                                     <option value="GEN" ${company.businessTypeCode == 'GEN' ? 'selected="selected"' : ''}>일반사업자 </option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-6 mb-3">
+                            <div class="form-group col-md-4 mb-3">
                                 <label class="form-label">사업자 번호</label>
                                 <input type="text" class="form-control" value="${company.businessNumber}"  name="businessNumber" id="businessNumber">
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label class="form-label">우편번호</label>
+                                <input type="text" class="form-control" id="zipcode" placeholder="우편번호" value="${profile.zipcode}" name="zipcode" readonly>
+                            </div>
+                            <div class="form-group mb-3 col-md-9">
+                                <label class="form-label">도로명주소 </label>
+                                <input type="text" class="form-control" id="address" placeholder="도로명주소" value="${profile.address}" name="address" readonly>
+                            </div>
+                            <div class="form-group mb-3 col-md-12">
+                                <label class="form-label">상세주소 </label>
+                                <input type="text" class="form-control" id="addressDetail" placeholder="상세주소" value="${profile.addressDetail}" name="addressDetail">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 회사 소개 </label>

@@ -103,6 +103,7 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         // 새 비밀번호 암호화
         String encodedNewPassword = passwordEncoder.encode(userDTO.getNewPassword());
 
+
         userDTO.setPassword(encodedNewPassword);
         personalDashMapper.updatePassword(userDTO);
         System.out.println("update문이 실행??" + userDTO);

@@ -14,13 +14,17 @@
             password ,
             user_type_code,
             system_register_id,
-            system_updater_id
+            system_register_datetime,
+            system_updater_id,
+            system_update_datetime
         )  VALUES (
             #{email},
             #{password},
             #{userTypeCode},
-            #{systemRegisterId},
-            #{systemUpdaterId}
+            #{userNo},
+            #{systemRegisterDatetime},
+            #{userNo},
+            #{systemUpdateDatetime}
                     )
     </insert>
 

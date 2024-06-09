@@ -44,6 +44,10 @@ public interface PostMapper {
     void deleteJobApplicationInfo(JobApplicationDTO jobApplicationDTO);
 
 
+    //프로필 작성 체크
+    int profileExistCheck(int userNo);
+
+
 //    void delete(int jobId);
 
     //게시글 수정

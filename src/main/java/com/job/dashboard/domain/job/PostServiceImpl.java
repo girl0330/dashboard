@@ -75,6 +75,16 @@ public class PostServiceImpl implements PostService {
         }
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
+
+        //지원하기 누르면 프로필작성 확인
+        int profileExistCheck = postMapper.profileExistCheck(userNo);
+        System.out.println("프로필작성 되어있으면=1, 아니면=0 : ?"+profileExistCheck);
+        if (profileExistCheck == 0) {
+            map.put("code", "profileError");
+            map.put("message","프로필 작성 후 이용해주세요."); //프로필 작성 화면으로 이동 시킬까? 그냥 메시지만 띄울까?
+            return map;
+        }
+
         jobApplicationDTO.setUserNo(userNo);
         System.out.println("jobApplicationDTO 확인: "+ jobApplicationDTO); //지원 공고 id, 지원내용, userNo
 
@@ -105,7 +115,7 @@ public class PostServiceImpl implements PostService {
 
         //로그인 확인
         if (!sessionUtil.loginUserCheck()) { // 로그인 체크
-            map.put("code", "loginError");
+            map.put("code", "error");
             map.put("message","로그인이 필요합니다.");
             return map;
         }

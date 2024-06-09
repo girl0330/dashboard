@@ -17,7 +17,7 @@ Manage Jobs -->
                     <div class="row mb-4">
                         <div class="col-md-7 col-sm-5 d-flex align-items-center">
                             <div class="section-title-02 mb-0 ">
-                                <h4 class="mb-0">공고 관리</h4>
+                                <h2 class="mb-0">작성한 공고</h2>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-7 mt-3 mt-sm-0">
@@ -32,28 +32,28 @@ Manage Jobs -->
                             <thead class="bg-light">
                             <tr>
                                 <th scope="col">작성한 공고 제목</th>
-                                <th scope="col">지원자 수</th>
+                                <th scope="col">지원자 현황</th>
                                 <th scope="col">공고 현황</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${postList}" var="postList">
+                            <c:forEach items="${postJobList}" var="postList">
                                 <tr>
                                     <th scope="row">
                                         <span class="clickable-title">
-                                            <a href="#" onclick="location.href='/business/detail?jobId=${postList.jobId}'"><h5>${postList.title} (${postList.jobTypeCodeName})</h5></a>
+                                            <a href="#" onclick="location.href='/business/detail?jobId=${postList.jobId}'">
+                                                <h5>${postList.title} (${postList.jobTypeCodeName})</h5>
+                                            </a>
                                         </span>
                                         <input type="hidden" id="jobId" name="jobId" value="${postList.jobId}">
-                                        <p class="mb-1 mt-2"> 급여  (${postList.salaryTypeCodeName} - ${postList.salary}) </p>
-                                        <p class="mb-1 mt-2"> 작성한 날짜 : ${postList.systemRegisterDatetime}</p>
+                                        <p class="mb-1 mt-2">급여 (${postList.salaryTypeCodeName} - ${postList.salary})</p>
+                                        <p class="mb-1 mt-2">작성한 날짜: ${postList.systemRegisterDatetime}</p>
                                     </th>
                                     <td>
                                         지원자수 표시할 거임.
-                                        <a href="#" class="text-primary" onclick="location.href = '/business/applicantList?jobId=${postList.jobId}'" id="look" name="look" data-bs-toggle="tooltip" title="지원자 보기"><i class="far fa-eye"></i></a>
+                                        <a href="#" class="text-primary" onclick="location.href='/business/applicantList?jobId=${postList.jobId}'" id="look" name="look" data-bs-toggle="tooltip" title="지원자 보기"><i class="far fa-eye"></i></a>
                                     </td>
-                                    <td>${postList.statusTypeCodeName}
-
-                                    </td>
+                                    <td>${postList.statusTypeCodeName}</td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -65,12 +65,13 @@ Manage Jobs -->
                                 <li class="page-item disabled me-auto">
                                     <span class="page-link b-radius-none">Prev</span>
                                 </li>
-                                <li class="page-item active" aria-current="page"><span class="page-link">1 </span> <span class="sr-only">(current)</span></li>
+                                <li class="page-item active" aria-current="page">
+                                    <span class="page-link">1</span>
+                                    <span class="sr-only">(current)</span>
+                                </li>
                                 <li class="page-item"><a class="page-link" href="#">2</a></li>
                                 <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item ms-auto">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
+                                <li class="page-item ms-auto"><a class="page-link" href="#">Next</a></li>
                             </ul>
                         </div>
                     </div>

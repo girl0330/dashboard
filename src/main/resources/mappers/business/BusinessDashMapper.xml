@@ -11,6 +11,7 @@
                INDUSTRY_CODE,
                BUSINESS_TYPE_CODE,
                BUSINESS_NUMBER,
+               OFFICE_PHONE,
                SYSTEM_REGISTER_ID,
                SYSTEM_UPDATER_ID
         FROM COMPANY_INFO
@@ -34,6 +35,7 @@
             INDUSTRY_CODE,
             BUSINESS_TYPE_CODE,
             BUSINESS_NUMBER,
+            OFFICE_PHONE,
             SYSTEM_REGISTER_ID,
             SYSTEM_UPDATER_ID
         ) VALUES (
@@ -45,6 +47,7 @@
                      #{industryCode},
                      #{businessTypeCode},
                      #{businessNumber},
+                     #{officePhone},
                      #{userNo},
                      #{userNo}
                  ) ON DUPLICATE KEY UPDATE
@@ -55,6 +58,7 @@
             INDUSTRY_CODE       = #{industryCode},
             BUSINESS_TYPE_CODE  = #{businessTypeCode},
             BUSINESS_NUMBER     = #{businessNumber},
+            OFFICE_PHONE = #{officePhone},
             SYSTEM_UPDATER_ID   = #{userNo}
     </insert>
 
@@ -68,6 +72,7 @@
                INDUSTRY_CODE,
                BUSINESS_TYPE_CODE,
                BUSINESS_NUMBER,
+               OFFICE_PHONE,
                SYSTEM_REGISTER_ID,
                SYSTEM_UPDATER_ID
         FROM COMPANY_INFO
@@ -84,7 +89,7 @@
     <select id="postJobList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobPostDTO">
         /* BusinessDashMapper.postJobList */
         SELECT
-            job_id,
+               job_id,
                title,
                job_type_code,
                (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = job_type_code) AS job_type_code_name,

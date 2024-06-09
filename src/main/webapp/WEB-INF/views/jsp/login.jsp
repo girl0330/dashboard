@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
-  let personal_login = {
+  let user_login = {
     init : function () {
     // 공백함수실행
       if (!this.emptyChkFn()) {
@@ -17,7 +17,7 @@
     // 공백함수
     emptyChkFn : function () {
       let valid = true;
-      const form = $('#personalForm')
+      const form = $('#userForm');
       const inputs = form.find("input[type='text'], input[type='password']");
 
       inputs.each(function() {
@@ -38,33 +38,29 @@
     //validation 함수 실행
     validationChk : function () {
       let valid = true;
-      const personalLoginId = $('#personalEmail').val();
-      const personalLoginPassword = $('#personalPassword').val();
-      const personalUserTypeCode = $('personalUserTypeCode').val();
-
-      console.log("아이디 확인: "+ personalLoginId)
-      console.log("비밀번호 확인: "+ personalLoginPassword)
+      const loginId = $('#email').val();
+      const loginPassword = $('#password').val();
 
       // 아이디 조건, 길이
       let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(personalLoginId)) {
-        alert("이메일을 확인해주세요.")
-        $('#personalEmail').focus()
+      if (!emailRegex.test(loginId)) {
+        alert("이메일을 확인해주세요.");
+        $('#email').focus();
         valid = false;
         return valid;
       }
 
       // 비밀번호 조건, 길이, 비밀번호 확인
       let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
-      if (!pwRegex.test(personalLoginPassword)) {
-        alert("비밀번호 형식을 확인해주세요")
-        $('#personalPassword').focus()
+      if (!pwRegex.test(loginPassword)) {
+        alert("비밀번호 형식을 확인해주세요");
+        $('#password').focus();
         valid = false;
         return valid;
       }
-      if (personalLoginPassword.length > 15 || personalLoginPassword.length < 8) {
-        alert("비밀번호를 8~15자로 사용해주세요")
-        $('#personalLoginPassword').focus()
+      if (loginPassword.length > 15 || loginPassword.length < 8) {
+        alert("비밀번호를 8~15자로 사용해주세요");
+        $('#password').focus();
         valid = false;
         return valid;
       }
@@ -74,7 +70,7 @@
 
     //submit 함수
     formSubmit : function () {
-      const formData = $("#personalForm").serializeArray();
+      const formData = $("#userForm").serializeArray();
       console.log("data check :::" + JSON.stringify(formData));
 
       // JSON 객체로 변환
@@ -109,12 +105,8 @@
 
   //DOM이 실행 후 실행 됨
   $(document).ready(function() {
-    $("#personal_login").on("click",function () {
-      personal_login.init();
-    });
-
-    $("#personalTypeCode").on("click",function () {
-      $("#userTypeCode").val("10");
+    $("#user_login").on("click",function () {
+      user_login.init();
     });
 
     $("#companyTypeCode").on("click",function () {
@@ -181,21 +173,21 @@ Signin -->
           </fieldset>
           <div class="tab-content">
             <div class="tab-pane active" id="candidate" role="tabpanel">
-              <form class="mt-4" id="personalForm" name="personalForm">
+              <form class="mt-4" id="userForm" name="userForm">
                 <div class="row">
-                  <input type="hidden" name="userTypeCode" id="userTypeCode" value="">
+                  <input type="hidden" name="userTypeCode" id="userTypeCode" value="10">
                   <div class="mb-3 col-6">
-                    <label class="form-label" for="personalEmail">아이디 *</label>
-                    <input type="text" class="form-control" id="personalEmail" name="email" data-name="아이디">
+                    <label class="form-label" for="email">아이디 *</label>
+                    <input type="text" class="form-control" id="email" name="email" data-name="아이디">
                   </div>
                   <div class="mb-3 col-6">
-                    <label class="form-label" for="personalPassword">비밀번호 *</label>
-                    <input type="password" class="form-control" id="personalPassword" name="password" data-name="비밀번호">
+                    <label class="form-label" for="password">비밀번호 *</label>
+                    <input type="password" class="form-control" id="password" name="password" data-name="비밀번호">
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6">
-                    <a class="btn btn-primary d-block" id="personal_login" name="personal_login">로그인</a>
+                    <a class="btn btn-primary d-block" id="user_login" name="user_login">로그인</a>
                   </div>
                   <div class="col-md-6">
                     <div class="mt-3 mt-md-0 forgot-pass">
@@ -206,35 +198,6 @@ Signin -->
                 </div>
               </form>
             </div>
-<%--            <div class="tab-pane fade" id="employer" role="tabpanel">--%>
-<%--              <form class="mt-4" id="businessForm" name="businessForm">--%>
-<%--                <div class="row">--%>
-<%--                  <input type="hidden" name="userTypeCode1" id="BusinessUserTypeCode" value="">--%>
-<%--                  <div class="mb-3 col-6">--%>
-<%--                    <label class="form-label" for="businessEmail">아이디 *</label>--%>
-<%--                    <input type="text" class="form-control" id="businessEmail" name="email" data-name="아이디">--%>
-<%--                  </div>--%>
-<%--                  <div class="mb-3 col-6">--%>
-<%--                    <label class="form-label" for="businessPassword">비밀번호 *</label>--%>
-<%--                    <input type="password" class="form-control" id="businessPassword" name="password" data-name="비밀번호">--%>
-<%--                  </div>--%>
-<%--                </div>--%>
-<%--                <div class="row">--%>
-<%--                  <div class="col-md-6">--%>
-<%--                    <a class="btn btn-primary d-block" id="business_login" name="business_login">로그인</a>--%>
-<%--                  </div>--%>
-<%--                  <div class="col-md-6">--%>
-<%--                    <div class="ms-md-3 mt-3 mt-md-0">--%>
-<%--                      <a href="#">Forgot Password?</a>--%>
-<%--                      <div class="form-check mt-2">--%>
-<%--                        <input class="form-check-input" type="checkbox" value="" id="Remember-02">--%>
-<%--                        <label class="form-check-label" for="Remember-02">Remember Password</label>--%>
-<%--                      </div>--%>
-<%--                    </div>--%>
-<%--                  </div>--%>
-<%--                </div>--%>
-<%--              </form>--%>
-<%--            </div>--%>
           </div>
           <div class="mt-4">
             <fieldset>

@@ -17,43 +17,34 @@ Manage Jobs -->
                     <div class="row mb-4">
                         <div class="col-md-7 col-sm-5 d-flex align-items-center">
                             <div class="section-title-02 mb-0 ">
-                                <h4 class="mb-0">Manage Jobs</h4>
-                            </div>
-                        </div>
-                        <div class="col-md-5 col-sm-7 mt-3 mt-sm-0">
-                            <div class="search">
-                                <i class="fas fa-search"></i>
-                                <input type="text" class="form-control" placeholder="Search....">
+                                <h4 class="mb-0">지원 현황</h4>
                             </div>
                         </div>
                     </div>
-                    <div class="user-dashboard-table table-responsive">
-                        <table class="table table-bordered">
-                            <thead class="bg-light">
-                            <tr>
-                                <th scope="col">지원한 공고 제목</th>
-                                <th scope="col">지원 현황</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${currentApplyList}" var="currentApplyList">
-                            <tr>
-                                <th scope="row">
-                                    <a href="#" class="text-primary" onclick="location.href='/business/detail?jobId=${currentApplyList.jobId}'" id="look" name="look">
-                                        <h6 class="mb-0">${currentApplyList.title}</h6>
-                                    </a>
-                                    <input type="hidden" id="applicationId" name="applicationId" value="${currentApplyList.applicationId}">
-                                    <input type="hidden" id="jobId" name="jobId" value="${currentApplyList.jobId}">
-                                    <p class="mb-1 mt-2"> ${currentApplyList.address}</p>
-<%--                                    <p class="mb-1 mt-2"> 지원한 날짜 : ${applyList.systemRegisterDatetime}</p>--%>
 
-                                </th>
-                                <td>${currentApplyList.statusTypeCodeName} <p class="mb-0">지원한 날짜 : ${currentApplyList.systemRegisterDatetime}</p></td>
-                            </tr>
+                    <table class="table table-bordered">
+                        <thead class="bg-light">
+                        <tr >
+                            <th scope="col">지원한 공고 제목</th>
+                            <th scope="col">지원 현황</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${currentApplyList}" var="currentApplyList">
+                                <tr>
+                                    <th scope="row">
+                                        <a href="#" class="text-primary" onclick="location.href='/business/detail?jobId=${currentApplyList.jobId}'" id="look" name="look">
+                                            <h6 class="mb-0">${currentApplyList.title}</h6>
+                                        </a>
+                                        <p class=" mb-1 mt-2"><i class="fas fa-map-marker-alt pe-1">${currentApplyList.address}</i></p>
+                                        <p class="mb-0">지원한 날짜 : ${currentApplyList.systemRegisterDatetime}</p>
+                                    </th>
+                                    <td>${currentApplyList.statusTypeCodeName}</td>
+                                </tr>
                             </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
+
+                        </tbody>
+                    </table>
                     <div class="row justify-content-center">
                         <div class="col-12 text-center">
                             <ul class="pagination mt-3">

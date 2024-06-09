@@ -12,7 +12,9 @@ public class UserProfileInfoDTO extends UserDTO{
     private String phone;
     private String birth;
     private String gender;
-    private String address;
+    private String zipcode; //우편번호
+    private String address; //도로명주소
+    private String addressDetail; //상세주소
     private boolean partTimeExperience;
     private int systemRegisterId;
     private String systemRegisterDatetime;

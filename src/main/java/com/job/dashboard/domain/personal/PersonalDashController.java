@@ -37,7 +37,6 @@ public class PersonalDashController {
             return "redirect:/";
         }
 
-        System.out.println("/프로필 작성 여부 체크");
         // 프로필 작성 여부 확인
         int userNo = (int)sessionUtil.getAttribute("userNo");
         int profileCheck = personalDashService.profileCheck(userNo);
@@ -146,6 +145,14 @@ public class PersonalDashController {
             return "redirect:/";
         }
 
+        // 프로필 작성 여부 확인
+        int userNo = (int)sessionUtil.getAttribute("userNo");
+        int profileCheck = personalDashService.profileCheck(userNo);
+        if(profileCheck == 0) {
+            System.out.println("프로필 내용이 없음, 프로필로 이동");
+            return "redirect:/personal/myProfile";
+        }
+
         List<JobApplicationDTO> currentApplyList = personalDashService.currentApplyList();
         System.out.println("==========================> 지원 현황 리스트!"+currentApplyList);
         model.addAttribute("currentApplyList", currentApplyList);
@@ -155,6 +162,27 @@ public class PersonalDashController {
     @GetMapping("/savedJobs") // 관심 공고 목록들
     public String savedJobsView() {
         System.out.println("==== 개인 회원 savedJobs====");
+
+        // 로그인 체크
+        System.out.println("로그인 체크");
+        if(!sessionUtil.loginUserCheck()) {
+            return "redirect:/user/login";
+        }
+
+        //로그인 타입코드 확인하기
+        System.out.println("/로그인 타입코드 체크");
+        if(!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "10")) {
+            return "redirect:/";
+        }
+
+        // 프로필 작성 여부 확인
+        int userNo = (int)sessionUtil.getAttribute("userNo");
+        int profileCheck = personalDashService.profileCheck(userNo);
+        if(profileCheck == 0) {
+            System.out.println("프로필 내용이 없음, 프로필로 이동");
+            return "redirect:/personal/myProfile";
+        }
+
         return "jsp/personal/personal-savedJobs";
     }
 }

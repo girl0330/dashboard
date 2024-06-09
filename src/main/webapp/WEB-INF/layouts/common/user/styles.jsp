@@ -13,6 +13,7 @@
 <!-- Page CSS Implementing Plugins (Remove the plugin CSS here if site does not use that feature)-->
 <link rel="stylesheet" href="/css/owl-carousel/owl.carousel.min.css" />
 <link rel="stylesheet" href="/css/magnific-popup/magnific-popup.css" />
+<link rel="stylesheet" href="/css/datetimepicker/datetimepicker.min.css" />
 <link rel="stylesheet" href="/css/select2/select2.css" />
 
 <!-- Template Style -->

@@ -88,7 +88,7 @@ public class BusinessDashController {
         System.out.println("공고관리");
         if(!sessionUtil.loginUserCheck()) {
             System.out.println("로그인 화면으로 이동");
-            return "redirect:/user/login?test=true";
+            return "redirect:/user/login";
         }
 
         if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) {
@@ -96,8 +96,9 @@ public class BusinessDashController {
         }
 
         List<JobPostDTO> postJobList = businessDashService.postJobList();
+
         System.out.println("postJobList"+postJobList);
-        model.addAttribute("postList", postJobList);
+        model.addAttribute("postJobList", postJobList);
 
         return "jsp/business/business-managePostJob";
     }
