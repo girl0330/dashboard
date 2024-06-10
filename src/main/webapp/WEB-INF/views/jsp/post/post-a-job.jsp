@@ -1,6 +1,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 
     let postSave = {
@@ -64,6 +66,18 @@
             postSave.init();
         });
 
+        $('#address, #zipcode').on("click", function() { // 클릭 이벤트 사용
+            alert("test")
+            new daum.Postcode({
+                oncomplete: function(data) { // 선택시 입력값 세팅
+                    console.log(":::::::: " + JSON.stringify(data));
+                    $('#zipcode').val(data.zonecode);
+                    $('#address').val(data.address); // 주소 넣기
+                    $('input[name=addressDetail]').focus(); // 상세입력 포커싱
+                }
+            }).open();
+        });
+
         // $(document).on('click', '.nav-item.disabled', function (e) {
         //     e.preventDefault(); // 기본 동작을 방지
         // });
@@ -117,30 +131,39 @@ tab -->
                                 </div>
                             </div>
                             <div class="form-group col-md-12 mb-3">
-                                <label class="mb-2"> 공고 제목 *</label>
-                                <input type="text" class="form-control" value="" placeholder="공고 제목을 입력해주세요." name="title" id="title">
+                                <label class="mb-2"> 공고 제목 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value=""  name="title" id="title">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 상세모집내용 </label>
-                                <textarea class="form-control" rows="4" placeholder="상세모집내용을 작성해주세요"  name="description" id="description"></textarea>
+                                <textarea class="form-control" rows="4"  name="description" id="description"></textarea>
                             </div>
-                            <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2"> 위치 </label>
-                                <input type="text" class="form-control" value="" placeholder="위치를 입력해주세요"  name="address" id="address">
+                            <div class="form-group mb-3 col-md-3">
+                                <label class="form-label">우편번호 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" id="zipcode" placeholder="우편번호" name="zipcode" readonly>
                             </div>
-                            <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2"> 담당자 연락처 </label>
-                                <input type="text" class="form-control" value="" placeholder="이름을 입력해주세요." name="managerNumber" id="managerNumber">
+                            <div class="form-group mb-3 col-md-9">
+                                <label class="form-label">도로명주소 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" id="address" placeholder="도로명주소" name="address" readonly>
+                            </div>
+                            <div class="form-group mb-3 col-md-12">
+                                <label class="form-label">상세주소 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" id="addressDetail" placeholder="상세주소" name="addressDetail">
+                            </div>
+                            <div class="form-group col-md-12 mb-3">
+                                <label class="mb-2"> 담당자 연락처 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value=""  name="managerNumber" id="managerNumber">
                             </div>
 
                             <div class="row mt-4 mt-lg-5">
                                 <div class="col-12">
-                                    <h5 class="mb-4"> 모집조건 </h5>
+                                    <h5 class="mb-4"> 모집조건 <span class="font-danger">*</span></h5>
                                 </div>
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
-                                <label class="mb-2" for="jobTypeCode"> 모집직종 </label>
+                                <label class="mb-2" for="jobTypeCode"> 모집직종 <span class="font-danger">*</span></label>
                                 <select class="form-control basic-select" id="jobTypeCode" name="jobTypeCode">
+                                    <option >선택</option>
                                     <option value="SERV" >서빙</option>
                                     <option value="CONV" >편의점</option>
                                     <option value="KIT" >주방</option>
@@ -158,13 +181,8 @@ tab -->
                                 </select>
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
-                                <label class="mb-2"  for="numberOfStaff"> 모집인원 </label>
-                                <select class="form-control basic-select" id="numberOfStaff" name="numberOfStaff">
-                                    <option value="1" >1명</option>
-                                    <option value="0" >0명</option>
-                                    <option value="00" >00명</option>
-
-                                </select>
+                                <label class="mb-2"  for="numberOfStaff"> 모집인원 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value=""  name="numberOfStaff" id="numberOfStaff">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 우대 조건 </label>
@@ -178,8 +196,9 @@ tab -->
                                 </div>
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
-                                <label class="mb-2"  for="salaryTypeCode"> 급여 타입 </label>
+                                <label class="mb-2"  for="salaryTypeCode"> 급여 타입 <span class="font-danger">*</span></label>
                                 <select class="form-control basic-select" id="salaryTypeCode" name="salaryTypeCode">
+                                    <option >선택</option>
                                     <option value="HRLY">시급</option>
                                     <option value="DLY">일급</option>
                                     <option value="WKLY">주급</option>
@@ -188,24 +207,26 @@ tab -->
                                 </select>
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2" for="salary"> 급여 액수 </label>
-                                <input type="text" class="form-control" value="" placeholder="이름을 입력해주세요." name="salary" id="salary">
+                                <label class="mb-2" for="salary"> 급여 액수 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value=""  name="salary" id="salary">
                             </div>
                             <div class="form-group col-md-3 select-border mb-3">
-                                <label class="mb-2"  for="employmentTypeCode"> 고용 유형 </label>
+                                <label class="mb-2"  for="employmentTypeCode"> 고용 유형 <span class="font-danger">*</span></label>
                                 <select class="form-control basic-select" id="employmentTypeCode" name="employmentTypeCode">
+                                    <option >선택</option>
                                     <option value="LONG">장기</option>
                                     <option value="SHORT">단기</option>
 
                                 </select>
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2"> 근무시간 </label>
+                                <label class="mb-2"> 근무시간 <span class="font-danger">*</span></label>
                                 <input type="text" class="form-control" value="" name="jobTime" id="jobTime">
                             </div>
                             <div class="form-group col-md-3 mb-3">
-                                <label class="mb-2" for="jobDayTypeCode"> 근무요일 </label>
+                                <label class="mb-2" for="jobDayTypeCode"> 근무요일 <span class="font-danger">*</span></label>
                                 <select class="form-control basic-select" id="jobDayTypeCode" name="jobDayTypeCode">
+                                    <option >선택</option>
                                     <option value="DAY">하루</option>
                                     <option value="WK">일주일</option>
                                     <option value="WEEKND">주말</option>

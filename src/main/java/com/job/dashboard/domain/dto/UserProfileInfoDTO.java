@@ -20,4 +20,5 @@ public class UserProfileInfoDTO extends UserDTO{
     private String systemRegisterDatetime;
     private int systemUpdaterId;
     private String systemUpdateDatetime;
+
 }

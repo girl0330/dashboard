@@ -47,6 +47,9 @@ public interface PostMapper {
     //프로필 작성 체크
     int profileExistCheck(int userNo);
 
+    //userNo의 지원 정보확인
+    int applicationUserChe(int userNo);
+
 
 //    void delete(int jobId);
 

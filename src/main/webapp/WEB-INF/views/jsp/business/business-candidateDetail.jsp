@@ -15,9 +15,8 @@
             let jsonData = {}
             jsonData["jobId"] = jobId;
             jsonData["userNo"] = userNo;
+            // 해당 값을 JSON 데이터로 변환 : const jsonData = {"jobId": jobIdInt};(이렇게도 사용할 수 있음.)
 
-            // 해당 값을 JSON 데이터로 변환
-            // const jsonData = {"jobId": jobIdInt};
             console.log("jsonData: "+ JSON.stringify(jsonData));
 
             $.ajax({

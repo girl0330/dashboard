@@ -113,7 +113,7 @@
     </select>
 
     <select id="getApplicants" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        SELECT
+        SELECT /*이름, 연락처, 성별, 나이, 지원상태*/
             /* BusinessDashMapper.getApplicants */
             jai.application_id,
             jai.job_id,
@@ -123,7 +123,10 @@
             DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
             jai.motivation_description,
             jpi.title,
-            upi.NAME
+            upi.NAME, -- 이름
+            upi.phone, -- 핸드폰
+            upi.gender, -- 성별
+            FLOOR(DATEDIFF(CURDATE(), upi.birth) / 365.25) AS old -- 나이
         FROM
             job_application_info jai
                 INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
@@ -151,7 +154,8 @@
             upi.NAME,
             upi.PHONE,
             upi.BIRTH,
-            upi.GENDER
+            upi.GENDER,
+            FLOOR(DATEDIFF(CURDATE(), upi.birth) / 365.25) AS old -- 나이
         FROM
             job_application_info jai
                 INNER JOIN user_profile_info upi ON

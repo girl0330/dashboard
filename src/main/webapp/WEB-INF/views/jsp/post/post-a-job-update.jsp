@@ -1,6 +1,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 
     let postSave = {
@@ -63,6 +65,18 @@
     $(document).ready(function (){
         $("#post_update_button").on("click", function () {
             postSave.init();
+        });
+
+        $('#address, #zipcode').on("click", function() { // 클릭 이벤트 사용
+            alert("test")
+            new daum.Postcode({
+                oncomplete: function(data) { // 선택시 입력값 세팅
+                    console.log(":::::::: " + JSON.stringify(data));
+                    $('#zipcode').val(data.zonecode);
+                    $('#address').val(data.address); // 주소 넣기
+                    $('input[name=addressDetail]').focus(); // 상세입력 포커싱
+                }
+            }).open();
         });
 
         // $(document).on('click', '.nav-item.disabled', function (e) {
@@ -128,9 +142,17 @@ tab -->
                                 <label class="mb-2"> 상세모집내용 </label>
                                 <textarea class="form-control" rows="4" placeholder="상세모집내용을 작성해주세요"  name="description" id="description">${old.description}</textarea>
                             </div>
-                            <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2"> 위치 </label>
-                                <input type="text" class="form-control" value="${old.address}" placeholder="위치를 입력해주세요"  name="address" id="address">
+                            <div class="form-group mb-3 col-md-3">
+                                <label class="form-label">우편번호 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" id="zipcode" placeholder="우편번호" value="${old.zipcode}" name="zipcode" readonly>
+                            </div>
+                            <div class="form-group mb-3 col-md-9">
+                                <label class="form-label">도로명주소 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" id="address" placeholder="도로명주소" value="${old.address}" name="address" readonly>
+                            </div>
+                            <div class="form-group mb-3 col-md-12">
+                                <label class="form-label">상세주소 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" id="addressDetail" placeholder="상세주소" value="${old.addressDetail}" name="addressDetail">
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label class="mb-2"> 담당자 연락처 </label>
@@ -145,30 +167,25 @@ tab -->
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2" for="jobTypeCode"> 모집직종 </label>
                                 <select class="form-control basic-select" value="${old.jobTypeCode}" id="jobTypeCode" name="jobTypeCode">
-                                    <option value="SERV" >서빙</option>
-                                    <option value="CONV" >편의점</option>
-                                    <option value="KIT" >주방</option>
-                                    <option value="OFF" >사무</option>
-                                    <option value="EDU" >교육</option>
-                                    <option value="SAL" >판매</option>
-                                    <option value="PROD" >생산</option>
-                                    <option value="IT" >IT</option>
-                                    <option value="DES" >디자인</option>
-                                    <option value="MED" >의료</option>
-                                    <option value="DRIV" >운전</option>
-                                    <option value="CON" >건설</option>
-                                    <option value="OTH" >기타</option>
+                                    <option value="SERV" ${old.jobTypeCode == 'SERV' ? 'selected="selected"' : ''}>서빙</option>
+                                    <option value="CONV" ${old.jobTypeCode == 'CONV' ? 'selected="selected"' : ''}>편의점</option>
+                                    <option value="KIT" ${old.jobTypeCode == 'KIT' ? 'selected="selected"' : ''}>주방</option>
+                                    <option value="OFF" ${old.jobTypeCode == 'OFF' ? 'selected="selected"' : ''}>사무</option>
+                                    <option value="EDU" ${old.jobTypeCode == 'EDU' ? 'selected="selected"' : ''}>교육</option>
+                                    <option value="SAL" ${old.jobTypeCode == 'SAL' ? 'selected="selected"' : ''}>판매</option>
+                                    <option value="PROD" ${old.jobTypeCode == 'PROD' ? 'selected="selected"' : ''}>생산</option>
+                                    <option value="IT" ${old.jobTypeCode == 'IT' ? 'selected="selected"' : ''}>IT</option>
+                                    <option value="DES" ${old.jobTypeCode == 'DES' ? 'selected="selected"' : ''}>디자인</option>
+                                    <option value="MED" ${old.jobTypeCode == 'MED' ? 'selected="selected"' : ''}>의료</option>
+                                    <option value="DRIV" ${old.jobTypeCode == 'DRIV' ? 'selected="selected"' : ''}>운전</option>
+                                    <option value="CON" ${old.jobTypeCode == 'CON' ? 'selected="selected"' : ''}>건설</option>
+                                    <option value="OTH" ${old.jobTypeCode == 'OTH' ? 'selected="selected"' : ''}>기타</option>
 
                                 </select>
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
-                                <label class="mb-2"  for="numberOfStaff"> 모집인원 </label>
-                                <select class="form-control basic-select" value="${old.numberOfStaff}" id="numberOfStaff" name="numberOfStaff">
-                                    <option value="1" >1명</option>
-                                    <option value="0" >0명</option>
-                                    <option value="00" >00명</option>
-
-                                </select>
+                                <label class="mb-2"  for="numberOfStaff"> 모집인원 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value="${old.numberOfStaff}" name="numberOfStaff" id="numberOfStaff">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 우대 조건 </label>
@@ -184,11 +201,11 @@ tab -->
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2"  for="salaryTypeCode"> 급여 타입 </label>
                                 <select class="form-control basic-select" value="${old.salaryTypeCode}" id="salaryTypeCode" name="salaryTypeCode">
-                                    <option value="시급">시급</option>
-                                    <option value="일급">일급</option>
-                                    <option value="일급">주급</option>
-                                    <option value="월급">월급</option>
-
+                                    <option >선택</option>
+                                    <option value="HRLY" ${old.salaryTypeCode == 'HRLY' ? 'selected="selected"' : ''}>시급</option>
+                                    <option value="DLY" ${old.salaryTypeCode == 'DLY' ? 'selected="selected"' : ''}>일급</option>
+                                    <option value="WKLY" ${old.salaryTypeCode == 'WKLY' ? 'selected="selected"' : ''}>주급</option>
+                                    <option value="MTHLY" ${old.salaryTypeCode == 'MTHLY' ? 'selected="selected"' : ''}>월급</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-6 mb-3">
@@ -198,9 +215,9 @@ tab -->
                             <div class="form-group col-md-3 select-border mb-3">
                                 <label class="mb-2"  for="employmentTypeCode"> 고용 유형 </label>
                                 <select class="form-control basic-select" value="${old.employmentTypeCode}" id="employmentTypeCode" name="employmentTypeCode">
-                                    <option value="LONG">장기</option>
-                                    <option value="SHORT">단기</option>
-
+                                    <option >선택</option>
+                                    <option value="LONG" ${old.employmentTypeCode == 'LONG' ? 'selected="selected"' : ''}>장기</option>
+                                    <option value="SHORT" ${old.employmentTypeCode == 'SHORT' ? 'selected="selected"' : ''}>단기</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-6 mb-3">
@@ -210,19 +227,19 @@ tab -->
                             <div class="form-group col-md-3 mb-3">
                                 <label class="mb-2" for="jobDayTypeCode"> 근무요일 </label>
                                 <select class="form-control basic-select" value="${old.jobDayTypeCode}" id="jobDayTypeCode" name="jobDayTypeCode">
-                                    <option value="DAY">하루</option>
-                                    <option value="WK">일주일</option>
-                                    <option value="WEEKND">주말</option>
-                                    <option value="WDAY">평일</option>
-                                    <option value="MON">월</option>
-                                    <option value="TUE">화</option>
-                                    <option value="WED">수</option>
-                                    <option value="THU">목</option>
-                                    <option value="FRI">금</option>
-                                    <option value="SAT">토</option>
-                                    <option value="SUN">일</option>
-                                    <option value="OTH">기타</option>
-
+                                    <option >선택</option>
+                                    <option value="DAY" ${old.jobDayTypeCode == 'DAY' ? 'selected="selected"' : ''}>하루</option>
+                                    <option value="WK" ${old.jobDayTypeCode == 'WK' ? 'selected="selected"' : ''}>일주일</option>
+                                    <option value="WEEKND" ${old.jobDayTypeCode == 'WEEKND' ? 'selected="selected"' : ''}>주말</option>
+                                    <option value="WDAY" ${old.jobDayTypeCode == 'WDAY' ? 'selected="selected"' : ''}>평일</option>
+                                    <option value="MON" ${old.jobDayTypeCode == 'MON' ? 'selected="selected"' : ''}>월</option>
+                                    <option value="TUE" ${old.jobDayTypeCode == 'TUE' ? 'selected="selected"' : ''}>화</option>
+                                    <option value="WED" ${old.jobDayTypeCode == 'WED' ? 'selected="selected"' : ''}>수</option>
+                                    <option value="THU" ${old.jobDayTypeCode == 'THU' ? 'selected="selected"' : ''}>목</option>
+                                    <option value="FRI" ${old.jobDayTypeCode == 'FRI' ? 'selected="selected"' : ''}>금</option>
+                                    <option value="SAT" ${old.jobDayTypeCode == 'SAT' ? 'selected="selected"' : ''}>토</option>
+                                    <option value="SUN" ${old.jobDayTypeCode == 'SUN' ? 'selected="selected"' : ''}>일</option>
+                                    <option value="OTH" ${old.jobDayTypeCode == 'OTH' ? 'selected="selected"' : ''}>기타</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-12 mb-3">
@@ -236,10 +253,9 @@ tab -->
                                 </div>
                             </div>
                             <div class="form-group col-md-3 select-border mb-3">
-                                <select class="form-control basic-select" value="${old.statusTypeCode}" id="statusTypeCode" name="statusTypeCode">
-                                    <option value="OPEN">구인 중</option>
-                                    <option value="CLOSED">채용 마감</option>
-
+                                <select class="form-control basic-select" value="${old.statusTypeCodeName}" id="statusTypeCode" name="statusTypeCode">
+                                    <option value="OPEN" ${old.statusTypeCode == 'OPEN' ? 'selected="selected"' : ''}>구인 중</option>
+                                    <option value="CLOSED" ${old.statusTypeCode == 'CLOSED' ? 'selected="selected"' : ''}>채용 마감</option>
                                 </select>
                             </div>
 

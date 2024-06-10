@@ -171,4 +171,10 @@
         FROM user_profile_info
         WHERE USER_NO = #{userNo}
     </select>
+
+    <select id="applicationUserChe" resultType="int" parameterType="int">
+        SELECT /* PostMapper.applicationUserChe */ count(user_no) AS countUserApplication
+        FROM job_application_info
+        WHERE USER_NO = #{userNo}
+    </select>
 </mapper>

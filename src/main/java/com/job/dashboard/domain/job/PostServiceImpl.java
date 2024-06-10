@@ -41,6 +41,8 @@ public class PostServiceImpl implements PostService {
     // 구인 공고 상세페이지
     public JobPostDTO detail(int jobId) {
         System.out.println("====상세페이지 impl 입니다. ====");
+
+
         return postMapper.getJobDetail(jobId);
     }
 
@@ -115,12 +117,20 @@ public class PostServiceImpl implements PostService {
 
         //로그인 확인
         if (!sessionUtil.loginUserCheck()) { // 로그인 체크
-            map.put("code", "error");
+            map.put("code", "loginError");
             map.put("message","로그인이 필요합니다.");
             return map;
         }
 
-        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
+        int userNo = (int) sessionUtil.getAttribute("userNo");
+
+        int applicationUserChe = postMapper.applicationUserChe(userNo); // userNo가 지원했는지 찾음. (지원 = 1, 지원 안함 = 0)
+        System.out.println("유저가 지원했어? "+ applicationUserChe);
+        if (applicationUserChe == 0) {
+            map.put("code", "error");
+            map.put("message","지원 이력이 없습니다.");
+            return map;
+        }
 
         JobApplicationDTO jobApplicationDTO = new JobApplicationDTO();
 
@@ -128,7 +138,7 @@ public class PostServiceImpl implements PostService {
         jobApplicationDTO.setUserNo(userNo);
 
         postMapper.deleteJobApplicationInfo(jobApplicationDTO);
-        map.put("code", "delete");
+        map.put("code", "success");
         map.put("message","지원이 성공적으로 취소되었습니다.");
         return map;
     }

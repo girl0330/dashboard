@@ -109,6 +109,10 @@
       user_login.init();
     });
 
+    $("#personalTypeCode").on("click",function () {
+      $("#userTypeCode").val("10");
+    });
+
     $("#companyTypeCode").on("click",function () {
       $("#userTypeCode").val("20");
     });
@@ -141,7 +145,7 @@ Signin -->
       <div class="col-xl-8 col-lg-10 col-md-12">
         <div class="login-register">
           <fieldset>
-            <legend class="px-2">로그인할 계정 타입 선택</legend>
+            <legend class="px-2">계정 타입 선택</legend>
             <ul class="nav nav-tabs nav-tabs-border d-flex" role="tablist">
               <li class="nav-item me-4">
                 <a class="nav-link active" id="personalTypeCode" data-bs-toggle="tab" href="#candidate" role="tab" aria-selected="false">
@@ -192,7 +196,7 @@ Signin -->
                   <div class="col-md-6">
                     <div class="mt-3 mt-md-0 forgot-pass">
                       <a href="#">비밀번호 찾기</a>
-                      <p class="mt-1">회원이 아니신가요? <a href="register.html"> 회원가입 하기</a></p>
+                      <p class="mt-1">회원이 아니신가요? <a href="/user/signup"> 회원가입 하기</a></p>
                     </div>
                   </div>
                 </div>

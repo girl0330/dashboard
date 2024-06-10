@@ -17,7 +17,7 @@ Manage Jobs -->
                     <div class="row mb-4">
                         <div class="col-md-7 col-sm-5 d-flex align-items-center">
                             <div class="section-title-02 mb-0 ">
-                                <h4 class="mb-0">${postJobList[0].title}</h4>
+                                <h4 class="mb-0">${applicantList[0].title}</h4>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-7 mt-3 mt-sm-0">
@@ -31,28 +31,38 @@ Manage Jobs -->
                         <table class="table table-bordered">
                             <thead class="bg-light">
                             <tr>
-                                <th scope="col">공고 제목</th>
-                                <th scope="col">지원자</th>
-                                <th scope="col">상태</th>
+                                <th class="col-md-2" scope="col">지원자</th>
+                                <th class="col-md-2" scope="col">나이</th>
+                                <th class="col-md-2" scope="col">핸드폰</th>
+                                <th class="col-md-2" scope="col">성별</th>
+                                <th class="col-md-2" scope="col">상태</th>
+                                <th class="col-md-2" scope="col">지원 날짜</th>
                             </tr>
                             </thead>
                             <tbody>
                             <c:forEach items="${applicantList}" var="applicantList">
-                                <tr>
-                                    <th scope="row">
-                                        <span class="clickable-title">
-                                                <a href="#" onclick="location.href='/business/detail?jobId=${applicantList.jobId}'"><h6>${applicantList.title}</h6> </a>
-                                        </span>
+                                <tr onclick="location.href = '/business/candidateDetail?userNo=${applicantList.userNo}&jobId=${applicantList.jobId}'">
+                                    <td class="col-md-2">
                                         <input type="hidden" id="jobId" name="jobId" value="${applicantList.jobId}">
-                                    </th>
-                                    <td>
-                                        <a href="#" onclick="location.href = '/business/candidateDetail?userNo=${applicantList.userNo}&jobId=${applicantList.jobId}'">
+                                        <a>
                                             ${applicantList.name}
                                         </a>
-                                        - ${applicantList.systemRegisterDatetime}
+
                                     </td>
-                                    <td>
+                                    <td class="col-md-2">
+                                         ${applicantList.old} 살
+                                    </td>
+                                    <td class="col-md-2">
+                                        ${applicantList.phone}
+                                    </td>
+                                    <td class="col-md-2">
+                                        ${applicantList.gender}
+                                    </td>
+                                    <td class="col-md-2">
                                         ${applicantList.statusTypeCodeName}
+                                    </td>
+                                    <td class="col-md-2">
+                                        ${applicantList.systemRegisterDatetime}
                                     </td>
                                 </tr>
                             </c:forEach>

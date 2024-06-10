@@ -21,12 +21,15 @@ public class UserServiceImpl implements UserService{
         System.out.println("====이메일 중복인가 확인 impl=====");
         Map<String, Object> map = new HashMap<>();
         int emailCheck = userMapper.emailDuplicateCheck(userDTO);
-
+        System.out.println("???");
         if (emailCheck > 0) { // 동일한 이메일이 있다면
+            System.out.println("!!!!!");
             map.put("code","error");
             map.put("message","이미 사용중인 이메일 입니다.");
+            return map;
         }
 
+        System.out.println("00000");
         map.put("code", "success");
         map.put("message","사용가능한 이에일 입니다.");
         return map;

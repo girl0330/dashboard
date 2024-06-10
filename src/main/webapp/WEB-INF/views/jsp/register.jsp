@@ -28,7 +28,7 @@
     },
 
     emailValidationChk: function () {
-    let valid = true;
+      let valid = true;
     const email = $('#email').val();
     console.log("email"+email);
 
@@ -42,10 +42,10 @@
     },
 
     emailDuplicateCheck : function () {
-      const email = $("#email").val();
 
       let jsonData = {};
-      jsonData['email'] = email;
+      jsonData['email'] = $("#email").val();
+
       console.log("jsonData : "+JSON.stringify(jsonData));
 
       $.ajax({
@@ -244,7 +244,7 @@ Register -->
       <div class="col-xl-8 col-lg-10 col-md-12">
         <div class="login-register">
           <fieldset>
-            <legend class="px-2">Choose your Account Type</legend>
+            <legend class="px-2">계정 타입 선택</legend>
             <ul class="nav nav-tabs nav-tabs-border d-flex" role="tablist">
               <li class="nav-item me-4">
                 <a class="nav-link active" id="personalTypeCode" data-bs-toggle="tab" href="/#candidate" role="tab"  >
@@ -305,7 +305,7 @@ Register -->
                     <a class="btn btn-primary d-block" id="user_register" name="button_register">회원가입</a>
                   </div>
                   <div class="col-md-6 text-md-end mt-2 text-center">
-                    <p>이미 회원이신가요? <a href="/#"> 로그인 </a></p>
+                    <p>이미 회원이신가요? <a href="/user/login"> 로그인 </a></p>
                   </div>
                 </div>
               </form>
