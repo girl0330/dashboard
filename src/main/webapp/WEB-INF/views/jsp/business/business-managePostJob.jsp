@@ -50,7 +50,7 @@ Manage Jobs -->
                                         <p class="mb-1 mt-2">작성한 날짜: ${postList.systemRegisterDatetime}</p>
                                     </th>
                                     <td>
-                                        지원자수 표시할 거임.
+                                        ${postList.countApplication}
                                         <a href="#" class="text-primary" onclick="location.href='/business/applicantList?jobId=${postList.jobId}'" id="look" name="look" data-bs-toggle="tooltip" title="지원자 보기"><i class="far fa-eye"></i></a>
                                     </td>
                                     <td>${postList.statusTypeCodeName}</td>

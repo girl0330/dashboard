@@ -89,27 +89,30 @@
     <select id="postJobList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobPostDTO">
         /* BusinessDashMapper.postJobList */
         SELECT
-               job_id,
-               title,
-               job_type_code,
-               (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = job_type_code) AS job_type_code_name,
-               address,
-               salary_type_code,
-               (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_code = salary_type_code) AS salary_type_code_name,
-               salary,
-               job_time,
-               job_day_type_code,
-               (SELECT detail_name FROM code_detail WHERE group_code = ' job_day_type' AND detail_code = job_day_type_code) AS job_day_type_code_name,
-               number_of_staff,
-               employment_type_code,
-               (SELECT detail_name FROM code_detail WHERE group_code = 'employment_type' AND detail_code = employment_type_code) AS employment_type_code_name,
-               system_register_id,
-               system_updater_id,
-               DATE_FORMAT(system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
-               status_type_code,
-               (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = status_type_code) AS status_type_code_name
-        from job_post_info jpi
-        WHERE USER_NO = #{userNo}
+            jpi.job_id,
+            jpi.title,
+            jpi.job_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = jpi.job_type_code) AS job_type_code_name,
+            jpi.address,
+            jpi.salary_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_code = jpi.salary_type_code) AS salary_type_code_name,
+            jpi.salary,
+            jpi.job_time,
+            jpi.job_day_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'job_day_type' AND detail_code = jpi.job_day_type_code) AS job_day_type_code_name,
+            jpi.number_of_staff,
+            jpi.employment_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'employment_type' AND detail_code = jpi.employment_type_code) AS employment_type_code_name,
+            jpi.system_register_id,
+            jpi.system_updater_id,
+            DATE_FORMAT(jpi.system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
+            jpi.status_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jpi.status_type_code) AS status_type_code_name,
+            (SELECT COUNT(*) FROM job_application_info jai WHERE jai.job_id = jpi.job_id) AS countApplication
+        FROM
+            job_post_info jpi
+        WHERE
+            jpi.user_no = #{userNo};
     </select>
 
     <select id="getApplicants" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">

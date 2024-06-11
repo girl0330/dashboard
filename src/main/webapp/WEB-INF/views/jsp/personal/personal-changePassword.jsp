@@ -23,25 +23,25 @@
 
             let passwordRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
             if (!passwordRegex.test(current_password)) {
-                alert("비밀번호 형식을 확인해주세요.")
+                alert("사용중인 비밀번호를 다시 확인해주세요.")
                 $('#password').focus();
                 valid = false;
                 return valid;
             }
             if (!passwordRegex.test(new_password)) {
-                alert("비밀번호 형식을 확인해주세요.")
+                alert("새로 사용할 비밀번호를 다시 확인해주세요.")
                 $('#newPassword').focus();
                 valid = false;
                 return valid;
             }
             if (current_password.length > 15 || current_password.length < 8) {
-                alert("비밀번호를 8~15자로 사용해주세요")
+                alert("사용중인 비밀번호를 8~15자로 사용해주세요")
                 $('#password').focus()
                 valid = false;
                 return valid;
             }
             if (new_password.length > 15 || new_password.length < 8) {
-                alert("비밀번호를 8~15자로 사용해주세요")
+                alert("새로 사용할를 8~15자로 사용해주세요")
                 $('#newPassword').focus()
                 valid = false;
                 return valid;

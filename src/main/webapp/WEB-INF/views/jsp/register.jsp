@@ -100,7 +100,7 @@
           alert(text + "은/는 필수로 입력 값입니다.");
           input.focus();
           valid = false;
-          return false;  // each 루프 중지
+          return valid;  // each 루프 중지
         }
       });
 

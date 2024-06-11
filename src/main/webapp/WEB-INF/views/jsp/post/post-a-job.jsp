@@ -7,9 +7,16 @@
 
     let postSave = {
         init : function () {
+            //공백 검사
+            if (!this.Validate_required_fields()) {
+                return;
+            }
+            // validation 검사
+            if (!this.validationCheck()) {
+                return;
+            }
             // this.tabChange();
             this.formSubmit();
-
         },
 
         // //tabChange 함수 실행
@@ -23,6 +30,47 @@
         //     // Job Detail 탭을 비활성화
         //     $('#Job-detail-tab').addClass('disabled');
         // },
+
+        //공백 검사
+        Validate_required_fields : function () {
+            alert("!!!!")
+            let valid = true;
+            $('[valid="true"]').each(function() {
+                // 각 요소의 이름과 값을 출력 (또는 다른 작업 수행)
+                console.log($(this).attr('name') + ': ' + $(this).val());
+                const fields = $(this);
+                const removeBlank = fields.val().replace(/\s*/g, "");
+                if (removeBlank === "") {
+                    let text = $(this).attr('data-name');
+                    alert(text+"반드시 입력해주세요");
+                    fields.focus();
+                    valid = false;
+                    return valid;
+                }
+            });
+            return valid;
+        },
+
+        //validation 검사(모집인원, 급여액수, 근무시간 숫자만 사용)
+        validationCheck : function () {
+            alert("123")
+            let valid = true;
+            $('input[name*="num"]').each(function () {
+                console.log($(this).attr('name') + '-' + $(this).val());
+                const numField = $(this).val();
+
+                // 숫자 이외의 문자가 있는지 검사하는 정규 표현식
+                let nonNumericPattern = /[^0-9]/g;
+                if (nonNumericPattern.test(numField)) {
+                    let text = $(this).attr('data-name');
+                    alert(text + '에 숫자만 입력해주세요.');
+                    numField.focus();
+                    valid = false;
+                    return valid;
+                }
+            })
+            return valid;
+        },
 
         //전송 함수
         formSubmit : function () {
@@ -67,7 +115,6 @@
         });
 
         $('#address, #zipcode').on("click", function() { // 클릭 이벤트 사용
-            alert("test")
             new daum.Postcode({
                 oncomplete: function(data) { // 선택시 입력값 세팅
                     console.log(":::::::: " + JSON.stringify(data));
@@ -132,37 +179,37 @@ tab -->
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 공고 제목 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value=""  name="title" id="title">
+                                <input type="text" class="form-control" value=""  name="title" id="title" valid="true" data-name="공고 제목">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 상세모집내용 </label>
-                                <textarea class="form-control" rows="4"  name="description" id="description"></textarea>
+                                <textarea class="form-control" rows="4"  name="description" id="description" data-name="상세모집내용"></textarea>
                             </div>
                             <div class="form-group mb-3 col-md-3">
                                 <label class="form-label">우편번호 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" id="zipcode" placeholder="우편번호" name="zipcode" readonly>
+                                <input type="text" class="form-control" id="zipcode" placeholder="우편번호" name="zipcode" valid="true" data-name="우편번호" readonly>
                             </div>
                             <div class="form-group mb-3 col-md-9">
                                 <label class="form-label">도로명주소 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" id="address" placeholder="도로명주소" name="address" readonly>
+                                <input type="text" class="form-control" id="address" placeholder="도로명주소" name="address" valid="true" data-name="도로명주소" readonly>
                             </div>
                             <div class="form-group mb-3 col-md-12">
-                                <label class="form-label">상세주소 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" id="addressDetail" placeholder="상세주소" name="addressDetail">
+                                <label class="form-label">상세주소 </label>
+                                <input type="text" class="form-control" id="addressDetail" placeholder="상세주소" name="addressDetail" data-name="상세주소">
                             </div>
-                            <div class="form-group col-md-12 mb-3">
+                            <div class="form-group col-md-12 mb-3" >
                                 <label class="mb-2"> 담당자 연락처 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value=""  name="managerNumber" id="managerNumber">
+                                <input type="text" class="form-control" value=""  name="managerNumber" id="managerNumber_num" valid="true" data-name="담당자 연락처">
                             </div>
 
                             <div class="row mt-4 mt-lg-5">
                                 <div class="col-12">
-                                    <h5 class="mb-4"> 모집조건 <span class="font-danger">*</span></h5>
+                                    <h5 class="mb-4"> 모집조건 </h5>
                                 </div>
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2" for="jobTypeCode"> 모집직종 <span class="font-danger">*</span></label>
-                                <select class="form-control basic-select" id="jobTypeCode" name="jobTypeCode">
+                                <select class="form-control basic-select" id="jobTypeCode" name="jobTypeCode" valid="true" data-name="모집직종">
                                     <option >선택</option>
                                     <option value="SERV" >서빙</option>
                                     <option value="CONV" >편의점</option>
@@ -181,12 +228,12 @@ tab -->
                                 </select>
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
-                                <label class="mb-2"  for="numberOfStaff"> 모집인원 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value=""  name="numberOfStaff" id="numberOfStaff">
+                                <label class="mb-2" > 모집인원 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value="" name="numberOfStaff" id="numberOfStaff_num" valid="true" data-name="모집인원">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 우대 조건 </label>
-                                <textarea class="form-control" rows="4" value=""  name="requirement" id="requirement"></textarea>
+                                <textarea class="form-control" rows="4" name="requirement" id="requirement" data-name="우대 조건"></textarea>
                             </div>
 
 
@@ -197,7 +244,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2"  for="salaryTypeCode"> 급여 타입 <span class="font-danger">*</span></label>
-                                <select class="form-control basic-select" id="salaryTypeCode" name="salaryTypeCode">
+                                <select class="form-control basic-select" id="salaryTypeCode" name="salaryTypeCode" valid="true" data-name="급여 타입">
                                     <option >선택</option>
                                     <option value="HRLY">시급</option>
                                     <option value="DLY">일급</option>
@@ -207,12 +254,12 @@ tab -->
                                 </select>
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2" for="salary"> 급여 액수 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value=""  name="salary" id="salary">
+                                <label class="mb-2" > 급여 액수 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value=""  name="salary" id="salary_num" valid="true" data-name="급여 액수">
                             </div>
                             <div class="form-group col-md-3 select-border mb-3">
                                 <label class="mb-2"  for="employmentTypeCode"> 고용 유형 <span class="font-danger">*</span></label>
-                                <select class="form-control basic-select" id="employmentTypeCode" name="employmentTypeCode">
+                                <select class="form-control basic-select" id="employmentTypeCode" name="employmentTypeCode" valid="true" data-name="고용 유형">
                                     <option >선택</option>
                                     <option value="LONG">장기</option>
                                     <option value="SHORT">단기</option>
@@ -221,11 +268,11 @@ tab -->
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label class="mb-2"> 근무시간 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value="" name="jobTime" id="jobTime">
+                                <input type="text" class="form-control" value="" name="jobTime" id="jobTime_num" valid="true" data-name="근무시간">
                             </div>
                             <div class="form-group col-md-3 mb-3">
                                 <label class="mb-2" for="jobDayTypeCode"> 근무요일 <span class="font-danger">*</span></label>
-                                <select class="form-control basic-select" id="jobDayTypeCode" name="jobDayTypeCode">
+                                <select class="form-control basic-select" id="jobDayTypeCode" name="jobDayTypeCode" valid="true" data-name="근무요일">
                                     <option >선택</option>
                                     <option value="DAY">하루</option>
                                     <option value="WK">일주일</option>
@@ -244,7 +291,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 기타사항 </label>
-                                <textarea class="form-control" rows="4" value="" name="etc" id="etc"></textarea>
+                                <textarea class="form-control" rows="4" value="" name="etc" id="etc" data-name="기타사항"></textarea>
                             </div>
                             <div class="col-md-12">
                                 <a class="btn btn-primary" id="post_sava_button">작성완료</a>

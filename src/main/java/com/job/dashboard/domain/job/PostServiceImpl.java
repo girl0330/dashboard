@@ -67,8 +67,6 @@ public class PostServiceImpl implements PostService {
 
         Map<String, Object> map = new HashMap<>();
 
-        System.out.println("sessionUtil.getAttribute::    "+sessionUtil.getAttribute("userNo"));
-
         //로그인 확인
         if (!sessionUtil.loginUserCheck()) { // 로그인 체크
             map.put("code", "loginError");
@@ -76,11 +74,12 @@ public class PostServiceImpl implements PostService {
             return map;
         }
 
-        int userNo = (int) sessionUtil.getAttribute("userNo");
+        int userNo = (int) sessionUtil.getAttribute("userNo");//세션에서 가져오는 유저번호
 
         //지원하기 누르면 프로필작성 확인
         int profileExistCheck = postMapper.profileExistCheck(userNo);
         System.out.println("프로필작성 되어있으면=1, 아니면=0 : ?"+profileExistCheck);
+
         if (profileExistCheck == 0) {
             map.put("code", "profileError");
             map.put("message","프로필 작성 후 이용해주세요."); //프로필 작성 화면으로 이동 시킬까? 그냥 메시지만 띄울까?
@@ -88,7 +87,7 @@ public class PostServiceImpl implements PostService {
         }
 
         jobApplicationDTO.setUserNo(userNo);
-        System.out.println("jobApplicationDTO 확인: "+ jobApplicationDTO); //지원 공고 id, 지원내용, userNo
+        System.out.println("jobApplicationDTO 확인: ???????"+ jobApplicationDTO); //지원 공고 id(프론), 지원내용(프론), userNo(세션)
 
 
         //중복지원인지 확인 select count(1) from table where 조건=1 and 조건=2
@@ -102,7 +101,7 @@ public class PostServiceImpl implements PostService {
         System.out.println("지원했음.");
 
         jobApplicationDTO.setUserNo(userNo);
-        jobApplicationDTO.setStatusTypeCode("APPLIED"); //CANCELLED : 지원취소, APPLIED : 지원중
+        jobApplicationDTO.setStatusTypeCode("APPLIED"); // APPLIED : 지원중, CANCELLED : 지원취소
 
         //insert
         postMapper.insertJobApplicationInfo(jobApplicationDTO);

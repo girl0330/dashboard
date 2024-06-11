@@ -35,6 +35,7 @@
             location.href='/personal/myProfile'
 
           } else if (data.code === 'applyError'){
+            $('#exampleModalCenter').modal('hide');
             alert(data.message);
 
           }else if (data.code === 'success') {
@@ -92,9 +93,12 @@
   // DOM 실행 후 안의 내용이 실행 됨
 
   document.addEventListener('DOMContentLoaded', function () {
+    $('#exampleModalCenter').on('hidden.bs.modal', function () { //hidden.bs.modal 팝이 완전 닫치고난다음 실행
+      $('#motivationDescription').val("");
+    });
+
     $('#button_apply').click(function() {
       applyJob.init();
-      $('#motivationDescription').val("");
     });
 
     $('#button_applyCancel').click(function() {
@@ -358,12 +362,10 @@ Apply Modal Popup -->
             <div class="login-register">
               <section>
                 <div class="container">
-                  <form class="row">
-                    <div class="form-group mt-0 mb-3 col-md-12">
-                      <label class="form-label">내용</label>
-                      <textarea class="form-control" rows="4" id="motivationDescription" name="motivationDescription"></textarea>
-                    </div>
-                  </form>
+                  <div class="form-group mt-0 mb-3 col-md-12">
+                    <label class="form-label">내용</label>
+                    <textarea class="form-control" rows="4" id="motivationDescription" name="motivationDescription"></textarea>
+                  </div>
                 </div>
                 <a class="btn btn-lg btn-primary" href="#" id="button_apply" name="button_apply">지원하기</a>
               </section>

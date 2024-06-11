@@ -7,23 +7,58 @@
 
     let postSave = {
         init : function () {
-            //this.tabChange();
+            //공백 검사
+            if (!this.Validate_required_fields()) {
+                return;
+            }
+            // validation 검사
+            if (!this.validationCheck()) {
+                return;
+            }
+            // this.tabChange();
             this.formSubmit();
-
         },
 
-        //tabChange 함수 실행
-        // tabChange : function () {
-        //     alert("test");
-        //     $('.nav-item.active').removeClass('active');
-        //     $('.tab-pane.show.active').removeClass('show active');
-        //
-        //     $('#Confirm-tab').addClass('active');
-        //     $('#Confirm').addClass('show active');
-        //
-        //     // Job Detail 탭을 비활성화
-        //     $('#Job-detail-tab').addClass('disabled');
-        // },
+        //공백 검사
+        Validate_required_fields : function () {
+            alert("!!!!")
+            let valid = true;
+            $('[valid="true"]').each(function() {
+                // 각 요소의 이름과 값을 출력 (또는 다른 작업 수행)
+                console.log($(this).attr('name') + ': ' + $(this).val());
+                const fields = $(this);
+                const removeBlank = fields.val().replace(/\s*/g, "");
+                if (removeBlank === "") {
+                    let text = $(this).attr('data-name');
+                    alert(text+"반드시 입력해주세요");
+                    fields.focus();
+                    valid = false;
+                    return valid;
+                }
+            });
+            return valid;
+        },
+
+        //validation 검사(모집인원, 급여액수, 근무시간 숫자만 사용)
+        validationCheck : function () {
+            alert("123")
+            let valid = true;
+            $('input[name*="num"]').each(function () {
+                console.log($(this).attr('name') + '-' + $(this).val());
+                const numField = $(this).val();
+
+                // 숫자 이외의 문자가 있는지 검사하는 정규 표현식
+                let nonNumericPattern = /[^0-9]/g;
+                if (nonNumericPattern.test(numField)) {
+                    let text = $(this).attr('data-name');
+                    alert(text + '에 숫자만 입력해주세요.');
+                    numField.focus();
+                    valid = false;
+                    return valid;
+                }
+            })
+            return valid;
+        },
 
         //전송 함수
         formSubmit : function () {
@@ -135,8 +170,8 @@ tab -->
                             <div class="form-group col-md-12 mb-3">
                                 <input type="hidden" value="${old.userNo}" name="userNo" id="userNo">
                                 <input type="hidden" value="${old.jobId}" name="jobId" id="jobId">
-                                <label class="mb-2"> 공고 제목 *</label>
-                                <input type="text" class="form-control" value="${old.title}" placeholder="공고 제목을 입력해주세요." name="title" id="title">
+                                <label class="mb-2"> 공고 제목 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value="${old.title}" placeholder="공고 제목을 입력해주세요." name="title" id="title" valid="true" data-name="공고 제목">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 상세모집내용 </label>
@@ -144,19 +179,19 @@ tab -->
                             </div>
                             <div class="form-group mb-3 col-md-3">
                                 <label class="form-label">우편번호 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" id="zipcode" placeholder="우편번호" value="${old.zipcode}" name="zipcode" readonly>
+                                <input type="text" class="form-control" id="zipcode" value="${old.zipcode}" name="zipcode" valid="true" data-name="우편번호" readonly>
                             </div>
                             <div class="form-group mb-3 col-md-9">
                                 <label class="form-label">도로명주소 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" id="address" placeholder="도로명주소" value="${old.address}" name="address" readonly>
+                                <input type="text" class="form-control" id="address" value="${old.address}" name="address" valid="true" data-name="도로명주소" readonly>
                             </div>
                             <div class="form-group mb-3 col-md-12">
                                 <label class="form-label">상세주소 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" id="addressDetail" placeholder="상세주소" value="${old.addressDetail}" name="addressDetail">
+                                <input type="text" class="form-control" id="addressDetail" value="${old.addressDetail}" name="addressDetail">
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2"> 담당자 연락처 </label>
-                                <input type="text" class="form-control" value="${old.managerNumber}" placeholder="이름을 입력해주세요." name="managerNumber" id="managerNumber">
+                                <label class="mb-2"> 담당자 연락처 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value="${old.managerNumber}" name="managerNumber" id="managerNumber_num" valid="true" data-name="담당자 연락처">
                             </div>
 
                             <div class="row mt-4 mt-lg-5">
@@ -165,8 +200,8 @@ tab -->
                                 </div>
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
-                                <label class="mb-2" for="jobTypeCode"> 모집직종 </label>
-                                <select class="form-control basic-select" value="${old.jobTypeCode}" id="jobTypeCode" name="jobTypeCode">
+                                <label class="mb-2" for="jobTypeCode"> 모집직종 <span class="font-danger">*</span></label>
+                                <select class="form-control basic-select" value="${old.jobTypeCode}" id="jobTypeCode" name="jobTypeCode" valid="true" data-name="모집직종">
                                     <option value="SERV" ${old.jobTypeCode == 'SERV' ? 'selected="selected"' : ''}>서빙</option>
                                     <option value="CONV" ${old.jobTypeCode == 'CONV' ? 'selected="selected"' : ''}>편의점</option>
                                     <option value="KIT" ${old.jobTypeCode == 'KIT' ? 'selected="selected"' : ''}>주방</option>
@@ -184,12 +219,12 @@ tab -->
                                 </select>
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
-                                <label class="mb-2"  for="numberOfStaff"> 모집인원 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value="${old.numberOfStaff}" name="numberOfStaff" id="numberOfStaff">
+                                <label class="mb-2"  for="numberOfStaff_num"> 모집인원 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value="${old.numberOfStaff}" name="numberOfStaff" id="numberOfStaff_num" valid="true" data-name="모집인원">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 우대 조건 </label>
-                                <textarea class="form-control" rows="4" name="requirement" id="requirement">${old.requirement}</textarea>
+                                <textarea class="form-control" rows="4" name="requirement" id="requirement" data-name="우대 조건">${old.requirement}</textarea>
                             </div>
 
 
@@ -199,8 +234,8 @@ tab -->
                                 </div>
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
-                                <label class="mb-2"  for="salaryTypeCode"> 급여 타입 </label>
-                                <select class="form-control basic-select" value="${old.salaryTypeCode}" id="salaryTypeCode" name="salaryTypeCode">
+                                <label class="mb-2"  for="salaryTypeCode"> 급여 타입 <span class="font-danger">*</span></label>
+                                <select class="form-control basic-select" value="${old.salaryTypeCode}" id="salaryTypeCode" name="salaryTypeCode" valid="true" data-name="급여 타입">
                                     <option >선택</option>
                                     <option value="HRLY" ${old.salaryTypeCode == 'HRLY' ? 'selected="selected"' : ''}>시급</option>
                                     <option value="DLY" ${old.salaryTypeCode == 'DLY' ? 'selected="selected"' : ''}>일급</option>
@@ -209,12 +244,12 @@ tab -->
                                 </select>
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2" for="salary"> 급여 액수 </label>
-                                <input type="text" class="form-control" value="${old.salary}" placeholder="이름을 입력해주세요." name="salary" id="salary">
+                                <label class="mb-2" for="salary"> 급여 액수 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value="${old.salary}" placeholder="" name="salary" id="salary_num" valid="true" data-name="급여 액수">
                             </div>
                             <div class="form-group col-md-3 select-border mb-3">
                                 <label class="mb-2"  for="employmentTypeCode"> 고용 유형 </label>
-                                <select class="form-control basic-select" value="${old.employmentTypeCode}" id="employmentTypeCode" name="employmentTypeCode">
+                                <select class="form-control basic-select" value="${old.employmentTypeCode}" id="employmentTypeCode" name="employmentTypeCode " valid="true" data-name="고용 유형">
                                     <option >선택</option>
                                     <option value="LONG" ${old.employmentTypeCode == 'LONG' ? 'selected="selected"' : ''}>장기</option>
                                     <option value="SHORT" ${old.employmentTypeCode == 'SHORT' ? 'selected="selected"' : ''}>단기</option>
@@ -222,11 +257,11 @@ tab -->
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label class="mb-2"> 근무시간 </label>
-                                <input type="text" class="form-control" value="${old.jobTime}" name="jobTime" id="jobTime">
+                                <input type="text" class="form-control" value="${old.jobTime}" name="jobTime" id="jobTime_num" valid="true" data-name="근무시간">
                             </div>
                             <div class="form-group col-md-3 mb-3">
                                 <label class="mb-2" for="jobDayTypeCode"> 근무요일 </label>
-                                <select class="form-control basic-select" value="${old.jobDayTypeCode}" id="jobDayTypeCode" name="jobDayTypeCode">
+                                <select class="form-control basic-select" value="${old.jobDayTypeCode}" id="jobDayTypeCode" name="jobDayTypeCode" valid="true" data-name="근무요일">
                                     <option >선택</option>
                                     <option value="DAY" ${old.jobDayTypeCode == 'DAY' ? 'selected="selected"' : ''}>하루</option>
                                     <option value="WK" ${old.jobDayTypeCode == 'WK' ? 'selected="selected"' : ''}>일주일</option>
@@ -244,7 +279,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 기타사항 </label>
-                                <textarea class="form-control" rows="4" name="etc" id="etc">${old.etc}</textarea>
+                                <textarea class="form-control" rows="4" name="etc" id="etc" data-name="기타사항" >${old.etc}</textarea>
                             </div>
 
                             <div class="row mt-4 mt-lg-5">
@@ -253,7 +288,7 @@ tab -->
                                 </div>
                             </div>
                             <div class="form-group col-md-3 select-border mb-3">
-                                <select class="form-control basic-select" value="${old.statusTypeCodeName}" id="statusTypeCode" name="statusTypeCode">
+                                <select class="form-control basic-select" value="${old.statusTypeCodeName}" id="statusTypeCode" name="statusTypeCode" valid="true" data-name="공고 상태">
                                     <option value="OPEN" ${old.statusTypeCode == 'OPEN' ? 'selected="selected"' : ''}>구인 중</option>
                                     <option value="CLOSED" ${old.statusTypeCode == 'CLOSED' ? 'selected="selected"' : ''}>채용 마감</option>
                                 </select>

@@ -296,7 +296,7 @@ banner -->
                                         <div class="job-list-info">
                                             <div class="job-list-title">
                                                 <input type="hidden" id="jobPostId" name="jobPostId" value="${jobList.jobId}">
-                                                <h5 class="mb-0">${jobList.title}</h5>
+                                                <h5 class="mb-0">${jobList.title} (${jobList.statusTypeCodeName})</h5>
                                             </div>
                                             <div class="job-list-option">
                                                 <ul class="list-unstyled">

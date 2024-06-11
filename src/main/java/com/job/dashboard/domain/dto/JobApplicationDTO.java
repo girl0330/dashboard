@@ -23,4 +23,5 @@ public class JobApplicationDTO extends JobPostDTO{
     private String birth;
     private String gender;
     private int old; // 나이
+    private int countApplication; //지원자 수
 }
