@@ -5,13 +5,22 @@ import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,6 +29,8 @@ public class BusinessDashController {
     private final BusinessDashService businessDashService;
     private final SessionUtil sessionUtil;
 
+    @Value("${image.upload.dir}") //yml에 작성한 업로드한 파일위치
+    private String uploadFolder;
     @GetMapping("/dashboard")
     public String dashboardView()  {
         System.out.println("대시보드");
@@ -57,6 +68,25 @@ public class BusinessDashController {
 
         return "jsp/business/business-profile";
     }
+
+    //프로필 파일 업로드
+    @PostMapping("/uploadedFile")
+    @ResponseBody
+    public Map<Object, String> profileFile(@RequestParam("file") MultipartFile file) throws IOException {
+
+        return businessDashService.saveFile(file);
+    }
+
+    @GetMapping("/uploadedFileGet/{savedName}")
+    public ResponseEntity<byte[]> getImgView(@PathVariable("savedName") String savedName) {
+        try {
+            byte[] imageByteArray = businessDashService.loadFileAsBytes(savedName);
+            return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
     @PostMapping("/profileSave")
     @ResponseBody

@@ -5,18 +5,89 @@ import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class BusinessDashServiceImpl implements BusinessDashService{
     private final BusinessDashMapper businessDashMapper;
     private final SessionUtil sessionUtil;
+
+    @Value("${image.upload.dir}") //yml에 작성한 업로드한 파일위치
+    private String uploadFolder;
+
+
+    //파일 업로드
+    @Override
+    public Map<Object, String> saveFile(MultipartFile file) throws IOException {
+        System.out.println("====기업 프로필 파일 저장====");
+        String originalFilename = file.getOriginalFilename();
+        System.out.println("파일명 : " + originalFilename);
+        long size = file.getSize(); // 파일 사이즈
+
+        // 저장한 파일 확장자
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        System.out.println("확장자명 확인 : " + fileExtension);
+
+        // 파일 이름으로 쓸 UUID 생성
+        String uuid = UUID.randomUUID().toString();
+        System.out.println(uuid);
+        String[] uuids = uuid.split("-");
+        String uniqueName = uuids[0];
+
+        // UUID와 결합
+        String savedName = originalFilename + uniqueName + fileExtension;
+        System.out.println("saveName 확인 : " + savedName);
+
+        // 파일의 파일 경로
+        File saveFile = new File(uploadFolder, savedName);
+
+        try {
+            // 파일을 저장할 디렉토리가 존재하지 않으면 생성
+            if (!saveFile.getParentFile().exists()) {
+                // mkdirs는 만약 경로가 존재하지 않으면 상위 경로를 자동으로 만들어 저장함.
+                saveFile.getParentFile().mkdirs();
+            }
+
+            // 파일을 서버의 파일 시스템에 저장
+            file.transferTo(saveFile);
+            System.out.println("File uploaded successfully: " + saveFile.getAbsolutePath());
+
+        } catch (IOException | IllegalStateException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        Map<Object, String> result = new HashMap<>();
+        result.put("code", "success");
+        result.put("url", "/business/uploadedFileGet/" + savedName); // 클라이언트에게 반환될 파일 URL
+        return result;
+    }
+
+    @Override
+    public byte[] loadFileAsBytes(String savedName) throws IOException {
+        Path filePath = Paths.get(uploadFolder, savedName);
+
+        if (!Files.exists(filePath)) {
+            throw new IOException("File not found: " + savedName);
+        }
+
+        try (InputStream imageStream = new FileInputStream(filePath.toString())) {
+            return IOUtils.toByteArray(imageStream);
+        }
+    }
 
     //기업 프로필 작성
     public Map<Object, String> saveProfile(CompanyInfoDTO companyInfoDTO) {

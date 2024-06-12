@@ -26,3 +26,6 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     root=info:
 
+image:
+  upload:
+    dir: C:/STUDY/workspace/img

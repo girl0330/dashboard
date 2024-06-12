@@ -51,6 +51,30 @@
         }
     }
 
+    function uploadFile() {
+        const form = document.getElementById('uploadForm');
+        const formData = new FormData(form);
+
+        $.ajax({
+            url: "/business/uploadedFile", // Spring 컨트롤러 URL
+            type: 'POST',
+            processData: false, // jQuery가 데이터를 처리하지 않도록 설정
+            contentType: false, // jQuery가 Content-Type 헤더를 설정하지 않도록 설정
+            data: formData, // JSON 형식으로 데이터 전송
+            success: function(data) {
+                // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+                console.log(data);
+                if(data.code === 'success') {
+                    $('#coverImage').attr('src', data.url);
+                }
+            },
+            error: function(xhr, status, error) {
+                // 오류 발생 시 실행할 코드
+                console.error(error);
+            }
+        });
+    }
+
     //DOM이 실행 후 실행 됨
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("business_profile_sava_button").addEventListener("click", function () {
@@ -86,13 +110,28 @@ My Profile -->
                     </div>
                     <div class="cover-photo-contact">
                         <div class="cover-photo">
-                            <img class="img-fluid " src="/images/bg/cover-bg.png" alt="">
+                            <img class="img-fluid" id="coverImage" src="" alt="">
                             <i class="fas fa-times-circle"></i>
                         </div>
-                        <div class="upload-file">
-                            <label for="formFile" class="form-label">Upload Cover Photo</label>
-                            <input class="form-control" type="file" id="formFile">
-                        </div>
+                        <form id="uploadForm" enctype="multipart/form-data">
+                            <div>
+                                <input class="form-control" type="file" id="file" name="file">
+                                <input class="btn btn-primary" type="button" value="업로드" onclick="uploadFile()">
+                            </div>
+                        </form>
+<%--                        <div class="upload-file">--%>
+<%--                            <form id="uploadForm" enctype="multipart/form-data">--%>
+<%--                                <input class="btn btn-primary mt-2" type="button" value="업로드" onclick="uploadFile()">--%>
+<%--                                <input class="btn btn-primary mt-2" type="button" value="수정" onclick="uploadFile()">--%>
+<%--                                <input class="btn btn-primary mt-2" type="button" value="삭제" onclick="uploadFile()">--%>
+<%--                            </form>--%>
+<%--                        </div>--%>
+<%--                        <div class="upload-file">--%>
+<%--                            <form id="uploadForm" enctype="multipart/form-data">--%>
+<%--                                <label for="formFile" class="form-label">Upload Cover Photo</label>--%>
+<%--                                <input class="form-control" type="file" id="formFile" name="files">--%>
+<%--                            </form>--%>
+<%--                        </div>--%>
                     </div>
                     <form id="businessSaveProfile" name="businessSaveProfile">
                         <div class="row">
