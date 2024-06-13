@@ -20,10 +20,29 @@ Manage Jobs -->
                                 <h2 class="mb-0">작성한 공고</h2>
                             </div>
                         </div>
-                        <div class="col-md-5 col-sm-7 mt-3 mt-sm-0">
-                            <div class="search">
-                                <i class="fas fa-search"></i>
-                                <input type="text" class="form-control" placeholder="Search...">
+<%--                        <form action="${contextPath }/board/review" method="get" id="searchFoam" name="searchFoam">--%>
+<%--                            <select name="type" class="type-box">--%>
+<%--                                <option value="">검색 유형 선택</option>--%>
+<%--                                <option value="title">제목</option>--%>
+<%--                                <option value="writer">작성자</option>--%>
+<%--                            </select>--%>
+<%--                            <td colspan="2">--%>
+<%--                                <input class="inputId" type="text" name="keyword" placeholder="검색어 입력">--%>
+<%--                            </td>--%>
+<%--                            <td>--%>
+<%--                                <input class="submitBtn" type="submit" value="검색하기">--%>
+<%--                            </td>--%>
+<%--                        </form>--%>
+                        <div class="row">
+                            <div class="col-md-5 col-sm-7 mt-3 mt-sm-0">
+                                <form class="search" action="/business/managePostJob" method="get">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="keyword" placeholder="Search...">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit"> 검색하기</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

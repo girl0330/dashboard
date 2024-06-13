@@ -18,6 +18,9 @@ public interface BusinessDashService {
     //기업 프로필 가져오기
     CompanyInfoDTO getBusinessProfile();
 
+    //기업 검색한 작성공고 리스트
+    List<JobPostDTO> keywordPostJobList(String keyword);
+
     //기업 작성한 공고 리스트
     List<JobPostDTO> postJobList();
 
@@ -36,4 +39,5 @@ public interface BusinessDashService {
     //파일 저장
     Map<Object, String> saveFile(MultipartFile file) throws IOException;
     byte[] loadFileAsBytes(String savedName) throws IOException;
+
 }

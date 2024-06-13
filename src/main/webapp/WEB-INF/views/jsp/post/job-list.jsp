@@ -271,6 +271,18 @@ banner -->
                 <div class="job-filter mb-4 d-sm-flex align-items-center">
 <%--                    <div class="job-alert-bt"> <a class="btn btn-md btn-dark" href="#"><i class="fa fa-envelope"></i>Get job alert </a> </div>--%>
                     <div class="job-shortby ms-sm-auto d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-md-10 col-sm-7 mt-3 mt-sm-0">
+                                <form class="search" action="/business/list" method="get">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="keyword" placeholder="Search...">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit"> 검색하기</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         <form class="form-inline">
                             <div class="input-group mb-0 align-items-center">
                                 <label class="justify-content-start me-2">정렬방식 :</label>

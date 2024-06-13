@@ -54,6 +54,7 @@
     function uploadFile() {
         const form = document.getElementById('uploadForm');
         const formData = new FormData(form);
+        console.log(formData);
 
         $.ajax({
             url: "/business/uploadedFile", // Spring 컨트롤러 URL
@@ -137,6 +138,7 @@ My Profile -->
                         <div class="row">
                             <div class="form-group col-md-6 mb-3">
                                 <label class="form-label">기업 이름</label>
+                                <input type="text" value="${company.companyId}" id="companyId" name="companyId">
                                 <input type="text" class="form-control" value="${company.companyName}" id="companyName" name="companyName">
                             </div>
                             <div class="form-group col-md-6 mb-3">

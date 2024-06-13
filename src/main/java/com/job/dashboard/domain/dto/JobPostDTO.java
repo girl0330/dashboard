@@ -37,4 +37,5 @@ public class JobPostDTO extends UserDTO  {
     private int systemUpdaterId;
     private String systemUpdateDatetime;
     private int countApplication;
+    private String keyword;
 }

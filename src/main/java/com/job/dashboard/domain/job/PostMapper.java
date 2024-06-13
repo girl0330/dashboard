@@ -16,6 +16,9 @@ public interface PostMapper {
     //게시글 목록
     List<JobPostDTO> getJobLists();
 
+    //검색한 공고 리스트
+    List<JobPostDTO> getkeywordList(String keyword);
+
     //게시글 상세페이지
     JobPostDTO getJobDetail(int jobId);
 
@@ -49,7 +52,6 @@ public interface PostMapper {
 
     //userNo의 지원 정보확인
     int applicationUserChe(int userNo);
-
 
 //    void delete(int jobId);
 

@@ -51,9 +51,16 @@ public class PostController {
 
     //공고 리스트
     @GetMapping("/list")
-    public String jobPostList(Model model) {
+    public String jobPostList(Model model, @RequestParam(value="keyword", required=false) String keyword) {
         System.out.println("====잡리스느====");
 
+        if (keyword != null) {
+            System.out.println("검색어 있음?");
+            System.out.println("keyword :" + keyword);
+
+            List<JobPostDTO> jobList = postService.keywordJobList(keyword);
+            System.out.println("list확인해봅니다. --->"+ jobList);
+        }
         List<JobPostDTO> jobList = postService.jobList();
         System.out.println("list확인해봅니다. --->"+ jobList);
 

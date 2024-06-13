@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.business;
 
 import com.job.dashboard.domain.dto.CompanyInfoDTO;
+import com.job.dashboard.domain.dto.ImagesDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
@@ -28,6 +29,10 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     @Value("${image.upload.dir}") //yml에 작성한 업로드한 파일위치
     private String uploadFolder;
 
+    // 루트 경로 불러오기
+    private String rootPath = System.getProperty("user.dir");
+    // 프로젝트 루트 경로에 있는 files 디렉토리
+    private String fileDir = rootPath + "/files/";
 
     //파일 업로드
     @Override
@@ -35,6 +40,10 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         System.out.println("====기업 프로필 파일 저장====");
         String originalFilename = file.getOriginalFilename();
         System.out.println("파일명 : " + originalFilename);
+
+        System.out.println("파일 경로 : "+fileDir);
+
+        ImagesDTO imagesDTO = new ImagesDTO();
         long size = file.getSize(); // 파일 사이즈
 
         // 저장한 파일 확장자
@@ -53,6 +62,8 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
         // 파일의 파일 경로
         File saveFile = new File(uploadFolder, savedName);
+        String filePath = uploadFolder + savedName;
+        System.out.println("==========="+filePath);
 
         try {
             // 파일을 저장할 디렉토리가 존재하지 않으면 생성
@@ -69,6 +80,17 @@ public class BusinessDashServiceImpl implements BusinessDashService{
             e.printStackTrace();
             throw e;
         }
+
+        imagesDTO.setOriginalFilename(originalFilename);
+        imagesDTO.setSavedFilename(savedName);
+        imagesDTO.setFiletype(fileExtension);
+        System.out.println("확장자: "+ imagesDTO.getFiletype());
+        imagesDTO.setFiletype(filePath);
+        System.out.println("경로: "+ imagesDTO.getFilepath());
+        System.out.println("imagesDTO===== "+imagesDTO);
+
+        businessDashMapper.saveImage(imagesDTO);
+        System.out.println(imagesDTO);
 
         Map<Object, String> result = new HashMap<>();
         result.put("code", "success");
@@ -129,14 +151,29 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         return businessDashMapper.getBusinessProfile(userNo);
     }
 
-    // 기업 작성한 공고 리스트
-    public List<JobPostDTO> postJobList() {
-        System.out.println("공고 리스트 임플=====");
-
+    // 기업 검색한 작성공고 리스트
+    public List<JobPostDTO> keywordPostJobList(String keyword) {
+        System.out.println("검색한 작성공고 리스트 임플=====");
+        JobPostDTO jobPostDTO = new JobPostDTO();
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
-        return businessDashMapper.postJobList(userNo);
+
+        jobPostDTO.setUserNo(userNo);
+        jobPostDTO.setKeyword(keyword);
+        System.out.println("확인 "+jobPostDTO);
+
+        return businessDashMapper.keywordPostJobList(jobPostDTO);
     }
+
+    // 기업 작성한 공고 리스트
+     public List<JobPostDTO> postJobList() {
+         System.out.println("공고 리스트 임플=====");
+
+         int userNo = (int) sessionUtil.getAttribute("userNo");
+
+
+         return businessDashMapper.postJobList(userNo);
+     }
 
     //작성한 공고에 지원한 지원자 리스트
     public List<JobApplicationDTO> applicantList(int jobId) {

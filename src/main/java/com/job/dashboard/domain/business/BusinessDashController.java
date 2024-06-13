@@ -73,7 +73,7 @@ public class BusinessDashController {
     @PostMapping("/uploadedFile")
     @ResponseBody
     public Map<Object, String> profileFile(@RequestParam("file") MultipartFile file) throws IOException {
-
+        System.out.println("file확인? : "+file);
         return businessDashService.saveFile(file);
     }
 
@@ -114,8 +114,9 @@ public class BusinessDashController {
 
     //공고 관리
     @GetMapping("/managePostJob")
-    public String managePostJobView(Model model)  {
+    public String managePostJobView(Model model, @RequestParam(value="keyword", required=false) String keyword) {
         System.out.println("공고관리");
+        System.out.println("keyword : "+keyword);
         if(!sessionUtil.loginUserCheck()) {
             System.out.println("로그인 화면으로 이동");
             return "redirect:/user/login";
@@ -125,11 +126,17 @@ public class BusinessDashController {
             return "redirect:/";
         }
 
+        if (keyword != null) {
+            List<JobPostDTO> postJobList = businessDashService.keywordPostJobList(keyword);
+            System.out.println("postJobList"+postJobList);
+
+            model.addAttribute("postJobList", postJobList);
+            return "jsp/business/business-managePostJob";
+        }
         List<JobPostDTO> postJobList = businessDashService.postJobList();
-
         System.out.println("postJobList"+postJobList);
-        model.addAttribute("postJobList", postJobList);
 
+        model.addAttribute("postJobList", postJobList);
         return "jsp/business/business-managePostJob";
     }
 

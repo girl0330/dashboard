@@ -1,10 +1,12 @@
 package com.job.dashboard.domain.business;
 
 import com.job.dashboard.domain.dto.CompanyInfoDTO;
+import com.job.dashboard.domain.dto.ImagesDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.io.IOException;
 import java.util.List;
 
 @Mapper
@@ -25,7 +27,11 @@ public interface BusinessDashMapper {
     // 프로필 dto로 가져오기
     CompanyInfoDTO getBusinessProfile(int userNo);
 
+    //keyword없는 작성공고 리스트
     List<JobPostDTO> postJobList(int userNo);
+
+    //keyword있는 작성공고 리스트
+    List<JobPostDTO> keywordPostJobList(JobPostDTO jobPostDTO);
 
     //지원자들의 userNo가져오기
     List<JobApplicationDTO> getApplicants(int jobId);
@@ -43,4 +49,7 @@ public interface BusinessDashMapper {
 
     //채용 최소
     void applyCancelCandidate(JobApplicationDTO jobApplicationDTO);
+
+    //이미지 저장
+    void saveImage(ImagesDTO imagesDTO) throws IOException;
 }

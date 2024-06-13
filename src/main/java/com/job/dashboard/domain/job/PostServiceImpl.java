@@ -38,6 +38,13 @@ public class PostServiceImpl implements PostService {
         return postMapper.getJobLists();
     }
 
+    //검색한 공고리스트
+    public List<JobPostDTO> keywordJobList(String keyword) {
+        System.out.println("====검색한 공고리스트 impl입니다.====");
+
+        return postMapper.getkeywordList(keyword);
+    }
+
     // 구인 공고 상세페이지
     public JobPostDTO detail(int jobId) {
         System.out.println("====상세페이지 impl 입니다. ====");

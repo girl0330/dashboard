@@ -15,6 +15,9 @@ public interface PostService {
     //목록
     List<JobPostDTO> jobList();
 
+    //검색한 공고리스트
+    List<JobPostDTO> keywordJobList(String keyword);
+
     //상세
     JobPostDTO detail(int jobId);
 
@@ -31,4 +34,5 @@ public interface PostService {
 
     //지원 취소하기
     Map<String, Object> applyCancelJob(Integer jobId);
+
 }
