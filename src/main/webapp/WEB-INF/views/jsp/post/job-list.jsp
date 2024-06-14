@@ -6,6 +6,79 @@
     //     const url ="/business/detail?jobPostId="
     //     window.location.href = url+jobPostId;
     // }
+    keywordSearch = {
+        init : function () {
+            this.keywordSearchSubmit();
+        },
+
+        keywordSearchSubmit : function () {
+            // 새로운 HTML을 생성하여 삽입
+            let keyword = $('input[name="keyword"]').val(); // input 필드에서 값 가져오기
+            console.log("확인 : "+keyword);
+
+
+            $.ajax({
+                url: '/business/ajax/list',
+                type: 'GET', //url인코딩 데이터를 보내는게 일반적
+                data: { keyword: keyword }, // 데이터 객체로 전송
+                success: function(response) {
+                    // 성공 시 실행할 코드
+                    console.log('성공:', JSON.stringify(response));
+                    // .container 내부 HTML 초기화
+                    $('#searchContainer').html('');
+
+                    let html = '<div class="row">';
+                    response.forEach(job => {
+                        html +=
+                            '<div class="col-12" onclick="location.href=\'/business/detail?jobId=' + job.jobId + '\'">' +
+                            '<div class="job-list">' +
+                            '<div class="job-list-logo">' +
+                            '<img class="img-fluid" src="/images/svg/01.svg" alt="">' +
+                            '</div>' +
+                            '<div class="job-list-details">' +
+                            '<div class="job-list-info">' +
+                            '<div class="job-list-title">' +
+                            '<input type="hidden" id="jobPostId" name="jobPostId" value="' + job.jobId + '">' +
+                            '<h5 class="mb-0">' + job.title + ' (' + job.statusTypeCodeName + ')</h5>' +
+                            '</div>' +
+                            '<div class="job-list-option">' +
+                            '<ul class="list-unstyled">' +
+                            '<li><a href="#">' + job.jobTypeCodeName + '</a></li>' +
+                            '</ul>' +
+                            '<ul class="list-unstyled">' +
+                            '<li><i class="fas fa-map-marker-alt pe-1"></i>' + job.address + '</li>' +
+                            '<li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>' + job.salaryTypeCodeName + ':' + job.salary + '</a></li>' +
+                            '</ul>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="job-list-favourite-time">' +
+                            '<a class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a>' +
+                            '<span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>' + job.systemRegisterDatetime + '</span>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+                    });
+                    html += '</div>'; // 마무리하는 태그 추가
+
+                    // 생성된 HTML을 jobListContainer 요소에 삽입
+                    $('#searchContainer').append(html);
+                },
+                error: function(xhr, status, error) {
+                    // 오류 발생 시 실행할 코드
+                    console.error(error);
+                }
+            });
+        }
+    }
+
+    $(document).ready(function() {
+        $('#searchForm').on('click', function (e) {
+            keywordSearch.init();
+            e.preventDefault(); // 기본 동작 방지
+        });
+    });
+
 </script>
 <!--=================================
 banner -->
@@ -45,23 +118,19 @@ banner -->
 
 <section class="space-ptb">
     <div class="container">
-        <div class="row">
+        <div class="row" id="results">
             <!--=================================
             sidebar -->
             <div class="col-lg-3">
                 <div class="sidebar">
-                    <div class="widget">
-                        <div class="search">
-                            <i class="fas fa-search"></i>
-                            <input class="form-control" type="text" placeholder="Search Keywords">
+                    <form class="search" method="get">
+                        <div class="widget">
+                            <div class="search">
+                                <i class="fas fa-search" type="submit"></i>
+                                <input class="form-control" type="text" placeholder="Search Keywords">
+                            </div>
                         </div>
-                    </div>
-                    <div class="widget">
-                        <div class="locations">
-                            <i class="far fa-compass"></i>
-                            <input class="form-control" type="text" placeholder="All Locations">
-                        </div>
-                    </div>
+                    </form>
                     <div class="widget">
                         <div class="widget-title widget-collapse">
                             <h6>Date Posted</h6>
@@ -262,22 +331,21 @@ banner -->
             </div>
             <!--=================================
             sidebar -->
-            <div class="col-lg-9">
+            <div class="col-lg-9" >
                 <div class="row mb-4">
                     <div class="col-12">
                         <h6 class="mb-0">구인공고목록<span class="text-primary">총 - 건 </span></h6>
                     </div>
                 </div>
                 <div class="job-filter mb-4 d-sm-flex align-items-center">
-<%--                    <div class="job-alert-bt"> <a class="btn btn-md btn-dark" href="#"><i class="fa fa-envelope"></i>Get job alert </a> </div>--%>
                     <div class="job-shortby ms-sm-auto d-flex align-items-center">
                         <div class="row">
                             <div class="col-md-10 col-sm-7 mt-3 mt-sm-0">
-                                <form class="search" action="/business/list" method="get">
+                                <form class="search" method="get">
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="keyword" placeholder="Search...">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="submit"> 검색하기</button>
+                                            <button class="btn btn-primary" type="submit" id="searchForm"> 검색하기</button>
                                         </div>
                                     </div>
                                 </form>
@@ -296,66 +364,50 @@ banner -->
                         </form>
                     </div>
                 </div>
-                    <div class="container">
-                        <div class="row">
-                            <c:forEach items="${jobList}" var="jobList">
-                            <div class="col-12" onclick="location.href='/business/detail?jobId=${jobList.jobId}'">
-                                <div class="job-list ">
-                                    <div class="job-list-logo">
-                                        <img class="img-fluid" src="/images/svg/01.svg" alt="">
-                                    </div>
-                                    <div class="job-list-details">
-                                        <div class="job-list-info">
-                                            <div class="job-list-title">
-                                                <input type="hidden" id="jobPostId" name="jobPostId" value="${jobList.jobId}">
-                                                <h5 class="mb-0">${jobList.title} (${jobList.statusTypeCodeName})</h5>
-                                            </div>
-                                            <div class="job-list-option">
-                                                <ul class="list-unstyled">
-                                                    <li> <a href="">${jobList.jobTypeCodeName}</a> </li>
-                                                </ul>
-                                                <ul class="list-unstyled">
-                                                    <li><i class="fas fa-map-marker-alt pe-1"></i>${jobList.address}</li>
-                                                    <li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>${jobList.salaryTypeCodeName}:${jobList.salary}</a></li>
-                                                </ul>
-                                            </div>
+                <div class="container" id="searchContainer">
+                    <div class="row">
+                        <c:forEach items="${jobs}" var="jobList"><div class="col-12" onclick="location.href='/business/detail?jobId=${jobList.jobId}'">
+                            <div class="job-list ">
+                                <div class="job-list-logo">
+                                    <img class="img-fluid" src="/images/svg/01.svg" alt="">
+                                </div>
+                                <div class="job-list-details">
+                                    <div class="job-list-info">
+                                        <div class="job-list-title">
+                                            <input type="hidden" id="jobPostId" name="jobPostId" value="${jobList.jobId}">
+                                            <h5 class="mb-0">${jobList.title} (${jobList.statusTypeCodeName})</h5>
+                                        </div>
+                                        <div class="job-list-option">
+                                            <ul class="list-unstyled">
+                                                <li> <a href="">${jobList.jobTypeCodeName}</a> </li>
+                                            </ul>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fas fa-map-marker-alt pe-1"></i>${jobList.address}</li>
+                                                <li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>${jobList.salaryTypeCodeName}:${jobList.salary}</a></li>
+                                            </ul>
                                         </div>
                                     </div>
-                                    <div class="job-list-favourite-time"> <a class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a> <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${jobList.systemRegisterDatetime}</span> </div>
                                 </div>
+                                <div class="job-list-favourite-time"> <a class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a> <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${jobList.systemRegisterDatetime}</span> </div>
                             </div>
-                            </c:forEach>
-                            Job List Table-->
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <tbody>
-<%--                                    <c:forEach items="${jobList}" var="job">--%>
-<%--                                        <tr onclick="goToDetail(${job.jobPostId});">--%>
-<%--                                            <th scope="row">${job.jobPostId}</th>--%>
-<%--                                            <td>${job.title}</td>--%>
-<%--                                            <td>${job.workingHours}</td>--%>
-<%--                                            <td>${job.salaryType}</td>--%>
-<%--                                            <td>${job.salary}</td>--%>
-<%--                                            <td>${job.registrarDatetime}</td>--%>
-<%--                                        </tr>--%>
-<%--                                    </c:forEach>--%>
-                                    </tbody>
-                                </table>
-                            </div>
-
                         </div>
+                        </c:forEach>
                     </div>
-
-                    <div class="row">
+                </div>
+                <div class="row">
                     <div class="col-12 text-center mt-4 mt-sm-5">
                         <ul class="pagination justify-content-center mb-0">
-                            <li class="page-item disabled"> <span class="page-link b-radius-none">Prev</span> </li>
-                            <li class="page-item active" aria-current="page"><span class="page-link">1 </span> <span class="sr-only">(current)</span></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#">25</a></li>
-                            <li class="page-item"> <a class="page-link" href="#">Next</a> </li>
+                            <li class="page-item ${criteria.pageNum == 1 ? 'disabled' : ''}">
+                                <a class="page-link b-radius-none" href="<c:url value='/business/list?pageNum=${criteria.pageNum - 1}&amount=${criteria.amount}'/>">Prev</a>
+                            </li>
+                            <c:forEach var="i" begin="1" end="${totalPages}">
+                                <li class="page-item ${criteria.pageNum == i ? 'active' : ''}">
+                                    <a class="page-link" href="<c:url value='/business/list?pageNum=${i}&amount=${criteria.amount}'/>">${i}</a>
+                                </li>
+                            </c:forEach>
+                            <li class="page-item ${criteria.pageNum == totalPages ? 'disabled' : ''}">
+                                <a class="page-link" href="<c:url value='/business/list?pageNum=${criteria.pageNum + 1}&amount=${criteria.amount}'/>">Next</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

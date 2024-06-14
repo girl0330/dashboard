@@ -1,5 +1,6 @@
 package com.job.dashboard.domain.job;
 
+import com.job.dashboard.domain.dto.Criteria;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 
@@ -35,4 +36,10 @@ public interface PostService {
     //지원 취소하기
     Map<String, Object> applyCancelJob(Integer jobId);
 
+    //페이징 처리
+    List<JobPostDTO> getListWithPaging(Criteria criteria);
+
+    int getCountJobs();
+
+    //총 게시물
 }
