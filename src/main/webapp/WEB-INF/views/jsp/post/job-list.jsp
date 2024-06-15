@@ -25,11 +25,12 @@
                     // 성공 시 실행할 코드
                     console.log('성공:', JSON.stringify(response));
                     // .container 내부 HTML 초기화
-                    $('#searchContainer').html('');
+                    $('#searchList').html('');
+                    $('#paging').html('');
 
-                    let html = '<div class="row">';
+                    let lists = '<div class="row">';
                     response.forEach(job => {
-                        html +=
+                        lists +=
                             '<div class="col-12" onclick="location.href=\'/business/detail?jobId=' + job.jobId + '\'">' +
                             '<div class="job-list">' +
                             '<div class="job-list-logo">' +
@@ -59,10 +60,18 @@
                             '</div>' +
                             '</div>';
                     });
-                    html += '</div>'; // 마무리하는 태그 추가
+                    lists += '</div>'; // 마무리하는 태그 추가
+
+
+                    // let paging = '<div class="input-group">' ;
+                    // response.forEach(() => {
+                    //     paging +=
+                    //
+                    // });
+                    paging += '</div>'; // 마무리하는 태그 추가
 
                     // 생성된 HTML을 jobListContainer 요소에 삽입
-                    $('#searchContainer').append(html);
+                    $('#searchList').append(lists).append(paging);
                 },
                 error: function(xhr, status, error) {
                     // 오류 발생 시 실행할 코드
@@ -331,13 +340,13 @@ banner -->
             </div>
             <!--=================================
             sidebar -->
-            <div class="col-lg-9" >
-                <div class="row mb-4">
+            <div class="col-lg-9" id="listMain">
+                <div class="row mb-4" id="totalJop">
                     <div class="col-12">
-                        <h6 class="mb-0">구인공고목록<span class="text-primary">총 - 건 </span></h6>
+                        <h6 class="mb-0">구인공고목록<span class="text-primary">총 ${totalJobs} 건 </span></h6>
                     </div>
                 </div>
-                <div class="job-filter mb-4 d-sm-flex align-items-center">
+                <div class="job-filter mb-4 d-sm-flex align-items-center" id="searchBox">
                     <div class="job-shortby ms-sm-auto d-flex align-items-center">
                         <div class="row">
                             <div class="col-md-10 col-sm-7 mt-3 mt-sm-0">
@@ -364,7 +373,7 @@ banner -->
                         </form>
                     </div>
                 </div>
-                <div class="container" id="searchContainer">
+                <div class="container" id="searchList">
                     <div class="row">
                         <c:forEach items="${jobs}" var="jobList"><div class="col-12" onclick="location.href='/business/detail?jobId=${jobList.jobId}'">
                             <div class="job-list ">
@@ -394,7 +403,7 @@ banner -->
                         </c:forEach>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" id="paging">
                     <div class="col-12 text-center mt-4 mt-sm-5">
                         <ul class="pagination justify-content-center mb-0">
                             <li class="page-item ${criteria.pageNum == 1 ? 'disabled' : ''}">

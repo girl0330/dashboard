@@ -38,4 +38,6 @@ public class JobPostDTO extends UserDTO  {
     private String systemUpdateDatetime;
     private int countApplication;
     private String keyword;
+    private int totalJobs; // 총 게시물 수
+    private int totalPages; // 총 페이지 수
 }

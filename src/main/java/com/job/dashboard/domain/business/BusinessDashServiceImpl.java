@@ -29,87 +29,101 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     @Value("${image.upload.dir}") //yml에 작성한 업로드한 파일위치
     private String uploadFolder;
 
+
     // 루트 경로 불러오기
     private String rootPath = System.getProperty("user.dir");
     // 프로젝트 루트 경로에 있는 files 디렉토리
     private String fileDir = rootPath + "/files/";
 
     //파일 업로드
-    @Override
     public Map<Object, String> saveFile(MultipartFile file) throws IOException {
-        System.out.println("====기업 프로필 파일 저장====");
-        String originalFilename = file.getOriginalFilename();
-        System.out.println("파일명 : " + originalFilename);
+        System.out.println("====프로필 이미지 파일 저장 impl====");
 
-        System.out.println("파일 경로 : "+fileDir);
-
-        ImagesDTO imagesDTO = new ImagesDTO();
-        long size = file.getSize(); // 파일 사이즈
-
-        // 저장한 파일 확장자
-        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        System.out.println("확장자명 확인 : " + fileExtension);
-
-        // 파일 이름으로 쓸 UUID 생성
-        String uuid = UUID.randomUUID().toString();
-        System.out.println(uuid);
-        String[] uuids = uuid.split("-");
-        String uniqueName = uuids[0];
-
-        // UUID와 결합
-        String savedName = originalFilename + uniqueName + fileExtension;
-        System.out.println("saveName 확인 : " + savedName);
-
-        // 파일의 파일 경로
-        File saveFile = new File(uploadFolder, savedName);
-        String filePath = uploadFolder + savedName;
-        System.out.println("==========="+filePath);
+        // 결과 맵 생성
+        Map<Object, String> result = new HashMap<>();
 
         try {
             // 파일을 저장할 디렉토리가 존재하지 않으면 생성
-            if (!saveFile.getParentFile().exists()) {
-                // mkdirs는 만약 경로가 존재하지 않으면 상위 경로를 자동으로 만들어 저장함.
-                saveFile.getParentFile().mkdirs();
+            Path dirPath = Paths.get(uploadFolder);
+            if (!Files.exists(dirPath)) {
+                Files.createDirectories(dirPath);
             }
 
-            // 파일을 서버의 파일 시스템에 저장
-            file.transferTo(saveFile);
-            System.out.println("File uploaded successfully: " + saveFile.getAbsolutePath());
+            byte[] bytes = file.getBytes(); // 업로드된 파일의 내용을 바이트 배열로 읽음
 
+            String originalFilename = file.getOriginalFilename();
+            System.out.println("파일명 : " + originalFilename);
+
+            Path path = Paths.get(uploadFolder + File.separator + file.getOriginalFilename()); // 경로 생성
+            Files.write(path, bytes); // 파일을 지정된 경로에 저장
+
+            System.out.println("파일이 저장될 경로 : " + path.toString());
+
+            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            System.out.println("확장자 확인 : " + fileExtension);
+
+            // 파일 이름으로 쓸 UUID 생성
+            String uuid = UUID.randomUUID().toString();
+            System.out.println(uuid);
+            String[] uuids = uuid.split("-");
+            String uniqueName = uuids[0];
+
+            // UUID와 결합
+            String savedName = uniqueName + fileExtension; // 저장될 이름
+            System.out.println("저장될 이름 확인 : " + savedName);
+
+            // 저장된 파일 이름으로 경로 갱신
+            Path savedPath = Paths.get(uploadFolder + File.separator + savedName);
+            Files.move(path, savedPath); // 원래 경로에서 새로운 이름의 파일 경로로 이동
+
+            // 데이터베이스에 파일 정보 저장
+            ImagesDTO imagesDTO = new ImagesDTO();
+            imagesDTO.setOriginalFilename(file.getOriginalFilename());
+            imagesDTO.setFilepath(savedPath.toString());
+            imagesDTO.setFiletype(fileExtension);
+            imagesDTO.setSavedFilename(savedName);
+            System.out.println("이미지 dto 확인 : " + imagesDTO);
+
+            businessDashMapper.saveImage(imagesDTO);
+
+            result.put("code", "success");
+            result.put("url", "/business/uploadedFileGet/" + savedName); // 클라이언트에게 반환될 파일 URL
         } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
-            throw e;
+            result.put("code", "error");
+            result.put("message", "File upload failed: " + e.getMessage());
         }
 
-        imagesDTO.setOriginalFilename(originalFilename);
-        imagesDTO.setSavedFilename(savedName);
-        imagesDTO.setFiletype(fileExtension);
-        System.out.println("확장자: "+ imagesDTO.getFiletype());
-        imagesDTO.setFiletype(filePath);
-        System.out.println("경로: "+ imagesDTO.getFilepath());
-        System.out.println("imagesDTO===== "+imagesDTO);
-
-        businessDashMapper.saveImage(imagesDTO);
-        System.out.println(imagesDTO);
-
-        Map<Object, String> result = new HashMap<>();
-        result.put("code", "success");
-        result.put("url", "/business/uploadedFileGet/" + savedName); // 클라이언트에게 반환될 파일 URL
         return result;
     }
 
     @Override
-    public byte[] loadFileAsBytes(String savedName) throws IOException {
-        Path filePath = Paths.get(uploadFolder, savedName);
+    public byte[] loadFileAsBytes(Long id) throws IOException {
 
-        if (!Files.exists(filePath)) {
-            throw new IOException("File not found: " + savedName);
-        }
+//        Path filePath = Paths.get(uploadFolder + File.separator + savedName);
+//
+//        if (!Files.exists(filePath)) {
+//            throw new IOException("File not found: " + savedName);
+//        }
 
-        try (InputStream imageStream = new FileInputStream(filePath.toString())) {
-            return IOUtils.toByteArray(imageStream);
-        }
+//        try (InputStream imageStream = new FileInputStream(filePath.toString())) {
+////            return IOUtils.toByteArray(imageStream);
+//        }
+        return null;
     }
+
+//    @Override
+//    public byte[] loadFileAsBytes() throws IOException {
+//        Path filePath = Paths.get(uploadFolder + File.separator + savedName);
+//
+//        if (!Files.exists(filePath)) {
+//            throw new IOException("File not found: " + savedName);
+//        }
+//
+//        try (InputStream imageStream = new FileInputStream(filePath.toString())) {
+//            return IOUtils.toByteArray(imageStream);
+//        }
+//    }
 
     //기업 프로필 작성
     public Map<Object, String> saveProfile(CompanyInfoDTO companyInfoDTO) {

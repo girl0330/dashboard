@@ -15,9 +15,18 @@ import org.springframework.web.util.UriComponentsBuilder;
             this(1, 10);
         }
 
+        // 페이지 번호와 한 번에 보여줄 게시물 수를 받는 생성자
         public Criteria(int pageNum, int amount) {
+            // 검색 종류와 검색어는 null로 초기화
+            this(pageNum, amount, null, null);
+        }
+
+        // 페이지 번호, 한 번에 보여줄 게시물 수, 검색 종류, 검색어를 받는 생성자
+        public Criteria(int pageNum, int amount, String type, String keyword) {
             this.pageNum = pageNum;
             this.amount = amount;
+            this.type = type;
+            this.keyword = keyword;
         }
 
         // 페이징에 필요한 OFFSET을 계산하는 메서드

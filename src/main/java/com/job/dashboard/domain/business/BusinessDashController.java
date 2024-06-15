@@ -77,15 +77,26 @@ public class BusinessDashController {
         return businessDashService.saveFile(file);
     }
 
-    @GetMapping("/uploadedFileGet/{savedName}")
-    public ResponseEntity<byte[]> getImgView(@PathVariable("savedName") String savedName) {
+    @GetMapping("/uploadedFileGet/{id}")
+    public ResponseEntity<byte[]> getImgView(@PathVariable("id") Long id) {
+        System.out.println("id = "+id);
         try {
-            byte[] imageByteArray = businessDashService.loadFileAsBytes(savedName);
+            byte[] imageByteArray = businessDashService.loadFileAsBytes(id);
             return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+//    @GetMapping("/uploadedFileGet/{savedName}")
+//    public ResponseEntity<byte[]> getImgView(@PathVariable("savedName") String savedName) {
+//        try {
+//            byte[] imageByteArray = businessDashService.loadFileAsBytes(savedName);
+//            return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
+//        } catch (IOException e) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
 
     @PostMapping("/profileSave")

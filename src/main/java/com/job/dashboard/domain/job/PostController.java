@@ -50,13 +50,13 @@ public class PostController {
         return map;
     }
 
-    //공고 리스트
-    @GetMapping("/ajax/list")
-    @ResponseBody
-    public List<JobPostDTO> ajaxCallList(@RequestParam(value = "keyword", required = false) String keyword) {
-        System.out.println("====ajax====");
-        return postService.keywordJobList(keyword);
-    }
+//    //공고 리스트
+//    @GetMapping("/ajax/list")
+//    @ResponseBody
+//    public List<JobPostDTO> ajaxCallList(@RequestParam(value = "keyword", required = false) String keyword) {
+//        System.out.println("====ajax====");
+//        return postService.keywordJobList(keyword);
+//    }
 
 //    @GetMapping("/list")
 //    public String jobPostList(Model model) {
@@ -190,7 +190,7 @@ public class PostController {
     public Map<String, Object> applyCancelJob(@RequestBody Integer jobId){
         System.out.println("지원취소하기::");
         Map<String, Object> map = postService.applyCancelJob(jobId);
-        System.out.println("=========================> 1234  map 확인 : "+map);
+        System.out.println("=========================>  map 확인 : "+map);
         return map;
     }
 
@@ -207,10 +207,28 @@ public class PostController {
 
         model.addAttribute("jobs", jobs);
         model.addAttribute("criteria", criteria);
+        model.addAttribute("totalJobs", totalJobs); // 총 게시글 수
         model.addAttribute("totalPages", totalPages);
         return "jsp/post/job-list";
     }
 
+    //공고 리스트
+    @GetMapping("/ajax/list")
+    @ResponseBody
+    public List<JobPostDTO> ajaxCallList(Criteria criteria ,Model model) {
+        System.out.println("====ajax====");
+//        List<JobPostDTO> jobs = postService.keywordJobList(criteria);
+//        int totalJobs = postService.getCountJobs();  // 총 게시물 수를 가져오는 메서드
+//        int totalPages = (int) Math.ceil((double) totalJobs / criteria.getAmount()); // 총 게시물 페이지 메서드
+//
+//        System.out.println("총 게시글 수 : "+totalJobs);
+//        System.out.println("총 페이지 수 : "+totalPages);
+//
+//        model.addAttribute("jobs", jobs); //리스트 객체들
+//        model.addAttribute("criteria", criteria); //criteria 클래스
+//        model.addAttribute("totalPages", totalPages); //총 페이지 수
+        return postService.keywordJobList(criteria);
+    }
 //    public String listJobs(Criteria criteria, Model model) {
 //        List<JobPostDTO> jobs = postService.getListWithPaging(criteria);
 //        int totalJobs = postService.getCountJobs();  // 총 게시물 수를 가져오는 메서드

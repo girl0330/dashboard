@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public interface BusinessDashService {
 
@@ -38,6 +37,6 @@ public interface BusinessDashService {
 
     //파일 저장
     Map<Object, String> saveFile(MultipartFile file) throws IOException;
-    byte[] loadFileAsBytes(String savedName) throws IOException;
+    byte[] loadFileAsBytes(Long id) throws IOException;
 
 }

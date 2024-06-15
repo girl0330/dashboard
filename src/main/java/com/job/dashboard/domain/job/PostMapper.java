@@ -18,7 +18,7 @@ public interface PostMapper {
     List<JobPostDTO> getJobLists();
 
     //검색한 공고 리스트
-    List<JobPostDTO> getKeywordList(String keyword);
+    List<JobPostDTO> getKeywordList(Criteria criteria);
 
     //게시글 상세페이지
     JobPostDTO getJobDetail(int jobId);

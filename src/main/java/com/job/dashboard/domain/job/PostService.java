@@ -4,7 +4,6 @@ import com.job.dashboard.domain.dto.Criteria;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +16,7 @@ public interface PostService {
     List<JobPostDTO> jobList();
 
     //검색한 공고리스트
-    List<JobPostDTO> keywordJobList(String keyword);
+    List<JobPostDTO> keywordJobList(Criteria criteria);
 
     //상세
     JobPostDTO detail(int jobId);
