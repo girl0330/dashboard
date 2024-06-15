@@ -1,5 +1,6 @@
 package com.job.dashboard.domain.job;
 
+import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -49,23 +51,30 @@ public class PostController {
         return map;
     }
 
-    //공고 리스트
+    //공고페이지 이동
     @GetMapping("/list")
-    public String jobPostList(Model model, @RequestParam(value="keyword", required=false) String keyword) {
-        System.out.println("====잡리스느====");
-
-        if (keyword != null) {
-            System.out.println("검색어 있음?");
-            System.out.println("keyword :" + keyword);
-
-            List<JobPostDTO> jobList = postService.keywordJobList(keyword);
-            System.out.println("list확인해봅니다. --->"+ jobList);
-        }
-        List<JobPostDTO> jobList = postService.jobList();
-        System.out.println("list확인해봅니다. --->"+ jobList);
-
-        model.addAttribute("jobList",jobList);
+    public String jobPostView() {
         return "jsp/post/job-list";
+    }
+
+    //ajax 공고 리스트
+    @GetMapping("/ajax/list")
+    @ResponseBody
+    public Map<String, Object> ajaxJobPostList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                                               @RequestParam(defaultValue = "1") int pageNum,
+                                               @RequestParam(defaultValue = "10") int pageSize) {
+
+        PageInfo<JobPostDTO> jobList = postService.jobList(keyword, pageNum, pageSize);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("list", jobList.getList());
+        response.put("total", jobList.getTotal());
+        response.put("pageNum", jobList.getPageNum());
+        response.put("pageSize", jobList.getPageSize());
+        response.put("pages", jobList.getPages());
+
+        System.out.println("response:::::    "+response);
+        return response;
     }
 
     //공고 상세 페이지

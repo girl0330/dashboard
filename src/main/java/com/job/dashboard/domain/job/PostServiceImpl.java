@@ -1,5 +1,7 @@
 package com.job.dashboard.domain.job;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
@@ -33,9 +35,10 @@ public class PostServiceImpl implements PostService {
     }
 
     // 구인 공고 목록
-    public List<JobPostDTO> jobList() {
-        System.out.println("====공고리스트 impl입니다.====");
-        return postMapper.getJobLists();
+    public PageInfo<JobPostDTO> jobList(String keyword, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<JobPostDTO> list = postMapper.getJobLists(keyword);
+        return new PageInfo<>(list);
     }
 
     //검색한 공고리스트
