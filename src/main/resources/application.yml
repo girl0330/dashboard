@@ -29,3 +29,10 @@ logging:
 image:
   upload:
     dir: C:/STUDY/workspace/img
+
+#pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

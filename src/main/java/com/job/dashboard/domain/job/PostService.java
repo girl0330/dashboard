@@ -1,6 +1,8 @@
 package com.job.dashboard.domain.job;
 
-import com.job.dashboard.domain.dto.Criteria;
+
+import com.github.pagehelper.PageInfo;
+
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 
@@ -14,7 +16,7 @@ public interface PostService {
     Map<String, Object> saveJob(JobPostDTO jobPostDTO);
 
     //목록
-    List<JobPostDTO> jobList();
+    PageInfo<JobPostDTO> jobList(String keyword, int pageNum, int pageSize);
 
     //검색한 공고리스트
     List<JobPostDTO> keywordJobList(String keyword);

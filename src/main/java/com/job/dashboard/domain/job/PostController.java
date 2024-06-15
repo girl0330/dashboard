@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.job;
 
-import com.job.dashboard.domain.dto.Criteria;
+
+import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,12 +53,31 @@ public class PostController {
         return map;
     }
 
-    //공고 리스트
+
+    //공고페이지 이동
+    @GetMapping("/list")
+    public String jobPostView() {
+        return "jsp/post/job-list";
+    }
+
+    //ajax 공고 리스트
     @GetMapping("/ajax/list")
     @ResponseBody
-    public List<JobPostDTO> ajaxCallList(@RequestParam(value = "keyword", required = false) String keyword) {
-        System.out.println("====ajax====");
-        return postService.keywordJobList(keyword);
+    public Map<String, Object> ajaxJobPostList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                                               @RequestParam(defaultValue = "1") int pageNum,
+                                               @RequestParam(defaultValue = "10") int pageSize) {
+
+        PageInfo<JobPostDTO> jobList = postService.jobList(keyword, pageNum, pageSize);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("list", jobList.getList());
+        response.put("total", jobList.getTotal());
+        response.put("pageNum", jobList.getPageNum());
+        response.put("pageSize", jobList.getPageSize());
+        response.put("pages", jobList.getPages());
+
+        System.out.println("response:::::    "+response);
+        return response;
     }
 
 //    @GetMapping("/list")
