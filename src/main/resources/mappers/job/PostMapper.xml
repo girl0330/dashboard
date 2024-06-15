@@ -44,7 +44,7 @@
                 'OPEN')
     </insert>
 
-    <select id="getKeywordList" parameterType="com.job.dashboard.domain.dto.Criteria" resultType="com.job.dashboard.domain.dto.JobPostDTO">
+    <select id="getKeywordList" resultType="com.job.dashboard.domain.dto.JobPostDTO">
         SELECT   /*PostMapper.getkeywordList*/
                job_id,
                USER_NO,
@@ -61,30 +61,11 @@
                (SELECT detail_name FROM  code_detail WHERE group_code = 'status_type' AND detail_code = status_type_code) AS status_type_code_name
         FROM job_post_info
         WHERE title LIKE CONCAT('%', #{keyword}, '%')
-        ORDER BY job_id
-            LIMIT #{amount} OFFSET #{offset}
+        ORDER BY system_register_datetime DESC
     </select>
 
-<!--    <select id="getJobLists" resultType="com.job.dashboard.domain.dto.JobPostDTO">-->
-<!--        SELECT   /*PostMapper.getJobLists*/ job_id,-->
-<!--                                            USER_NO,-->
-<!--                                            title,-->
-<!--                                            job_type_code,-->
-<!--                                            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = job_type_code) AS job_type_code_name,-->
-<!--                                            address,-->
-<!--                                            salary_type_code,-->
-<!--                                            (SELECT detail_name FROM  code_detail WHERE group_code = 'salary_type' AND detail_code = salary_type_code) AS salary_type_code_name,-->
-<!--                                            salary,-->
-<!--                                            DATE_FORMAT(system_register_datetime, '%Y-%m-%d') AS system_register_datetime,-->
-<!--                                            job_time,-->
-<!--                                            status_type_code,-->
-<!--                                            (SELECT detail_name FROM  code_detail WHERE group_code = 'status_type' AND detail_code = status_type_code) AS status_type_code_name-->
-<!--        FROM job_post_info-->
-<!--        ORDER BY system_register_datetime DESC-->
-<!--    </select>-->
-
-    <select id="getListWithPaging" parameterType="com.job.dashboard.domain.dto.Criteria" resultType="com.job.dashboard.domain.dto.JobPostDTO">
-        SELECT /*PostMapper.getListWithPaging*/
+    <select id="getJobLists" parameterType="map" resultType="com.job.dashboard.domain.dto.JobPostDTO">
+        SELECT   /*PostMapper.getJobLists*/
             job_id,
             USER_NO,
             title,
@@ -99,6 +80,12 @@
             status_type_code,
             (SELECT detail_name FROM  code_detail WHERE group_code = 'status_type' AND detail_code = status_type_code) AS status_type_code_name
         FROM job_post_info
+        WHERE title LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY system_register_datetime DESC
+    </select>
+
+    <select id="getListWithPaging" parameterType="com.job.dashboard.domain.dto.Criteria" resultType="com.job.dashboard.domain.dto.JobPostDTO">
+        SELECT * FROM job_post_info
         ORDER BY job_id
             LIMIT #{amount} OFFSET #{offset}
     </select>

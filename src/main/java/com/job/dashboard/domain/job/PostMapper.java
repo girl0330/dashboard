@@ -15,7 +15,7 @@ public interface PostMapper {
     void saveJob(JobPostDTO jobPostDTO);
 
     //게시글 목록
-    List<JobPostDTO> getJobLists();
+    List<JobPostDTO> getJobLists(String keyword);
 
     //검색한 공고 리스트
     List<JobPostDTO> getKeywordList(Criteria criteria);
