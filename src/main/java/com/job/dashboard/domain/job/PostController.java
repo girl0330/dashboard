@@ -190,7 +190,7 @@ public class PostController {
     public Map<String, Object> applyCancelJob(@RequestBody Integer jobId){
         System.out.println("지원취소하기::");
         Map<String, Object> map = postService.applyCancelJob(jobId);
-        System.out.println("=========================>  map 확인 : "+map);
+        System.out.println("=========================> 1234  map 확인 : "+map);
         return map;
     }
 
