@@ -17,9 +17,6 @@ public interface PostService {
     //목록
     PageInfo<JobPostDTO> jobList(String keyword, int pageNum, int pageSize);
 
-    //검색한 공고리스트
-    List<JobPostDTO> keywordJobList(Criteria criteria);
-
     //상세
     JobPostDTO detail(int jobId);
 
@@ -36,9 +33,6 @@ public interface PostService {
 
     //지원 취소하기
     Map<String, Object> applyCancelJob(Integer jobId);
-
-    //페이징 처리
-    List<JobPostDTO> getListWithPaging(Criteria criteria);
 
     int getCountJobs();
 

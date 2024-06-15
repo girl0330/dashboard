@@ -42,26 +42,6 @@ public class PostServiceImpl implements PostService {
         return new PageInfo<>(list);
     }
 
-    //검색한 공고리스트
-    public List<JobPostDTO> keywordJobList(Criteria criteria) {
-        System.out.println("====검색한 공고리스트 impl입니다.====");
-        List<JobPostDTO> list = postMapper.getKeywordList(criteria);
-
-        JobPostDTO jobPostDTO = new JobPostDTO();
-        int totalJobs = postMapper.getCountJobs(); // 총 게시물 수
-        int totalPages = (int) Math.ceil((double) totalJobs / criteria.getAmount()); // 총 게시물 페이지 메서드
-
-        jobPostDTO.setTotalJobs(totalJobs);
-        jobPostDTO.setTotalPages(totalPages);
-
-        System.out.println("jobPost확인 : " + jobPostDTO);
-
-        list.add(jobPostDTO);
-        System.out.println("list:::  "+list);
-
-        return postMapper.getKeywordList(criteria);
-    }
-
     // 구인 공고 상세페이지
     public JobPostDTO detail(int jobId) {
         System.out.println("====상세페이지 impl 입니다. ====");
@@ -164,11 +144,6 @@ public class PostServiceImpl implements PostService {
         map.put("code", "success");
         map.put("message","지원이 성공적으로 취소되었습니다.");
         return map;
-    }
-
-    // 페이징 처리
-    public List<JobPostDTO> getListWithPaging(Criteria criteria) {
-        return postMapper.getListWithPaging(criteria);
     }
 
     public int getCountJobs() {
