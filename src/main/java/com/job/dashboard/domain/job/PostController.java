@@ -1,5 +1,6 @@
 package com.job.dashboard.domain.job;
 
+
 import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -51,6 +53,7 @@ public class PostController {
         return map;
     }
 
+
     //공고페이지 이동
     @GetMapping("/list")
     public String jobPostView() {
@@ -76,6 +79,61 @@ public class PostController {
         System.out.println("response:::::    "+response);
         return response;
     }
+
+//    @GetMapping("/list")
+//    public String jobPostList(Model model) {
+//        System.out.println("====잡리스느====");
+//        List<JobPostDTO> jobList = postService.jobList();
+//        model.addAttribute("jobList",jobList);
+//        return "jsp/post/job-list";
+//    }
+
+//    @GetMapping("/api/job-list")
+//    @ResponseBody
+//    public List<JobPostDTO> getJobList(@RequestParam(value = "keyword", required = false) String keyword) {
+//        System.out.println("????????");
+//        if (keyword != null && !keyword.isEmpty()) {
+//            return postService.keywordJobList(keyword);
+//        }
+//        return postService.jobList();
+//    }
+
+//    //공고 리스트
+//    @GetMapping("/list")
+//    public String jobPostList(Model model) {
+//        System.out.println("====잡리스느====");
+//
+//        List<JobPostDTO> jobList = postService.jobList();
+//        System.out.println("list확인해봅니다. --->"+ jobList);
+//
+//        model.addAttribute("jobList",jobList);
+//        return "jsp/post/job-list";
+//    }
+//
+//    // 키워드 리스트
+//    @GetMapping("/keywordList")
+//    @ResponseBody
+//    public Map<String, Object> getJobList(@RequestParam(value = "keyword", required = false) String keyword) {
+//        System.out.println("keyword 확인 : " + keyword);
+//        Map<String, Object> map = new HashMap<>();
+//
+//        if (keyword == null && keyword.isEmpty()) {
+//            map.put("code", "empty");
+//            map.put("message","검색어를 입력해주세요");
+//            return map;
+//        }
+//
+//        System.out.println("검색어 있음?");
+//        System.out.println("keyword :" + keyword);
+//
+//        List<JobPostDTO> jobList = postService.keywordJobList(keyword);
+//        System.out.println("검색한 list  --->"+ jobList);
+//        map.put("code", "success");
+//        map.put("list", jobList);
+////        model.addAttribute("jobList",jobList);
+//
+//        return map;
+//    }
 
     //공고 상세 페이지
     @GetMapping("/detail")
@@ -157,4 +215,32 @@ public class PostController {
         System.out.println("=========================>  map 확인 : "+map);
         return map;
     }
+
+    //페이징 처리
+    @GetMapping("/list")
+    public String jobPostList(Criteria criteria,Model model) {
+        System.out.println("====잡리스느===="+criteria);
+        List<JobPostDTO> jobs = postService.getListWithPaging(criteria);
+        int totalJobs = postService.getCountJobs();  // 총 게시물 수를 가져오는 메서드
+        int totalPages = (int) Math.ceil((double) totalJobs / criteria.getAmount()); // 총 게시물 페이지 메서드
+
+        System.out.println("totalJobs"+totalJobs);
+        System.out.println("totalPages"+totalPages);
+
+        model.addAttribute("jobs", jobs);
+        model.addAttribute("criteria", criteria);
+        model.addAttribute("totalPages", totalPages);
+        return "jsp/post/job-list";
+    }
+
+//    public String listJobs(Criteria criteria, Model model) {
+//        List<JobPostDTO> jobs = postService.getListWithPaging(criteria);
+//        int totalJobs = postService.getCountJobs();  // 총 게시물 수를 가져오는 메서드
+//        int totalPages = (int) Math.ceil((double) totalJobs / criteria.getAmount());
+//
+//        model.addAttribute("jobs", jobs);
+//        model.addAttribute("criteria", criteria);
+//        model.addAttribute("totalPages", totalPages);
+//        return "jsp/post/job-list";
+//    }
  }

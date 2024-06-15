@@ -90,7 +90,6 @@
                 '<a class="page-link b-radius-none" href="#" data-page="' + nextPage + '">Next</a>' +
                 '</li>');
         }
-
     }
 
     $(document).ready(function() {
@@ -150,6 +149,7 @@ banner -->
                 </div>
                 <div class="job-filter mb-4 d-sm-flex align-items-center">
                     <div class="job-shortby ms-sm-auto d-flex align-items-center">
+
                         <form class="form-inline">
                             <div class="input-group mb-0 align-items-center">
                                 <label class="justify-content-start me-2">정렬방식 :</label>
@@ -163,6 +163,7 @@ banner -->
                         </form>
                     </div>
                 </div>
+
                 <div class="container">
                     <div class="row" id="jobList" name="jobList">
                         <c:forEach items="${jobList.list}" var="jobList">
@@ -194,7 +195,6 @@ banner -->
                         </c:forEach>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-12 text-center mt-4 mt-sm-5">
                         <ul class="pagination justify-content-center mb-0" id="pagination" name="pagination">

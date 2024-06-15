@@ -2,6 +2,7 @@ package com.job.dashboard.domain.job;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
@@ -45,7 +46,7 @@ public class PostServiceImpl implements PostService {
     public List<JobPostDTO> keywordJobList(String keyword) {
         System.out.println("====검색한 공고리스트 impl입니다.====");
 
-        return postMapper.getkeywordList(keyword);
+        return postMapper.getKeywordList(keyword);
     }
 
     // 구인 공고 상세페이지
@@ -150,5 +151,14 @@ public class PostServiceImpl implements PostService {
         map.put("code", "success");
         map.put("message","지원이 성공적으로 취소되었습니다.");
         return map;
+    }
+
+    // 페이징 처리
+    public List<JobPostDTO> getListWithPaging(Criteria criteria) {
+        return postMapper.getListWithPaging(criteria);
+    }
+
+    public int getCountJobs() {
+        return postMapper.getCountJobs();  // 총 게시물 수를 세는 메서드
     }
 }

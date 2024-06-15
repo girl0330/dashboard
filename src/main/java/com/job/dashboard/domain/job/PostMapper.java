@@ -1,5 +1,6 @@
 package com.job.dashboard.domain.job;
 
+import com.job.dashboard.domain.dto.Criteria;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.domain.dto.UserProfileInfoDTO;
@@ -17,7 +18,7 @@ public interface PostMapper {
     List<JobPostDTO> getJobLists(String keyword);
 
     //검색한 공고 리스트
-    List<JobPostDTO> getkeywordList(String keyword);
+    List<JobPostDTO> getKeywordList(String keyword);
 
     //게시글 상세페이지
     JobPostDTO getJobDetail(int jobId);
@@ -53,7 +54,11 @@ public interface PostMapper {
     //userNo의 지원 정보확인
     int applicationUserChe(int userNo);
 
-//    void delete(int jobId);
+    // 페이징 처리
+    List<JobPostDTO> getListWithPaging(Criteria criteria);
+
+    //총 게시물
+    int getCountJobs ();
 
     //게시글 수정
 }

@@ -44,8 +44,9 @@
                 'OPEN')
     </insert>
 
-    <select id="getkeywordList" resultType="com.job.dashboard.domain.dto.JobPostDTO">
-        SELECT   /*PostMapper.getkeywordList*/ job_id,
+    <select id="getKeywordList" resultType="com.job.dashboard.domain.dto.JobPostDTO">
+        SELECT   /*PostMapper.getkeywordList*/
+               job_id,
                USER_NO,
                title,
                job_type_code,
@@ -81,6 +82,16 @@
         FROM job_post_info
         WHERE title LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY system_register_datetime DESC
+    </select>
+
+    <select id="getListWithPaging" parameterType="com.job.dashboard.domain.dto.Criteria" resultType="com.job.dashboard.domain.dto.JobPostDTO">
+        SELECT * FROM job_post_info
+        ORDER BY job_id
+            LIMIT #{amount} OFFSET #{offset}
+    </select>
+
+    <select id="getCountJobs" resultType="int">
+        SELECT COUNT(*) FROM job_post_info
     </select>
 
     <select id="getJobDetail" resultType="com.job.dashboard.domain.dto.JobPostDTO" parameterType="int">
