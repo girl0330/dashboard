@@ -22,7 +22,9 @@
             up.ZIPCODE,
             up.ADDRESS,
             up.ADDRESS_DETAIL,
-            up.PART_TIME_EXPERIENCE
+            up.PART_TIME_EXPERIENCE,
+            up.LONGITUDE,
+            up.LATITUDE
         FROM
             user_info ui
                 LEFT JOIN USER_PROFILE_INFO up ON ui.USER_NO = up.USER_NO
@@ -40,6 +42,8 @@
                ZIPCODE,
                ADDRESS,
                ADDRESS_DETAIL,
+               LONGITUDE,
+               LATITUDE,
                PART_TIME_EXPERIENCE,
                SYSTEM_REGISTER_ID,
                SYSTEM_REGISTER_DATETIME,
@@ -68,6 +72,8 @@
             ZIPCODE,
             ADDRESS,
             ADDRESS_DETAIL,
+            longitude,
+            latitude,
             PART_TIME_EXPERIENCE,
             SYSTEM_REGISTER_DATETIME,
             SYSTEM_REGISTER_ID,
@@ -83,6 +89,8 @@
             #{zipcode},
             #{address},
             #{addressDetail},
+            #{longitude},
+            #{latitude},
             #{partTimeExperience},
             #{systemRegisterDatetime},
             #{userNo},
@@ -96,6 +104,8 @@
             ZIPCODE                = #{zipcode},
             ADDRESS                = #{address},
             ADDRESS_DETAIL         = #{addressDetail},
+            longitude              = #{longitude},
+            latitude               = #{latitude},
             PART_TIME_EXPERIENCE   = #{partTimeExperience},
             SYSTEM_UPDATE_DATETIME = #{systemUpdateDatetime},
             SYSTEM_UPDATER_ID      = #{userNo}

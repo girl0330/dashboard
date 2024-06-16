@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=afcb905c7668725d0a22469ede432941"></script>
 <script>
-  let applyJob = {
-    init : function () {
-      this.applyJob();
+  const application = {
+    init: function () {
+
     },
-    applyJob : function () {
+
+    apply: function () {
 
       const jobId = $("#jobId").val();
 
@@ -15,81 +18,78 @@
       jsonData["jobId"] = jobId;
       jsonData["motivationDescription"] = motivationDescription;
 
-      console.log("jsonData: "+ JSON.stringify(jsonData));
+      console.log("jsonData: " + JSON.stringify(jsonData));
 
       $.ajax({
         url: "/business/apply", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
-        success: function(data) {
+        success: function (data) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
           console.log(JSON.stringify(data));
 
-          if(data.code === 'loginError') {
+          if (data.code === 'loginError') {
             alert(data.message);
-            location.href='/user/login'
+            location.href = '/user/login'
 
-          } else if (data.code === 'profileError'){
+          } else if (data.code === 'profileError') {
             alert(data.message);
-            location.href='/personal/myProfile'
+            location.href = '/personal/myProfile'
 
-          } else if (data.code === 'applyError'){
+          } else if (data.code === 'applyError') {
             $('#exampleModalCenter').modal('hide');
             alert(data.message);
 
-          }else if (data.code === 'success') {
+          } else if (data.code === 'success') {
             $('#exampleModalCenter').modal('hide');
             alert(data.message);
           }
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           // 오류 발생 시 실행할 코드
           console.error(error);
         }
       });
-    }
-  }
-
-  let applyCancelJob = {
-    init : function () {
-      this.applyCancelJob();
     },
-    applyCancelJob : function () {
+
+    cancel: function () {
 
       const jobId = $("#jobId").val();
 
       // 해당 값을 JSON 데이터로 변환
       // const jsonData = {"jobId": jobIdInt};
       const jsonData = jobId;
-      console.log("jsonData: "+ JSON.stringify(jsonData));
+      console.log("jsonData: " + JSON.stringify(jsonData));
 
       $.ajax({
         url: "/business/applyCancel", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
-        success: function(data) {
+        success: function (data) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
           console.log(JSON.stringify(data));
-          if(data.code === 'success') {
+          if (data.code === 'success') {
             alert(data.message);
             location.reload();
-          } else if(data.code === 'error') {
+          } else if (data.code === 'error') {
             alert(data.message);
             location.reload();
-          } else if(data.code === 'loginError') {
+          } else if (data.code === 'loginError') {
             alert(data.message);
-            location.href='/user/login'
+            location.href = '/user/login'
           }
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           // 오류 발생 시 실행할 코드
           console.error(error);
         }
       });
     }
   }
+
+
   // DOM 실행 후 안의 내용이 실행 됨
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -97,13 +97,35 @@
       $('#motivationDescription').val("");
     });
 
-    $('#button_apply').click(function() {
-      applyJob.init();
+    $('#button_apply').click(function () {
+      application.apply();
     });
 
-    $('#button_applyCancel').click(function() {
-      applyCancelJob.init();
+    $('#button_applyCancel').click(function () {
+      application.cencel();
     });
+
+    const latitude = $('#latitude').val(); //위도
+    const longitude = $('#longitude').val(); //경도
+    console.log("위도, 경도 "+latitude +"/"+longitude);
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = {
+              center: new kakao.maps.LatLng(latitude, longitude), // 지도의 중심좌표
+              level: 3 // 지도의 확대 레벨
+            };
+
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+// 마커가 표시될 위치입니다
+    var markerPosition  = new kakao.maps.LatLng(latitude, longitude);
+
+// 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+      position: markerPosition
+    });
+
+// 마커가 지도 위에 표시되도록 설정합니다
+    marker.setMap(map);
   });
 
 </script>
@@ -166,6 +188,8 @@ job list -->
                       <ul class="list-unstyled">
                         <li><i class="fas fa-map-marker-alt pe-1"></i>${detail.address}</li>
                         <li><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="ps-2">${detail.managerNumber}</span></li>
+                        <input type="hidden" class="form-control" id="latitude" name="latitude" data-name="위도" value="${detail.latitude}">
+                        <input type="hidden" class="form-control" id="longitude" name="longitude" data-name="경도" value="${detail.longitude}">
                       </ul>
                     </div>
                   </div>
@@ -275,9 +299,7 @@ job list -->
           </div>
           <div class="border p-4 mt-4 mt-lg-5">
             <div class="company-address widget-box">
-              <div class="company-address-map">
-                <iframe src="/https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.95373531590414!3d-37.817323442021134!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1559039794237!5m2!1sen!2sin"  height="230" allowfullscreen></iframe>
-              </div>
+              <div class="company-address-map" id="map" style="width: 100%; height: 400px;"></div>
               <ul class="list-unstyled mt-3">
                 <li><a href="#"><i class="fas fa-link fa-fw"></i><span class="ps-2">www.infojob.com</span></a></li>
                 <li><a href="tel:+905389635487"><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="ps-2">+(456) 478-2589</span></a></li>
