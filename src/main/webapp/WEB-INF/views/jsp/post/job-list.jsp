@@ -21,9 +21,8 @@
                 },
                 success: function(response) {
                     // 성공 시 실행할 코드
-                    console.log('성공:', JSON.stringify(response));
                     keywordSearch.renderJobs(response.list);
-                    keywordSearch.renderPagination(response.pageNum, response.pageSize, response.total, response.pages);
+                    renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
                 },
                 error: function(xhr, status, error) {
                     // 오류 발생 시 실행할 코드
@@ -32,11 +31,10 @@
             });
         },
         renderJobs: function(list){
-            console.log("list::::    "+JSON.stringify(list));
             const container = $("#jobList");
             container.empty();
 
-            list.forEach(function(job) {
+            list.forEach(job => {
                 const jobHtml =
                     '<div class="col-12" onclick="location.href=\'/business/detail?jobId=' + job.jobId + '\'">' +
                     '<div class="job-list">' +
@@ -68,27 +66,6 @@
                     '</div>';
                 container.append(jobHtml);
             });
-        },
-
-        renderPagination: function(currentPage, pageSize, totalJobs, totalPages) {
-            const container = $('#pagination');
-            container.empty();
-            const prevPage = currentPage > 1 ? currentPage - 1 : 1;
-            const nextPage = currentPage < totalPages ? currentPage + 1 : totalPages;
-
-            container.append('<li class="page-item ' + (currentPage === 1 ? 'disabled' : '') + '">' +
-                '<a class="page-link b-radius-none" href="#" data-page="' + prevPage + '">Prev</a>' +
-                '</li>');
-
-            for (let i = 1; i <= totalPages; i++) {
-                container.append('<li class="page-item ' + (i === currentPage ? 'active' : '') + '">' +
-                    '<a class="page-link" href="#" data-page="' + i + '">' + i + '</a>' +
-                    '</li>');
-            }
-
-            container.append('<li class="page-item ' + (currentPage === totalPages ? 'disabled' : '') + '">' +
-                '<a class="page-link b-radius-none" href="#" data-page="' + nextPage + '">Next</a>' +
-                '</li>');
         }
     }
 
