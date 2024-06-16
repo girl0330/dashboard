@@ -19,4 +19,5 @@
 <script src="/js/custom.js"></script>
 
 <!-- 페이지 처리 -->
+<script src="/js/common/utils.js"></script>
 <script src="/js/common/pagination.js"></script>
