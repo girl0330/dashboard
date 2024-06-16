@@ -27,23 +27,32 @@
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
         success: function (data) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-          console.log(JSON.stringify(data));
 
-          if (data.code === 'loginError') {
-            alert(data.message);
-            location.href = '/user/login'
+          const modalPopup = new bootstrap.Modal(document.getElementById('commonModal'), {
+            keyboard: false
+          });
 
-          } else if (data.code === 'profileError') {
-            alert(data.message);
-            location.href = '/personal/myProfile'
+          $('#modalBody').text(data.message);
+          modalPopup.show();
 
-          } else if (data.code === 'applyError') {
-            $('#exampleModalCenter').modal('hide');
-            alert(data.message);
-
-          } else if (data.code === 'success') {
-            $('#exampleModalCenter').modal('hide');
-            alert(data.message);
+          switch(data.code) {
+            case 'loginError':
+              $('#confirmBtn').off('click').on('click', function() {
+                location.href = '/user/login';
+              });
+              break;
+            case 'profileError':
+              $('#confirmBtn').off('click').on('click', function() {
+                location.href = '/personal/myProfile';
+              });
+              break;
+            case 'applyError':
+            case 'success':
+              $('#exampleModalCenter').modal('hide');
+              $('#confirmBtn').off('click').on('click', function() {
+                modalPopup.hide();
+              });
+              break;
           }
         },
         error: function (xhr, status, error) {
@@ -129,6 +138,10 @@
   });
 
 </script>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Open Modal
+</button>
 
 <!--=================================
 banner -->
@@ -399,4 +412,3 @@ Apply Modal Popup -->
   </div>
 <!--=================================
 Signin Modal Popup -->
-
