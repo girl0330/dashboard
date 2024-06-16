@@ -1,5 +1,6 @@
 package com.job.dashboard.domain.business;
 
+import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.CompanyInfoDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
@@ -125,40 +126,68 @@ public class BusinessDashController {
 
     //공고 관리
     @GetMapping("/managePostJob")
-    public String managePostJobView(Model model, @RequestParam(value="keyword", required=false) String keyword) {
+    public String managePostJobView() {
         System.out.println("공고관리");
-        System.out.println("keyword : "+keyword);
-        if(!sessionUtil.loginUserCheck()) {
+
+        if(!sessionUtil.loginUserCheck()) { // 로그인
             System.out.println("로그인 화면으로 이동");
             return "redirect:/user/login";
         }
 
-        if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) {
+        if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) { //회원 타입
             return "redirect:/";
         }
 
-        if (keyword != null) {
-            List<JobPostDTO> postJobList = businessDashService.keywordPostJobList(keyword);
-            System.out.println("postJobList"+postJobList);
-
-            model.addAttribute("postJobList", postJobList);
-            return "jsp/business/business-managePostJob";
-        }
-        List<JobPostDTO> postJobList = businessDashService.postJobList();
-        System.out.println("postJobList"+postJobList);
-
-        model.addAttribute("postJobList", postJobList);
         return "jsp/business/business-managePostJob";
     }
 
+    @GetMapping("/ajax/managePostJob")
+    @ResponseBody
+    public Map<String, Object> ajaxManagePostJob(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                                                 @RequestParam(defaultValue = "1") int pageNum,
+                                                 @RequestParam(defaultValue = "10") int pageSize) {
+        System.out.println("공고관리");
+
+        PageInfo<JobPostDTO> postJobList = businessDashService.getPostJobList(keyword, pageNum, pageSize);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("list", postJobList.getList());
+        response.put("total", postJobList.getTotal());
+        response.put("pageNum", postJobList.getPageNum());
+        response.put("pageSize", postJobList.getPageSize());
+        response.put("pages", postJobList.getPages());
+
+        System.out.println("response:::::    "+response);
+        return response;
+    }
+
     //작성한 공고에 지원한 지원자 리스트
-    @GetMapping("/applicantList")
-    public String applicantList (@RequestParam("jobId") int jobId, Model model) {
+    @GetMapping("/candidateList")
+    public String applicantListView (@RequestParam("jobId") int jobId, Model model) {
         System.out.println(" 해당 공고에 지원한 지원자목록/jobId 확인 : "+ jobId);
 
-        List<JobApplicationDTO> applicantList = businessDashService.applicantList(jobId);
-        model.addAttribute("applicantList", applicantList);
+        model.addAttribute("id", jobId);
         return "jsp/business/business-manageCandidate";
+    }
+
+    @GetMapping("/ajax/candidateList")
+    @ResponseBody
+    public Map<String, Object> ajaxCandidateList (@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                                                  @RequestParam(defaultValue = "1") int pageNum,
+                                                  @RequestParam(defaultValue = "10") int pageSize,
+                                                  @RequestParam(value = "jobNum") int jobId) {
+        System.out.println("jobNum? "+jobId);
+        PageInfo<JobApplicationDTO> candidateList = businessDashService.getCandidateList(keyword, pageNum, pageSize, jobId);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("list", candidateList.getList());
+        response.put("total", candidateList.getTotal());
+        response.put("pageNum", candidateList.getPageNum());
+        response.put("pageSize", candidateList.getPageSize());
+        response.put("pages", candidateList.getPages());
+
+        System.out.println("response:::::    "+response);
+        return response;
     }
 
     // 지원한 지원자 상세보기

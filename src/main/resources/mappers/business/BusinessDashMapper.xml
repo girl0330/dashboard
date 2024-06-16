@@ -86,9 +86,8 @@
         WHERE USER_NO = #{userNo}
     </select>
 
-    <select id="keywordPostJobList" parameterType="com.job.dashboard.domain.dto.JobPostDTO" resultType="com.job.dashboard.domain.dto.JobPostDTO">
-        /* BusinessDashMapper.postJobList */
-        SELECT
+    <select id="getPostJobList" parameterType="map" resultType="com.job.dashboard.domain.dto.JobPostDTO">
+        SELECT  /* BusinessDashMapper.getPostJobList */
             jpi.job_id,
             jpi.title,
             jpi.job_type_code,
@@ -111,43 +110,13 @@
             (SELECT COUNT(*) FROM job_application_info jai WHERE jai.job_id = jpi.job_id) AS countApplication
         FROM
             job_post_info jpi
-        WHERE
-            jpi.user_no = #{userNo}
-        AND jpi.title LIKE CONCAT('%', #{keyword}, '%')
+        WHERE jpi.USER_NO = #{userNo}
+          AND jpi.title LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY jpi.system_register_datetime DESC
     </select>
 
-    <select id="postJobList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobPostDTO">
-        /* BusinessDashMapper.postJobList */
-        SELECT
-            jpi.job_id,
-            jpi.title,
-            jpi.job_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = jpi.job_type_code) AS job_type_code_name,
-            jpi.address,
-            jpi.salary_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_code = jpi.salary_type_code) AS salary_type_code_name,
-            jpi.salary,
-            jpi.job_time,
-            jpi.job_day_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'job_day_type' AND detail_code = jpi.job_day_type_code) AS job_day_type_code_name,
-            jpi.number_of_staff,
-            jpi.employment_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'employment_type' AND detail_code = jpi.employment_type_code) AS employment_type_code_name,
-            jpi.system_register_id,
-            jpi.system_updater_id,
-            DATE_FORMAT(jpi.system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
-            jpi.status_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jpi.status_type_code) AS status_type_code_name,
-            (SELECT COUNT(*) FROM job_application_info jai WHERE jai.job_id = jpi.job_id) AS countApplication
-        FROM
-            job_post_info jpi
-        WHERE
-            jpi.user_no = #{userNo}
-    </select>
-
-    <select id="getApplicants" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        SELECT /*이름, 연락처, 성별, 나이, 지원상태*/
-            /* BusinessDashMapper.getApplicants */
+    <select id="getCandidateList" parameterType="map" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        SELECT /* BusinessDashMapper.getApplicants */
             jai.application_id,
             jai.job_id,
             jai.USER_NO,
@@ -164,9 +133,10 @@
             job_application_info jai
                 INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
         INNER JOIN user_profile_info upi ON jai.USER_NO = upi.USER_NO
-        WHERE
-            jai.job_id = #{jobId}
-        ORDER BY jai.system_register_datetime DESC
+        WHERE jpi.USER_NO = #{userNo}
+          AND jai.Job_ID = #{jobId}
+          AND jpi.title LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY jpi.system_register_datetime DESC
     </select>
 
     <select id="getApplicantsInfo" resultType="com.job.dashboard.domain.dto.JobApplicationDTO" parameterType="int">

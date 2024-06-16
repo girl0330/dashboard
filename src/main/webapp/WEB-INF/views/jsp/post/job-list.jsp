@@ -18,6 +18,7 @@
                     pageSize: 10,
                     keyword: keyword
                 },
+
                 beforeSend: () => {
                     console.log('요청 전 작업 수행');
                 },
@@ -127,7 +128,7 @@ banner -->
             <div class="col-lg-12">
                 <div class="row mb-4">
                     <div class="col-12">
-                        <h6 class="mb-0">구인공고목록<span class="text-primary">총 - 건 </span></h6>
+                        <h6 class="mb-0">구인공고목록<span class="text-primary">총 <i id="amount"></i> 건 </span></h6>
                     </div>
                 </div>
                 <div class="job-filter mb-4 d-sm-flex align-items-center">
@@ -148,61 +149,14 @@ banner -->
                 </div>
 
                 <div class="container">
+                    <!-- list 목록 -->
                     <div class="row" id="jobList" name="jobList">
-                        <c:forEach items="${jobList.list}" var="jobList">
-                        <div class="col-12" onclick="location.href='/business/detail?jobId=${jobList.jobId}'">
-                            <div class="job-list ">
-                                <div class="job-list-logo">
-                                    <img class="img-fluid" src="/images/svg/01.svg" alt="">
-                                </div>
-                                <div class="job-list-details">
-                                    <div class="job-list-info">
-                                        <div class="job-list-title">
-                                            <input type="hidden" id="jobPostId" name="jobPostId" value="${jobList.jobId}">
-                                            <h5 class="mb-0">${jobList.title} (${jobList.statusTypeCodeName})</h5>
-                                        </div>
-                                        <div class="job-list-option">
-                                            <ul class="list-unstyled">
-                                                <li> <a href="">${jobList.jobTypeCodeName}</a> </li>
-                                            </ul>
-                                            <ul class="list-unstyled">
-                                                <li><i class="fas fa-map-marker-alt pe-1"></i>${jobList.address}</li>
-                                                <li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>${jobList.salaryTypeCodeName}:${jobList.salary}</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="job-list-favourite-time"> <a class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a> <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${jobList.systemRegisterDatetime}</span> </div>
-                            </div>
-                        </div>
-                        </c:forEach>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 text-center mt-4 mt-sm-5">
+                        <!-- page 시작 -->
                         <ul class="pagination justify-content-center mb-0" id="pagination" name="pagination">
-                            <!-- 이전 페이지 링크 -->
-                            <li class="page-item ${jobList.hasPreviousPage ? '' : 'disabled'}">
-                                <a class="page-link b-radius-none" href="${jobList.hasPreviousPage ? 'list?pageNum=' += jobList.prePage += '&pageSize=' += jobList.pageSize : '#'}">
-                                    Prev
-                                </a>
-                            </li>
-
-                            <!-- 페이지 번호 링크 -->
-                            <c:forEach var="i" begin="1" end="${jobList.pages}">
-                                <li class="page-item ${i == jobList.pageNum ? 'active' : ''}">
-                                    <a class="page-link" href="${i == jobList.pageNum ? '#' : 'list?pageNum=' += i += '&pageSize=' += jobList.pageSize}">
-                                        ${i}
-                                    </a>
-                                </li>
-                            </c:forEach>
-
-                            <!-- 다음 페이지 링크 -->
-                            <li class="page-item ${jobList.hasNextPage ? '' : 'disabled'}">
-                                <a class="page-link b-radius-none" href="${jobList.hasNextPage ? 'list?pageNum=' += jobList.nextPage += '&pageSize=' += jobList.pageSize : '#'}">
-                                    Next
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </div>

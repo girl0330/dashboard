@@ -1,5 +1,7 @@
 package com.job.dashboard.domain.personal;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
@@ -75,10 +77,9 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         System.out.println("입력한 비밀번호 : " + enteredPassword);
 
         int userNo = userDTO.getUserNo();
+        /*  UserDTO oldPassword = personalDashMapper.getOldPassword(userNo);
+        * String password = oldPassword.getPassword();*/
         String oldPassword = personalDashMapper.getOldPassword(userNo).getPassword();
-//        UserDTO oldPassword = personalDashMapper.getOldPassword(userNo);
-//        String password = oldPassword.getPassword();
-
         System.out.println("이전 비번 :: " + oldPassword);
 
         boolean pwCheck = passwordEncoder.matches(enteredPassword, oldPassword);
@@ -114,10 +115,19 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     }
 
     //지원형황 리스트
-    public List<JobApplicationDTO> currentApplyList() {
+    public PageInfo<JobApplicationDTO> applyStatusList(String keyword, int pageNum, int pageSize) {
         System.out.println("현재 지원현황 리스트 임플");
+
+        Map<String, Object> map = new HashMap<>();
         Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
-        return personalDashMapper.getCurrentApplyList(userNo);
+
+        map.put("userNo", userNo);
+        map.put("keyword", keyword);
+        System.out.println(" map 에 들어간거 확인 :: "+map);
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<JobApplicationDTO> applyStatusList = personalDashMapper.applyStatusList(map) ;
+        return new PageInfo<>(applyStatusList);
     }
 
     //지원 리스트 삭제 (취소, statusTypeCode를 취소로 바꾸기)
@@ -131,9 +141,23 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         return map;
     }
 
-    //최근 지원 리스트 보기
-    public List<JobApplicationDTO> recentlyApplyJobList(int userNo) {
+    //dashboard list
+    public PageInfo<JobApplicationDTO> applyJobList(String keyword, int pageNum, int pageSize) {
         System.out.println("최근 지원한 리스트 임플");
-        return personalDashMapper.recentlyApplyJobList(userNo);
+
+        Map<String, Object> map = new HashMap<>();
+        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
+
+        map.put("userNo", userNo);
+        map.put("keyword", keyword);
+        System.out.println("map??:: "+map);
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<JobApplicationDTO> JobApplicationList = personalDashMapper.applyJobList(map) ;
+        return new PageInfo<>(JobApplicationList);
+    }
+
+    public int getCountJobs() {
+        return personalDashMapper.getCountJobs();  // 총 게시물 수를 세는 메서드
     }
 }

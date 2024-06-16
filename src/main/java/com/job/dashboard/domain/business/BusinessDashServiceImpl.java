@@ -1,5 +1,7 @@
 package com.job.dashboard.domain.business;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.CompanyInfoDTO;
 import com.job.dashboard.domain.dto.ImagesDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
@@ -165,35 +167,37 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         return businessDashMapper.getBusinessProfile(userNo);
     }
 
-    // 기업 검색한 작성공고 리스트
-    public List<JobPostDTO> keywordPostJobList(String keyword) {
-        System.out.println("검색한 작성공고 리스트 임플=====");
-        JobPostDTO jobPostDTO = new JobPostDTO();
-        int userNo = (int) sessionUtil.getAttribute("userNo");
-
-
-        jobPostDTO.setUserNo(userNo);
-        jobPostDTO.setKeyword(keyword);
-        System.out.println("확인 "+jobPostDTO);
-
-        return businessDashMapper.keywordPostJobList(jobPostDTO);
-    }
-
     // 기업 작성한 공고 리스트
-     public List<JobPostDTO> postJobList() {
+     public PageInfo<JobPostDTO> getPostJobList(String keyword, int pageNum, int pageSize) {
          System.out.println("공고 리스트 임플=====");
 
-         int userNo = (int) sessionUtil.getAttribute("userNo");
+         Map<String, Object> map = new HashMap<>();
+         Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
 
+         map.put("userNo", userNo);
+         map.put("keyword", keyword);
+         System.out.println(" map 에 들어간거 확인 :: "+map);
 
-         return businessDashMapper.postJobList(userNo);
+         PageHelper.startPage(pageNum, pageSize);
+         List<JobPostDTO> applyStatusList = businessDashMapper.getPostJobList(map) ;
+         return new PageInfo<>(applyStatusList);
      }
 
     //작성한 공고에 지원한 지원자 리스트
-    public List<JobApplicationDTO> applicantList(int jobId) {
+    public PageInfo<JobApplicationDTO> getCandidateList(String keyword, int pageNum, int pageSize, int jobId) {
         System.out.println("지원한 지원자리스트 임플=====");
 
-        return businessDashMapper.getApplicants(jobId);
+        Map<String, Object> map = new HashMap<>();
+        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
+
+        map.put("userNo", userNo);
+        map.put("keyword", keyword);
+        map.put("jobId", jobId);
+        System.out.println(" map 에 들어간거 확인 :: "+map);
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<JobApplicationDTO> applyStatusList = businessDashMapper.getCandidateList(map);
+        return new PageInfo<>(applyStatusList);
     }
 
     //작성한 공고에 지원한 지원자 상세보기
