@@ -1,6 +1,8 @@
 package com.job.dashboard.domain.personal;
 
+import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
+import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
 import com.job.dashboard.util.SessionUtil;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -20,9 +23,9 @@ public class PersonalDashController {
     private final PersonalDashService personalDashService;
     private final SessionUtil sessionUtil;
 
-    // 매인 대시보드
+    // dashboard 리스트
     @GetMapping("/dashboard")
-    public String dashboardView(Model model)  {
+    public String dashboardView() {
         System.out.println("==== 개인 회원 대시보드====");
 
         // 로그인 체크
@@ -45,12 +48,28 @@ public class PersonalDashController {
             return "redirect:/personal/myProfile";
         }
 
-        //최근 지원한 리스트 보기
-        List<JobApplicationDTO> recentlyApplyJobList = personalDashService.recentlyApplyJobList(userNo);
-        System.out.println("==========================> 지원 현황 리스트!"+recentlyApplyJobList);
-
-        model.addAttribute("recentlyApplyJobList", recentlyApplyJobList);
         return "jsp/personal/personal-dashboard";
+    }
+
+
+    //ajax dashboard 리스트 -(지원한 공고)
+    @GetMapping("/ajax/dashboardList")
+    @ResponseBody
+    public Map<String, Object> ajaxDashboardList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                                               @RequestParam(defaultValue = "1") int pageNum,
+                                               @RequestParam(defaultValue = "10") int pageSize) {
+
+        PageInfo<JobApplicationDTO> recentlyApplyJobList = personalDashService.applyJobList(keyword, pageNum, pageSize);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("list", recentlyApplyJobList.getList());
+        response.put("total", recentlyApplyJobList.getTotal());
+        response.put("pageNum", recentlyApplyJobList.getPageNum());
+        response.put("pageSize", recentlyApplyJobList.getPageSize());
+        response.put("pages", recentlyApplyJobList.getPages());
+
+        System.out.println("response:::::    "+response);
+        return response;
     }
 
     // 프로필
@@ -128,38 +147,51 @@ public class PersonalDashController {
         return map;
     }
 
-    // 지원현황
+    // manageJobsList
     @GetMapping("/manageJobs")
-    public String manageJobsView(Model model) {
+    public String manageJobsView() {
         System.out.println("==== 개인 회원 manageJobs====");
 
-        // 로그인 체크
-        System.out.println("로그인 체크");
-        if(!sessionUtil.loginUserCheck()) {
+        if(!sessionUtil.loginUserCheck()) { //로그인 체크
             return "redirect:/user/login";
         }
 
-        //로그인 타입코드 확인하기
-        System.out.println("/로그인 타입코드 체크");
-        if(!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "10")) {
+        if(!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "10")) { //로그인 타입코드 체크
             return "redirect:/";
         }
 
-        // 프로필 작성 여부 확인
-        int userNo = (int)sessionUtil.getAttribute("userNo");
+        int userNo = (int)sessionUtil.getAttribute("userNo"); // 프로필 작성 여부 확인
         int profileCheck = personalDashService.profileCheck(userNo);
         if(profileCheck == 0) {
             System.out.println("프로필 내용이 없음, 프로필로 이동");
             return "redirect:/personal/myProfile";
         }
 
-        List<JobApplicationDTO> currentApplyList = personalDashService.currentApplyList();
-        System.out.println("==========================> 지원 현황 리스트!"+currentApplyList);
-        model.addAttribute("currentApplyList", currentApplyList);
         return "jsp/personal/personal-manageJobs";
     }
 
-    @GetMapping("/savedJobs") // 관심 공고 목록들
+    //ajax manageJobsList -(지원 현황)
+    @GetMapping("/ajax/manageJobsList")
+    @ResponseBody
+    public Map<String, Object> ajaxManageJobsList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                                               @RequestParam(defaultValue = "1") int pageNum,
+                                               @RequestParam(defaultValue = "10") int pageSize) {
+
+        PageInfo<JobApplicationDTO> recentlyApplyJobList = personalDashService.applyStatusList(keyword, pageNum, pageSize);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("list", recentlyApplyJobList.getList());
+        response.put("total", recentlyApplyJobList.getTotal());
+        response.put("pageNum", recentlyApplyJobList.getPageNum());
+        response.put("pageSize", recentlyApplyJobList.getPageSize());
+        response.put("pages", recentlyApplyJobList.getPages());
+
+        System.out.println("response:::::    "+response);
+        return response;
+    }
+
+    // 관심 공고 목록들
+    @GetMapping("/savedJobs")
     public String savedJobsView() {
         System.out.println("==== 개인 회원 savedJobs====");
 

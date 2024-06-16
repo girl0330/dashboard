@@ -6,6 +6,7 @@ import com.job.dashboard.domain.dto.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface PersonalDashMapper {
@@ -26,12 +27,15 @@ public interface PersonalDashMapper {
     void updatePassword(UserDTO userDTO);
 
     // 현재 지원형황 리스트
-    List<JobApplicationDTO> getCurrentApplyList(int userNo);
+    List<JobApplicationDTO> applyStatusList(Map<String, Object> map);
 
     // 지원한 공고 삭제
     void applyListCancel(int applicationId);
 
+    //dashboard list
+    List<JobApplicationDTO> applyJobList(Map<String, Object> map);
 
-    // 최근 지원 공고 리스트 가져오기
-    List<JobApplicationDTO> recentlyApplyJobList(int userNo);
+    int getCountJobs();
+
+
 }

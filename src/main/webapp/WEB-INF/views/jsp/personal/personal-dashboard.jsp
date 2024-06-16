@@ -1,5 +1,85 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<script>
+    const keywordSearch = {
+        init : function () {
+            //첫 페이지
+            this.keywordSearchSubmit(1);
+        },
+
+        keywordSearchSubmit : function (pageNum) {
+
+            $.ajax({
+                url: '/personal/ajax/dashboardList',
+                type: 'GET',
+                data: {
+                    pageNum: pageNum,
+                    pageSize: 10,
+                    keyword: ''
+                },
+                success: function(response) {
+                    $("#amount").text(response.total); //총 게시물 개수
+                    keywordSearch.renderJobs(response.list); //리스트 목록
+                    renderPagination('pagination',response.pageNum, response.pageSize, response.total, response.pages); //페이징
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        },
+        //list 처리
+        renderJobs: function (list) {
+            console.log("list :: "+JSON.stringify(list));
+            const container = $("#recentlyApplyJobList");
+            container.empty();// id속성 초기화
+
+            list.forEach(function (applyJob) {
+                const jobHtml =
+                    '<div class="col-12" onclick="location.href=\'/business/detail?jobId=' + applyJob.applicationId + '\'">' +
+                    '<div class="job-list ">' +
+                    '<div class="job-list-logo">' +
+                    '<img class="img-fluid" src="/images/svg/01.svg" alt="">' +
+                    '</div>' +
+                    '<div class="job-list-details">' +
+                    '<div class="job-list-info">' +
+                    '<div class="job-list-title">' +
+                    '<input type="hidden" id="jobPostId" name="jobPostId" value="' + applyJob.applicationId + '">' +
+                    '<h5 class="mb-0">' + applyJob.title + '</h5>' +
+                    '</div>' +
+                    '<div class="job-list-option">' +
+                    '<ul class="list-unstyled">' +
+                    '<li><a href="">' + applyJob.jobTypeCodeName + '</a></li>' +
+                    '<li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>' + applyJob.jobTime + ' ' + applyJob.salaryTypeCodeName + ' : ' + applyJob.salary + '</a></li>' +
+                    '</ul>' +
+                    '<ul class="list-unstyled">' +
+                    '<li><i class="fas fa-map-marker-alt pe-1"></i>' + applyJob.address + '</li>' +
+                    '</ul>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="job-list-favourite-time">' +
+                    '<a href="#">' + applyJob.statusTypeCodeName + '</a>' +
+                    '<span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>' + applyJob.systemRegisterDatetime + '</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                container.append(jobHtml);
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        //페이지가 로드될 때 실행
+        keywordSearch.init();
+
+        //페이징 함수
+        $(document).on('click', '.pagination .page-link', function(e) {
+            e.preventDefault();
+            const pageNum = $(this).data('page');
+            keywordSearch.keywordSearchSubmit(pageNum);
+        });
+    })
+</script>
 
 <!--=================================
 inner banner ,Dashboard Nav -->
@@ -20,83 +100,25 @@ Candidates Dashboard -->
                                 <h6 class="candidates-info-title text-white">Total Applications</h6>
                             </div>
                             <div class="candidates-info-count">
-                                <h3 class="mb-0 text-white">01</h3>
+                                <h3 class="mb-0 text-white" id="amount">01</h3>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 mb-4 mb-lg-0">
-                        <div class="candidates-feature-info bg-success">
-                            <div class="candidates-info-icon text-white">
-                                <i class="fas fa-thumbs-up"></i>
-                            </div>
-                            <div class="candidates-info-content">
-                                <h6 class="candidates-info-title text-white">Shortlisted Applications</h6>
-                            </div>
-                            <div class="candidates-info-count">
-                                <h3 class="mb-0 text-white">00</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mb-4 mb-lg-0">
-                        <div class="candidates-feature-info bg-danger">
-                            <div class="candidates-info-icon text-white">
-                                <i class="fas fa-thumbs-down"></i>
-                            </div>
-                            <div class="candidates-info-content">
-                                <h6 class="candidates-info-title text-white">Rejected Applications</h6>
-                            </div>
-                            <div class="candidates-info-count">
-                                <h3 class="mb-0 text-white">00</h3>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="user-dashboard-info-box mb-0 pb-4">
                     <div class="section-title">
                         <h4>최근 지원한 공고 목록</h4>
                     </div>
-                    <div class="row">
-                        <c:forEach items="${recentlyApplyJobList}" var="recentlyApplyJobList">
-                            <div class="col-12" onclick="location.href='/business/detail?jobId=${recentlyApplyJobList.applicationId}'">
-                                <div class="job-list ">
-                                    <div class="job-list-logo">
-                                        <img class="img-fluid" src="/images/svg/01.svg" alt="">
-                                    </div>
-                                    <div class="job-list-details">
-                                        <div class="job-list-info">
-                                            <div class="job-list-title">
-                                                <input type="hidden" id="jobPostId" name="jobPostId" value="${recentlyApplyJobList.applicationId}">
-                                                <h5 class="mb-0">${recentlyApplyJobList.title}</h5>
-                                            </div>
-                                            <div class="job-list-option">
-                                                <ul class="list-unstyled">
-                                                    <li> <a href="">${recentlyApplyJobList.jobTypeCodeName}</a> </li>
-                                                    <li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>${recentlyApplyJobList.jobTime} ${recentlyApplyJobList.salaryTypeCodeName} : ${recentlyApplyJobList.salary}</a></li>
-                                                </ul>
-                                                <ul class="list-unstyled">
-                                                    <li><i class="fas fa-map-marker-alt pe-1"></i>${recentlyApplyJobList.address}</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="job-list-favourite-time">
-                                        <a href="#">${recentlyApplyJobList.statusTypeCodeName}</a>
-                                        <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${recentlyApplyJobList.systemRegisterDatetime}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </c:forEach>
+                    <div class="container">
+                        <!-- applyList -->
+                        <div class="row" id="recentlyApplyJobList">
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 text-center mt-4 mt-md-5">
-                            <ul class="pagination justify-content-center mb-md-4 mb-0">
-                                <li class="page-item disabled"> <span class="page-link b-radius-none">Prev</span> </li>
-                                <li class="page-item active" aria-current="page"><span class="page-link">1 </span> <span class="sr-only">(current)</span></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                <li class="page-item"><a class="page-link" href="#">25</a></li>
-                                <li class="page-item"> <a class="page-link" href="#">Next</a> </li>
+                        <div class="col-12 text-center mt-4 mt-sm-5">
+                            <!-- page 시작 -->
+                            <ul class="pagination justify-content-center mb-0" id="pagination" name="pagination">
                             </ul>
                         </div>
                     </div>

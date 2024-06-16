@@ -118,9 +118,8 @@
             USER_NO = #{userNo}
     </update>
 
-    <select id="getCurrentApplyList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        SELECT
-            /* PersonalDashMapper.applyList */
+    <select id="applyStatusList" parameterType="map" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        SELECT /* PersonalDashMapper.applyList */
             jai.application_id,
             jai.job_id,
             jai.USER_NO,
@@ -135,8 +134,8 @@
         FROM
             job_application_info jai
                 INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
-        WHERE
-            jai.USER_NO = #{userNo}
+        WHERE jai.USER_NO = #{userNo}
+          AND jpi.title LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY jai.system_register_datetime DESC
     </select>
 
@@ -150,7 +149,7 @@
             APPLICATION_ID = #{applicationId}
     </update>
 
-    <select id="recentlyApplyJobList" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
+    <select id="applyJobList" parameterType="map" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
         SELECT /* PersonalDashMapper.getApplyJobList*/
             jpi.title,
             jpi.job_type_code,
@@ -167,11 +166,14 @@
             jai.application_id,
             jai.job_id,
             DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime
-        FROM
-            job_application_info jai
+        FROM job_application_info jai
         INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
-        WHERE
-            jai.USER_NO = #{userNo}
+        WHERE jai.USER_NO = #{userNo}
+        AND jpi.title LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY jai.system_register_datetime DESC
+    </select>
+
+    <select id="getCountJobs" resultType="int">
+        SELECT COUNT(*) FROM job_post_info
     </select>
 </mapper>

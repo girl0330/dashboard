@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface BusinessDashMapper {
@@ -27,14 +28,12 @@ public interface BusinessDashMapper {
     // 프로필 dto로 가져오기
     CompanyInfoDTO getBusinessProfile(int userNo);
 
-    //keyword없는 작성공고 리스트
-    List<JobPostDTO> postJobList(int userNo);
+    //기업 작성한 공고 리스트
+    List<JobPostDTO> getPostJobList (Map<String, Object> map);
 
-    //keyword있는 작성공고 리스트
-    List<JobPostDTO> keywordPostJobList(JobPostDTO jobPostDTO);
 
     //지원자들의 userNo가져오기
-    List<JobApplicationDTO> getApplicants(int jobId);
+    List<JobApplicationDTO> getCandidateList(Map<String, Object> map);
 
     //지원자의 userNo로 지원자 정보 가져오기
 //    List<JobApplicationDTO> getApplicantsList(JobApplicationDTO applicants);
