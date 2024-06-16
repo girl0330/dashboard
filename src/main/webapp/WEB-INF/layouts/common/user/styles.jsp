@@ -18,3 +18,6 @@
 
 <!-- Template Style -->
 <link rel="stylesheet" href="/css/style.css" />
+
+<!-- Custom Popup Style -->
+<link rel="stylesheet" href="/css/custom-popup/custom-popup.css" />

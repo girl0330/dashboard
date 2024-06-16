@@ -52,43 +52,42 @@ const ajax = {
 	}
 }
 
-let validation = {
-	email: function (emailValue,focusId) {
-		let valid = true;
-		console.log("emailValue ::::     " + emailValue);
-		let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const validation = {
+	email: (inputElement) => {
+		const emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		const emailValue = inputElement.value;
+
 		if (!emailRegex.test(emailValue)) {
 			alert("이메일 형식으로 입력해주세요.")
-			$('#' + focusId).focus();
-			valid = false;
+			inputElement.focus();
+			return false;
 		}
-		return valid;
+		return true;
 	},
 
-	password : function (password1, password2, focusId1, focusId2) {
-		let valid = true;
-		console.log("password1 ::::     " + password1 + "password2" + password2);
+	password : function (passwordInput1, passwordInput2) {
+		const password1 = passwordInput1;
+		const password2 = passwordInput2;
+		const passwordRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
 
-		let passwordRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
-		if (!passwordRegex.test(password1)){alert("비밀번호 형식을 확인해주세요")
-			$('#'+focusId1).focus();
-			valid = false;
-			return valid;
+		if (!passwordRegex.test(password1)){
+			alert("비밀번호 형식을 확인해주세요");
+			passwordInput1.focus();
+			return false;
 		}
-		if (password1.length > 15 || password1.length < 8) {
+
+		if (password1.length < 8 || password1.length > 15) {
 			alert("비밀번호를 8~15자로 사용해주세요")
-			$('#'+focusId1).focus();
-			valid = false;
-			return valid;
+			passwordInput1.focus();
+			return false;
 		}
 
 		if (password1 !== password2) {
 			alert("비밀번호를 확인해주세요")
-			$('#'+focusId2).focus();
-			valid = false;
-			return valid;
+			passwordInput2.focus();
+			return false;
 		}
-		return valid;
+		return true;
 	},
 	changePassword : function (password1, password2, password3,  focusId1, focusId2, focusId3) {
 		let valid = true;
