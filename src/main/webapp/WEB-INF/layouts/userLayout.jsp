@@ -23,6 +23,10 @@
 </main>
 <!-- main end -->
 
+<!-- popup start -->
+<tiles:insertAttribute name="popup" />
+<!-- popup end -->
+
 <!-- footer start -->
 <footer class="footer mt-0">
   <tiles:insertAttribute name="footer" />
