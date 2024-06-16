@@ -1,3 +1,57 @@
+/**
+ * AJAX 비동기처리 공통
+ *
+ * [파일첨부시]
+ *  contentType: false, // jQuery가 Content-Type 헤더를 설정하지 않도록 합니다.
+ *  processData: false, // jQuery가 데이터를 직렬화하지 않도록 합니다.
+ * */
+const ajax = {
+	call: async (options) => {
+		const {
+			url,
+			type = 'POST',
+			dataType = 'json',
+			contentType = 'application/x-www-form-urlencoded;charset=UTF-8',
+			data = {},
+			async = true,
+			beforeSend = () => {},//요청 전 작업 수행
+			processData = true,
+			customFail,
+			fail,
+			done
+		} = options;
+
+		try {
+
+			jQuery.ajaxSettings.traditional = true; //데이터 직렬화
+
+			const response = await $.ajax({
+				url,
+				type,
+				dataType,
+				contentType,
+				data,
+				async,
+				beforeSend,
+				processData
+			});
+			//차후 customException 추가 시에 조건입력할것
+			done(response);
+
+		} catch (jqXHR) {
+
+			if (fail) {
+				fail(jqXHR);
+			}
+
+			if (jqXHR.status !== 0) {
+				ajax.error(jqXHR.status, jqXHR.responseText);
+			}
+		} finally {
+		}
+	}
+}
+
 let validation = {
 	email: function (emailValue,focusId) {
 		let valid = true;
