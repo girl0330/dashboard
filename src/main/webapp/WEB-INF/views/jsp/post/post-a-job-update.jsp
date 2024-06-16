@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c1584270aaa70b521c164d73785a2a8c&libraries=services"></script>
 <script>
 
     let postSave = {
@@ -103,13 +104,21 @@
         });
 
         $('#address, #zipcode').on("click", function() { // 클릭 이벤트 사용
-            alert("test")
             new daum.Postcode({
                 oncomplete: function(data) { // 선택시 입력값 세팅
-                    console.log(":::::::: " + JSON.stringify(data));
-                    $('#zipcode').val(data.zonecode);
-                    $('#address').val(data.address); // 주소 넣기
-                    $('input[name=addressDetail]').focus(); // 상세입력 포커싱
+                    new daum.maps.services.Geocoder().addressSearch(data.address, function(results, status) {
+                        // 정상적으로 검색이 완료됐으면
+                        if (status === daum.maps.services.Status.OK) {
+                            console.log("tse::   "+JSON.stringify(results));
+                            const result = results[0]; //첫번째 결과의 값을 활용
+                            console.log("result:::   "+JSON.stringify(result));
+                            $("#zipcode").val(data.zonecode); //우편번호
+                            $("#address").val(data.address); //도로명주소
+                            $("#latitude").val(result.y); //위도
+                            $("#longitude").val(result.x); //경도
+                            $('input[name=addressDetail]').focus(); // 상세입력 포커싱
+                        }
+                    });
                 }
             }).open();
         });
@@ -180,6 +189,8 @@ tab -->
                             <div class="form-group mb-3 col-md-3">
                                 <label class="form-label">우편번호 <span class="font-danger">*</span></label>
                                 <input type="text" class="form-control" id="zipcode" value="${old.zipcode}" name="zipcode" valid="true" data-name="우편번호" readonly>
+                                <input type="text" class="form-control" id="latitude" name="latitude" value="${old.latitude}" data-name="위도">
+                                <input type="text" class="form-control" id="longitude" name="zipcode" value="${old.longitude}" data-name="경도">
                             </div>
                             <div class="form-group mb-3 col-md-9">
                                 <label class="form-label">도로명주소 <span class="font-danger">*</span></label>
