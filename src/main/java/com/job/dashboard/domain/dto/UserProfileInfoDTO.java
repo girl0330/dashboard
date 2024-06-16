@@ -15,6 +15,8 @@ public class UserProfileInfoDTO extends UserDTO{
     private String zipcode; //우편번호
     private String address; //도로명주소
     private String addressDetail; //상세주소
+    private double latitude; //위도
+    private double longitude; //경도
     private boolean partTimeExperience;
     private int systemRegisterId;
     private String systemRegisterDatetime;

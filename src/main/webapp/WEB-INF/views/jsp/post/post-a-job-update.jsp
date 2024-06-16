@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c1584270aaa70b521c164d73785a2a8c&libraries=services"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=afcb905c7668725d0a22469ede432941&libraries=services"></script>
 <script>
 
     let postSave = {
@@ -189,8 +189,8 @@ tab -->
                             <div class="form-group mb-3 col-md-3">
                                 <label class="form-label">우편번호 <span class="font-danger">*</span></label>
                                 <input type="text" class="form-control" id="zipcode" value="${old.zipcode}" name="zipcode" valid="true" data-name="우편번호" readonly>
-                                <input type="text" class="form-control" id="latitude" name="latitude" value="${old.latitude}" data-name="위도">
-                                <input type="text" class="form-control" id="longitude" name="zipcode" value="${old.longitude}" data-name="경도">
+                                <input type="hidden" class="form-control" id="latitude" name="latitude" value="${old.latitude}" data-name="위도">
+                                <input type="hidden" class="form-control" id="longitude" name="longitude" value="${old.longitude}" data-name="경도">
                             </div>
                             <div class="form-group mb-3 col-md-9">
                                 <label class="form-label">도로명주소 <span class="font-danger">*</span></label>
@@ -255,12 +255,12 @@ tab -->
                                 </select>
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2" for="salary"> 급여 액수 <span class="font-danger">*</span></label>
+                                <label class="mb-2" for="salary_num"> 급여 액수 <span class="font-danger">*</span></label>
                                 <input type="text" class="form-control" value="${old.salary}" placeholder="" name="salary" id="salary_num" valid="true" data-name="급여 액수">
                             </div>
                             <div class="form-group col-md-3 select-border mb-3">
                                 <label class="mb-2"  for="employmentTypeCode"> 고용 유형 </label>
-                                <select class="form-control basic-select" value="${old.employmentTypeCode}" id="employmentTypeCode" name="employmentTypeCode " valid="true" data-name="고용 유형">
+                                <select class="form-control basic-select" value="${old.employmentTypeCode}" id="employmentTypeCode" name="employmentTypeCode" valid="true" data-name="고용 유형">
                                     <option >선택</option>
                                     <option value="LONG" ${old.employmentTypeCode == 'LONG' ? 'selected="selected"' : ''}>장기</option>
                                     <option value="SHORT" ${old.employmentTypeCode == 'SHORT' ? 'selected="selected"' : ''}>단기</option>

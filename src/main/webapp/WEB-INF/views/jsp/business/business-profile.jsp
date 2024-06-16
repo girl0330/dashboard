@@ -87,6 +87,8 @@
                     console.log(":::::::: " + JSON.stringify(data));
                     $('#zipcode').val(data.zonecode);
                     $('#address').val(data.address); // 주소 넣기
+                    $("#latitude").val(result.y); //위도
+                    $("#longitude").val(result.x); //경도
                     $('input[name=addressDetail]').focus(); // 상세입력 포커싱
                 }
             }).open();
@@ -178,6 +180,8 @@ My Profile -->
                             <div class="form-group mb-3 col-md-3">
                                 <label class="form-label">우편번호</label>
                                 <input type="text" class="form-control" id="zipcode" placeholder="우편번호" value="${profile.zipcode}" name="zipcode" readonly>
+                                <input type="hidden" class="form-control" id="latitude" name="latitude" data-name="위도">
+                                <input type="hidden" class="form-control" id="longitude" name="longitude" data-name="경도">
                             </div>
                             <div class="form-group mb-3 col-md-9">
                                 <label class="form-label">도로명주소 </label>

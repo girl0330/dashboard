@@ -11,6 +11,8 @@
                 zipcode,
                 address,
                 address_detail,
+                longitude,
+                latitude,
                 salary_type_code,
                 salary,
                 job_time,
@@ -42,7 +44,9 @@
                 #{etc},
                 #{userNo},
                 #{userNo},
-                'OPEN')
+                'OPEN',
+                #{longitude},
+                #{latitude})
     </insert>
 
     <select id="getJobLists" parameterType="map" resultType="com.job.dashboard.domain.dto.JobPostDTO">
@@ -77,7 +81,11 @@
             description,
             job_type_code,
             (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = job_type_code) AS job_type_code_name,
+            zipcode,
             address,
+            address_detail,
+            longitude,
+            latitude,
             salary_type_code,
             (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_code = salary_type_code) AS salary_type_code_name,
             salary,
@@ -106,7 +114,11 @@
             title = #{title},
             description = #{description},
             job_type_code = #{jobTypeCode},
+            zipcode = #{zipcode},
             address = #{address},
+            address_detail = #{addressDetail},
+            longitude = #{longitude},
+            latitude = #{latitude},
             salary_type_code = #{salaryTypeCode},
             salary = #{salary},
             job_time = #{jobTime},
@@ -118,6 +130,7 @@
             status_type_code = #{statusTypeCode},
             etc = #{etc},
             system_updater_id = #{systemUpdaterId}
+
         WHERE
             job_id = #{jobId}
     </update>
