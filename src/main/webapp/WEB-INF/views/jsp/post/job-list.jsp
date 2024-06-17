@@ -26,6 +26,7 @@
                     console.error('커스텀 실패 처리:', response);
                 },
                 done: (response) => {
+                    $('#amount').text(response.total);
                     keywordSearch.renderJobs(response.list);
                     renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
                 },
@@ -56,7 +57,7 @@
                     '</div>' +
                     '<div class="job-list-option">' +
                     '<ul class="list-unstyled">' +
-                    '<li><a href="#">' + job.jobTypeCodeName + '</a></li>' +
+                    '<li><a href="#"><i class="fas fa-filter pe-1"></i>' + job.jobTypeCodeName + '</a></li>' +
                     '</ul>' +
                     '<ul class="list-unstyled">' +
                     '<li><i class="fas fa-map-marker-alt pe-1"></i>' + job.address + '</li>' +
@@ -67,7 +68,7 @@
                     '</div>' +
                     '<div class="job-list-favourite-time">' +
                     '<a class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a>' +
-                    '<span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>' + job.systemRegisterDatetime + '</span>' +
+                    '<span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>' + job.systemUpdateDatetime + '</span>' +
                     '</div>' +
                     '</div>' +
                     '</div>';
@@ -128,29 +129,14 @@ banner -->
             <div class="col-lg-12">
                 <div class="row mb-4">
                     <div class="col-12">
-                        <h6 class="mb-0">구인공고목록<span class="text-primary">총 <i id="amount"></i> 건 </span></h6>
-                    </div>
-                </div>
-                <div class="job-filter mb-4 d-sm-flex align-items-center">
-                    <div class="job-shortby ms-sm-auto d-flex align-items-center">
-
-                        <form class="form-inline">
-                            <div class="input-group mb-0 align-items-center">
-                                <label class="justify-content-start me-2">정렬방식 :</label>
-                                <div class="short-by">
-                                    <select class="form-control basic-select">
-                                        <option>최신순</option>
-                                        <option>오래된순</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </form>
+                        <h6 class="mb-0">구인공고 <span class="text-primary">총 <i id="amount"></i> 건 </span></h6>
                     </div>
                 </div>
 
                 <div class="container">
                     <!-- list 목록 -->
                     <div class="row" id="jobList" name="jobList">
+                        <div id="job-list-container"></div>
                     </div>
                 </div>
                 <div class="row">

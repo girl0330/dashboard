@@ -1,7 +1,7 @@
 package com.job.dashboard.domain.business;
 
 import com.job.dashboard.domain.dto.CompanyInfoDTO;
-import com.job.dashboard.domain.dto.ImagesDTO;
+import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -50,5 +50,7 @@ public interface BusinessDashMapper {
     void applyCancelCandidate(JobApplicationDTO jobApplicationDTO);
 
     //이미지 저장
-    void saveImage(ImagesDTO imagesDTO) throws IOException;
+    void saveImage(FileDTO fileDTO) throws IOException;
+
+    FileDTO getFiles(Map<String, Object> map);
 }

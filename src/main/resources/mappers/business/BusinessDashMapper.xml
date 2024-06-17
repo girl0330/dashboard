@@ -160,14 +160,15 @@
     </select>
 
     <select id="getApplicantsInfo" resultType="com.job.dashboard.domain.dto.JobApplicationDTO" parameterType="int">
-        SELECT jai.*
+        SELECT /* BusinessDashMapper.getApplicantsInfo */
+            jai.*
         FROM job_application_info jai
         WHERE jpi.job_id = #{jobId}
           AND jai.user_no = #{userNo}
     </select>
 
     <select id="getCandidateApplyDetail" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        SELECT
+        SELECT /* BusinessDashMapper.getApplicantsInfo */
             jai.JOB_ID,
             jai.USER_NO,
             jai.MOTIVATION_DESCRIPTION,
@@ -189,7 +190,8 @@
     </select>
 
     <update id="applyCandidate" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        UPDATE job_application_info
+        UPDATE  /* BusinessDashMapper.getApplicantsInfo */
+            job_application_info
         SET status_type_code = 'HIRED'
         WHERE USER_NO = #{userNo}
           AND job_id = #{jobId}
@@ -198,14 +200,57 @@
     </update>
 
     <update id="applyCancelCandidate" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        UPDATE job_application_info
+        UPDATE /* BusinessDashMapper.getApplicantsInfo */
+            job_application_info
         SET status_type_code = 'APPLIED'
         WHERE USER_NO = #{userNo}
           AND job_id = #{jobId}
     </update>
 
-    <insert id="saveImage" parameterType="com.job.dashboard.domain.dto.ImagesDTO" >
-        INSERT INTO images (company_id,original_filename,saved_filename, filepath, filetype)
-        VALUES (1, #{originalFilename}, #{savedFilename}, #{filepath}, #{filetype})
+    <insert id="saveImage" parameterType="com.job.dashboard.domain.dto.FileDTO" useGeneratedKeys="true" keyProperty="fileId">
+        INSERT INTO  /* BusinessDashMapper.getApplicantsInfo */
+            file_info (
+                        user_no,
+                        original_filename,
+                        saved_filename,
+                        file_path,
+                        file_type,
+                        file_size,
+                        system_register_id,
+                        system_register_datetime
+        )
+        VALUES (
+                #{userNo},
+                #{originalFilename},
+                #{savedFilename},
+                #{filePath},
+                #{fileType},
+                #{fileSize},
+                #{userNo},
+                now()
+               )
     </insert>
+
+    <select id="getFiles" parameterType="map" resultType="com.job.dashboard.domain.dto.FileDTO">
+        SELECT /* BusinessDashMapper.getFiles */
+            file_id,
+            user_no,
+            original_filename,
+            saved_filename,
+            file_path,
+            file_type,
+            file_size,
+            system_register_id,
+            system_register_datetime
+        FROM file_info
+        WHERE
+        1 = 1
+        <if test="fileId != null">
+            AND file_id = #{fileId}
+        </if>
+        <if test="userNo != null">
+            AND user_no = #{userNo}
+        </if>
+        ORDER BY file_id DESC LIMIT 1
+    </select>
 </mapper>

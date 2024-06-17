@@ -10,7 +10,8 @@
 
         // 전송 함수 정의
         formSubmit : function() {
-            alert("전송함수")
+            alert("전송함수");
+            /*
             const formData = $("#businessSaveProfile").serializeArray();
 
             // JSON 객체로 변환
@@ -18,21 +19,27 @@
             $.each(formData, function() {
                 jsonData[this.name] = this.value;
             });
+            */
+
+            const formElement = document.getElementById('businessSaveProfile');
+            const formData = new FormData(formElement);
 
             // 산업번호 선택 값 추가
-            jsonData['industryCode'] = $('select[name=industryCode]').val();
+            formData.append('industryCode', $('select[name=industryCode]').val());
 
-            // // 사업종류 선택 값 추가
-            jsonData['businessTypeCode'] = $('select[name=businessTypeCode]').val();
-            //
+            // 사업종류 선택 값 추가
+            formData.append('businessTypeCode', $('select[name=businessTypeCode]').val());
 
-            console.log("x:::  "+JSON.stringify(jsonData));
+            for (let key of formData.keys()) {
+                console.log(key, ":", formData.get(key));
+            }
 
             $.ajax({
                 url: "/business/profileSave", // Spring 컨트롤러 URL
                 type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
+                contentType: false, // 파일 전송을 위해 false로 설정
+                processData: false, // 파일 전송을 위해 false로 설정
+                data: formData, // JSON 형식으로 데이터 전송
                 success: function(data) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
                     console.log(JSON.stringify(data));
@@ -52,8 +59,12 @@
     }
 
     function uploadFile() {
-        const form = document.getElementById('uploadForm');
-        const formData = new FormData(form);
+
+        const fileInput = $('#fileInput')[0];
+        const file = fileInput.files[0];
+
+        const formData = new FormData();
+        formData.append('file', file);
         console.log(formData);
 
         $.ajax({
@@ -77,10 +88,12 @@
     }
 
     //DOM이 실행 후 실행 됨
-    document.addEventListener('DOMContentLoaded', function () {
+    $(document).ready(function(){
         document.getElementById("business_profile_sava_button").addEventListener("click", function () {
             business_profile.init();
         });
+
+        //
         $('#address, #zipcode').on("click", function() { // 클릭 이벤트 사용
             new daum.Postcode({
                 oncomplete: function(data) { // 선택시 입력값 세팅
@@ -113,7 +126,7 @@ My Profile -->
                     </div>
                     <div class="cover-photo-contact">
                         <div class="cover-photo">
-                            <img class="img-fluid" id="coverImage" src="" alt="">
+                            <img class="img-fluid" id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="Uploaded Image">
                             <i class="fas fa-times-circle"></i>
                         </div>
                         <form id="uploadForm" enctype="multipart/form-data">
@@ -122,25 +135,13 @@ My Profile -->
                                 <input class="btn btn-primary" type="button" value="업로드" onclick="uploadFile()">
                             </div>
                         </form>
-<%--                        <div class="upload-file">--%>
-<%--                            <form id="uploadForm" enctype="multipart/form-data">--%>
-<%--                                <input class="btn btn-primary mt-2" type="button" value="업로드" onclick="uploadFile()">--%>
-<%--                                <input class="btn btn-primary mt-2" type="button" value="수정" onclick="uploadFile()">--%>
-<%--                                <input class="btn btn-primary mt-2" type="button" value="삭제" onclick="uploadFile()">--%>
-<%--                            </form>--%>
-<%--                        </div>--%>
-<%--                        <div class="upload-file">--%>
-<%--                            <form id="uploadForm" enctype="multipart/form-data">--%>
-<%--                                <label for="formFile" class="form-label">Upload Cover Photo</label>--%>
-<%--                                <input class="form-control" type="file" id="formFile" name="files">--%>
-<%--                            </form>--%>
-<%--                        </div>--%>
                     </div>
-                    <form id="businessSaveProfile" name="businessSaveProfile">
+                    <form id="businessSaveProfile" name="businessSaveProfile" enctype="multipart/form-data">
+                        <input type="file" id="fileInput" name="fileInput" style="display:none;" />
                         <div class="row">
                             <div class="form-group col-md-6 mb-3">
                                 <label class="form-label">기업 이름</label>
-                                <input type="text" value="${company.companyId}" id="companyId" name="companyId">
+                                <input type="hidden" value="${company.companyId}" id="companyId" name="companyId">
                                 <input type="text" class="form-control" value="${company.companyName}" id="companyName" name="companyName">
                             </div>
                             <div class="form-group col-md-6 mb-3">
