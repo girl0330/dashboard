@@ -22,9 +22,9 @@ mybatis:
 
 logging:
   level:
+    com.job.com.job.dashboard: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    root=info:
 
 image:
   upload:
