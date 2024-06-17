@@ -138,10 +138,10 @@
   });
 
 </script>
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Open Modal
-</button>
+<!-- Button trigger modal 일단 대기 갑자기 생김-->
+<%--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">--%>
+<%--  Open Modal--%>
+<%--</button>--%>
 
 <!--=================================
 banner -->
@@ -184,6 +184,7 @@ job list -->
     <div class="row">
       <div class="col-lg-12">
         <form class="col-md-12" id="updateForm" name="updateForm">
+          <h2 class="mb-4">${detail.title}</h2>
           <div class="row">
             <div class="col-md-12">
               <div class="job-list border">
@@ -195,7 +196,7 @@ job list -->
                     <div class="job-list-title">
                       <input type="hidden" id="jobId" name="jobId" value="${detail.jobId}">
                       <input type="hidden" id="statusTypeCode" name="statusTypeCode" value="${detail.statusTypeCode}">
-                      <h5 class="mb-0">회사 이름</h5>
+                      <h5 class="mb-0">${detail.companyName}</h5>
                     </div>
                     <div class="job-list-option">
                       <ul class="list-unstyled">
@@ -217,67 +218,54 @@ job list -->
           <div class="border p-4 mt-4 mt-lg-5">
             <div class="row">
               <h5 class="mb-4">모집조건</h5>
-              <div class="col-md-4 col-sm-6 mb-4">
+              <div class="col-md-6 col-sm-6 mb-4">
                 <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <i class="font-xll text-primary align-self-center flaticon-users"></i>
                   <div class="feature-info-content ps-3">
                     <label class="mb-1">모집직종</label>
                     <span class="mb-0 fw-bold d-block text-dark">${detail.jobTypeCodeName}</span>
                   </div>
                 </div>
               </div>
-              <div class="col-md-4 col-sm-6 mb-4">
+              <c:if test="${detail.requirement}!= 'null'">
+              <div class="col-md-6 col-sm-6 mb-4">
                 <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                  <div class="feature-info-content ps-3">
-                    <label class="mb-1">모집인원</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.numberOfStaff}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-6 mb-4">
-                <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <i class="font-xll text-primary align-self-center flaticon-tick"></i>
                   <div class="feature-info-content ps-3">
                     <label class="mb-1">우대조건</label>
                     <span class="mb-0 fw-bold d-block text-dark">${detail.requirement}</span>
                   </div>
                 </div>
               </div>
-              <div class="col-md-4 col-sm-6 mb-4">
+              </c:if>
+              <div class="col-md-6 col-sm-6 mb-4">
                 <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <i class="font-xll text-primary align-self-center flaticon-users"></i>
                   <div class="feature-info-content ps-3">
-                    <label class="mb-1">기타사항</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.etc}</span>
+                    <label class="mb-1">모집인원</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.numberOfStaff}</span>
                   </div>
                 </div>
               </div>
+              <c:if test="${detail.requirement}!= 'null'">
+                <div class="col-md-6 col-sm-6 mb-4">
+                  <div class="d-flex">
+                    <i class="font-xll text-primary align-self-center flaticon-tick"></i>
+                    <div class="feature-info-content ps-3">
+                      <label class="mb-1">기타사항</label>
+                      <span class="mb-0 fw-bold d-block text-dark">${detail.etc}</span>
+                    </div>
+                  </div>
+                </div>
+              </c:if>
             </div>
             <hr>
             <div class="row">
               <h5 class="mb-4">근무조건</h5>
+
               <div class="col-md-4 col-sm-6 mb-4">
                 <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                  <div class="feature-info-content ps-3">
-                    <label class="mb-1">급여타입</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.salaryTypeCodeName}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-6 mb-4">
-                <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
-                  <div class="feature-info-content ps-3">
-                    <label class="mb-1">금액</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${detail.salary}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-6 mb-4">
-                <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <i class="font-xll text-primary align-self-center flaticon-hand-shake"></i>
                   <div class="feature-info-content ps-3">
                     <label class="mb-1">근무유형</label>
                     <span class="mb-0 fw-bold d-block text-dark">${detail.employmentTypeCodeName}</span>
@@ -286,7 +274,7 @@ job list -->
               </div>
               <div class="col-md-4 col-sm-6 mb-4">
                 <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <i class="font-xll text-primary align-self-center flaticon-hand-shake"></i>
                   <div class="feature-info-content ps-3">
                     <label class="mb-1">근무요일</label>
                     <span class="mb-0 fw-bold d-block text-dark">${detail.jobDayTypeCodeName}</span>
@@ -295,10 +283,28 @@ job list -->
               </div>
               <div class="col-md-4 col-sm-6 mb-4">
                 <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-debit-card"></i>
+                  <i class="font-xll text-primary align-self-center flaticon-hand-shake"></i>
                   <div class="feature-info-content ps-3">
                     <label class="mb-1">근무시간</label>
                     <span class="mb-0 fw-bold d-block text-dark">${detail.jobTime}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-money"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">급여타입</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.salaryTypeCodeName}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-money"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">금액</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${detail.salary}</span>
                   </div>
                 </div>
               </div>

@@ -3,7 +3,7 @@ package com.job.dashboard.domain.business;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.CompanyInfoDTO;
-import com.job.dashboard.domain.dto.ImagesDTO;
+import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
@@ -37,12 +37,13 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     // 프로젝트 루트 경로에 있는 files 디렉토리
     private String fileDir = rootPath + "/files/";
 
-    //파일 업로드
+    //파일 저장
     public Map<Object, String> saveFile(MultipartFile file) throws IOException {
         System.out.println("====프로필 이미지 파일 저장 impl====");
 
         // 결과 맵 생성
         Map<Object, String> result = new HashMap<>();
+        int userNo = (int) sessionUtil.getAttribute("userNo");
 
         try {
             // 파일을 저장할 디렉토리가 존재하지 않으면 생성
@@ -55,6 +56,8 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
             String originalFilename = file.getOriginalFilename();
             System.out.println("파일명 : " + originalFilename);
+
+            Long fileSize = file.getSize();
 
             Path path = Paths.get(uploadFolder + File.separator + file.getOriginalFilename()); // 경로 생성
             Files.write(path, bytes); // 파일을 지정된 경로에 저장
@@ -79,17 +82,20 @@ public class BusinessDashServiceImpl implements BusinessDashService{
             Files.move(path, savedPath); // 원래 경로에서 새로운 이름의 파일 경로로 이동
 
             // 데이터베이스에 파일 정보 저장
-            ImagesDTO imagesDTO = new ImagesDTO();
-            imagesDTO.setOriginalFilename(file.getOriginalFilename());
-            imagesDTO.setFilepath(savedPath.toString());
-            imagesDTO.setFiletype(fileExtension);
-            imagesDTO.setSavedFilename(savedName);
-            System.out.println("이미지 dto 확인 : " + imagesDTO);
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserNo(userNo);
+            fileDTO.setOriginalFilename(file.getOriginalFilename());
+            fileDTO.setSavedFilename(savedName);
+            fileDTO.setFilePath(savedPath.toString());
+            fileDTO.setFileType(fileExtension);
+            fileDTO.setFileSize(fileSize);
+            System.out.println("이미지 dto 확인 : " + fileDTO);
 
-            businessDashMapper.saveImage(imagesDTO);
+            businessDashMapper.saveImage(fileDTO);
 
             result.put("code", "success");
-            result.put("url", "/business/uploadedFileGet/" + savedName); // 클라이언트에게 반환될 파일 URL
+            result.put("url", "/business/uploadedFileGet/" + fileDTO.getFileId()); // 클라이언트에게 반환될 파일 URL
+            System.out.println("result 확인 : "+result);
         } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
             result.put("code", "error");
@@ -99,33 +105,25 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         return result;
     }
 
+    // 파일 가져오기
     @Override
-    public byte[] loadFileAsBytes(Long id) throws IOException {
+    public byte[] loadFileAsBytes(int fileId) throws IOException {
 
-//        Path filePath = Paths.get(uploadFolder + File.separator + savedName);
-//
-//        if (!Files.exists(filePath)) {
-//            throw new IOException("File not found: " + savedName);
-//        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("fileId",fileId);
+        FileDTO file = businessDashMapper.getFiles(map);
+        System.out.println("file확인 ;"+file);
 
-//        try (InputStream imageStream = new FileInputStream(filePath.toString())) {
-////            return IOUtils.toByteArray(imageStream);
-//        }
-        return null;
+        Path filePath = Paths.get(uploadFolder + File.separator + file.getSavedFilename());
+
+        if (!Files.exists(filePath)) {
+            throw new IOException("File not found: " +  file.getSavedFilename());
+        }
+
+        try (InputStream imageStream = new FileInputStream(filePath.toString())) {
+            return IOUtils.toByteArray(imageStream);
+        }
     }
-
-//    @Override
-//    public byte[] loadFileAsBytes() throws IOException {
-//        Path filePath = Paths.get(uploadFolder + File.separator + savedName);
-//
-//        if (!Files.exists(filePath)) {
-//            throw new IOException("File not found: " + savedName);
-//        }
-//
-//        try (InputStream imageStream = new FileInputStream(filePath.toString())) {
-//            return IOUtils.toByteArray(imageStream);
-//        }
-//    }
 
     //기업 프로필 작성
     public Map<Object, String> saveProfile(CompanyInfoDTO companyInfoDTO) {
@@ -165,6 +163,14 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
         return businessDashMapper.getBusinessProfile(userNo);
+    }
+
+    //파일 가져오기
+    public FileDTO getFile(int userNo) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userNo",userNo);
+        return businessDashMapper.getFiles(map);
     }
 
     // 기업 작성한 공고 리스트

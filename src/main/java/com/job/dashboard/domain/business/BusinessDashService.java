@@ -2,6 +2,7 @@ package com.job.dashboard.domain.business;
 
 import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.CompanyInfoDTO;
+import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,5 +38,7 @@ public interface BusinessDashService {
 
     Map<Object, String> saveFile(MultipartFile file) throws IOException;
 
-    byte[] loadFileAsBytes(Long id) throws IOException;
+    byte[] loadFileAsBytes(int fileId) throws IOException;
+
+    FileDTO getFile(int userNo);
 }

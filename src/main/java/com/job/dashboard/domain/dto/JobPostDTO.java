@@ -13,11 +13,15 @@ public class JobPostDTO extends UserDTO  {
     private int userNo; // 로그인한 회원 아이디
     private String title; // 공고 제목 -
     private String description; // 공고 내용-
-    private String jobTypeCode; // 일자리타입코드(서빙, 편의점, 주방 등등)-
-    private String jobTypeCodeName;
+
     private String zipcode; //우편번호
     private String address; //도로명주소
     private String addressDetail; //상세주소
+    private double latitude; //위도
+    private double longitude; //경도
+
+    private String jobTypeCode; // 일자리타입코드(서빙, 편의점, 주방 등등)-
+    private String jobTypeCodeName;
     private String salaryTypeCode; // 급여종류코드(일급, 주급, 시급, 월급 등등)-
     private String salaryTypeCodeName;
     private String salary; // 임금-
@@ -32,14 +36,16 @@ public class JobPostDTO extends UserDTO  {
     private String etc; // 기타사항
     private String statusTypeCode;
     private String statusTypeCodeName;
+    private int countApplication;
+
     private int systemRegisterId;
     private String systemRegisterDatetime;
     private int systemUpdaterId;
     private String systemUpdateDatetime;
-    private int countApplication;
-    private String keyword;
-    private double latitude; //위도
-    private double longitude; //경도
+
+    private String keyword; //검색어
     private int totalJobs; // 총 게시물 수
     private int totalPages; // 총 페이지 수
+    private String companyName; // 회사 이름
+    private String daysAgo; // 며칠 전 계산
 }

@@ -34,7 +34,6 @@
 
         //공백 검사
         Validate_required_fields : function () {
-            alert("!!!!")
             let valid = true;
             $('[valid="true"]').each(function() {
                 // 각 요소의 이름과 값을 출력 (또는 다른 작업 수행)
@@ -54,7 +53,6 @@
 
         //validation 검사(모집인원, 급여액수, 근무시간 숫자만 사용)
         validationCheck : function () {
-            alert("123")
             let valid = true;
             $('input[name*="num"]').each(function () {
                 console.log($(this).attr('name') + '-' + $(this).val());
@@ -75,7 +73,6 @@
 
         //전송 함수
         formSubmit : function () {
-            alert("전송함수")
             const formData = $("#postJobForm").serializeArray();
 
 

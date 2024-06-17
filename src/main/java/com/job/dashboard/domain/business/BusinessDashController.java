@@ -2,6 +2,7 @@ package com.job.dashboard.domain.business;
 
 import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.CompanyInfoDTO;
+import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.util.SessionUtil;
@@ -64,7 +65,16 @@ public class BusinessDashController {
         }
 
         CompanyInfoDTO businessProfile = businessDashService.getBusinessProfile();
+
+        int userNo = (int) sessionUtil.getAttribute("userNo");
+//        FileDTO file = new FileDTO();
+        //파일 조회
+        FileDTO file = businessDashService.getFile(userNo);
+
+        System.out.println("file 확인 : "+file);
+
         System.out.println("프로필 잘가져오기 있음. :"+ businessProfile);
+        model.addAttribute("fileId", file.getFileId());
         model.addAttribute("company", businessProfile);
 
         return "jsp/business/business-profile";
@@ -78,27 +88,16 @@ public class BusinessDashController {
         return businessDashService.saveFile(file);
     }
 
-    @GetMapping("/uploadedFileGet/{id}")
-    public ResponseEntity<byte[]> getImgView(@PathVariable("id") Long id) {
-        System.out.println("id = "+id);
+    @GetMapping("/uploadedFileGet/{fileId}")
+    public ResponseEntity<byte[]> getImgView(@PathVariable("fileId") int fileId) {
+        System.out.println("id = "+fileId);
         try {
-            byte[] imageByteArray = businessDashService.loadFileAsBytes(id);
+            byte[] imageByteArray = businessDashService.loadFileAsBytes(fileId);
             return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-//    @GetMapping("/uploadedFileGet/{savedName}")
-//    public ResponseEntity<byte[]> getImgView(@PathVariable("savedName") String savedName) {
-//        try {
-//            byte[] imageByteArray = businessDashService.loadFileAsBytes(savedName);
-//            return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
-//        } catch (IOException e) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
-
 
     @PostMapping("/profileSave")
     @ResponseBody
