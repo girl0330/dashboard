@@ -75,6 +75,37 @@
         SELECT COUNT(*) FROM job_post_info
     </select>
 
+    <select id="findLike" parameterType="map" resultType="int">
+        SELECT COUNT(1) FROM job_like_info
+        WHERE user_no = #{userNo} AND job_id = #{jobId}
+    </select>
+
+    <delete id="deleteLike" parameterType="map">
+        DELETE   /* PostMapper.deleteLike */
+        FROM job_like_info
+        WHERE user_no = #{userNo} AND job_id = #{jobId}
+    </delete>
+
+    <insert id="likeUp" parameterType="map">
+        INSERT INTO    /*PostMapper.likeUp*/
+            job_like_info (
+                            user_no,
+                            job_id,
+                            system_register_id,
+                            system_register_datetime,
+                            system_updater_id,
+                            system_update_datetime
+        )
+        VALUES (
+                #{userNo},
+                #{jobId},
+                #{userNo},
+                now(),
+                #{userNo},
+                now()
+                )
+    </insert>
+
     <select id="getJobDetail" resultType="com.job.dashboard.domain.dto.JobPostDTO" parameterType="int">
         SELECT      /*PostMapper.getJobDetail*/
             jpi. job_id,

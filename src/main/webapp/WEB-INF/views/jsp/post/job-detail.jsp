@@ -95,6 +95,37 @@
           console.error(error);
         }
       });
+    },
+
+    like: function () {
+
+    }
+  }
+
+  likeFun = { //application안으로 넣기
+    init : function () {
+      const jobId = $("#jobId").val();
+
+      $.ajax({
+        url: "/business/like/"+jobId, // Spring 컨트롤러 URL
+        type: 'POST',
+        contentType: 'application/json',
+        data: '',
+        success: function (data) {
+          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+          if (data.code === 'success') {
+            $('#likeIcon').removeClass().addClass(data.like === 1 ? 'fas fa-heart' : 'far fa-heart');
+
+          } else if (data.code === 'error') {
+            alert(data.message);
+            location.href = '/user/login';
+          }
+        },
+        error: function (xhr, status, error) {
+          // 오류 발생 시 실행할 코드
+          console.error(error);
+        }
+      });
     }
   }
 
@@ -102,6 +133,7 @@
   // DOM 실행 후 안의 내용이 실행 됨
 
   document.addEventListener('DOMContentLoaded', function () {
+
     $('#exampleModalCenter').on('hidden.bs.modal', function () { //hidden.bs.modal 팝이 완전 닫치고난다음 실행
       $('#motivationDescription').val("");
     });
@@ -111,8 +143,12 @@
     });
 
     $('#button_applyCancel').click(function () {
-      application.cencel();
+      application.cencel(); <!-- 고칠 부분 -->
     });
+
+    $('#like').click(function () {
+      likeFun.init();
+    })
 
     const latitude = $('#latitude').val(); //위도
     const longitude = $('#longitude').val(); //경도
@@ -135,6 +171,8 @@
 
 // 마커가 지도 위에 표시되도록 설정합니다
     marker.setMap(map);
+
+
   });
 
 </script>
@@ -209,7 +247,7 @@ job list -->
                   </div>
                 </div>
                 <div class="job-list-favourite-time">
-                  <a  class="job-list-favourite order-2" href="#" onclick=""><i class="far fa-heart"></i></a>
+                  <a class="job-list-favourite order-2" id="like" href="#"><i id='likeIcon' class="${like == '1' ? 'fas' : 'far'} fa-heart"></i></a>
                   <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>마감날</span>
                 </div>
               </div>

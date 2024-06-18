@@ -1,10 +1,20 @@
 /**
- * AJAX 비동기처리 공통
+ * AJAX 요청
  *
- * [파일첨부시]
- *  contentType: false, // jQuery가 Content-Type 헤더를 설정하지 않도록 합니다.
- *  processData: false, // jQuery가 데이터를 직렬화하지 않도록 합니다.
- * */
+ * @param {Object} options - AJAX 요청 옵션.
+ * @param {string} options.url - 요청을 보낼 URL.
+ * @param {string} [options.type='POST'] - 요청 유형 (예: "POST", "GET").
+ * @param {string} [options.dataType='json'] - 서버로부터 기대하는 데이터 유형.
+ * @param {string} [options.contentType='application/x-www-form-urlencoded;charset=UTF-8'] - 전송할 데이터의 콘텐츠 유형, 파일첨부 -> false 설정할것
+ * @param {Object} [options.data={}] - 서버로 보낼 데이터.
+ * @param {boolean} [options.async=true] - 요청을 비동기식으로 할지 여부.
+ * @param {Function} [options.beforeSend=() => {}] - 요청 전에 수행할 콜백 함수.
+ * @param {boolean} [options.processData=true] - 데이터를 자동으로 처리할지 여부, 파일첨부 -> false 설정할것
+ * @param {Function} [options.fail] - 요청이 실패했을 때 실행할 콜백 함수.
+ * @param {Function} [options.done] - 요청이 성공했을 때 실행할 콜백 함수.
+ *
+ * @returns {Promise<void>} AJAX 요청이 완료되면 Promise가 반환됩니다.
+ */
 const ajax = {
 	call: async (options) => {
 		const {
@@ -16,15 +26,12 @@ const ajax = {
 			async = true,
 			beforeSend = () => {},//요청 전 작업 수행
 			processData = true,
-			customFail,
 			fail,
 			done
 		} = options;
 
 		try {
-
-			jQuery.ajaxSettings.traditional = true; //데이터 직렬화
-
+			// 특정 요청에 대해서만 설정을 변경하고, 전역 설정은 건드리지 않음
 			const response = await $.ajax({
 				url,
 				type,
@@ -33,13 +40,15 @@ const ajax = {
 				data,
 				async,
 				beforeSend,
-				processData
+				processData,
+				traditional: true // 특정 요청에 대해서만 설정
 			});
 			//차후 customException 추가 시에 조건입력할것
-			done(response);
+			if(done) {
+				done(response);
+			}
 
 		} catch (jqXHR) {
-
 			if (fail) {
 				fail(jqXHR);
 			}
@@ -47,8 +56,11 @@ const ajax = {
 			if (jqXHR.status !== 0) {
 				ajax.error(jqXHR.status, jqXHR.responseText);
 			}
-		} finally {
 		}
+	},
+	error: (status, responseText) => {
+		// 기본 에러 처리
+		console.error(`Error: ${status}`, responseText);
 	}
 }
 

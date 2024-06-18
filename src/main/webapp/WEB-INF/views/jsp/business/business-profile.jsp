@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=afcb905c7668725d0a22469ede432941&libraries=services"></script>
 <script>
     let business_profile = {
         init : function () {
@@ -10,28 +11,32 @@
 
         // 전송 함수 정의
         formSubmit : function() {
-            alert("전송함수");
-            /*
-            const formData = $("#businessSaveProfile").serializeArray();
+            const formData = new FormData();
 
-            // JSON 객체로 변환
-            let jsonData = {};
-            $.each(formData, function() {
-                jsonData[this.name] = this.value;
+            /*
+            $("#businessSaveProfile").serializeArray().forEach(el => {
+                if(el.value){
+                    formData.append(el.name, el.value);
+                }
             });
             */
+            // FormData에 유효한 값만 추가 [분해구조할당 사용]
+            $("#businessSaveProfile").serializeArray().forEach(({ name, value }) => {
+                if (value.trim()) { // 공백만 있는 값도 제외
+                    formData.append(name, value);
+                }
+            });
 
-            const formElement = document.getElementById('businessSaveProfile');
-            const formData = new FormData(formElement);
+            // 파일 추가
+            const fileInput = $('#fileInput')[0];
+            const file = fileInput.files[0];
+            if (file) {
+                formData.append('file', file);
+            }
 
-            // 산업번호 선택 값 추가
-            formData.append('industryCode', $('select[name=industryCode]').val());
-
-            // 사업종류 선택 값 추가
-            formData.append('businessTypeCode', $('select[name=businessTypeCode]').val());
-
-            for (let key of formData.keys()) {
-                console.log(key, ":", formData.get(key));
+            // 디버깅용 출력
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ": " + value);
             }
 
             $.ajax({
@@ -97,12 +102,17 @@
         $('#address, #zipcode').on("click", function() { // 클릭 이벤트 사용
             new daum.Postcode({
                 oncomplete: function(data) { // 선택시 입력값 세팅
-                    console.log(":::::::: " + JSON.stringify(data));
-                    $('#zipcode').val(data.zonecode);
-                    $('#address').val(data.address); // 주소 넣기
-                    $("#latitude").val(result.y); //위도
-                    $("#longitude").val(result.x); //경도
-                    $('input[name=addressDetail]').focus(); // 상세입력 포커싱
+                    new daum.maps.services.Geocoder().addressSearch(data.address, function(results, status) {
+                        if (status === daum.maps.services.Status.OK) {
+                            const result = results[0]; //첫번째 결과의 값을 활용
+
+                            $('#zipcode').val(data.zonecode);
+                            $('#address').val(data.address); // 주소 넣기
+                            $("#latitude").val(result.y); //위도
+                            $("#longitude").val(result.x); //경도
+                            $('input[name=addressDetail]').focus(); // 상세입력 포커싱
+                        }
+                    })
                 }
             }).open();
         });
@@ -151,7 +161,7 @@ My Profile -->
                             <div class="form-group col-md-4 mb-3 select-border">
                                 <label class="form-label" for="industryCode">산업종류</label>
                                 <select class="form-control basic-select" name="industryCode" id="industryCode" >
-                                    <option value="선택" selected="selected">선택</option>
+                                    <option value="" selected="selected">선택</option>
                                     <option value="IT" ${company.industryCode == 'IT' ? 'selected="selected"' : ''}>IT</option>
                                     <option value="SELF" ${company.industryCode == 'SELF' ? 'selected="selected"' : ''}>자영업</option>
                                     <option value="MAN" ${company.industryCode == 'MAN' ? 'selected="selected"' : ''}>제조업</option>
@@ -169,7 +179,7 @@ My Profile -->
                             <div class="form-group col-md-4 mb-3 select-border">
                                 <label class="form-label" for="businessTypeCode">회사종류</label>
                                 <select class="form-control basic-select" name="businessTypeCode" id="businessTypeCode">
-                                    <option value="선택">선택</option>
+                                    <option value="">선택</option>
                                     <option value="CORP" ${company.businessTypeCode == 'CORP' ? 'selected="selected"' : ''}>법인사업자</option>
                                     <option value="GEN" ${company.businessTypeCode == 'GEN' ? 'selected="selected"' : ''}>일반사업자 </option>
                                 </select>

@@ -4,6 +4,7 @@ package com.job.dashboard.domain.job;
 import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.domain.dto.LikeDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -82,6 +83,22 @@ public class PostController {
     public String detail(@RequestParam("jobId") int jobId, Model model) {
         System.out.println("====상세페이지 ====");
         System.out.println("jobId??? "+ jobId);
+        Map<String, Object> map = new HashMap<>();
+
+        if (sessionUtil.loginUserCheck()) { // 로그인시
+            System.out.println("로그인 됨.");
+            int userNo = (int) sessionUtil.getAttribute("userNo");
+            System.out.println("유저no확인 ; "+userNo);
+
+            map.put("userNo", userNo);
+            map.put("jobId", jobId);
+            System.out.println("map 내용확인 : "+map);
+
+            int like = postService.findLike(map);
+            System.out.println("like ;; "+like);
+
+            model.addAttribute("like", like);
+        }
 
         JobPostDTO detail = postService.detail(jobId);
         System.out.println("detail?? "+detail);
@@ -90,11 +107,22 @@ public class PostController {
         return "jsp/post/job-detail";
     }
 
+    //좋아요 관리
+    @PostMapping("/like/{jobId}")
+    @ResponseBody
+    public Map<String, Object> likeCon(@PathVariable int jobId) {
+        System.out.println("jobId확인 :: "+jobId);
+
+        Map<String, Object> map = postService.likeCon(jobId);
+        System.out.println("likeMap :::   "+ map);
+        return map;
+    }
+
     //공고 수정
     @GetMapping("/update")
     public String update(@RequestParam("jobId") int jobId, Model model) {
         System.out.println("수정하기 : id 확인"+jobId);
-        Integer userNo = (Integer) sessionUtil.getAttribute("userNo"); //로그인한 userNo 가져옴
+        int userNo = (int) sessionUtil.getAttribute("userNo"); //로그인한 userNo 가져옴
 
         JobPostDTO old = postService.detail(jobId);
         if (old.getUserNo() != userNo) {

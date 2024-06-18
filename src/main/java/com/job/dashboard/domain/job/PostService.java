@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.domain.dto.LikeDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,11 @@ public interface PostService {
 
     //목록
     PageInfo<JobPostDTO> jobList(String keyword, int pageNum, int pageSize);
+
+    //like
+    int findLike(Map<String, Object> map);
+    //좋아요 관리
+    Map<String, Object> likeCon(int jobId);
 
     //상세
     JobPostDTO detail(int jobId);
@@ -36,5 +42,5 @@ public interface PostService {
 
     int getCountJobs();
 
-    //총 게시물
+
 }

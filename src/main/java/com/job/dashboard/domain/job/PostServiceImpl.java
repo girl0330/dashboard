@@ -3,8 +3,10 @@ package com.job.dashboard.domain.job;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.domain.dto.LikeDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,10 +48,48 @@ public class PostServiceImpl implements PostService {
     public JobPostDTO detail(int jobId) {
         System.out.println("====상세페이지 impl 입니다. ====");
 
-
         return postMapper.getJobDetail(jobId);
     }
 
+    //like
+    public int findLike(Map<String, Object> map) {
+
+        System.out.println("map 확인 ::"+map);
+
+        return postMapper.findLike(map);
+    }
+
+    //좋아요 관리
+    public Map<String, Object> likeCon(int jobId) {
+
+        Map<String, Object> map = new HashMap<>();
+
+        if (!sessionUtil.loginUserCheck()) { // 로그인 체크
+            map.put("code", "error");
+            map.put("message", "로그인 후 이용해 주세요");
+            return map;
+        }
+
+        int userNo = (int) sessionUtil.getAttribute("userNo");
+
+        map.put("userNo", userNo);
+        map.put("jobId", jobId);
+        System.out.println("map확인 ::: "+map);
+
+        int like = postMapper.findLike(map);
+        if(like > 0) {// 좋아요 누른상테
+            postMapper.deleteLike(map);
+            like = 0;
+        } else {
+            postMapper.likeUp(map);
+            like = 1;
+        }
+
+        map.put("like",like);
+        map.put("code", "success");
+        return map;
+
+    }
     // 구인 공고 수정
     public Map<String, Object> update(int userNo, JobPostDTO jobPostDTO) {
         Map<String, Object> map = new HashMap<>();
