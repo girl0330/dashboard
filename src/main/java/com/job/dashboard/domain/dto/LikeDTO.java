@@ -3,7 +3,7 @@ package com.job.dashboard.domain.dto;
 import lombok.Data;
 
 @Data
-public class jobLikeInfo {
+public class LikeDTO {
     private int likeId;
     private int userNo;
     private int jobId;
@@ -12,3 +12,4 @@ public class jobLikeInfo {
     private int systemUpdaterId;
     private String systemUpdateDatetime;
 }
+

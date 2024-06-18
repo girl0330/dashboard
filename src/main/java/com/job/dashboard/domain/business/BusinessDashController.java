@@ -38,8 +38,8 @@ public class BusinessDashController {
         System.out.println("대시보드");
 
         if(!sessionUtil.loginUserCheck()) {
-            System.out.println("로그인 화면으로 이동");
-            return "redirect:/user/login?test=true";
+            System.out.println("로그인 안되어 있음, 로그인 화면으로 이동");
+            return "redirect:/user/login";
         }
 
         if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) {
@@ -70,11 +70,14 @@ public class BusinessDashController {
 //        FileDTO file = new FileDTO();
         //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
+        if (file != null) {
+            System.out.println("file 확인 : "+file);
+            model.addAttribute("fileId", file.getFileId());
+        }
 
         System.out.println("file 확인 : "+file);
 
         System.out.println("프로필 잘가져오기 있음. :"+ businessProfile);
-        model.addAttribute("fileId", file.getFileId());
         model.addAttribute("company", businessProfile);
 
         return "jsp/business/business-profile";
@@ -101,8 +104,10 @@ public class BusinessDashController {
 
     @PostMapping("/profileSave")
     @ResponseBody
-    public Map<Object, String> profileSave(@RequestBody CompanyInfoDTO companyInfoDTO) {
+    public Map<Object, String> profileSave(CompanyInfoDTO companyInfoDTO) {
         System.out.println("====기업 프로필 저장====");
+
+        System.out.println("companyInfoDTO:::   "+companyInfoDTO);
 
         Map<Object, String> map = businessDashService.saveProfile(companyInfoDTO);
         System.out.println("map"+map);
