@@ -1,5 +1,6 @@
 package com.job.dashboard.domain.personal;
 
+import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
@@ -36,6 +37,4 @@ public interface PersonalDashMapper {
     List<JobApplicationDTO> applyJobList(Map<String, Object> map);
 
     int getCountJobs();
-
-
 }

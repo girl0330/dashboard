@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
     $(document).ready(function(){
-        $('#x').on('click', function() {
+        $('#file').on('click', function() {
             $('#fileInput').click();
         });
 
@@ -28,10 +28,10 @@ inner banner -->
                 <div class="jobber-user-info">
                     <div class="profile-avatar">
                         <img class="img-fluid " id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="">
-                        <i class="fas fa-pencil-alt" id="x"></i>
+                        <i class="fas fa-pencil-alt" id="file" name="file"></i>
                     </div>
                     <div class="profile-avatar-info ms-4">
-                        <h3>${userEmail}</h3>
+                        <h3>${company.companyName}</h3>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@ Dashboard Nav -->
                     <div class="secondary-menu">
                         <c:if  test="${userTypeCode == '20'}">
                             <ul class="list-unstyled mb-0" id="menu">
-                                <li><a href="/business/dashboard">Dashboard</a></li>
+<%--                                <li><a href="/business/dashboard">Dashboard</a></li>--%>
                                 <li><a href="/business/profile">프로필</a></li>
                                 <li><a href="/business/changePassword">비밀번호 변경</a></li>
 <%--                                <li><a href="/business/manageCandidate">지원자 관리</a></li>--%>

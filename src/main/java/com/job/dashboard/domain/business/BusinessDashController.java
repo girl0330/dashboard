@@ -51,6 +51,7 @@ public class BusinessDashController {
     //프로필 페이지 - 데이터 있으면 보여줌
     @GetMapping("/profile")
     public String profileView(Model model)  {
+        int userNo = (int) sessionUtil.getAttribute("userNo");
         System.out.println("프로필");
 
         //로그인 확인
@@ -66,8 +67,6 @@ public class BusinessDashController {
 
         CompanyInfoDTO businessProfile = businessDashService.getBusinessProfile();
 
-        int userNo = (int) sessionUtil.getAttribute("userNo");
-//        FileDTO file = new FileDTO();
         //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
         if (file != null) {
@@ -117,20 +116,33 @@ public class BusinessDashController {
 
     //비밀번호 변경
     @GetMapping("/changePassword")
-    public String changePasswordView()  {
+    public String changePasswordView(Model model)  {
         System.out.println("비번변경");
 
         if(!sessionUtil.loginUserCheck()) {
             System.out.println("로그인 화면으로 이동");
             return "redirect:/user/login?test=true";
         }
+
+        //회사 이름
+        CompanyInfoDTO businessProfile = businessDashService.getBusinessProfile();
+        model.addAttribute("company", businessProfile);
+
+        //파일 조회
+        int userNo = (int) sessionUtil.getAttribute("userNo");
+        FileDTO file = businessDashService.getFile(userNo);
+        if (file != null) {
+            System.out.println("file 확인 : "+file);
+            model.addAttribute("fileId", file.getFileId());
+        }
+
         return "jsp/business/business-changePassword";
     }
 
 
     //공고 관리
     @GetMapping("/managePostJob")
-    public String managePostJobView() {
+    public String managePostJobView(Model model) {
         System.out.println("공고관리");
 
         if(!sessionUtil.loginUserCheck()) { // 로그인
@@ -140,6 +152,18 @@ public class BusinessDashController {
 
         if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) { //회원 타입
             return "redirect:/";
+        }
+
+        //회사 이름
+        CompanyInfoDTO businessProfile = businessDashService.getBusinessProfile();
+        model.addAttribute("company", businessProfile);
+
+        //파일 조회
+        int userNo = (int) sessionUtil.getAttribute("userNo");
+        FileDTO file = businessDashService.getFile(userNo);
+        if (file != null) {
+            System.out.println("file 확인 : "+file);
+            model.addAttribute("fileId", file.getFileId());
         }
 
         return "jsp/business/business-managePostJob";

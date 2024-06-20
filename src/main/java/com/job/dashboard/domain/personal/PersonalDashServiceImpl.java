@@ -2,6 +2,7 @@ package com.job.dashboard.domain.personal;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
@@ -160,4 +161,5 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     public int getCountJobs() {
         return personalDashMapper.getCountJobs();  // 총 게시물 수를 세는 메서드
     }
+
 }
