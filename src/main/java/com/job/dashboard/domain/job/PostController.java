@@ -2,6 +2,8 @@ package com.job.dashboard.domain.job;
 
 
 import com.github.pagehelper.PageInfo;
+import com.job.dashboard.domain.business.BusinessDashService;
+import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.domain.dto.LikeDTO;
@@ -62,7 +64,8 @@ public class PostController {
     @ResponseBody
     public Map<String, Object> ajaxJobPostList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                                @RequestParam(defaultValue = "1") int pageNum,
-                                               @RequestParam(defaultValue = "10") int pageSize) {
+                                               @RequestParam(defaultValue = "10") int pageSize,
+                                               Model model) {
 
         PageInfo<JobPostDTO> jobList = postService.jobList(keyword, pageNum, pageSize);
 

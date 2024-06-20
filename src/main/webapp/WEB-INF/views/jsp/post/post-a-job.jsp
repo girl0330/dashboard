@@ -134,9 +134,21 @@
             }).open();
         });
 
-        // $(document).on('click', '.nav-item.disabled', function (e) {
-        //     e.preventDefault(); // 기본 동작을 방지
-        // });
+        createSelectBox('tesJobDayTypeCode', 'form-control basic-select', 'jobDayTypeCode', 'jobDayTypeCode', [
+            {value: 'DAY', text: '하루'},
+            {value: 'WK', text: '일주일'},
+            {value: 'WEEKND', text: '주말'},
+            {value: 'WDAY', text: '평일'},
+            {value: 'MON', text: '월'},
+            {value: 'TUE', text: '화'},
+            {value: 'WED', text: '수'},
+            {value: 'THU', text: '목'},
+            {value: 'FRI', text: '금'},
+            {value: 'SAT', text: '토'},
+            {value: 'SUN', text: '일'},
+            {value: 'OTH', text: '기타'}
+        ]);
+
     });
 </script>
 <!--=================================
@@ -277,29 +289,32 @@ tab -->
 
                                 </select>
                             </div>
+                            <div id="tesJobDayTypeCode" class="form-group col-md-3 mb-3" >
+                                <label class="mb-2"> 근무요일 <span class="font-danger">*</span></label>
+                            </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2"> 근무시간 <span class="font-danger">*</span></label>
+                                <label class="mb-2" > 근무시간 <span class="font-danger">*</span></label>
                                 <input type="text" class="form-control" value="" name="jobTime" id="jobTime_num" valid="true" data-name="근무시간">
                             </div>
-                            <div class="form-group col-md-3 mb-3">
-                                <label class="mb-2" for="jobDayTypeCode"> 근무요일 <span class="font-danger">*</span></label>
-                                <select class="form-control basic-select" id="jobDayTypeCode" name="jobDayTypeCode" valid="true" data-name="근무요일">
-                                    <option >선택</option>
-                                    <option value="DAY">하루</option>
-                                    <option value="WK">일주일</option>
-                                    <option value="WEEKND">주말</option>
-                                    <option value="WDAY">평일</option>
-                                    <option value="MON">월</option>
-                                    <option value="TUE">화</option>
-                                    <option value="WED">수</option>
-                                    <option value="THU">목</option>
-                                    <option value="FRI">금</option>
-                                    <option value="SAT">토</option>
-                                    <option value="SUN">일</option>
-                                    <option value="OTH">기타</option>
+<%--                            <div class="form-group col-md-3 mb-3">--%>
+<%--                                <label class="mb-2" for="jobDayTypeCode"> 근무요일 <span class="font-danger">*</span></label>--%>
+<%--                                <select class="form-control basic-select" id="jobDayTypeCode" name="jobDayTypeCode" valid="true" data-name="근무요일">--%>
+<%--                                    <option >선택</option>--%>
+<%--                                    <option value="DAY">하루</option>--%>
+<%--                                    <option value="WK">일주일</option>--%>
+<%--                                    <option value="WEEKND">주말</option>--%>
+<%--                                    <option value="WDAY">평일</option>--%>
+<%--                                    <option value="MON">월</option>--%>
+<%--                                    <option value="TUE">화</option>--%>
+<%--                                    <option value="WED">수</option>--%>
+<%--                                    <option value="THU">목</option>--%>
+<%--                                    <option value="FRI">금</option>--%>
+<%--                                    <option value="SAT">토</option>--%>
+<%--                                    <option value="SUN">일</option>--%>
+<%--                                    <option value="OTH">기타</option>--%>
 
-                                </select>
-                            </div>
+<%--                                </select>--%>
+<%--                            </div>--%>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 기타사항 </label>
                                 <textarea class="form-control" rows="4" value="" name="etc" id="etc" data-name="기타사항"></textarea>

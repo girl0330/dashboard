@@ -2,6 +2,7 @@ package com.job.dashboard.domain.personal;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.job.dashboard.domain.business.BusinessDashService;
 import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.UserProfileInfoDTO;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ import java.util.Map;
 public class PersonalDashServiceImpl implements PersonalDashService {
     private final PersonalDashMapper personalDashMapper;
     private final SessionUtil sessionUtil;
+    private final BusinessDashService businessDashService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     //프로필이 작성 유무
@@ -41,7 +44,7 @@ public class PersonalDashServiceImpl implements PersonalDashService {
 
     // 프로필 저장하기
     @Transactional
-    public Map<Object, String> saveProfile(UserProfileInfoDTO userProfileInfoDTO) {
+    public Map<Object, String> saveProfile(UserProfileInfoDTO userProfileInfoDTO) throws IOException {
         System.out.println("======profileSave === impl====");
 
         Map<Object, String> map = new HashMap<>();
@@ -51,16 +54,24 @@ public class PersonalDashServiceImpl implements PersonalDashService {
 
         int personalProfile = profile.size();
 
-        if (personalProfile == 0) {
+        if (personalProfile == 0) { //프로필 작성이 안 되어있으면..
             int profileSeq = personalDashMapper.getProfileIdSeq(userNo);
             userProfileInfoDTO.setProfileId(profileSeq);
 
-        } else {
+        } else { //프로필 작성이 되어 있으면..
             userProfileInfoDTO.setProfileId(profile.get(0).getProfileId());
         }
         userProfileInfoDTO.setUserNo(userNo);
 
+        System.out.println("file?"+userProfileInfoDTO.getFile());
+        // 파일 저장
+        if (userProfileInfoDTO.getFile() != null) {
+            Map<Object, String> fileResult = businessDashService.saveFile(userProfileInfoDTO.getFile());
+            System.out.println("====================fileResult 는 :"+fileResult); // 파일 저장 됨.
+        }
+
         // systemRegisterId, systemUpdaterId 데이터는?? //pk가 없으면 insert 있으면 update
+        System.out.println("userProfileDTO"+userProfileInfoDTO);
         personalDashMapper.saveProfile(userProfileInfoDTO);
 
         map.put("code", "success");
@@ -68,6 +79,8 @@ public class PersonalDashServiceImpl implements PersonalDashService {
 
         return map;
     }
+
+    //
 
     // 비밀번호 업데이트
     public Map<Object, Object> changePassword(UserDTO userDTO) {

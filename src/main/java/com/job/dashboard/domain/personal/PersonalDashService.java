@@ -6,6 +6,7 @@ import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public interface PersonalDashService {
 
     UserProfileInfoDTO getProfile(Integer userNo); // 기존 프로필 가져오기
 
-    Map<Object, String> saveProfile(UserProfileInfoDTO userProfileInfoDTO); // 새로운 프로필 저장
+    Map<Object, String> saveProfile(UserProfileInfoDTO userProfileInfoDTO) throws IOException; // 새로운 프로필 저장
 
     // 비밀번호 변경하기
     Map<Object, Object> changePassword(UserDTO userDTO);

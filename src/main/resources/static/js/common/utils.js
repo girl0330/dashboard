@@ -235,3 +235,64 @@ checkboxFun = function (param) {
 	}
 	return valid;
 }
+
+/**
+ * select 박스생성 후 특정 부모요소 아래 추가
+ *
+ * @param {string} parentId - select 요소를 추가할 부모요소 id
+ * @param {string} selectClass - select 요소 class
+ * @param {string} selectId - select 요소 id
+ * @param {string} selectName - select 요소 name
+ * @param {Array} listData - select option에 넣을 객체 배열
+ * @param {Object} [defaultOption] - 기본 option 값 ({value: '', text: '선택'})
+ */
+const createSelectBox = (parentId, selectClass, selectId, selectName, listData, defaultOption = { value: '', text: '선택' }) => {
+	const parent = document.getElementById(parentId);
+
+	// 부모 요소가 없으면 Error
+	if (!parent) {
+		console.error('Parent element with id '+parentId+' not found.');
+		return;
+	}
+
+	// 새로운 select 요소를 생성하고 class, id, name 속성을 설정
+	const select = document.createElement('select');
+	select.id = selectId;
+	select.name = selectName;
+	select.className = selectClass;
+
+	// 기본 옵션(defaultOption)이 제공되었으면 해당 옵션을 select 요소에 추가
+	if (defaultOption) {
+		const option = document.createElement("option");
+		option.value = defaultOption.value;
+		option.text = defaultOption.text;
+		select.appendChild(option);
+	}
+
+	// listData에 있는 항목들을 select 요소에 추가합니다.
+	addOptionsToSelect(select, listData);
+
+	parent.appendChild(select);
+};
+
+/**
+ * 기존 select 요소에 옵션을 추가
+ *
+ * @param {HTMLSelectElement} select - 옵션을 추가할 select 요소 (예:document.getElementById('selectId');)
+ * @param {Array} listData - select option에 넣을 객체 배열
+ */
+const addOptionsToSelect = (select, listData) => {
+	// select 요소나 listData가 유효하지 않으면 에러 메시지를 출력 후 함수를 종료
+	if (!select || !Array.isArray(listData)) {
+		console.error('Invalid select element or list data.');
+		return;
+	}
+
+	// listData 배열의 각 항목을 순회하면서 옵션 요소를 생성하고 select 요소에 추가
+	for (const item of listData) {
+		const option = document.createElement("option");
+		option.value = item.value;
+		option.text = item.text;
+		select.appendChild(option);
+	}
+};
