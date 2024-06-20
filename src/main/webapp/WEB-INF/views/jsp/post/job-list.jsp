@@ -47,7 +47,7 @@
                     '<div class="col-12" onclick="location.href=\'/business/detail?jobId=' + job.jobId + '\'">' +
                     '<div class="job-list">' +
                     '<div class="job-list-logo">' +
-                    '<img class="img-fluid" src="/images/svg/01.svg" alt="">' +
+                    '<img class="img-fluid" src="/business/uploadedFileGet/' + job.fileId + '" alt="">' +
                     '</div>' +
                     '<div class="job-list-details">' +
                     '<div class="job-list-info">' +

@@ -11,8 +11,7 @@ inner banner -->
                     <div class="jobber-user-info">
                         <div class="jobber-user-info">
                             <div class="profile-avatar">
-                                <img class="img-fluid " id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="">
-                                <i class="fas fa-pencil-alt" id="bannerFile" name="bannerFile"></i>
+                                <img class="img-fluid " id="bannerCoverImage" src="/business/uploadedFileGet/${fileId}" alt="">
                             </div>
                             <div class="profile-avatar-info ms-4">
                                 <h3>${company.companyName}</h3>

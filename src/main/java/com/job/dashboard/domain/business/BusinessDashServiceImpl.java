@@ -94,7 +94,7 @@ public class BusinessDashServiceImpl implements BusinessDashService{
             businessDashMapper.saveImage(fileDTO);
 
             result.put("url", "/business/uploadedFileGet/" + fileDTO.getFileId()); // 클라이언트에게 반환될 파일 URL
-            System.out.println("result 확인 : "+result);
+            System.out.println("result 확인 ---> "+result);
         } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
         }
@@ -146,13 +146,18 @@ public class BusinessDashServiceImpl implements BusinessDashService{
             System.out.println("확인: "+ companyInfoDTO);
         }
 
+        businessDashMapper.saveBusinessProfile(companyInfoDTO); // 프로필 내용 등록
 
-        map = saveFile(companyInfoDTO.getFile());
-        System.out.println("map "+ map);
-        businessDashMapper.saveBusinessProfile(companyInfoDTO);
+        // 파일 저장 부분
+        MultipartFile fileCheck = companyInfoDTO.getFile();
+        if (fileCheck != null) { //파일이 있음.
+            map = saveFile(fileCheck);
+            System.out.println("map "+ map);
+        }
 
         map.put("code", "success");
         map.put("message", "프로필 저장 성공!");
+        System.out.println("map에 뭐가 들었나? (프로필 저장중)"+map);
 
         return map;
     }

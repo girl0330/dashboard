@@ -42,7 +42,10 @@ public class PostServiceImpl implements PostService {
     // 구인 공고 목록
     public PageInfo<JobPostDTO> jobList(String keyword, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
+
         List<JobPostDTO> list = postMapper.getJobLists(keyword);
+        System.out.println("list확인 ;; "+list);
+
         return new PageInfo<>(list);
     }
 

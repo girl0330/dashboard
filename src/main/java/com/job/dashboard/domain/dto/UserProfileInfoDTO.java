@@ -2,6 +2,7 @@ package com.job.dashboard.domain.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.web.multipart.MultipartFile;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -22,5 +23,5 @@ public class UserProfileInfoDTO extends UserDTO{
     private String systemRegisterDatetime;
     private int systemUpdaterId;
     private String systemUpdateDatetime;
-
+    private MultipartFile file;
 }

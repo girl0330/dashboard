@@ -99,11 +99,6 @@
 
     like: function () {
 
-    }
-  }
-
-  likeFun = { //application안으로 넣기
-    init : function () {
       const jobId = $("#jobId").val();
 
       $.ajax({
@@ -129,7 +124,6 @@
     }
   }
 
-
   // DOM 실행 후 안의 내용이 실행 됨
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -143,11 +137,11 @@
     });
 
     $('#button_applyCancel').click(function () {
-      application.cencel(); <!-- 고칠 부분 -->
+      application.cancel(); <!-- 고칠 부분 -->
     });
 
     $('#like').click(function () {
-      likeFun.init();
+      application.like();
     })
 
     const latitude = $('#latitude').val(); //위도
@@ -227,7 +221,7 @@ job list -->
             <div class="col-md-12">
               <div class="job-list border">
                 <div class=" job-list-logo">
-                  <img class="img-fluid" src="/images/svg/10.svg" alt="">
+                  <img class="img-fluid" src="/business/uploadedFileGet/${detail.fileId}" alt="">
                 </div>
                 <div class="job-list-details">
                   <div class="job-list-info">
@@ -247,7 +241,7 @@ job list -->
                   </div>
                 </div>
                 <div class="job-list-favourite-time">
-                  <a class="job-list-favourite order-2" id="like" href="#"><i id='likeIcon' class="${like == '1' ? 'fas' : 'far'} fa-heart"></i></a>
+                  <a class="job-list-favourite order-2" id="like" href="#"><i id='likeIcon' class="${like == '1' ? 'fas fa-heart text-danger' : 'far fa-heart'}"></i></a>
                   <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>마감날</span>
                 </div>
               </div>

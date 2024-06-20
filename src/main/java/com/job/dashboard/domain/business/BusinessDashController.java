@@ -51,7 +51,7 @@ public class BusinessDashController {
     //프로필 페이지 - 데이터 있으면 보여줌
     @GetMapping("/profile")
     public String profileView(Model model)  {
-        int userNo = (int) sessionUtil.getAttribute("userNo");
+
         System.out.println("프로필");
 
         //로그인 확인
@@ -65,6 +65,7 @@ public class BusinessDashController {
             return "redirect:/";
         }
 
+        int userNo = (int) sessionUtil.getAttribute("userNo");
         CompanyInfoDTO businessProfile = businessDashService.getBusinessProfile();
 
         //파일 조회

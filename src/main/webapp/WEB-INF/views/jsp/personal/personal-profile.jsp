@@ -61,8 +61,8 @@
       // 파일 formData에 추가
       const fileInput = $('#fileInput')[0];
       const file = fileInput.files[0];
-      if (files) {
-        formData.append('files', file);
+      if (file) {
+        formData.append('file', file);
       }
 
       //확인
@@ -70,19 +70,12 @@
         console.log(key + ":" + value);
       }
 
-      // // JSON 객체로 변환
-      // // let jsonData = {};
-      // $.each(formData, function() {
-      //   jsonData[this.name] = this.value;
-      // });
-
-      console.log("jsonData "+JSON.stringify(jsonData));
-
       $.ajax({
         url: "/personal/myProfileSave", // Spring 컨트롤러 URL
         type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
+        contentType: false, // 파일 전송을 위해 false로 설정
+        processData: false, // 파일 전송을 위해 false로 설정
+        data: formData, // JSON 형식으로 데이터 전송
         success: function(data) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
           console.log(JSON.stringify(data));
@@ -115,15 +108,13 @@
     });
 
     $('#fileInput').on('change', function(event) {
-      const coverImage = $('#coverImage');
+      const coverImage = document.getElementById('coverImage');
       const file = event.target.files[0];
-
       if (file) {
         const reader = new FileReader();
-        reader.onload = (e => {
+        reader.onload = (e) => {
           coverImage.src = e.target.result;
-        });
-
+        };
         reader.readAsDataURL(file);
       }
     });
@@ -171,7 +162,7 @@ My Profile -->
           </div>
           <div class="cover-photo-contact">
             <div class="cover-photo">
-              <img class="img-fluid " id="coverImage" src="/personal/uploadedFileGet/${fileId}" alt="Uploaded Image">
+              <img class="img-fluid" id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="Uploaded Image">
               <i class="fas fa-pencil-alt" id="file" name="file"></i>
             </div>
           </div>

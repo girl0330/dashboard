@@ -2,6 +2,7 @@ package com.job.dashboard.domain.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
@@ -48,4 +49,7 @@ public class JobPostDTO extends UserDTO  {
     private int totalPages; // 총 페이지 수
     private String companyName; // 회사 이름
     private String daysAgo; // 며칠 전 계산
+
+    private MultipartFile file; //파일
+    private int fileId;
 }
