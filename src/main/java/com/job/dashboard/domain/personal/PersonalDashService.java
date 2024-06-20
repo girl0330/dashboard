@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.personal;
 
 import com.github.pagehelper.PageInfo;
+import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
@@ -28,6 +29,7 @@ public interface PersonalDashService {
 
     // 지원 리스트 삭제
     Map<String, Object> applyListDelete(int applicationId);
+
 
 
     // 지원 리스트 보기

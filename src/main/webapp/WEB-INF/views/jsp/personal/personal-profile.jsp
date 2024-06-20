@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=afcb905c7668725d0a22469ede432941&libraries=services"></script>
 
 <script>
   let personal_profile = {
@@ -47,19 +48,33 @@
 
     // 전송 함수 정의
     formSubmit : function() {
-      const formData = $("#saveProfile").serializeArray();
+      // const formData = $("#saveProfile").serializeArray();
+      const formData = new FormData();
 
-      // JSON 객체로 변환
-      let jsonData = {};
-      $.each(formData, function() {
-        jsonData[this.name] = this.value;
+      // 데이터 formData로 수집
+      $('#saveProfile').serializeArray().forEach(({name, value}) => {
+        if (value.trim()) {
+          formData.append(name, value);
+        }
       });
 
-      // 성별 선택 값 추가
-      jsonData['gender'] = $('input[name=gender]:checked').val();
+      // 파일 formData에 추가
+      const fileInput = $('#fileInput')[0];
+      const file = fileInput.files[0];
+      if (files) {
+        formData.append('files', file);
+      }
 
-      // 알바경험 선택 값 추가
-      jsonData['partTimeExperience'] = $('input[name=partTimeExperience]:checked').val();
+      //확인
+      for (let [key, value] of formData.entries()) {
+        console.log(key + ":" + value);
+      }
+
+      // // JSON 객체로 변환
+      // // let jsonData = {};
+      // $.each(formData, function() {
+      //   jsonData[this.name] = this.value;
+      // });
 
       console.log("jsonData "+JSON.stringify(jsonData));
 
@@ -93,17 +108,45 @@
     $("#profile_sava_button").on("click",function () {
       personal_profile.init();
     });
-    // 숫자 외의 문자는 제외시킴
+
+    //업로드할 파일 선택
+    $('#file').on('click', function () {
+      $('#fileInput').click();
+    });
+
+    $('#fileInput').on('change', function(event) {
+      const coverImage = $('#coverImage');
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e => {
+          coverImage.src = e.target.result;
+        });
+
+        reader.readAsDataURL(file);
+      }
+    });
+
+    //핸들폰 입력시 숫자 이외의 문자는 제외시킴
     $('#phone').on("input",function (){
       $(this).val($(this).val().replace(/[^0-9]/g, ''));
-    })
+    });
+
     $('#address, #zipcode').on("click", function() { // 클릭 이벤트 사용
       new daum.Postcode({
         oncomplete: function(data) { // 선택시 입력값 세팅
-          console.log(":::::::: " + JSON.stringify(data));
-          $('#zipcode').val(data.zonecode);
-          $('#address').val(data.address); // 주소 넣기
-          $('input[name=addressDetail]').focus(); // 상세입력 포커싱
+          new daum.maps.services.Geocoder().addressSearch(data.address, function (results, status) {
+            if (status === daum.maps.services.Status.OK) {
+              const result = results[0]; //첫번째 결과의 값을 활용
+
+              $('#zipcode').val(data.zonecode);
+              $('#address').val(data.address); // 주소 넣기
+              $("#latitude").val(result.y); //위도
+              $("#longitude").val(result.x); //경도
+              $('input[name=addressDetail]').focus(); // 상세입력 포커싱
+            }
+          });
         }
       }).open();
     });
@@ -126,7 +169,14 @@ My Profile -->
           <div class="section-title-02 mb-2 d-grid">
             <h4>기본 정보</h4>
           </div>
-          <form class="mt-4" id="saveProfile" name="saveProfile">
+          <div class="cover-photo-contact">
+            <div class="cover-photo">
+              <img class="img-fluid " id="coverImage" src="/personal/uploadedFileGet/${fileId}" alt="Uploaded Image">
+              <i class="fas fa-pencil-alt" id="file" name="file"></i>
+            </div>
+          </div>
+          <form class="mt-4" id="saveProfile" name="saveProfile" enctype="multipart/form-data">
+            <input type="file" id="fileInput" name="fileInput" style="display:none;" />
             <div class="row">
               <div class="form-group mb-3 col-md-6">
                 <label class="form-label">이름</label>

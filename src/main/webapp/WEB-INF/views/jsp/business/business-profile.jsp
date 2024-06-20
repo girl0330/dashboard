@@ -13,13 +13,6 @@
         formSubmit : function() {
             const formData = new FormData();
 
-            /*
-            $("#businessSaveProfile").serializeArray().forEach(el => {
-                if(el.value){
-                    formData.append(el.name, el.value);
-                }
-            });
-            */
             // FormData에 유효한 값만 추가 [분해구조할당 사용]
             $("#businessSaveProfile").serializeArray().forEach(({ name, value }) => {
                 if (value.trim()) { // 공백만 있는 값도 제외
@@ -63,34 +56,34 @@
         }
     }
 
-    function uploadFile() {
-
-        const fileInput = $('#fileInput')[0];
-        const file = fileInput.files[0];
-
-        const formData = new FormData();
-        formData.append('file', file);
-        console.log(formData);
-
-        $.ajax({
-            url: "/business/uploadedFile", // Spring 컨트롤러 URL
-            type: 'POST',
-            processData: false, // jQuery가 데이터를 처리하지 않도록 설정
-            contentType: false, // jQuery가 Content-Type 헤더를 설정하지 않도록 설정
-            data: formData, // JSON 형식으로 데이터 전송
-            success: function(data) {
-                // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-                console.log(data);
-                if(data.code === 'success') {
-                    $('#coverImage').attr('src', data.url);
-                }
-            },
-            error: function(xhr, status, error) {
-                // 오류 발생 시 실행할 코드
-                console.error(error);
-            }
-        });
-    }
+    // function uploadFile() {
+    //
+    //     const fileInput = $('#fileInput')[0];
+    //     const file = fileInput.files[0];
+    //
+    //     const formData = new FormData();
+    //     formData.append('file', file);
+    //     console.log(formData);
+    //
+    //     $.ajax({
+    //         url: "/business/uploadedFile", // Spring 컨트롤러 URL
+    //         type: 'POST',
+    //         processData: false, // jQuery가 데이터를 처리하지 않도록 설정
+    //         contentType: false, // jQuery가 Content-Type 헤더를 설정하지 않도록 설정
+    //         data: formData, // JSON 형식으로 데이터 전송
+    //         success: function(data) {
+    //             // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+    //             console.log(data);
+    //             if(data.code === 'success') {
+    //                 $('#coverImage').attr('src', data.url);
+    //             }
+    //         },
+    //         error: function(xhr, status, error) {
+    //             // 오류 발생 시 실행할 코드
+    //             console.error(error);
+    //         }
+    //     });
+    // }
 
     //DOM이 실행 후 실행 됨
     $(document).ready(function(){
@@ -139,12 +132,6 @@ My Profile -->
                             <img class="img-fluid" id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="Uploaded Image">
                             <i class="fas fa-times-circle"></i>
                         </div>
-                        <form id="uploadForm" enctype="multipart/form-data">
-                            <div>
-                                <input class="form-control" type="file" id="file" name="file">
-                                <input class="btn btn-primary" type="button" value="업로드" onclick="uploadFile()">
-                            </div>
-                        </form>
                     </div>
                     <form id="businessSaveProfile" name="businessSaveProfile" enctype="multipart/form-data">
                         <input type="file" id="fileInput" name="fileInput" style="display:none;" />
@@ -190,17 +177,17 @@ My Profile -->
                             </div>
                             <div class="form-group mb-3 col-md-3">
                                 <label class="form-label">우편번호</label>
-                                <input type="text" class="form-control" id="zipcode" placeholder="우편번호" value="${profile.zipcode}" name="zipcode" readonly>
+                                <input type="text" class="form-control" id="zipcode" placeholder="우편번호" value="${company.zipcode}" name="zipcode" readonly>
                                 <input type="hidden" class="form-control" id="latitude" name="latitude" data-name="위도">
                                 <input type="hidden" class="form-control" id="longitude" name="longitude" data-name="경도">
                             </div>
                             <div class="form-group mb-3 col-md-9">
                                 <label class="form-label">도로명주소 </label>
-                                <input type="text" class="form-control" id="address" placeholder="도로명주소" value="${profile.address}" name="address" readonly>
+                                <input type="text" class="form-control" id="address" placeholder="도로명주소" value="${company.address}" name="address" readonly>
                             </div>
                             <div class="form-group mb-3 col-md-12">
                                 <label class="form-label">상세주소 </label>
-                                <input type="text" class="form-control" id="addressDetail" placeholder="상세주소" value="${profile.addressDetail}" name="addressDetail">
+                                <input type="text" class="form-control" id="addressDetail" placeholder="상세주소" value="${company.addressDetail}" name="addressDetail">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 회사 소개 </label>

@@ -10,6 +10,7 @@ import com.job.dashboard.domain.dto.LikeDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ public class PostServiceImpl implements PostService {
     private final SessionUtil sessionUtil;
 
     // 구인 공고 저장
+    @Transactional
     public Map<String, Object> saveJob(JobPostDTO jobPostDTO) {
         System.out.println("====저장 임플=====");
         Map<String, Object> map = new HashMap<>();
@@ -60,6 +62,7 @@ public class PostServiceImpl implements PostService {
     }
 
     //좋아요 관리
+    @Transactional
     public Map<String, Object> likeCon(int jobId) {
 
         Map<String, Object> map = new HashMap<>();
@@ -91,6 +94,7 @@ public class PostServiceImpl implements PostService {
 
     }
     // 구인 공고 수정
+    @Transactional
     public Map<String, Object> update(int userNo, JobPostDTO jobPostDTO) {
         Map<String, Object> map = new HashMap<>();
         postMapper.updateJob(jobPostDTO);
@@ -100,6 +104,7 @@ public class PostServiceImpl implements PostService {
     }
 
     // 구인 공고 삭제
+    @Transactional
     public void delete(int jobId) {
         System.out.println("삭제 임플?!");
 
@@ -107,6 +112,7 @@ public class PostServiceImpl implements PostService {
     }
 
     // 공고 지원
+    @Transactional
     public Map<String, Object> applyJob(JobApplicationDTO jobApplicationDTO) {
 
         Map<String, Object> map = new HashMap<>();
@@ -155,6 +161,7 @@ public class PostServiceImpl implements PostService {
     }
 
     //공고취소하기
+    @Transactional
     public Map<String, Object> applyCancelJob(Integer jobId) {
         Map<String, Object> map = new HashMap<>();
 

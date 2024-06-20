@@ -1,10 +1,7 @@
 package com.job.dashboard.domain.personal;
 
 import com.github.pagehelper.PageInfo;
-import com.job.dashboard.domain.dto.JobApplicationDTO;
-import com.job.dashboard.domain.dto.JobPostDTO;
-import com.job.dashboard.domain.dto.UserProfileInfoDTO;
-import com.job.dashboard.domain.dto.UserDTO;
+import com.job.dashboard.domain.dto.*;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,7 +22,7 @@ public class PersonalDashController {
 
     // dashboard 리스트
     @GetMapping("/dashboard")
-    public String dashboardView() {
+    public String dashboardView(Model model) {
         System.out.println("==== 개인 회원 대시보드====");
 
         // 로그인 체크
@@ -48,6 +45,14 @@ public class PersonalDashController {
             return "redirect:/personal/myProfile";
         }
 
+//        //파일 조회
+//        FileDTO file = personalDashService.getFile(userNo);
+//        if (file != null) {
+//            System.out.println("file 확인 : "+file);
+//            model.addAttribute("fileId", file.getFileId());
+//        }
+
+//        System.out.println("file 확인 : "+file);
         return "jsp/personal/personal-dashboard";
     }
 

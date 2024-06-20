@@ -186,4 +186,5 @@
     <select id="getCountJobs" resultType="int">
         SELECT COUNT(*) FROM job_post_info
     </select>
+
 </mapper>
