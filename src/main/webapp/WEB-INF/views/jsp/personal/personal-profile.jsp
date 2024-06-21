@@ -162,7 +162,7 @@ My Profile -->
           </div>
           <div class="cover-photo-contact">
             <div class="cover-photo">
-              <img class="img-fluid" id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="Uploaded Image">
+              <img class="img-fluid" id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="Uploaded Image" style="width: 225px; height: 225px;">
               <i class="fas fa-pencil-alt" id="file" name="file"></i>
             </div>
           </div>

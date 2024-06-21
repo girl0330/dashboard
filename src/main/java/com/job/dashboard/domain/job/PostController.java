@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -64,13 +65,15 @@ public class PostController {
     @ResponseBody
     public Map<String, Object> ajaxJobPostList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                                @RequestParam(defaultValue = "1") int pageNum,
-                                               @RequestParam(defaultValue = "10") int pageSize,
-                                               Model model) {
+                                               @RequestParam(defaultValue = "10") int pageSize) {
 
         PageInfo<JobPostDTO> jobList = postService.jobList(keyword, pageNum, pageSize);
+        List<LikeDTO> likeList = postService.likeList();
+        System.out.println("likeList::::    "+likeList);
 
         Map<String, Object> response = new HashMap<>();
         response.put("list", jobList.getList());
+        response.put("likeList", likeList);
         response.put("total", jobList.getTotal());
         response.put("pageNum", jobList.getPageNum());
         response.put("pageSize", jobList.getPageSize());

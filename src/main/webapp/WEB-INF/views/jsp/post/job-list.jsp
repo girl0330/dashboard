@@ -27,7 +27,7 @@
                 },
                 done: (response) => {
                     $('#amount').text(response.total);
-                    keywordSearch.renderJobs(response.list);
+                    keywordSearch.renderJobs(response);
                     renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
                 },
                 fail: () => {
@@ -38,11 +38,21 @@
             ajax.call(options);
 
         },
-        renderJobs: function(list){
+        renderJobs: function(response){
+            const list = response.list;
+            const likeList = response.likeList;
             const container = $("#jobList");
             container.empty();
 
+            // Create a Set for quick lookup of liked job IDs
+            const likedJobIds = new Set(likeList.map(like => like.jobId));
+
+            const likedJobIds1 = likeList.map(like => like.jobId);
+
             list.forEach(job => {
+                // Determine the heart icon class based on whether the jobId is in likedJobIds
+                const heartIconClass = likedJobIds.has(job.jobId) ? 'fas fa-heart text-danger' : 'far fa-heart';
+
                 const jobHtml =
                     '<div class="col-12" onclick="location.href=\'/business/detail?jobId=' + job.jobId + '\'">' +
                     '<div class="job-list">' +
@@ -67,7 +77,7 @@
                     '</div>' +
                     '</div>' +
                     '<div class="job-list-favourite-time">' +
-                    '<a class="job-list-favourite order-2" href="#"><i class="far fa-heart"></i></a>' +
+                    '<a class="job-list-favourite order-2" id="like" href="#"><i class="' + heartIconClass + '" ></i></a>' +
                     '<span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>' + job.systemUpdateDatetime + '</span>' +
                     '</div>' +
                     '</div>' +
@@ -91,6 +101,11 @@
             const pageNum = $(this).data('page');
             keywordSearch.keywordSearchSubmit(pageNum);
         });
+
+        $('#like').click(function () {
+            alert("??")
+            keywordSearch.like();
+        })
     });
 </script>
 <!--=================================

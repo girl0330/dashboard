@@ -241,4 +241,13 @@
         FROM job_application_info
         WHERE USER_NO = #{userNo}
     </select>
+
+    <select id="getLikeList" parameterType="int" resultType="com.job.dashboard.domain.dto.LikeDTO">
+        SELECT /* PostMapper.getLikeList */
+        like_id,
+        user_no,
+        job_id
+        FROM job_like_info
+        WHERE user_no = #{userNo}
+    </select>
 </mapper>

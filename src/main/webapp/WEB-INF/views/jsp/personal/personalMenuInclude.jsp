@@ -55,7 +55,7 @@ Dashboard Nav -->
                             <li><a href="/personal/myProfile">프로필</a></li>
                             <li><a href="/personal/changePassword">비밀번호 변경</a></li>
                             <li><a href="/personal/manageJobs">지원 현황</a></li>
-                            <li><a href="/personal/savedJobs">관심있는 공고</a></li>
+                            <li><a href="/personal/likedJobs">관심있는 공고</a></li>
                         </ul>
                     </c:if>
                 </div>

@@ -52,4 +52,6 @@ public class JobPostDTO extends UserDTO  {
 
     private MultipartFile file; //파일
     private int fileId;
+
+    private int likeId; //좋아요
 }

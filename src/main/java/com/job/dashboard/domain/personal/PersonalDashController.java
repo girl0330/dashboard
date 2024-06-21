@@ -27,7 +27,6 @@ public class PersonalDashController {
     @GetMapping("/dashboard")
     public String dashboardView(Model model) {
         System.out.println("==== 개인 회원 대시보드====");
-        int userNo = (int)sessionUtil.getAttribute("userNo");
 
         // 로그인 체크
         System.out.println("로그인 체크");
@@ -42,6 +41,7 @@ public class PersonalDashController {
         }
 
         // 프로필 작성 여부 확인
+        int userNo = (int)sessionUtil.getAttribute("userNo");
         int profileCheck = personalDashService.profileCheck(userNo);
         if(profileCheck == 0) {
             System.out.println("프로필 내용이 없음, 프로필로 이동");
@@ -66,14 +66,14 @@ public class PersonalDashController {
                                                @RequestParam(defaultValue = "1") int pageNum,
                                                @RequestParam(defaultValue = "10") int pageSize) {
 
-        PageInfo<JobApplicationDTO> recentlyApplyJobList = personalDashService.applyJobList(keyword, pageNum, pageSize);
+        PageInfo<JobApplicationDTO> dashboardList = personalDashService.dashboardList(keyword, pageNum, pageSize);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("list", recentlyApplyJobList.getList());
-        response.put("total", recentlyApplyJobList.getTotal());
-        response.put("pageNum", recentlyApplyJobList.getPageNum());
-        response.put("pageSize", recentlyApplyJobList.getPageSize());
-        response.put("pages", recentlyApplyJobList.getPages());
+        response.put("list", dashboardList.getList());
+        response.put("total", dashboardList.getTotal());
+        response.put("pageNum", dashboardList.getPageNum());
+        response.put("pageSize", dashboardList.getPageSize());
+        response.put("pages", dashboardList.getPages());
 
         System.out.println("response:::::    "+response);
         return response;
@@ -224,9 +224,9 @@ public class PersonalDashController {
     }
 
     // 관심 공고 목록들
-    @GetMapping("/savedJobs")
-    public String savedJobsView(Model model) {
-        System.out.println("==== 개인 회원 savedJobs====");
+    @GetMapping("/likedJobs")
+    public String likedJobsView(Model model) {
+        System.out.println("==== 개인 회원 likedJobs====");
 
         // 로그인 체크
         System.out.println("로그인 체크");
@@ -254,7 +254,30 @@ public class PersonalDashController {
             System.out.println("프로필 내용이 없음, 프로필로 이동");
             return "redirect:/personal/myProfile";
         }
+        System.out.println("좋아요 controller끝 ");
 
-        return "jsp/personal/personal-savedJobs";
+        return "jsp/personal/personal-likedJobs";
     }
+
+    //ajax manageJobsList -(지원 현황)
+    @GetMapping("/ajax/likedJobs")
+    @ResponseBody
+    public Map<String, Object> ajaxLikedJobsList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                                                  @RequestParam(defaultValue = "1") int pageNum,
+                                                  @RequestParam(defaultValue = "10") int pageSize) {
+
+        System.out.println("좋아요 ajax start");
+        PageInfo<JobPostDTO> likedJobsList = personalDashService.likedJobsList(keyword, pageNum, pageSize);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("list", likedJobsList.getList());
+        response.put("total", likedJobsList.getTotal());
+        response.put("pageNum", likedJobsList.getPageNum());
+        response.put("pageSize", likedJobsList.getPageSize());
+        response.put("pages", likedJobsList.getPages());
+
+        System.out.println("response:::::    "+response);
+        return response;
+    }
+
 }
