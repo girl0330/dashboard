@@ -159,8 +159,10 @@
             APPLICATION_ID = #{applicationId}
     </update>
 
-    <select id="applyJobList" parameterType="map" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        SELECT /* PersonalDashMapper.getApplyJobList*/
+    <select id="getDashboardList" parameterType="map" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        SELECT /* PersonalDashMapper.getDashboardList*/
+            jpi.user_no,
+            (SELECT fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC limit 1) as file_id,
             jpi.title,
             jpi.job_type_code,
             (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = jpi.job_type_code) AS job_type_code_name,
@@ -183,8 +185,35 @@
         ORDER BY jai.system_register_datetime DESC
     </select>
 
+    <select id="getLikeJobsList" parameterType="map" resultType="com.job.dashboard.domain.dto.JobPostDTO">
+        SELECT
+            jpi.job_id,
+            jpi.user_no,
+            (SELECT fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC limit 1) as file_id,
+            jpi.title,
+            jpi.job_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = jpi.job_type_code) AS job_type_code_name,
+            jpi.address,
+            jpi.address_detail,
+            jpi.salary,
+            jpi.salary_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_code = jpi.salary_type_code) AS salary_type_code_name,
+            jpi.salary,
+            jpi.job_time,
+            jpi.status_type_code,
+            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jpi.status_type_code) AS status_type_code_name,
+            DATE_FORMAT(jpi.system_register_datetime, '%Y-%m-%d') AS system_register_datetime
+        FROM
+            job_post_info jpi
+            JOIN
+            job_like_info jli  ON  jpi.job_id = jli.job_id
+        WHERE
+            jli.user_no = #{userNo}
+        AND jpi.title LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY jpi.system_register_datetime DESC
+    </select>
+
     <select id="getCountJobs" resultType="int">
         SELECT COUNT(*) FROM job_post_info
     </select>
-
 </mapper>

@@ -18,7 +18,7 @@
                         <a class="nav-link" href="/personal/dashboard" id="navbarDropdown">마이페이지</a>
                     </c:when>
                     <c:when test="${sessionScope.userTypeCode == 20}">
-                        <a class="nav-link" href="/business/dashboard" id="navbarDropdown">마이페이지</a>
+                        <a class="nav-link" href="/business/managePostJob" id="navbarDropdown">마이페이지</a>
                     </c:when>
                     <c:otherwise>
                         <a class="nav-link" href="#" id="navbarDropdown" onclick="message()">마이페이지</a> <!-- 기본 링크 설정 -->
@@ -37,11 +37,11 @@
                             기업회원 <i class="fas fa-chevron-down fa-xs"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/business/dashboard">Dashboard</a></li>
+<%--                            <li><a class="dropdown-item" href="/business/dashboard">Dashboard</a></li>--%>
                             <li><a class="dropdown-item" href="/business/profile">프로필</a></li>
                             <li><a class="dropdown-item" href="/business/changePassword">비밀번호 변경</a></li>
-                            <li><a class="dropdown-item" href="/business/manageCandidate">지원자 관리</a></li>
-                            <li><a class="dropdown-item" href="/business/managePostJob">게시글 관리</a></li>
+<%--                            <li><a class="dropdown-item" href="/business/manageCandidate">지원자 관리</a></li>--%>
+                            <li><a class="dropdown-item" href="/business/managePostJob">공고 관리</a></li>
                             <li><a class="dropdown-item" href="/business/postAJob">공고 작성하기</a></li>
 
                         </ul>

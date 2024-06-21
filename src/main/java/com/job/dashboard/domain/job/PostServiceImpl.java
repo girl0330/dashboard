@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class PostServiceImpl implements PostService {
         System.out.println("====저장 임플=====");
         Map<String, Object> map = new HashMap<>();
 
-        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
+        int userNo = (int) sessionUtil.getAttribute("userNo");
         jobPostDTO.setUserNo(userNo);
         jobPostDTO.setStatusTypeCode("OPEN"); //CANCELLED(취소) HIRED(채용) OPEN(구인중) CLOSED(채용마감)
         System.out.println("dto 확인하기 : " + jobPostDTO);
@@ -47,6 +48,19 @@ public class PostServiceImpl implements PostService {
         System.out.println("list확인 ;; "+list);
 
         return new PageInfo<>(list);
+    }
+
+    //likeList
+    public List<LikeDTO> likeList() {
+
+        if (sessionUtil.loginUserCheck()) { // 로그인 여부 체크
+            System.out.println("로그인됨.");
+            int userNo = (int) sessionUtil.getAttribute("userNo");
+            return postMapper.getLikeList(userNo);
+        } else {
+            System.out.println("로그인되지 않음.");
+            return Collections.emptyList();
+        }
     }
 
     // 구인 공고 상세페이지

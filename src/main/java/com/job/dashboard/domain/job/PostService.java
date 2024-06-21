@@ -42,5 +42,6 @@ public interface PostService {
 
     int getCountJobs();
 
-
+    //likeList
+    List<LikeDTO> likeList();
 }

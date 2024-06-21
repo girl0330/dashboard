@@ -15,11 +15,6 @@ public interface PostMapper {
     //목록
     List<JobPostDTO> getJobLists(String keyword);
 
-    // 좋아요
-    int findLike(Map<String, Object> map);
-    //좋아요 증가
-    void likeUp(Map<String, Object> map);
-
     //상세페이지
     JobPostDTO getJobDetail(int jobId);
 
@@ -59,6 +54,10 @@ public interface PostMapper {
     // 작성한 userNo
     Integer getWriteUserNo(int jobId);
 
-    //like 삭제
-    void deleteLike(Map<String, Object> map);
+
+    //like
+    int findLike(Map<String, Object> map); //like 있는지 확인
+    void likeUp(Map<String, Object> map); //like 증가
+    void deleteLike(Map<String, Object> map); //like 삭제
+    List<LikeDTO> getLikeList(int userNo); //like 리스트 가져오기
 }

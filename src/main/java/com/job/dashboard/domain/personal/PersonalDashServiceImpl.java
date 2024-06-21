@@ -3,10 +3,7 @@ package com.job.dashboard.domain.personal;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.business.BusinessDashService;
-import com.job.dashboard.domain.dto.FileDTO;
-import com.job.dashboard.domain.dto.JobApplicationDTO;
-import com.job.dashboard.domain.dto.UserProfileInfoDTO;
-import com.job.dashboard.domain.dto.UserDTO;
+import com.job.dashboard.domain.dto.*;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -156,7 +153,7 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     }
 
     //dashboard list
-    public PageInfo<JobApplicationDTO> applyJobList(String keyword, int pageNum, int pageSize) {
+    public PageInfo<JobApplicationDTO> dashboardList(String keyword, int pageNum, int pageSize) {
         System.out.println("최근 지원한 리스트 임플");
 
         Map<String, Object> map = new HashMap<>();
@@ -167,8 +164,24 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         System.out.println("map??:: "+map);
 
         PageHelper.startPage(pageNum, pageSize);
-        List<JobApplicationDTO> JobApplicationList = personalDashMapper.applyJobList(map) ;
-        return new PageInfo<>(JobApplicationList);
+        List<JobApplicationDTO> dashboardList = personalDashMapper.getDashboardList(map) ;
+        return new PageInfo<>(dashboardList);
+    }
+
+    //졸아요 리스트
+    public PageInfo<JobPostDTO> likedJobsList(String keyword, int pageNum, int pageSize) {
+        System.out.println("좋아요 리스트 임플");
+
+        Map<String, Object> map = new HashMap<>();
+        Integer userNo = (Integer) sessionUtil.getAttribute("userNo"); //로그인 정보
+
+        map.put("userNo", userNo);
+        map.put("keyword", keyword);
+        System.out.println("map??:: "+map);
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<JobPostDTO> likedJobsList = personalDashMapper.getLikeJobsList(map);
+        return new PageInfo<>(likedJobsList);
     }
 
     public int getCountJobs() {

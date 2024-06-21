@@ -56,42 +56,30 @@
         }
     }
 
-    // function uploadFile() {
-    //
-    //     const fileInput = $('#fileInput')[0];
-    //     const file = fileInput.files[0];
-    //
-    //     const formData = new FormData();
-    //     formData.append('file', file);
-    //     console.log(formData);
-    //
-    //     $.ajax({
-    //         url: "/business/uploadedFile", // Spring 컨트롤러 URL
-    //         type: 'POST',
-    //         processData: false, // jQuery가 데이터를 처리하지 않도록 설정
-    //         contentType: false, // jQuery가 Content-Type 헤더를 설정하지 않도록 설정
-    //         data: formData, // JSON 형식으로 데이터 전송
-    //         success: function(data) {
-    //             // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-    //             console.log(data);
-    //             if(data.code === 'success') {
-    //                 $('#coverImage').attr('src', data.url);
-    //             }
-    //         },
-    //         error: function(xhr, status, error) {
-    //             // 오류 발생 시 실행할 코드
-    //             console.error(error);
-    //         }
-    //     });
-    // }
-
     //DOM이 실행 후 실행 됨
     $(document).ready(function(){
         document.getElementById("business_profile_sava_button").addEventListener("click", function () {
             business_profile.init();
         });
 
-        //
+        //업로드할 파일 선택
+        $('#fileUpload').on('click', function () {
+            $('#fileInput').click();
+        });
+
+        $('#fileInput').on('change', function(event) {
+            const coverImage = document.getElementById('coverImage');
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    coverImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 주소값
         $('#address, #zipcode').on("click", function() { // 클릭 이벤트 사용
             new daum.Postcode({
                 oncomplete: function(data) { // 선택시 입력값 세팅
@@ -127,10 +115,11 @@ My Profile -->
                     <div class="section-title-02 mb-4">
                         <h4>기본 정보</h4>
                     </div>
-                    <div class="cover-photo-contact">
+                    <div class="cover-photo-contact mb-3 " >
                         <div class="cover-photo">
-                            <img class="img-fluid" id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="Uploaded Image">
-                            <i class="fas fa-times-circle"></i>
+                            <img class="img-fluid" id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="Uploaded Image" style="width: 225px; height: 225px;" >
+                            <i class="fas fa-pencil-alt" id="fileUpload"></i>
+<%--                            <i class="fas fa-pencil-alt" ></i>--%>
                         </div>
                     </div>
                     <form id="businessSaveProfile" name="businessSaveProfile" enctype="multipart/form-data">

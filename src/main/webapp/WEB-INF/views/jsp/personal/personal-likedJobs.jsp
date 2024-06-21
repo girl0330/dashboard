@@ -3,63 +3,71 @@
 <script>
     const keywordSearch = {
         init : function () {
-            //첫 페이지
+            //첫페이지 1 입력
             this.keywordSearchSubmit(1);
         },
 
-        keywordSearchSubmit : function (pageNum) {
+        keywordSearchSubmit: function (pageNum) {
+            const keyword = $('#keyword').val(); // input 필드에서 값 가져오기
 
-            $.ajax({
-                url: '/personal/ajax/dashboardList',
+            const options = {
+                url: '/personal/ajax/likedJobs',
                 type: 'GET',
                 data: {
                     pageNum: pageNum,
                     pageSize: 10,
-                    keyword: ''
+                    keyword: keyword
                 },
-                success: function(response) {
-                    $("#amount").text(response.total); //총 게시물 개수
-                    keywordSearch.renderJobs(response.list); //리스트 목록
-                    renderPagination('pagination',response.pageNum, response.pageSize, response.total, response.pages); //페이징
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        },
-        //list 처리
-        renderJobs: function (list) {
-            console.log("list :: "+JSON.stringify(list));
-            const container = $("#recentlyApplyJobList");
-            container.empty();// id속성 초기화
 
-            list.forEach(function (applyJob) {
+                beforeSend: () => {
+                    console.log('요청 전 작업 수행');
+                },
+                customFail: (response) => {
+                    console.error('커스텀 실패 처리:', response);
+                },
+                done: (response) => {
+                    $('#amount').text(response.total);
+                    keywordSearch.renderJobs(response.list);
+                    renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
+                },
+                fail: () => {
+                    console.error('요청 실패');
+                }
+            };
+
+            ajax.call(options);
+
+        },
+        renderJobs: function(list){
+            const container = $("#likedJobList");
+            container.empty();
+
+            list.forEach(likedJob => {
                 const jobHtml =
-                    '<div class="col-12" onclick="location.href=\'/business/detail?jobId=' + applyJob.jobId + '\'">' +
-                    '<div class="job-list ">' +
+                    '<div class="col-12" onclick="location.href=\'/business/detail?jobId=' + likedJob.jobId + '\'">' +
+                    '<div class="job-list">' +
                     '<div class="job-list-logo">' +
-                    '<img class="img-fluid" src="/business/uploadedFileGet/' + applyJob.fileId + '" alt="">' +
+                    '<img class="img-fluid" src="/business/uploadedFileGet/' + likedJob.fileId + '" alt="">' +
                     '</div>' +
                     '<div class="job-list-details">' +
                     '<div class="job-list-info">' +
                     '<div class="job-list-title">' +
-                    '<input type="hidden" id="jobPostId" name="jobPostId" value="' + applyJob.applicationId + '">' +
-                    '<h5 class="mb-0">' + applyJob.title + '</h5>' +
+                    '<input type="hidden" id="jobPostId" name="jobPostId" value="' + likedJob.jobId + '">' +
+                    '<h5 class="mb-0">' + likedJob.title + ' (' + likedJob.statusTypeCodeName + ')</h5>' +
                     '</div>' +
                     '<div class="job-list-option">' +
                     '<ul class="list-unstyled">' +
-                    '<li><a href="">' + applyJob.jobTypeCodeName + '</a></li>' +
-                    '<li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>' + applyJob.jobTime + ' ' + applyJob.salaryTypeCodeName + ' : ' + applyJob.salary + '</a></li>' +
+                    '<li><a href="#"><i class="fas fa-filter pe-1"></i>' + likedJob.jobTypeCodeName + '</a></li>' +
                     '</ul>' +
                     '<ul class="list-unstyled">' +
-                    '<li><i class="fas fa-map-marker-alt pe-1"></i>' + applyJob.address + '</li>' +
+                    '<li><i class="fas fa-map-marker-alt pe-1"></i>' + likedJob.address + '</li>' +
+                    '<li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>' + likedJob.salaryTypeCodeName + ':' + likedJob.salary + '</a></li>' +
                     '</ul>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
                     '<div class="job-list-favourite-time">' +
-                    '<a href="#">' + applyJob.statusTypeCodeName + '</a>' +
-                    '<span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>' + applyJob.systemRegisterDatetime + '</span>' +
+                    '<a class="job-list-favourite order-2" href="#"><i class="fas fa-heart text-danger"></i></a>' +
                     '</div>' +
                     '</div>' +
                     '</div>';
@@ -73,31 +81,31 @@
         keywordSearch.init();
 
         //페이징 함수
-        $(document).on('click', '.pagination .page-link', function(e) {
+        $(document).on('click', '.pagination .page-link', function (e) {
             e.preventDefault();
             const pageNum = $(this).data('page');
             keywordSearch.keywordSearchSubmit(pageNum);
         });
     })
 </script>
-
 <!--=================================
 inner banner ,Dashboard Nav -->
 <%@ include file="personalMenuInclude.jsp"%>
 <!--=================================
 Candidates Dashboard -->
+
 <section>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="row mb-3 mb-lg-5 mt-3 mt-lg-0">
                     <div class="col-lg-4 mb-4 mb-lg-0">
-                        <div class="candidates-feature-info bg-dark">
+                        <div class="candidates-feature-info bg-danger">
                             <div class="candidates-info-icon text-white">
-                                <i class="fas fa-globe-asia"></i>
+                                <i class="fas fa-heart text-alt"></i>
                             </div>
                             <div class="candidates-info-content">
-                                <h5 class="candidates-info-title text-white">  내가 지원한 공고들</h5>
+                                <h5 class="candidates-info-title text-white">좋아요 한 공고들</h5>
                             </div>
                             <div class="candidates-info-count">
                                 <h3 class="mb-0 text-white" id="amount">00</h3>
@@ -105,14 +113,13 @@ Candidates Dashboard -->
                         </div>
                     </div>
                 </div>
-
                 <div class="user-dashboard-info-box mb-0 pb-4">
-                    <div class="section-title">
-                        <h4>최근 지원한 공고 목록</h4>
+                    <div class="section-title-02 mb-4">
+                        <h4>관심있는 공고</h4>
                     </div>
                     <div class="container">
                         <!-- applyList -->
-                        <div class="row" id="recentlyApplyJobList">
+                        <div class="row" id="likedJobList">
                         </div>
                     </div>
                     <div class="row">
@@ -127,5 +134,3 @@ Candidates Dashboard -->
         </div>
     </div>
 </section>
-<!--=================================
-Change Password -->

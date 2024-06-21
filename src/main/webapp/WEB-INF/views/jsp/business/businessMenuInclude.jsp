@@ -1,24 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<script>
-    $(document).ready(function(){
-        $('#file').on('click', function() {
-            $('#fileInput').click();
-        });
+<%--<script>--%>
+<%--    $(document).ready(function(){--%>
+<%--        $('#file').on('click', function() {--%>
+<%--            $('#fileInput').click();--%>
+<%--        });--%>
 
-        $('#fileInput').on('change', function(event) {
-            const coverImage = document.getElementById('coverImage');
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    coverImage.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    });
-</script>
+<%--        $('#fileInput').on('change', function(event) {--%>
+<%--            const coverImage = document.getElementById('coverImage');--%>
+<%--            const file = event.target.files[0];--%>
+<%--            if (file) {--%>
+<%--                const reader = new FileReader();--%>
+<%--                reader.onload = (e) => {--%>
+<%--                    coverImage.src = e.target.result;--%>
+<%--                };--%>
+<%--                reader.readAsDataURL(file);--%>
+<%--            }--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>
 <!--=================================
 inner banner -->
 <div class="header-inner bg-light">
@@ -27,8 +27,7 @@ inner banner -->
             <div class="col-12">
                 <div class="jobber-user-info">
                     <div class="profile-avatar">
-                        <img class="img-fluid " id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="">
-                        <i class="fas fa-pencil-alt" id="file" name="file"></i>
+                        <img class="img-fluid " id="bannerCoverImage" src="/business/uploadedFileGet/${fileId}" alt="">
                     </div>
                     <div class="profile-avatar-info ms-4">
                         <h3>${company.companyName}</h3>

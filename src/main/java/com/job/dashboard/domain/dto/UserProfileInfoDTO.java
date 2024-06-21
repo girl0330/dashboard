@@ -24,4 +24,5 @@ public class UserProfileInfoDTO extends UserDTO{
     private int systemUpdaterId;
     private String systemUpdateDatetime;
     private MultipartFile file;
+    private int fileId;
 }
