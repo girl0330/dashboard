@@ -1,5 +1,5 @@
--- ptj.code_group definition
-
+-- code_group definition
+drop table if exists code_group;
 CREATE TABLE code_group (
                             group_id int NOT NULL AUTO_INCREMENT COMMENT '그룹 ID',
                             group_code varchar(255) NOT NULL COMMENT '그룹 코드',
@@ -10,9 +10,9 @@ CREATE TABLE code_group (
                             system_updater_id int NOT NULL COMMENT '시스템 수정자 ID',
                             system_update_datetime timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '시스템 수정 날짜',
                             PRIMARY KEY (group_id)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='코드 그룹 테이블';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='코드 그룹 테이블';
 
-INSERT INTO ptj.code_group
+INSERT INTO code_group
 (group_code, group_name, description, system_register_id, system_updater_id)
 VALUES
     ('user_type', '사용자 유형 코드', '사용자 유형을 나타내는 코드', 1, 1),
@@ -25,8 +25,8 @@ VALUES
     ('status_type', '지원 상태 코드', '지원 상태를 나타내는 코드', 1, 1);
 
 
--- ptj.code_detail definition
-
+-- code_detail definition
+drop table if exists code_detail;
 CREATE TABLE code_detail (
                              code_id int NOT NULL AUTO_INCREMENT COMMENT '코드 ID',
                              group_code varchar(255) NOT NULL COMMENT '그룹 코드',
@@ -40,17 +40,17 @@ CREATE TABLE code_detail (
                              system_updater_id int NOT NULL COMMENT '시스템 수정자 ID',
                              system_update_datetime timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '시스템 수정 날짜',
                              PRIMARY KEY (code_id)
-) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='코드 상세 테이블';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='코드 상세 테이블';
 
 -- 사용자 유형 코드
-INSERT INTO ptj.code_detail
+INSERT INTO code_detail
 (group_code, detail_code, detail_name, description, code_used, user_defined_value, system_register_id, system_updater_id)
 VALUES
     ('user_type', 'JBS', '구직자', '구직자를 나타내는 코드', 1, NULL, 1,  1),
     ('user_type', 'EMP', '고용주', '고용주를 나타내는 코드', 1, NULL, 1,  1);
 
 -- 산업 코드
-INSERT INTO ptj.code_detail
+INSERT INTO code_detail
 (group_code, detail_code, detail_name, description, code_used, user_defined_value, system_register_id, system_updater_id)
 VALUES
     ('industry', 'IT', 'IT', 'IT 산업', 1, NULL, 1,  1),
@@ -67,14 +67,14 @@ VALUES
     ('industry', 'OTH', '기타', '기타 산업', 1, NULL, 1,  1);
 
 -- 사업 유형 코드
-INSERT INTO ptj.code_detail
+INSERT INTO code_detail
 (group_code, detail_code, detail_name, description, code_used, user_defined_value, system_register_id, system_updater_id)
 VALUES
     ('Business_type', 'CORP', '법인사업자', '법인사업자를 나타내는 코드', 1, NULL, 1,  1),
     ('Business_type', 'GEN', '일반사업자', '일반사업자를 나타내는 코드', 1, NULL, 1,  1);
 
 -- 직종 코드
-INSERT INTO ptj.code_detail
+INSERT INTO code_detail
 (group_code, detail_code, detail_name, description, code_used, user_defined_value, system_register_id, system_updater_id)
 VALUES
     ('job_type', 'SERV', '서빙', '서빙 일자리', 1, NULL, 1,  1),
@@ -92,7 +92,7 @@ VALUES
     ('job_type', 'OTH', '기타', '기타 일자리', 1, NULL, 1,  1);
 
 -- 급여 유형 코드
-INSERT INTO ptj.code_detail
+INSERT INTO code_detail
 (group_code, detail_code, detail_name, description, code_used, user_defined_value, system_register_id, system_updater_id)
 VALUES
     ('salary_type', 'DLY', '일급', '일급 급여', 1, NULL, 1,  1),
@@ -101,7 +101,7 @@ VALUES
     ('salary_type', 'MTHLY', '월급', '월급 급여', 1, NULL, 1,  1);
 
 -- 근무일 유형 코드
-INSERT INTO ptj.code_detail
+INSERT INTO code_detail
 (group_code, detail_code, detail_name, description, code_used, user_defined_value, system_register_id, system_updater_id)
 VALUES
     ('job_day_type', 'DAY', '하루', '하루 근무', 1, NULL, 1,  1),
@@ -118,14 +118,14 @@ VALUES
     ('job_day_type', 'OTH', '기타', '기타 근무', 1, NULL, 1,  1);
 
 -- 고용 유형 코드
-INSERT INTO ptj.code_detail
+INSERT INTO code_detail
 (group_code, detail_code, detail_name, description, code_used, user_defined_value, system_register_id, system_updater_id)
 VALUES
     ('employment_type', 'SHORT', '단기', '단기 고용', 1, NULL, 1,  1),
     ('employment_type', 'LONG', '장기', '장기 고용', 1, NULL, 1,  1);
 
 -- 상태 유형 코드
-INSERT INTO ptj.code_detail
+INSERT INTO code_detail
 (group_code, detail_code, detail_name, description, code_used, user_defined_value, system_register_id, system_updater_id)
 VALUES
     ('status_type', 'APPLIED', '지원중', '회원이 공고에 지원함', 1, NULL, 1,  1),
@@ -134,8 +134,8 @@ VALUES
     ('status_type', 'OPEN', '구인 중', '채용이 진행 중임', 1, NULL, 1,  1),
     ('status_type', 'CLOSED', '채용 마감', '채용이 마감됨', 1, NULL, 1,  1);
 
--- ptj.user_info definition
-
+-- user_info definition
+drop table if exists user_info;
 CREATE TABLE user_info (
                            user_no int NOT NULL AUTO_INCREMENT COMMENT '사용자 번호',
                            email varchar(255) NOT NULL COMMENT '이메일',
@@ -146,11 +146,11 @@ CREATE TABLE user_info (
                            system_updater_id int NOT NULL COMMENT '시스템 수정자 ID',
                            system_update_datetime timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '시스템 수정 날짜',
                            PRIMARY KEY (user_no)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='사용자 정보 테이블';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='사용자 정보 테이블';
 
 
--- ptj.company_info definition
-
+-- company_info definition
+drop table if exists company_info;
 CREATE TABLE company_info (
                               company_id int NOT NULL COMMENT '회사 ID',
                               user_no int NOT NULL COMMENT '사용자 번호',
@@ -173,8 +173,8 @@ CREATE TABLE company_info (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='회사 정보 테이블';
 
 
--- ptj.file_info definition
-
+-- file_info definition
+drop table if exists file_info;
 CREATE TABLE file_info (
                            file_id int NOT NULL AUTO_INCREMENT COMMENT '파일 ID',
                            user_no int NOT NULL COMMENT '사용자 번호',
@@ -188,11 +188,11 @@ CREATE TABLE file_info (
                            PRIMARY KEY (file_id),
                            KEY fk_user (user_no),
                            CONSTRAINT fk_user FOREIGN KEY (user_no) REFERENCES user_info (user_no) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='파일 정보 테이블';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='파일 정보 테이블';
 
 
--- ptj.job_post_info definition
-
+-- job_post_info definition
+drop table if exists job_post_info;
 CREATE TABLE job_post_info (
                                job_id int NOT NULL AUTO_INCREMENT COMMENT '구인공고 ID',
                                user_no int DEFAULT NULL COMMENT '사용자 번호',
@@ -219,11 +219,11 @@ CREATE TABLE job_post_info (
                                latitude decimal(9,6) DEFAULT NULL COMMENT '위도',
                                longitude decimal(9,6) DEFAULT NULL COMMENT '경도',
                                PRIMARY KEY (job_id)
-) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='구인공고 테이블';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='구인공고 테이블';
 
 
--- ptj.job_application_info definition
-
+-- job_application_info definition
+drop table if exists job_application_info;
 CREATE TABLE job_application_info (
                                       application_id int NOT NULL AUTO_INCREMENT COMMENT '지원서 ID',
                                       job_id int NOT NULL COMMENT '구인공고 ID',
@@ -235,11 +235,11 @@ CREATE TABLE job_application_info (
                                       system_update_datetime timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '시스템 수정 날짜',
                                       motivation_description text NOT NULL COMMENT '지원 동기',
                                       PRIMARY KEY (application_id)
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='지원서 정보 테이블';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='지원서 정보 테이블';
 
 
--- ptj.job_like_info definition
-
+-- job_like_info definition
+drop table if exists job_like_info;
 CREATE TABLE job_like_info (
                                like_id int NOT NULL AUTO_INCREMENT COMMENT '좋아요 ID',
                                user_no int NOT NULL COMMENT '사용자 번호',
@@ -253,11 +253,11 @@ CREATE TABLE job_like_info (
                                KEY job_post_info (job_id),
                                CONSTRAINT job_post_info FOREIGN KEY (job_id) REFERENCES job_post_info (job_id),
                                CONSTRAINT user_info FOREIGN KEY (user_no) REFERENCES user_info (user_no)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='구인공고 좋아요 정보 테이블';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='구인공고 좋아요 정보 테이블';
 
 
--- ptj.user_profile_info definition
-
+-- user_profile_info definition
+drop table if exists user_profile_info;
 CREATE TABLE user_profile_info (
                                    PROFILE_ID int NOT NULL COMMENT '프로필 ID',
                                    USER_NO int NOT NULL COMMENT '사용자 번호',
@@ -284,6 +284,8 @@ CREATE TABLE user_profile_info (
 DELIMITER $$
 
 CREATE FUNCTION func_format_time_ago(input_datetime DATETIME) RETURNS varchar(255) CHARSET utf8mb4
+DETERMINISTIC
+READS SQL DATA
 BEGIN
     DECLARE result VARCHAR(255);
 
@@ -309,6 +311,8 @@ DELIMITER ;
 DELIMITER $$
 
 CREATE FUNCTION func_get_detail_name(p_group_code VARCHAR(255), p_detail_code VARCHAR(255)) RETURNS VARCHAR(255) CHARSET utf8mb4
+DETERMINISTIC
+READS SQL DATA
 BEGIN
     DECLARE result VARCHAR(255);
 
