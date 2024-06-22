@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.4'
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+    id "org.flywaydb.flyway" version "7.2.0"
 }
 
 group = 'com.job'
@@ -59,9 +60,19 @@ dependencies {
 
     //pagehelper
     implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7'
+
+    //flyway설정
+    implementation 'org.flywaydb:flyway-core:7.2.0'
 }
 
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+flyway {
+    url = 'jdbc:mysql://localhost:3306/ptj'
+    user = 'root'
+    password = 'root'
+    locations = ['classpath:db/migration']
 }

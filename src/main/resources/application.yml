@@ -6,6 +6,11 @@ spring:
     username: root
     password: root
 
+    # flyway설정
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
   # JSP
   mvc:
     view:
