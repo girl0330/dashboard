@@ -18,9 +18,9 @@
                     keyword: ''
                 },
                 success: function(response) {
-                    $("#amount").text(response.total); //총 게시물 개수
-                    keywordSearch.renderJobs(response.list); //리스트 목록
-                    renderPagination('pagination',response.pageNum, response.pageSize, response.total, response.pages); //페이징
+                        $("#amount").text(response.total); //총 게시물 개수
+                        keywordSearch.renderJobs(response.list); //리스트 목록
+                        renderPagination('pagination',response.pageNum, response.pageSize, response.total, response.pages); //페이징
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -29,7 +29,7 @@
         },
         //list 처리
         renderJobs: function (list) {
-            console.log("list :: "+JSON.stringify(list));
+            console.log("list :: "+JSON.stringify(list)+"      "+list.size);
             const container = $("#recentlyApplyJobList");
             container.empty();// id속성 초기화
 
@@ -100,7 +100,7 @@ Candidates Dashboard -->
                                 <h5 class="candidates-info-title text-white">  내가 지원한 공고들</h5>
                             </div>
                             <div class="candidates-info-count">
-                                <h3 class="mb-0 text-white" id="amount">00</h3>
+                                <h3 class="mb-0 text-white" id="amount">0</h3>
                             </div>
                         </div>
                     </div>
@@ -113,12 +113,18 @@ Candidates Dashboard -->
                     <div class="container">
                         <!-- applyList -->
                         <div class="row" id="recentlyApplyJobList">
+                            <div class="col-12 text-center py-3" id="noResultsMessage">
+                                조회된 결과가 없습니다.
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 text-center mt-4 mt-sm-5">
                             <!-- page 시작 -->
                             <ul class="pagination justify-content-center mb-0" id="pagination" name="pagination">
+                                <li class="page-item disabled"> <span class="page-link b-radius-none">Prev</span> </li>
+                                <li class="page-item active" aria-current="page"><span class="page-link">1 </span> <span class="sr-only">(current)</span></li>
+                                <li class="page-item disabled"> <span class="page-link  b-radius-none">Next</span> </li>
                             </ul>
                         </div>
                     </div>

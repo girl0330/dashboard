@@ -9,13 +9,11 @@ inner banner -->
             <div class="col-lg-6">
                 <div class="candidates-user-info">
                     <div class="jobber-user-info">
-                        <div class="jobber-user-info">
-                            <div class="profile-avatar">
-                                <img class="img-fluid " id="bannerCoverImage" src="/business/uploadedFileGet/${fileId}" alt="">
-                            </div>
-                            <div class="profile-avatar-info ms-4">
-                                <h3>${company.companyName}</h3>
-                            </div>
+                        <div class="profile-avatar">
+                            <img class="img-fluid " id="bannerCoverImage" src="/business/uploadedFileGet/${fileId}" alt="">
+                        </div>
+                        <div class="profile-avatar-info ms-4">
+                            <h3>${company.companyName}</h3>
                         </div>
                     </div>
                 </div>

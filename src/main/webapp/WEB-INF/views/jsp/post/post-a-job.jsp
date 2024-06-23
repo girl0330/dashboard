@@ -134,7 +134,7 @@
             }).open();
         });
 
-        createSelectBox('tesJobDayTypeCode', 'form-control basic-select', 'jobDayTypeCode', 'jobDayTypeCode', [
+        selectUtils.createSelect('tesJobDayTypeCode', 'form-control basic-select', 'jobDayTypeCode', 'jobDayTypeCode', [
             {value: 'DAY', text: '하루'},
             {value: 'WK', text: '일주일'},
             {value: 'WEEKND', text: '주말'},

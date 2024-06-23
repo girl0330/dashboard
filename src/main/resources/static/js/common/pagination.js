@@ -1,5 +1,5 @@
 //[List page 생성]
-function renderPagination(containerId, currentPage, pageSize, totalJobs, totalPages) {
+function  renderPagination(containerId, currentPage, pageSize, totalJobs, totalPages) {
 	const $container = $('#'+containerId);
 	$container.empty();
 
@@ -9,6 +9,11 @@ function renderPagination(containerId, currentPage, pageSize, totalJobs, totalPa
 			'<a class="page-link b-radius-none" data-page="' + page + '">' + text + '</a>' +
 			'</li>';
 		$container.append(itemHtml);
+	}
+
+	// 전체 페이지가 0일 때 최소 1페이지로 설정
+	if (totalPages === 0) {
+		totalPages = 1;
 	}
 
 	const prevPage = currentPage > 1 ? currentPage - 1 : 1;
