@@ -3,14 +3,18 @@
 <script>
   //개인회원 이메일 중복검사
   let emailDuplicateCheck = {
-    init : function () {
+    init: function () {
       if (!this.emailEmptyChkFn()) {
-        return;
+        return false;
       }
       if (!this.emailValidationChk()) {
-        return;
+        return false;
       }
-      this.emailDuplicateCheck();
+      if (!this.emailDuplicateCheck()) {
+        console.log("??????");
+        return false;
+      }
+      return true;
     },
     emailEmptyChkFn: function () {
       let valid = true;
@@ -29,21 +33,22 @@
 
     emailValidationChk: function () {
       let valid = true;
-    const email = $('#email').val();
-    console.log("email"+email);
+      const email = $('#email').val();
+      console.log("email"+email);
 
-    let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(email)) {
-        alert("이메일 형식으로 입력해주세요.")
-        $('#email').focus();
-        valid = false;
-      }
-      return valid;
+      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+          alert("이메일 형식으로 입력해주세요.")
+          $('#email').focus();
+          valid = false;
+        }
+        return valid;
     },
 
     emailDuplicateCheck : function () {
 
       let jsonData = {};
+      let valid = true;
       jsonData['email'] = $("#email").val();
 
       console.log("jsonData : "+JSON.stringify(jsonData));
@@ -58,6 +63,7 @@
           console.log(JSON.stringify(data));
           if(data.code === 'error') {
             alert(data.message);
+            valid = false;
           } else if (data.code === 'success'){
             alert(data.message);
           }
@@ -67,12 +73,18 @@
           console.error(error);
         }
       });
+      console.log("valid:::   "+valid);
+      return valid;
     }
   }
 
   //개인회원 로그인 실행
   let user_register = {
     init : function () {
+
+      if(!emailDuplicateCheck.init()) {
+        return;
+      }
 
       if (!this.emptyChkFn()) {
         return;

@@ -61,7 +61,7 @@ const ajax = {
 	error: (status, responseText) => {
 		// 기본 에러 처리
 		console.error(`Error: ${status}`, responseText);
-	}
+	},
 }
 
 const validation = {
@@ -292,6 +292,52 @@ const selectUtils = {
 			option.text = item.text;
 			select.appendChild(option);
 		}
+	},
+
+	ajaxSelect: (parentIds, groupCodes) => {
+		const options = {
+			url: '/common/getSelectBoxOption',
+			type: 'GET',
+			data: { groupCodes: groupCodes.join(',') },
+			done: (response) => {
+				groupCodes.forEach((groupCode, index) => {
+					const parentId = parentIds[index];
+					selectUtils.createSelect(parentId, 'form-control basic-select', commonUtils.toCamelCase(groupCode), commonUtils.toCamelCase(groupCode), response[groupCode]);
+				});
+			}
+		};
+		ajax.call(options);
+	},
+
+	ajaxOption: (parentIds, groupCodes) => {
+		const options = {
+			url: '/common/getSelectBoxOption',
+			type: 'GET',
+			data: { groupCodes: groupCodes.join(',') },
+			done: (response) => {
+				groupCodes.forEach((groupCode, index) => {
+					const parentId = document.getElementById(parentIds[index]);
+					selectUtils.createOption(parentId, response[groupCode]);
+				});
+			}
+		};
+		ajax.call(options);
 	}
 }
 
+const commonUtils = {
+
+	//snake_case -> camelCase 변환
+	toCamelCase: (str) => {
+	return str
+		.toLowerCase() // 소문자로 변환
+		.split('_') // 언더스코어를 기준으로 분리
+		.map((word, index) => {
+			if (index === 0) {
+				return word; // 첫 번째 단어는 소문자로 유지
+			}
+			return word.charAt(0).toUpperCase() + word.slice(1); // 첫 글자를 대문자로 변환하고 나머지는 그대로
+		})
+		.join(''); // 다시 합치기
+	}
+}
