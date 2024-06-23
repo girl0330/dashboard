@@ -60,4 +60,5 @@ public interface PostMapper {
     void likeUp(Map<String, Object> map); //like 증가
     void deleteLike(Map<String, Object> map); //like 삭제
     List<LikeDTO> getLikeList(int userNo); //like 리스트 가져오기
+
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.job.PostMapper">
     <insert id="saveJob" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
-        INSERT INTO    /*PostMapper.saveJob*/
+        INSERT INTO /*PostMapper.saveJob*/
             job_post_info (
                             USER_NO,
                             title,
@@ -52,44 +52,45 @@
     </insert>
 
     <select id="getJobLists" parameterType="map" resultType="com.job.dashboard.domain.dto.JobPostDTO">
-        SELECT   /*PostMapper.getJobLists*/
+        SELECT /*PostMapper.getJobLists*/
             jpi.job_id,
             jpi.USER_NO,
             (SELECT  fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC LIMIT 1) AS file_id,
             jpi.title,
             jpi.job_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = job_type_code) AS job_type_code_name,
+            func_get_detail_name('job_type', jpi.job_type_code) AS job_type_code_name,
             jpi.address,
             jpi.salary_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_code = salary_type_code) AS salary_type_code_name,
+            func_get_detail_name('salary_type', jpi.salary_type_code) AS salary_type_code_name,
             jpi.salary,
-            DATE_FORMAT(jpi.system_register_datetime, '%Y-%m-%d') AS system_update_datetime,
-            DATEDIFF(CURDATE(), jpi.system_update_datetime) AS days_ago,
+            func_format_time_ago(jpi.system_register_datetime) AS system_register_datetime,
             jpi.job_time,
             jpi.status_type_code,
-            (SELECT detail_name FROM  code_detail WHERE group_code = 'status_type' AND detail_code = status_type_code) AS status_type_code_name
+            func_get_detail_name('status_type', jpi.status_type_code) AS status_type_code_name
         FROM job_post_info jpi
         WHERE jpi.title LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY jpi.system_register_datetime DESC
     </select>
 
     <select id="getCountJobs" resultType="int">
-        SELECT COUNT(*) FROM job_post_info
+        SELECT /* PostMapper.getCountJobs */
+            COUNT(*) FROM job_post_info
     </select>
 
     <select id="findLike" parameterType="map" resultType="int">
-        SELECT COUNT(1) FROM job_like_info
+        SELECT /* PostMapper.findLike */
+            COUNT(1) FROM job_like_info
         WHERE user_no = #{userNo} AND job_id = #{jobId}
     </select>
 
     <delete id="deleteLike" parameterType="map">
-        DELETE   /* PostMapper.deleteLike */
+        DELETE /* PostMapper.deleteLike */
         FROM job_like_info
         WHERE user_no = #{userNo} AND job_id = #{jobId}
     </delete>
 
     <insert id="likeUp" parameterType="map">
-        INSERT INTO    /*PostMapper.likeUp*/
+        INSERT INTO /*PostMapper.likeUp*/
             job_like_info (
                             user_no,
                             job_id,
@@ -109,45 +110,48 @@
     </insert>
 
     <select id="getJobDetail" resultType="com.job.dashboard.domain.dto.JobPostDTO" parameterType="int">
-        SELECT      /*PostMapper.getJobDetail*/
+        SELECT /*PostMapper.getJobDetail*/
             jpi.job_id,
             jpi.USER_NO,
             (SELECT fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC LIMIT 1) as file_id,
             jpi.title,
             jpi.description,
             jpi.job_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = jpi. job_type_code) AS job_type_code_name,
+            func_get_detail_name('job_type', jpi.job_type_code)  AS job_type_code_name,
             jpi.zipcode,
             jpi.address,
             jpi.address_detail,
             jpi.longitude,
             jpi.latitude,
             jpi.salary_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_code = jpi. salary_type_code) AS salary_type_code_name,
+            func_get_detail_name('salary_type',  jpi.salary_type_code)  AS salary_type_code_name,
             jpi.salary,
             jpi.job_time,
             jpi.job_day_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'job_day_type' AND detail_code = jpi. job_day_type_code) AS job_day_type_code_name,
+            func_get_detail_name('job_day_type', jpi.job_day_type_code) AS job_day_type_code_name,
             jpi.manager_number,
             jpi.requirement,
             jpi.number_of_staff,
             jpi.employment_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'employment_type' AND detail_code = jpi. employment_type_code) AS employment_type_code_name,
+            func_get_detail_name('employment_type', jpi.employment_type_code) AS employment_type_code_name,
             jpi.etc,
             jpi.status_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jpi. status_type_code) AS status_type_code_name,
+            func_get_detail_name('status_type', jpi.status_type_code) AS status_type_code_name,
             jpi.system_register_id,
-            DATE_FORMAT(jpi. system_update_datetime, '%Y-%m-%d') AS 수정,
+            func_format_time_ago(jpi.system_register_datetime) AS system_register_datetime,
             jpi.system_updater_id,
-            ci.company_name
+            ci.company_name,
+            ci.office_phone,
+            ui.email
         FROM job_post_info jpi
-        INNER JOIN company_info ci
-        ON jpi.user_no = ci.user_no
-        WHERE job_id = #{jobId}
+            INNER JOIN company_info ci ON jpi.user_no = ci.user_no
+            INNER JOIN user_info ui ON jpi.user_no = ui.user_no
+        WHERE jpi.job_id = #{jobId}
     </select>
 
     <update id="updateJob" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
-        UPDATE job_post_info      /*PostMapper.updateJob*/
+        UPDATE /*PostMapper.updateJob*/
+            job_post_info
         SET
             USER_NO = #{userNo},
             title = #{title},
@@ -181,25 +185,28 @@
     </select>
 
     <delete id="delete" parameterType="int">
-        DELETE       /*PostMapper.delete*/
+        DELETE /*PostMapper.delete*/
         FROM job_post_info
         WHERE job_id = #{jobId}
     </delete>
 
     <select id="profileCheck" parameterType="com.job.dashboard.domain.dto.UserProfileInfoDTO" resultType="int">
-        SELECT         /*PostMapper.profileCheck*/ profile_id
+        SELECT /*PostMapper.profileCheck*/
+            profile_id
         FROM USER_PROFILE_INFO
         WHERE USER_NO = #{userNo}
     </select>
 
     <select id="profileCount" parameterType="int" resultType="int">
-        SELECT  /*PostMapper.profileCount*/ count(1)
+        SELECT  /*PostMapper.profileCount*/
+            count(1)
         FROM user_profile_info
         WHERE USER_NO = #{userNo}
     </select>
 
     <select id="applyCheck" parameterType="int" resultType="int">
-        SELECT  /*PostMapper.applyCheck*/ count(1)
+        SELECT  /*PostMapper.applyCheck*/
+            count(1)
         FROM job_application_info
         WHERE USER_NO = #{userNo}
         AND job_id = #{jobId}

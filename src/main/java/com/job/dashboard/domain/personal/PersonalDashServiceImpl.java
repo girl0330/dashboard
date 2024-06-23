@@ -47,15 +47,15 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         Map<Object, String> map = new HashMap<>();
         Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
 
-        List<UserProfileInfoDTO> profile = personalDashMapper.checkProfile(userNo); //userNo를 가지고 프로필 존재 확인
+        List<UserProfileInfoDTO> profile = personalDashMapper.checkProfile(userNo); //userNo로 프로필 존재 확인
 
         int personalProfile = profile.size();
 
-        if (personalProfile == 0) { //프로필 작성이 안 되어있으면..
-            int profileSeq = personalDashMapper.getProfileIdSeq(userNo);
+        if (personalProfile == 0) { //프로필 없으면
+            int profileSeq = personalDashMapper.getProfileIdSeq(userNo); //pk
             userProfileInfoDTO.setProfileId(profileSeq);
 
-        } else { //프로필 작성이 되어 있으면..
+        } else { //프로필 있으면
             userProfileInfoDTO.setProfileId(profile.get(0).getProfileId());
         }
         userProfileInfoDTO.setUserNo(userNo);
@@ -63,8 +63,8 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         System.out.println("file?"+userProfileInfoDTO.getFile());
         // 파일 저장
         if (userProfileInfoDTO.getFile() != null) {
-            Map<Object, String> fileResult = businessDashService.saveFile(userProfileInfoDTO.getFile());
-            System.out.println("====================fileResult 는 :"+fileResult); // 파일 저장 됨.
+            Map<Object, String> fileResult = businessDashService.saveFile(userProfileInfoDTO.getFile()); // 파일 저장 됨.
+            System.out.println("====================fileResult 는 :"+fileResult);
         }
 
         // systemRegisterId, systemUpdaterId 데이터는?? //pk가 없으면 insert 있으면 update
@@ -139,17 +139,6 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         PageHelper.startPage(pageNum, pageSize);
         List<JobApplicationDTO> applyStatusList = personalDashMapper.applyStatusList(map) ;
         return new PageInfo<>(applyStatusList);
-    }
-
-    //지원 리스트 삭제 (취소, statusTypeCode를 취소로 바꾸기)
-    public Map<String, Object> applyListDelete(int applicationId) {
-        System.out.println("지원 리스트 삭제");
-        Map<String, Object> map = new HashMap<>();
-
-        personalDashMapper.applyListCancel(applicationId);
-        map.put("code", "success");
-        map.put("message", "공고 지원이 취소 되었습니다.");
-        return map;
     }
 
     //dashboard list

@@ -29,7 +29,7 @@
                     console.log(JSON.stringify(data));
                     if(data.code === 'success') {
                         alert(data.message);
-                        location.href = '/business/applicantList?jobId=${candidateInfo.jobId}'
+                        location.href = '/business/candidateList?jobId='+jobId;
                     }
                 },
                 error: function(xhr, status, error) {
@@ -67,7 +67,7 @@
                     console.log(JSON.stringify(data));
                     if(data.code === 'success') {
                         alert(data.message);
-                        location.href = '/business/applicantList?jobId=${candidateInfo.jobId}'
+                        location.href = '/business/candidateList?jobId=' +jobId
                     }
                 },
                 error: function(xhr, status, error) {

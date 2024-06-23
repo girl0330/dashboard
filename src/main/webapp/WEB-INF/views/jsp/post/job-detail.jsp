@@ -144,6 +144,8 @@
       application.like();
     })
 
+
+
     const latitude = $('#latitude').val(); //위도
     const longitude = $('#longitude').val(); //경도
     console.log("위도, 경도 "+latitude +"/"+longitude);
@@ -168,6 +170,8 @@
 
 
   });
+
+
 
 </script>
 <!-- Button trigger modal 일단 대기 갑자기 생김-->
@@ -242,7 +246,7 @@ job list -->
                 </div>
                 <div class="job-list-favourite-time">
                   <a class="job-list-favourite order-2" id="like" href="#"><i id='likeIcon' class="${like == '1' ? 'fas fa-heart text-danger' : 'far fa-heart'}"></i></a>
-                  <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>마감날</span>
+                  <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${detail.systemRegisterDatetime}</span>
                 </div>
               </div>
             </div>
@@ -352,9 +356,8 @@ job list -->
             <div class="company-address widget-box">
               <div class="company-address-map" id="map" style="width: 100%; height: 400px;"></div>
               <ul class="list-unstyled mt-3">
-                <li><a href="#"><i class="fas fa-link fa-fw"></i><span class="ps-2">www.infojob.com</span></a></li>
-                <li><a href="tel:+905389635487"><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="ps-2">+(456) 478-2589</span></a></li>
-                <li><a href="mailto:ali.potenza@job.com"><i class="fas fa-envelope fa-fw"></i><span class="ps-2">support@jobber.demo</span></a></li>
+                <li><a href="tel:+905389635487"><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="ps-2">${detail.officePhone}</span></a></li>
+                <li><a href="mailto:ali.potenza@job.com"><i class="fas fa-envelope fa-fw"></i><span class="ps-2">${detail.email}</span></a></li>
               </ul>
             </div>
           </div>
@@ -372,8 +375,12 @@ job list -->
       <div class="col-lg-6">
         <c:if test="${sessionScope.userTypeCode == 10 }">
           <div class="sidebar mb-0">
+            <c:if test="${detail.statusTypeCode == 'OPEN'}">
             <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="far fa-paper-plane"></i>지원하기</a>
+<%--              <c:if test="${detail.jaiStatusTypeCode == 'APPLIED'}">--%>
             <a class="btn btn-primary" href="#" id="button_applyCancel" name="button_applyCancel"><i class="far fa-paper-plane"></i>지원취소하기</a>
+<%--              </c:if>--%>
+            </c:if>
           </div>
         </c:if>
       </div>

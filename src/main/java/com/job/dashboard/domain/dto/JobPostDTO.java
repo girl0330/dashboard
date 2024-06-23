@@ -47,11 +47,16 @@ public class JobPostDTO extends UserDTO  {
     private String keyword; //검색어
     private int totalJobs; // 총 게시물 수
     private int totalPages; // 총 페이지 수
-    private String companyName; // 회사 이름
     private String daysAgo; // 며칠 전 계산
 
     private MultipartFile file; //파일
     private int fileId;
 
     private int likeId; //좋아요
+
+    private String companyName; // 회사 이름
+    private String officePhone;//회사 전화번호
+    private String email;//이메일
+    private String jaiStatusTypeCode;
+    private String jaiStatusTypeCodeName;
 }
