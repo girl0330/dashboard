@@ -113,7 +113,6 @@
         });
 
         $('#address, #zipcode').on("click", function() { // 클릭 이벤트 사용
-            alert("test")
             new daum.Postcode({
                 oncomplete: function(data) { // 선택시 입력값 세팅
                     new daum.maps.services.Geocoder().addressSearch(data.address, function(results, status) {
@@ -134,21 +133,14 @@
             }).open();
         });
 
-        selectUtils.createSelect('tesJobDayTypeCode', 'form-control basic-select', 'jobDayTypeCode', 'jobDayTypeCode', [
-            {value: 'DAY', text: '하루'},
-            {value: 'WK', text: '일주일'},
-            {value: 'WEEKND', text: '주말'},
-            {value: 'WDAY', text: '평일'},
-            {value: 'MON', text: '월'},
-            {value: 'TUE', text: '화'},
-            {value: 'WED', text: '수'},
-            {value: 'THU', text: '목'},
-            {value: 'FRI', text: '금'},
-            {value: 'SAT', text: '토'},
-            {value: 'SUN', text: '일'},
-            {value: 'OTH', text: '기타'}
-        ]);
+        //사용방법
+        const parentIds1 = ['select-container-1', 'select-container-2', 'select-container-3', 'select-container-4'];
+        const groupCodes1 = ['job_Type', 'salary_Type', 'employment_Type', 'job_Day_Type'];
+        selectUtils.ajaxSelect(parentIds1, groupCodes1);
 
+        const parentIds = ['jobTypeCode', 'salaryTypeCode', 'employmentTypeCode', 'jobDayTypeCode'];
+        const groupCodes = ['job_Type', 'salary_Type', 'employment_Type', 'job_Day_Type'];
+        selectUtils.ajaxOption(parentIds, groupCodes);
     });
 </script>
 <!--=================================
@@ -193,6 +185,12 @@ tab -->
                 <div class="row">
                     <div class="col-12">
                         <form class="row" id="postJobForm" name="postJobForm">
+
+                            <div id="select-container-1"></div>
+                            <div id="select-container-2"></div>
+                            <div id="select-container-3"></div>
+                            <div id="select-container-4"></div>
+
                             <div class="row mt-4 mt-lg-5">
                                 <div class="col-12">
                                     <h5 class="mb-4"> 공고글 작성</h5>
@@ -233,21 +231,6 @@ tab -->
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2" for="jobTypeCode"> 모집직종 <span class="font-danger">*</span></label>
                                 <select class="form-control basic-select" id="jobTypeCode" name="jobTypeCode" valid="true" data-name="모집직종">
-                                    <option >선택</option>
-                                    <option value="SERV" >서빙</option>
-                                    <option value="CONV" >편의점</option>
-                                    <option value="KIT" >주방</option>
-                                    <option value="OFF" >사무</option>
-                                    <option value="EDU" >교육</option>
-                                    <option value="SAL" >판매</option>
-                                    <option value="PROD" >생산</option>
-                                    <option value="IT" >IT</option>
-                                    <option value="DES" >디자인</option>
-                                    <option value="MED" >의료</option>
-                                    <option value="DRIV" >운전</option>
-                                    <option value="CON" >건설</option>
-                                    <option value="OTH" >기타</option>
-
                                 </select>
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
@@ -268,12 +251,6 @@ tab -->
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2"  for="salaryTypeCode"> 급여 타입 <span class="font-danger">*</span></label>
                                 <select class="form-control basic-select" id="salaryTypeCode" name="salaryTypeCode" valid="true" data-name="급여 타입">
-                                    <option >선택</option>
-                                    <option value="HRLY">시급</option>
-                                    <option value="DLY">일급</option>
-                                    <option value="WKLY">주급</option>
-                                    <option value="MTHLY">월급</option>
-
                                 </select>
                             </div>
                             <div class="form-group col-md-6 mb-3">
@@ -283,14 +260,12 @@ tab -->
                             <div class="form-group col-md-3 select-border mb-3">
                                 <label class="mb-2"  for="employmentTypeCode"> 고용 유형 <span class="font-danger">*</span></label>
                                 <select class="form-control basic-select" id="employmentTypeCode" name="employmentTypeCode" valid="true" data-name="고용 유형">
-                                    <option >선택</option>
-                                    <option value="LONG">장기</option>
-                                    <option value="SHORT">단기</option>
-
                                 </select>
                             </div>
                             <div id="tesJobDayTypeCode" class="form-group col-md-3 mb-3" >
                                 <label class="mb-2"> 근무요일 <span class="font-danger">*</span></label>
+                                <select class="form-control basic-select" id="jobDayTypeCode" name="jobDayTypeCode" valid="true" data-name="근무요일">
+                                </select>
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label class="mb-2" > 근무시간 <span class="font-danger">*</span></label>
