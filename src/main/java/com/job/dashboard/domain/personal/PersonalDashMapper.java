@@ -13,18 +13,15 @@ public interface PersonalDashMapper {
     int profileCheck(int userNo); //작성 체크
     UserProfileInfoDTO getProfile(int userNo); // 기존 작성된 프로필 가져오기
     List<UserProfileInfoDTO> checkProfile(int userNo); // 저장된 프로필 있으면 가져오기
-    int getProfileIdSeq(int userNo); //새 프로필 pk
+    int getProfileIdSeq(int userNo); //프로필 pk
     void saveProfile(UserProfileInfoDTO userProfileInfoDTO); //새 프로필 저장
 
     // 비밀번호
     UserDTO getOldPassword(int userNo);
     void updatePassword(UserDTO userDTO);
 
-    // 현재 지원형황 리스트
+    // 지원형황 리스트
     List<JobApplicationDTO> applyStatusList(Map<String, Object> map);
-
-    // 지원한 공고 삭제
-    void applyListCancel(int applicationId);
 
     //dashboard list
     List<JobApplicationDTO> getDashboardList(Map<String, Object> map);

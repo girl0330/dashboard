@@ -78,7 +78,7 @@
                     '</div>' +
                     '<div class="job-list-favourite-time">' +
                     '<a class="job-list-favourite order-2" id="like" href="#"><i class="' + heartIconClass + '" ></i></a>' +
-                    '<span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>' + job.systemUpdateDatetime + '</span>' +
+                    '<span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>' + job.systemRegisterDatetime + '</span>' +
                     '</div>' +
                     '</div>' +
                     '</div>';

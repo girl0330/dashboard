@@ -23,16 +23,7 @@ public interface PersonalDashService {
     // manageJobsList -(지원 현황)
     PageInfo<JobApplicationDTO> applyStatusList(String keyword, int pageNum, int pageSize);
 
-    // 지원 리스트 삭제
-    Map<String, Object> applyListDelete(int applicationId);
-
     // 좋아요 리스트
     PageInfo<JobPostDTO> likedJobsList(String keyword, int pageNum, int pageSize);
-
-
-    // 지원 리스트 보기
-//    JobPostDTO postDetailView(int jobId);
-
-//    Map<String, Object> applyListLook(int applicationId);
 
 }

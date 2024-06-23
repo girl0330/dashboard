@@ -110,21 +110,21 @@ Change Password -->
             <div class="col-md-12">
                 <div class="user-dashboard-info-box">
                     <div class="section-title-02 mb-4">
-                        <h4>Change Password</h4>
+                        <h3>비밀번호 변경</h3>
                     </div>
                     <div class="row">
                         <form class="mt-4" id="changePassword" name="changePassword">
                             <div class="col-12">
                             <div class="form-group col-md-12 mb-3">
-                                <label class="form-label">Current Password</label>
+                                <label class="form-label">사용중인 비밀번호</label>
                                 <input type="password" class="form-control" id="password" name="password">
                             </div>
                             <div class="form-group col-md-12 mb-3">
-                                <label class="form-label">New Password</label>
+                                <label class="form-label">새로운 비밀번호</label>
                                 <input type="password" class="form-control" id="newPassword" name="newPassword">
                             </div>
                             <div class="form-group col-md-12 mb-0">
-                                <label class="form-label">Confirm Password</label>
+                                <label class="form-label">비밀번호 확인</label>
                                 <input type="password" class="form-control" id="password2" name="password2">
                             </div>
                             </div>

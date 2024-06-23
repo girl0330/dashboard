@@ -259,7 +259,7 @@ public class PersonalDashController {
         return "jsp/personal/personal-likedJobs";
     }
 
-    //ajax manageJobsList -(지원 현황)
+    //ajax likedJobs
     @GetMapping("/ajax/likedJobs")
     @ResponseBody
     public Map<String, Object> ajaxLikedJobsList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,

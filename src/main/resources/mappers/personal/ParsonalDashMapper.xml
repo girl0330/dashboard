@@ -14,7 +14,7 @@
         SELECT /* PersonalDashMapper.getProfile */
             ui.email,
             ui.user_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'user_type' AND detail_code = ui.user_type_code) AS user_type_code_name,
+            func_get_detail_name('user_type', ui.user_type_code) AS user_type_code_name,
             up.NAME,
             up.PHONE,
             up.BIRTH,
@@ -32,8 +32,8 @@
     </select>
 
     <select id="checkProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.UserProfileInfoDTO">
-        /* PersonalDashMapper.checkProfile */
-        SELECT PROFILE_ID,
+        SELECT /* PersonalDashMapper.checkProfile */
+                PROFILE_ID,
                USER_NO,
                NAME,
                PHONE,
@@ -54,49 +54,49 @@
     </select>
 
     <select id="getProfileIdSeq" parameterType="int" resultType="int">
-        /* PersonalDashMapper.getProfileIdSeq */
-        SELECT COALESCE(MAX(PROFILE_ID) + 1, 1) as profile_id_seq
+        SELECT /* PersonalDashMapper.getProfileIdSeq */
+            COALESCE(MAX(PROFILE_ID) + 1, 1) as profile_id_seq
         FROM USER_PROFILE_INFO
     </select>
 
     <insert id="saveProfile" parameterType="com.job.dashboard.domain.dto.UserProfileInfoDTO" >
-        /* PersonalDashMapper.saveProfile */
-        INSERT INTO USER_PROFILE_INFO
-        (
-            PROFILE_ID,
-            USER_NO,
-            NAME,
-            PHONE,
-            BIRTH,
-            GENDER,
-            ZIPCODE,
-            ADDRESS,
-            ADDRESS_DETAIL,
-            longitude,
-            latitude,
-            PART_TIME_EXPERIENCE,
-            SYSTEM_REGISTER_DATETIME,
-            SYSTEM_REGISTER_ID,
-            SYSTEM_UPDATE_DATETIME,
-            SYSTEM_UPDATER_ID
-        ) VALUES (
-            #{profileId},
-            #{userNo},
-            #{name},
-            #{phone},
-            #{birth},
-            #{gender},
-            #{zipcode},
-            #{address},
-            #{addressDetail},
-            #{longitude},
-            #{latitude},
-            #{partTimeExperience},
-            #{systemRegisterDatetime},
-            #{userNo},
-            #{systemUpdateDatetime},
-            #{userNo}
-        ) ON DUPLICATE KEY UPDATE
+        INSERT INTO /* PersonalDashMapper.saveProfile */
+        USER_PROFILE_INFO
+            (
+             PROFILE_ID,
+             USER_NO,
+             NAME,
+             PHONE,
+             BIRTH,
+             GENDER,
+             ZIPCODE,
+             ADDRESS,
+             ADDRESS_DETAIL,
+             longitude,
+             latitude,
+             PART_TIME_EXPERIENCE,
+             SYSTEM_REGISTER_DATETIME,
+             SYSTEM_REGISTER_ID,
+             SYSTEM_UPDATE_DATETIME,
+             SYSTEM_UPDATER_ID
+             ) VALUES (
+                       #{profileId},
+                       #{userNo},
+                       #{name},
+                       #{phone},
+                       #{birth},
+                       #{gender},
+                       #{zipcode},
+                       #{address},
+                       #{addressDetail},
+                       #{longitude},
+                       #{latitude},
+                       #{partTimeExperience},
+                       #{systemRegisterDatetime},
+                       #{userNo},
+                       #{systemUpdateDatetime},
+                       #{userNo}
+                       ) ON DUPLICATE KEY UPDATE
             NAME                   = #{name},
             PHONE                  = #{phone},
             BIRTH                  = #{birth},
@@ -112,14 +112,15 @@
     </insert>
 
     <select id="getOldPassword" parameterType="int" resultType="com.job.dashboard.domain.dto.UserDTO">
-        SELECT   /* PersonalDashMapper.getOldPassword */ password
+        SELECT /* PersonalDashMapper.getOldPassword */
+            password
         FROM user_info
         WHERE USER_NO = #{userNo}
     </select>
 
     <update id="updatePassword" parameterType="com.job.dashboard.domain.dto.UserDTO">
-        /* PersonalDashMapper.updatePassword */
-        UPDATE user_info
+        UPDATE /* PersonalDashMapper.updatePassword */
+            user_info
         SET
             PASSWORD = #{password},
             SYSTEM_UPDATER_ID = #{userNo},
@@ -134,7 +135,7 @@
             jai.job_id,
             jai.USER_NO,
             jai.status_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jai.status_type_code) AS status_type_code_name,
+            func_get_detail_name('status_type', jai.status_type_code) AS status_type_code_name,
             DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
             jpi.title,
             jpi.zipcode,
@@ -165,16 +166,16 @@
             (SELECT fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC limit 1) as file_id,
             jpi.title,
             jpi.job_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = jpi.job_type_code) AS job_type_code_name,
+            func_get_detail_name('job_type', jpi.job_type_code) AS job_type_code_name,
             jpi.address,
             jpi.address_detail,
             jpi.salary,
             jpi.salary_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_code = jpi.salary_type_code) AS salary_type_code_name,
+            func_get_detail_name('salary_type', jpi.salary_type_code) AS salary_type_code_name,
             jpi.salary,
             jpi.job_time,
             jpi.status_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jpi.status_type_code) AS status_type_code_name,
+            func_get_detail_name('status_type', jpi.status_type_code) AS status_type_code_name,
             jai.application_id,
             jai.job_id,
             DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime
@@ -186,22 +187,22 @@
     </select>
 
     <select id="getLikeJobsList" parameterType="map" resultType="com.job.dashboard.domain.dto.JobPostDTO">
-        SELECT
+        SELECT /* PersonalDashMapper.getLikeJobsList*/
             jpi.job_id,
             jpi.user_no,
             (SELECT fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC limit 1) as file_id,
             jpi.title,
             jpi.job_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'job_type' AND detail_code = jpi.job_type_code) AS job_type_code_name,
+            func_get_detail_name('job_type', jpi.job_type_code) AS job_type_code_name,
             jpi.address,
             jpi.address_detail,
             jpi.salary,
             jpi.salary_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'salary_type' AND detail_code = jpi.salary_type_code) AS salary_type_code_name,
+            func_get_detail_name('salary_type', jpi.salary_type_code) AS salary_type_code_name,
             jpi.salary,
             jpi.job_time,
             jpi.status_type_code,
-            (SELECT detail_name FROM code_detail WHERE group_code = 'status_type' AND detail_code = jpi.status_type_code) AS status_type_code_name,
+            func_get_detail_name('status_type', jpi.status_type_code) AS status_type_code_name,
             DATE_FORMAT(jpi.system_register_datetime, '%Y-%m-%d') AS system_register_datetime
         FROM
             job_post_info jpi
@@ -214,6 +215,7 @@
     </select>
 
     <select id="getCountJobs" resultType="int">
-        SELECT COUNT(*) FROM job_post_info
+        SELECT /* PersonalDashMapper.getCountJobs*/
+            COUNT(*) FROM job_post_info
     </select>
 </mapper>

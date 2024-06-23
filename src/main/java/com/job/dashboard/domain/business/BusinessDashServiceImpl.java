@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -28,16 +29,63 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     private final BusinessDashMapper businessDashMapper;
     private final SessionUtil sessionUtil;
 
-    @Value("${image.upload.dir}") //yml에 작성한 업로드한 파일위치
-    private String uploadFolder;
+    //파일 인스턴스 변수들
+    @Value("${image.upload.dir}")
+    private String uploadFolder; //yml에 작성한 업로드한 파일위치
+    private String rootPath = System.getProperty("user.dir");  // 루트 경로 불러오기
+    private String fileDir = rootPath + "/files/"; // 프로젝트 루트 경로에 있는 files 디렉토리
 
+    //기업 프로필 작성
+    @Transactional
+    public Map<Object, String> saveProfile(CompanyInfoDTO companyInfoDTO) {
+        System.out.println("기업 프로필 작성");
+        Map<Object, String > map = new HashMap<>();
 
-    // 루트 경로 불러오기
-    private String rootPath = System.getProperty("user.dir");
-    // 프로젝트 루트 경로에 있는 files 디렉토리
-    private String fileDir = rootPath + "/files/";
+        int userNo = (int) sessionUtil.getAttribute("userNo");
+        companyInfoDTO.setUserNo(userNo);
+
+        // 프로필 체크
+        List<CompanyInfoDTO> businessProfile = businessDashMapper.checkBusinessProfile(userNo);
+        System.out.println("기업 프로필 확인 : "+businessProfile);
+
+        if (businessProfile.isEmpty()){ // 작성된 프로필이 없음.
+            int companyIdSeq = businessDashMapper.getCompanyIdSeq(userNo); // 프로필 pk
+            System.out.println("companyIdSeq : "+ companyIdSeq);
+
+            companyInfoDTO.setCompanyId(companyIdSeq); // pk 등록
+
+        } else { // 작성된 프로필이 있음
+            companyInfoDTO.setCompanyId(businessProfile.get(0).getCompanyId()); //pk 등록
+            System.out.println("확인: "+ companyInfoDTO);
+        }
+
+        // 프로필 내용 작성, 수정
+        businessDashMapper.saveBusinessProfile(companyInfoDTO);
+
+        // 파일 저장 부분
+        MultipartFile fileCheck = companyInfoDTO.getFile();
+        if (fileCheck != null) { //파일이 있음.
+            map = saveFile(fileCheck);
+            System.out.println("map "+ map);
+        }
+
+        map.put("code", "success");
+        map.put("message", "프로필 저장 성공!");
+        System.out.println("map에 뭐가 들었나? (프로필 저장중)"+map);
+
+        return map;
+    }
+
+    // 기업 프로필 가져오기
+    public CompanyInfoDTO getBusinessProfile() {
+        int userNo = (int) sessionUtil.getAttribute("userNo");
+
+        return businessDashMapper.getBusinessProfile(userNo);
+    }
+
 
     //파일 저장
+    @Transactional
     public Map<Object, String> saveFile(MultipartFile file){
         System.out.println("====프로필 이미지 파일 저장 impl====");
 
@@ -104,9 +152,9 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     // 파일 가져오기
     @Override
     public byte[] loadFileAsBytes(int fileId) throws IOException {
-
         Map<String, Object> map = new HashMap<>();
         map.put("fileId",fileId);
+
         FileDTO file = businessDashMapper.getFiles(map);
         System.out.println("file확인 ;"+file);
 
@@ -121,84 +169,37 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         }
     }
 
-    //기업 프로필 작성
-    public Map<Object, String> saveProfile(CompanyInfoDTO companyInfoDTO) {
-        System.out.println("기업 프로필 작성");
-        Map<Object, String > map = new HashMap<>();
-
-        int userNo = (int) sessionUtil.getAttribute("userNo");
-        companyInfoDTO.setUserNo(userNo);
-
-
-        //작성된 프로필이 있는지 체크
-        List<CompanyInfoDTO> businessProfile = businessDashMapper.checkBusinessProfile(userNo);
-        System.out.println("기업 프로필 확인 : "+businessProfile);
-
-
-        if (businessProfile.isEmpty()){ // 작성된 프로필이 없음.
-            int companyIdSeq = businessDashMapper.getCompanyIdSeq(userNo); // 회원의 프로필id 값
-            System.out.println("companyIdSeq : "+ companyIdSeq);
-
-            companyInfoDTO.setCompanyId(companyIdSeq); // id값이 null이면 1반환
-
-        } else { // null이 아니면 1
-            companyInfoDTO.setCompanyId(businessProfile.get(0).getCompanyId());
-            System.out.println("확인: "+ companyInfoDTO);
-        }
-
-        businessDashMapper.saveBusinessProfile(companyInfoDTO); // 프로필 내용 등록
-
-        // 파일 저장 부분
-        MultipartFile fileCheck = companyInfoDTO.getFile();
-        if (fileCheck != null) { //파일이 있음.
-            map = saveFile(fileCheck);
-            System.out.println("map "+ map);
-        }
-
-        map.put("code", "success");
-        map.put("message", "프로필 저장 성공!");
-        System.out.println("map에 뭐가 들었나? (프로필 저장중)"+map);
-
-        return map;
-    }
-
-    // 기업프로필 가져오기
-    public CompanyInfoDTO getBusinessProfile() {
-        int userNo = (int) sessionUtil.getAttribute("userNo");
-
-        return businessDashMapper.getBusinessProfile(userNo);
-    }
-
-    //파일 가져오기
+    //파일 조회하기
     public FileDTO getFile(int userNo) {
-
         Map<String, Object> map = new HashMap<>();
         map.put("userNo",userNo);
+
         return businessDashMapper.getFiles(map);
     }
 
     // 기업 작성한 공고 리스트
      public PageInfo<JobPostDTO> getPostJobList(String keyword, int pageNum, int pageSize) {
          System.out.println("공고 리스트 임플=====");
-
          Map<String, Object> map = new HashMap<>();
-         Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
+         int userNo = (int) sessionUtil.getAttribute("userNo");
 
          map.put("userNo", userNo);
          map.put("keyword", keyword);
          System.out.println(" map 에 들어간거 확인 :: "+map);
 
          PageHelper.startPage(pageNum, pageSize);
-         List<JobPostDTO> applyStatusList = businessDashMapper.getPostJobList(map) ;
+         List<JobPostDTO> applyStatusList = businessDashMapper.getPostJobList(map);
          return new PageInfo<>(applyStatusList);
      }
+
+     /* caondidate를 application으로 바꾸기 */
 
     //작성한 공고에 지원한 지원자 리스트
     public PageInfo<JobApplicationDTO> getCandidateList(String keyword, int pageNum, int pageSize, int jobId) {
         System.out.println("지원한 지원자리스트 임플=====");
 
         Map<String, Object> map = new HashMap<>();
-        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
+        int userNo = (int) sessionUtil.getAttribute("userNo");
 
         map.put("userNo", userNo);
         map.put("keyword", keyword);
@@ -219,6 +220,7 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     }
 
     //지원자 채용
+    @Transactional
     public Map<Object, String> applyCandidate(JobApplicationDTO jobApplicationDTO) {
         Map<Object, String> map = new HashMap<>();
         System.out.println("지원자 채용 impl");
@@ -231,6 +233,7 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     }
 
     //지원자 채용 취소
+    @Transactional
     public Map<Object, String> applyCancelCandidate(JobApplicationDTO jobApplicationDTO) {
         Map<Object, String> map = new HashMap<>();
         System.out.println("지원자 채용 impl");

@@ -91,6 +91,7 @@ public class BusinessDashController {
         return businessDashService.saveFile(file);
     }
 
+    // fileId로 파일 가져오기
     @GetMapping("/uploadedFileGet/{fileId}")
     public ResponseEntity<byte[]> getImgView(@PathVariable("fileId") int fileId) {
         System.out.println("id = "+fileId);
