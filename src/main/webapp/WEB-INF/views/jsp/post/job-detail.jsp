@@ -245,8 +245,9 @@ job list -->
                   </div>
                 </div>
                 <div class="job-list-favourite-time">
+                  <c:if test="${sessionScope.userTypeCode == 10}">
                   <a class="job-list-favourite order-2" id="like" href="#"><i id='likeIcon' class="${like == '1' ? 'fas fa-heart text-danger' : 'far fa-heart'}"></i></a>
-                  <span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>${detail.systemRegisterDatetime}</span>
+                  </c:if>
                 </div>
               </div>
             </div>
@@ -377,9 +378,9 @@ job list -->
           <div class="sidebar mb-0">
             <c:if test="${detail.statusTypeCode == 'OPEN'}">
             <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="far fa-paper-plane"></i>지원하기</a>
-<%--              <c:if test="${detail.jaiStatusTypeCode == 'APPLIED'}">--%>
             <a class="btn btn-primary" href="#" id="button_applyCancel" name="button_applyCancel"><i class="far fa-paper-plane"></i>지원취소하기</a>
-<%--              </c:if>--%>
+              <%--              <c:if test="${detail.jaiStatusTypeCode == 'APPLIED'}">--%>
+              <%--              </c:if>--%>
             </c:if>
           </div>
         </c:if>

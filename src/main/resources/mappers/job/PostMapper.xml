@@ -200,7 +200,7 @@
     <select id="profileCount" parameterType="int" resultType="int">
         SELECT  /*PostMapper.profileCount*/
             count(1)
-        FROM user_profile_info
+        FROM company_info
         WHERE USER_NO = #{userNo}
     </select>
 
