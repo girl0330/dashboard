@@ -96,6 +96,10 @@
                     } else if (data.code === 'success'){
                         alert(data.message);
                         location.href='/business/list'
+                    } else if (data.code === 'loginError') {
+                        location.href='/user/login'
+                    } else if (date.code === 'userCodeError') {
+                        location.href='/'
                     }
                 },
                 error: function(xhr, status, error) {
@@ -155,9 +159,11 @@ tab -->
             </div>
             <div class="col-md-8">
                 <div class=" justify-content-center">
-                    <ul class="nav nav-tabs nav-tabs-03 justify-content-center d-sm-flex d-block text-center" id="myTab" role="tablist">
+                    <ul class="nav nav-tabs nav-tabs-03 justify-content-center d-sm-flex d-block text-center" id="myTab"
+                        role="tablist">
                         <li class="flex-fill">
-                            <a class="nav-item active" id="Job-detail-tab" data-bs-toggle="tab" href="#Job-detail" role="tab" aria-controls="Job-detail" aria-selected="false">
+                            <a class="nav-item active" id="Job-detail-tab" data-bs-toggle="tab" href="#Job-detail"
+                               role="tab" aria-controls="Job-detail" aria-selected="false">
                                 <div class="feature-info-icon mb-3">
                                     <i class="flaticon-suitcase"></i>
                                 </div>
@@ -257,7 +263,7 @@ tab -->
                                 <label class="mb-2" > 급여 액수 <span class="font-danger">*</span></label>
                                 <input type="text" class="form-control" value=""  name="salary" id="salary_num" valid="true" data-name="급여 액수">
                             </div>
-                            <div class="form-group col-md-3 select-border mb-3">
+                            <div class="form-group col-md-4 select-border mb-3">
                                 <label class="mb-2"  for="employmentTypeCode"> 고용 유형 <span class="font-danger">*</span></label>
                                 <select class="form-control basic-select" id="employmentTypeCode" name="employmentTypeCode" valid="true" data-name="고용 유형">
                                 </select>

@@ -91,6 +91,14 @@ public class BusinessDashController {
         return businessDashService.saveFile(file);
     }
 
+    //파일 삭제
+    @PostMapping("/deleteFile/{fileId}")
+    @ResponseBody
+    public Map<Object, String> profileFileDelete(@PathVariable("fileId") int fileId){
+        System.out.println("file삭제? : "+fileId);
+        return null;
+    }
+
     // fileId로 파일 가져오기
     @GetMapping("/uploadedFileGet/{fileId}")
     public ResponseEntity<byte[]> getImgView(@PathVariable("fileId") int fileId) {

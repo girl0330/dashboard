@@ -23,6 +23,11 @@ public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
     private final SessionUtil sessionUtil;
 
+    //프로필 확인
+    public int profileCheck(int userNo) {
+        return postMapper.profileCount(userNo);
+    }
+
     // 구인 공고 저장
     @Transactional
     public Map<String, Object> saveJob(JobPostDTO jobPostDTO) {

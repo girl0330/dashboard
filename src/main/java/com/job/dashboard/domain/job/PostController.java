@@ -37,6 +37,16 @@ public class PostController {
             return "redirect:/";
         }
 
+        //프로필 작성 확인
+        int userNo = (int) sessionUtil.getAttribute("userNo");
+        System.out.println("userNo 확인 ::    "+userNo);
+        int profileCheck = postService.profileCheck(userNo);
+        System.out.println("profileCheck ;;:: "+ profileCheck);
+        if (profileCheck == 0) {
+            System.out.println("????!!!");
+            return "redirect:/business/profile";
+        }
+
         System.out.println("usertypecode가 20임 이제 다음으로 진행하겠음.");
         return "jsp/post/post-a-job";
     }
@@ -46,15 +56,16 @@ public class PostController {
     @ResponseBody
     public Map<String, Object> savePost (@RequestBody JobPostDTO jobPostDTO) {
         System.out.println("====공고 저장====");
+        Map<String, Object> map = new HashMap<>();
 
          //로그인한 id를 직접 넣을거임
-        Map<String, Object> map = postService.saveJob(jobPostDTO);
+        map = postService.saveJob(jobPostDTO);
         System.out.println("map/::::::::::   "+ map);
         return map;
     }
 
 
-    //공고페이지 이동
+    //공고리스트 이동
     @GetMapping("/list")
     public String jobPostView() {
         return "jsp/post/job-list";

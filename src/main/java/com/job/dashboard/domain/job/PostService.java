@@ -44,4 +44,7 @@ public interface PostService {
 
     //likeList
     List<LikeDTO> likeList();
+
+    // 프로필 존재 확인
+    int profileCheck(int userNo);
 }

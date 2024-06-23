@@ -79,6 +79,34 @@
             }
         });
 
+        // 파일 삭제
+        $('#fileDelete').on('click', function () {
+            alert("삭제?")
+            const fileId = $("#fileId").val();
+            console.log("fileId는?  :    "+ JSON.stringify(fileId));
+
+            $.ajax({
+                url: "/business/deleteFile/"+fileId, // Spring 컨트롤러 URL
+                type: 'POST',
+                contentType: 'application/json',
+                data: '',
+                success: function(data) {
+                    // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+                    console.log(JSON.stringify(data));
+                    if(data.code === 'error') {
+                        alert(data.message);
+                    } else if (data.code === 'success'){
+                        alert(data.message);
+                        location.href='/business/profile'
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // 오류 발생 시 실행할 코드
+                    console.error(error);
+                }
+            });
+        })
+
         // 주소값
         $('#address, #zipcode').on("click", function() { // 클릭 이벤트 사용
             new daum.Postcode({
@@ -115,11 +143,26 @@ My Profile -->
                     <div class="section-title-02 mb-4">
                         <h4>기본 정보</h4>
                     </div>
+<%--                    <div class="cover-photo-contact">--%>
+<%--                        <form action="" method="post" enctype="multipart/form-data">--%>
+<%--                            <div class="cover-photo">--%>
+<%--                                <img class="img-fluid " src="images/bg/cover-bg.png" alt="">--%>
+<%--                                <i class="fas fa-times-circle"></i>--%>
+<%--                            </div>--%>
+<%--                            <div class="upload-file">--%>
+<%--                                <label for="formFile" class="form-label">Upload Cover Photo</label>--%>
+<%--                                <input class="form-control" type="file" id="formFile">--%>
+<%--                            </div>--%>
+<%--                        </form>--%>
+<%--                    </div>--%>
                     <div class="cover-photo-contact mb-3 " >
                         <div class="cover-photo">
                             <img class="img-fluid" id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="Uploaded Image" style="width: 225px; height: 225px;" >
-                            <i class="fas fa-pencil-alt" id="fileUpload"></i>
-<%--                            <i class="fas fa-pencil-alt" ></i>--%>
+                            <i class="fas fa-times-circle" id="fileDelete"><input id="fileId" type='hidden' value='${fileId}'></i>
+                        </div>
+                        <div class="upload-file">
+                            <label for="fileUpload" class="form-label">Upload Cover Photo</label>
+                            <input id="fileUpload">
                         </div>
                     </div>
                     <form id="businessSaveProfile" name="businessSaveProfile" enctype="multipart/form-data">

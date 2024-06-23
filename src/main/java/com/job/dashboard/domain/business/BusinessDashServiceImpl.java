@@ -149,6 +149,12 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         return result;
     }
 
+    // 파일 삭제
+    @Transactional
+    public Map<Object, String> deleteFile(MultipartFile file) {
+        return null;
+    }
+
     // 파일 가져오기
     @Override
     public byte[] loadFileAsBytes(int fileId) throws IOException {

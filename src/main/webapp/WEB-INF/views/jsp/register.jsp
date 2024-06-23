@@ -5,10 +5,10 @@
   let emailDuplicateCheck = {
     init: function () {
       if (!this.emailEmptyChkFn()) {
-        return false;
+        return;
       }
       if (!this.emailValidationChk()) {
-        return false;
+        return;
       }
       if (!this.emailDuplicateCheck()) {
         console.log("??????");
@@ -307,7 +307,7 @@ Register -->
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="ture" id="terms" name="terms">
                       <label class="form-check-label" for="terms">
-                        <a href="이용약관_링크_주소_입력">이용약관</a>에 전체동의
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">이용약관</a>에 전체동의
                       </label>
                     </div>
                   </div>
@@ -395,4 +395,34 @@ Back To Top-->
 </div>
 <!--=================================
 Back To Top-->
+
+<!--=================================
+Apply Modal Popup -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <form name="formApply" id="formApply">
+        <div class="modal-header p-4">
+          <h4 class="mb-0 text-center">공고 지원</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="login-register">
+            <section>
+              <div class="container">
+                <div class="form-group mt-0 mb-3 col-md-12">
+                  <label class="form-label">내용</label>
+                  <textarea class="form-control" rows="4" id="motivationDescription" name="motivationDescription"></textarea>
+                </div>
+              </div>
+              <a class="btn btn-lg btn-primary" href="#" id="button_apply" name="button_apply">지원하기</a>
+            </section>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--=================================
+Signin Modal Popup -->
 
