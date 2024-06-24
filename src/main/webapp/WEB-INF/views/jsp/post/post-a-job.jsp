@@ -192,10 +192,10 @@ tab -->
                     <div class="col-12">
                         <form class="row" id="postJobForm" name="postJobForm">
 
-                            <div id="select-container-1"></div>
-                            <div id="select-container-2"></div>
-                            <div id="select-container-3"></div>
-                            <div id="select-container-4"></div>
+<%--                            <div id="select-container-1"></div>--%>
+<%--                            <div id="select-container-2"></div>--%>
+<%--                            <div id="select-container-3"></div>--%>
+<%--                            <div id="select-container-4"></div>--%>
 
                             <div class="row mt-4 mt-lg-5">
                                 <div class="col-12">
@@ -263,6 +263,7 @@ tab -->
                                 <label class="mb-2" > 급여 액수 <span class="font-danger">*</span></label>
                                 <input type="text" class="form-control" value=""  name="salary" id="salary_num" valid="true" data-name="급여 액수">
                             </div>
+
                             <div class="form-group col-md-4 select-border mb-3">
                                 <label class="mb-2"  for="employmentTypeCode"> 고용 유형 <span class="font-danger">*</span></label>
                                 <select class="form-control basic-select" id="employmentTypeCode" name="employmentTypeCode" valid="true" data-name="고용 유형">

@@ -117,6 +117,7 @@
             jpi.title,
             jpi.description,
             jpi.job_type_code,
+            (SELECT detail_name FROM code_detail WHERE job_type.code = jpi.job_type_code) AS job_type_code_name,
             func_get_detail_name('job_type', jpi.job_type_code)  AS job_type_code_name,
             jpi.zipcode,
             jpi.address,

@@ -27,6 +27,12 @@
                 formData.append('file', file);
             }
 
+            //파일 아이디 추가
+            const fileId = $("#fileId").val();
+            if (fileId) {
+                formData.append("fileId", fileId);
+            }
+
             // 디버깅용 출력
             for (let [key, value] of formData.entries()) {
                 console.log(key + ": " + value);
@@ -93,11 +99,11 @@
                 success: function(data) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
                     console.log(JSON.stringify(data));
-                    if(data.code === 'error') {
+                    if (data.code === 'success'){
                         alert(data.message);
-                    } else if (data.code === 'success'){
-                        alert(data.message);
-                        location.href='/business/profile'
+                        // 이미지 미리보기 삭제
+                        const coverImage = document.getElementById('coverImage');
+                        coverImage.src = ''; // 미리보기 이미지 초기화
                     }
                 },
                 error: function(xhr, status, error) {

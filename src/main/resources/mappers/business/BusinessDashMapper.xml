@@ -244,4 +244,10 @@
         </if>
         ORDER BY file_id DESC LIMIT 1
     </select>
+
+    <delete id="deleteFile" parameterType="int">
+        DELETE
+        FROM file_info
+        WHERE file_id = #{fileId}
+    </delete>
 </mapper>

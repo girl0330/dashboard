@@ -65,9 +65,11 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         // 파일 저장 부분
         MultipartFile fileCheck = companyInfoDTO.getFile();
         if (fileCheck != null) { //파일이 있음.
-            map = saveFile(fileCheck);
-            System.out.println("map "+ map);
+            System.out.println("파일이 확인 ::        "+fileCheck);
+
         }
+        map = saveFile(fileCheck);
+        System.out.println("map "+ map);
 
         map.put("code", "success");
         map.put("message", "프로필 저장 성공!");
@@ -149,12 +151,6 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         return result;
     }
 
-    // 파일 삭제
-    @Transactional
-    public Map<Object, String> deleteFile(MultipartFile file) {
-        return null;
-    }
-
     // 파일 가져오기
     @Override
     public byte[] loadFileAsBytes(int fileId) throws IOException {
@@ -182,6 +178,41 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
         return businessDashMapper.getFiles(map);
     }
+
+    // 파일 삭제
+    @Transactional
+    public void deleteFile(int fileId) {
+        System.out.println("==== 파일 삭제 ====");
+        Map<String, Object> map = new HashMap<>();
+        map.put("fileId", fileId);
+
+        FileDTO fileInfo = businessDashMapper.getFiles(map);
+        System.out.println("fileInfo  ::    "+ fileInfo);
+
+        if (fileInfo != null) {
+            System.out.println("파일 정보 있음.");
+            // 데이터베이스에서 파일 정보 삭제
+            System.out.println("fileId =====    "+fileId);
+            businessDashMapper.deleteFile(fileId);
+
+            // 로컬에서 파일 삭제
+//            Path filePath = Paths.get(uploadFolder + File.separator + fileInfo.getSavedFilename());
+//            File file = new File(filePath.toString());
+            String filePathStr = uploadFolder + File.separator + fileInfo.getSavedFilename();
+            System.out.println("파일 경로: " + filePathStr);
+            Path filePath = Paths.get(filePathStr);
+            File file = filePath.toFile();
+
+            if (file.delete()) {
+                System.out.println("파일이 성공적으로 삭제되었습니다: " + filePath);
+            } else {
+                System.err.println("파일 삭제 실패: " + filePath);
+            }
+        } else {
+            System.err.println("해당 파일 정보를 찾을 수 없습니다: " + fileId);
+        }
+    }
+
 
     // 기업 작성한 공고 리스트
      public PageInfo<JobPostDTO> getPostJobList(String keyword, int pageNum, int pageSize) {
