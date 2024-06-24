@@ -3,10 +3,8 @@ package com.job.dashboard.domain.job;
 
 import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.business.BusinessDashService;
-import com.job.dashboard.domain.dto.FileDTO;
-import com.job.dashboard.domain.dto.JobApplicationDTO;
-import com.job.dashboard.domain.dto.JobPostDTO;
-import com.job.dashboard.domain.dto.LikeDTO;
+import com.job.dashboard.domain.common.CommonService;
+import com.job.dashboard.domain.dto.*;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,6 +21,7 @@ import java.util.Objects;
 public class PostController {
     private final PostService postService;
     private final SessionUtil sessionUtil;
+    private final CommonService commonService;
 
     //공고 페이지
     @GetMapping("/postAJob")
@@ -141,15 +140,32 @@ public class PostController {
         System.out.println("수정하기 : id 확인"+jobId);
         int userNo = (int) sessionUtil.getAttribute("userNo"); //로그인한 userNo 가져옴
 
-        JobPostDTO old = postService.detail(jobId);
-        if (old.getUserNo() != userNo) {
-            System.out.println("일치안함");
+        JobPostDTO initialData = postService.detail(jobId);
+        if (initialData.getUserNo() != userNo) {
+            System.out.println("작성회원 불일치");
             return "redirect:/";
         }
 
+        List<SelectBoxOptionDTO> jobType = commonService.getSelectBoxOption("job_type");
+        List<SelectBoxOptionDTO> salaryType = commonService.getSelectBoxOption("salary_type");
+        List<SelectBoxOptionDTO> employmentType = commonService.getSelectBoxOption("employment_type");
+        List<SelectBoxOptionDTO> jobDayType = commonService.getSelectBoxOption("job_day_type");
+        List<SelectBoxOptionDTO> statusType = commonService.getSelectBoxOption("status_type");
+
+        System.out.println("jobType:::   "+jobType);
+        System.out.println("salaryType:::   "+salaryType);
+        System.out.println("employmentType:::   "+employmentType);
+        System.out.println("jobDayType:::   "+jobDayType);
+        System.out.println("statusType:::   "+statusType);
+
         System.out.println("일치함");
-        System.out.println("old확인 : "+old);
-        model.addAttribute("old",old);
+        System.out.println("initialData  확인 : "+initialData);
+        model.addAttribute("jobType",jobType);
+        model.addAttribute("salaryType",salaryType);
+        model.addAttribute("employmentType",employmentType);
+        model.addAttribute("jobDayType",jobDayType);
+        model.addAttribute("statusType",statusType);
+        model.addAttribute("initialData",initialData);
         return "jsp/post/post-a-job-update";
     }
 

@@ -96,7 +96,12 @@ public class BusinessDashController {
     @ResponseBody
     public Map<Object, String> profileFileDelete(@PathVariable("fileId") int fileId){
         System.out.println("file삭제? : "+fileId);
-        return null;
+        Map<Object, String> map = new HashMap<>();
+        businessDashService.deleteFile(fileId);
+
+        map.put("code", "success");
+        map.put("message", "프로필 삭제가 되었습니다.");
+        return map;
     }
 
     // fileId로 파일 가져오기
@@ -111,6 +116,7 @@ public class BusinessDashController {
         }
     }
 
+    //프로필 저장 (파일 같이)
     @PostMapping("/profileSave")
     @ResponseBody
     public Map<Object, String> profileSave(CompanyInfoDTO companyInfoDTO) {

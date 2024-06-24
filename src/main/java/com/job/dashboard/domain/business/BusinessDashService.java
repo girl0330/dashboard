@@ -31,4 +31,5 @@ public interface BusinessDashService {
     Map<Object, String> saveFile(MultipartFile file) throws IOException; //파일 저장
     byte[] loadFileAsBytes(int fileId) throws IOException; // 파일 가져오기
     FileDTO getFile(int userNo); //파일 조회하기
+    void deleteFile(int fileId);// 파일 삭제
 }
