@@ -52,6 +52,8 @@
                     } else if (data.code === 'success'){
                         alert(data.message);
                         location.href='/business/profile'
+                    } else if (data.code === 'businessNumError') {
+                        alert(data.message);
                     }
                 },
                 error: function(xhr, status, error) {
@@ -111,7 +113,7 @@
                     console.error(error);
                 }
             });
-        })
+        });
 
         // 주소값
         $('#address, #zipcode').on("click", function() { // 클릭 이벤트 사용
@@ -167,8 +169,7 @@ My Profile -->
                             <i class="fas fa-times-circle" id="fileDelete"><input id="fileId" type='hidden' value='${fileId}'></i>
                         </div>
                         <div class="upload-file">
-                            <label for="fileUpload" class="form-label">Upload Cover Photo</label>
-                            <input id="fileUpload">
+                            <label class="form-label" id="fileUpload">프로필 사진 업로드</label>
                         </div>
                     </div>
                     <form id="businessSaveProfile" name="businessSaveProfile" enctype="multipart/form-data">
@@ -180,7 +181,7 @@ My Profile -->
                                 <input type="text" class="form-control" value="${company.companyName}" id="companyName" name="companyName">
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="form-label">기업 연락처</label>
+                                <label class="form-label">기업 연락처 ['-'를 제외]</label>
                                 <input type="text" class="form-control" value="${company.officePhone}" id="officePhone" name="officePhone">
                             </div>
                             <div class="form-group col-md-4 mb-3 select-border">
@@ -210,7 +211,7 @@ My Profile -->
                                 </select>
                             </div>
                             <div class="form-group col-md-4 mb-3">
-                                <label class="form-label">사업자 번호</label>
+                                <label class="form-label">사업자 번호 ['-'를 제외]</label>
                                 <input type="text" class="form-control" value="${company.businessNumber}"  name="businessNumber" id="businessNumber">
                             </div>
                             <div class="form-group mb-3 col-md-3">

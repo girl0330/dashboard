@@ -10,7 +10,6 @@ import java.util.Map;
 public interface PersonalDashMapper {
 
     // 프로필
-    int profileCheck(int userNo); //작성 체크
     UserProfileInfoDTO getProfile(int userNo); // 기존 작성된 프로필 가져오기
     List<UserProfileInfoDTO> checkProfile(int userNo); // 저장된 프로필 있으면 가져오기
     int getProfileIdSeq(int userNo); //프로필 pk
@@ -30,4 +29,7 @@ public interface PersonalDashMapper {
 
     //좋아요 리스트
     List<JobPostDTO> getLikeJobsList(Map<String, Object> map);
+
+    // 프로필 가져오기
+    int profileCountByUserNo(int userNo);
 }

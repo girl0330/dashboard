@@ -103,7 +103,7 @@
     });
 
     //업로드할 파일 선택
-    $('#file').on('click', function () {
+    $('#fileUpload').on('click', function () {
       $('#fileInput').click();
     });
 
@@ -117,6 +117,34 @@
         };
         reader.readAsDataURL(file);
       }
+    });
+
+    // 파일 삭제
+    $('#fileDelete').on('click', function () {
+      alert("삭제?")
+      const fileId = $("#fileId").val();
+      console.log("fileId는?  :    "+ JSON.stringify(fileId));
+
+      $.ajax({
+        url: "/business/deleteFile/"+fileId, // Spring 컨트롤러 URL
+        type: 'POST',
+        contentType: 'application/json',
+        data: '',
+        success: function(data) {
+          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+          console.log(JSON.stringify(data));
+          if (data.code === 'success'){
+            alert(data.message);
+            // 이미지 미리보기 삭제
+            const coverImage = document.getElementById('coverImage');
+            coverImage.src = ''; // 미리보기 이미지 초기화
+          }
+        },
+        error: function(xhr, status, error) {
+          // 오류 발생 시 실행할 코드
+          console.error(error);
+        }
+      });
     });
 
     //핸들폰 입력시 숫자 이외의 문자는 제외시킴
@@ -163,7 +191,10 @@ My Profile -->
           <div class="cover-photo-contact">
             <div class="cover-photo">
               <img class="img-fluid" id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="Uploaded Image" style="width: 225px; height: 225px;">
-              <i class="fas fa-pencil-alt" id="file" name="file"></i>
+              <i class="fas fa-times-circle" id="fileDelete"><input id="fileId" type='hidden' value='${fileId}'></i>
+            </div>
+            <div class="upload-file">
+              <label class="form-label" id="fileUpload">프로필 사진 업로드</label>
             </div>
           </div>
           <form class="mt-4" id="saveProfile" name="saveProfile" enctype="multipart/form-data">

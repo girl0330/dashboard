@@ -4,14 +4,13 @@ import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.*;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public interface PersonalDashService {
 
     //프로필
-    int profileCheck(int userNo); // 프로필 유무 확인
-    UserProfileInfoDTO getProfile(Integer userNo); // 기존 프로필 가져오기
+    int profileCountByUserNo(int userNo);
+    UserProfileInfoDTO checkProfile(int userNo); // 프로필 체크
     Map<Object, String> saveProfile(UserProfileInfoDTO userProfileInfoDTO) throws IOException; // 새로운 프로필 저장
 
     // 비밀번호 변경하기
@@ -25,5 +24,6 @@ public interface PersonalDashService {
 
     // 좋아요 리스트
     PageInfo<JobPostDTO> likedJobsList(String keyword, int pageNum, int pageSize);
+
 
 }

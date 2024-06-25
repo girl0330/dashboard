@@ -24,17 +24,11 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     private final BusinessDashService businessDashService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    //프로필이 작성 유무
-    public int profileCheck(int userNo) {
-        System.out.println("프로필 유무 체크");
-
-        return personalDashMapper.profileCheck(userNo);
-    }
-
-    // 기존 작성된 프로필 가져오기
-    public UserProfileInfoDTO getProfile(Integer userNo) {
+    //작성된 프로필 확인
+    public UserProfileInfoDTO checkProfile(int userNo) {
         System.out.println("====피로필 impl");
         UserProfileInfoDTO profile = personalDashMapper.getProfile(userNo);
+        System.out.println("이메일 확인 ;;;; "+ profile.getEmail());
         System.out.println("profile;;;;::::   " + profile);
         return profile;
     }
@@ -45,7 +39,7 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         System.out.println("======profileSave === impl====");
 
         Map<Object, String> map = new HashMap<>();
-        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
+        int userNo = (int) sessionUtil.getAttribute("userNo");
 
         List<UserProfileInfoDTO> profile = personalDashMapper.checkProfile(userNo); //userNo로 프로필 존재 확인
 
@@ -175,6 +169,10 @@ public class PersonalDashServiceImpl implements PersonalDashService {
 
     public int getCountJobs() {
         return personalDashMapper.getCountJobs();  // 총 게시물 수를 세는 메서드
+    }
+
+    public int profileCountByUserNo(int userNo) {
+        return personalDashMapper.profileCountByUserNo(userNo);
     }
 
 }
