@@ -33,57 +33,8 @@ public class BusinessDashController {
 
     @Value("${image.upload.dir}") //yml에 작성한 업로드한 파일위치
     private String uploadFolder;
-    @GetMapping("/dashboard")
-    public String dashboardView()  {
-        System.out.println("대시보드");
 
-        if(!sessionUtil.loginUserCheck()) {
-            System.out.println("로그인 안되어 있음, 로그인 화면으로 이동");
-            return "redirect:/user/login";
-        }
-
-        if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) {
-            return "redirect:/";
-        }
-        return "jsp/business/business-dashboard";
-    }
-
-    //프로필 페이지 - 데이터 있으면 보여줌
-    @GetMapping("/profile")
-    public String profileView(Model model)  {
-
-        System.out.println("프로필");
-
-        //로그인 확인
-        if(!sessionUtil.loginUserCheck()) {
-            System.out.println("로그인 화면으로 이동");
-            return "redirect:/user/login";
-        }
-
-        //로그인 코드 확인
-        if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) {
-            return "redirect:/";
-        }
-
-        int userNo = (int) sessionUtil.getAttribute("userNo");
-        CompanyInfoDTO businessProfile = businessDashService.getBusinessProfile();
-
-        //파일 조회
-        FileDTO file = businessDashService.getFile(userNo);
-        if (file != null) {
-            System.out.println("file 확인 : "+file);
-            model.addAttribute("fileId", file.getFileId());
-        }
-
-        System.out.println("file 확인 : "+file);
-
-        System.out.println("프로필 잘가져오기 있음. :"+ businessProfile);
-        model.addAttribute("company", businessProfile);
-
-        return "jsp/business/business-profile";
-    }
-
-    //프로필 파일 업로드
+    //파일 업로드
     @PostMapping("/uploadedFile")
     @ResponseBody
     public Map<Object, String> profileFile(@RequestParam("file") MultipartFile file) throws IOException {
@@ -114,6 +65,46 @@ public class BusinessDashController {
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    //프로필 페이지 - 데이터 있으면 보여줌
+    @GetMapping("/profile")
+    public String profileView(Model model)  {
+
+        System.out.println("프로필");
+
+        //로그인 확인
+        if(!sessionUtil.loginUserCheck()) {
+            System.out.println("로그인 화면으로 이동");
+            return "redirect:/user/login";
+        }
+
+        //회원 코드 확인
+        if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) {
+            return "redirect:/";
+        }
+
+        //기존 프로필 가져오기
+        int userNo = (int) sessionUtil.getAttribute("userNo");
+        CompanyInfoDTO businessProfile = businessDashService.getBusinessProfile();
+        if (businessProfile == null) {
+            System.out.println("null인가??");
+            return "jsp/business/business-profile";
+        }
+
+        //파일 조회
+        FileDTO file = businessDashService.getFile(userNo);
+        if (file != null) {
+            System.out.println("file 확인 : "+file);
+            model.addAttribute("fileId", file.getFileId());
+        }
+
+        System.out.println("file 확인 : "+file);
+
+        System.out.println("프로필 잘가져오기 있음. :"+ businessProfile);
+        model.addAttribute("company", businessProfile);
+
+        return "jsp/business/business-profile";
     }
 
     //프로필 저장 (파일 같이)
@@ -170,8 +161,14 @@ public class BusinessDashController {
             return "redirect:/";
         }
 
-        //회사 이름
+        //프로필 작성 확인
         CompanyInfoDTO businessProfile = businessDashService.getBusinessProfile();
+        if (businessProfile == null) {
+            System.out.println("null인가??");
+            return "redirect:/business/profile";
+        }
+
+        //회사 이름
         model.addAttribute("company", businessProfile);
 
         //파일 조회

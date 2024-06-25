@@ -32,4 +32,7 @@ public interface BusinessDashMapper {
     void saveImage(FileDTO fileDTO) throws IOException; //저장
     FileDTO getFiles(Map<String, Object> map); //가져오기
     void deleteFile(int fileId); //삭제
+
+    //사업자 번호 체크
+    int checkBusinessNumByUserNo(int userNo);
 }

@@ -62,6 +62,64 @@
       });
     },
 
+    // apply: function () {
+    //
+    //   const options = {
+    //     url: '/business/apply',
+    //     type: 'POST',
+    //     data: {jsonData},
+    //
+    //     beforeSend: () => {
+    //       const jobId = $("#jobId").val();
+    //
+    //       const motivationDescription = $("#motivationDescription").val();
+    //
+    //       let jsonData = {};
+    //       jsonData["jobId"] = jobId;
+    //       jsonData["motivationDescription"] = motivationDescription;
+    //
+    //       console.log("jsonData: " + JSON.stringify(jsonData));
+    //       console.log('요청 전 작업 수행');
+    //     },
+    //     customFail: (response) => {
+    //       console.error('커스텀 실패 처리:', response);
+    //     },
+    //     done: (data) => {
+    //       const modalPopup = new bootstrap.Modal(document.getElementById('commonModal'), {
+    //         keyboard: false
+    //       });
+    //
+    //       $('#modalBody').text(data.message);
+    //       modalPopup.show();
+    //
+    //       switch(data.code) {
+    //         case 'loginError':
+    //           $('#confirmBtn').off('click').on('click', function() {
+    //             location.href = '/user/login';
+    //           });
+    //           break;
+    //         case 'profileError':
+    //           $('#confirmBtn').off('click').on('click', function() {
+    //             location.href = '/personal/myProfile';
+    //           });
+    //           break;
+    //         case 'applyError':
+    //         case 'success':
+    //           $('#exampleModalCenter').modal('hide');
+    //           $('#confirmBtn').off('click').on('click', function() {
+    //             modalPopup.hide();
+    //           });
+    //           break;
+    //       }
+    //     },
+    //     fail: () => {
+    //       console.error('요청 실패');
+    //     }
+    //   };
+    //
+    //   ajax.call(options);
+    // },
+
     cancel: function () {
 
       const jobId = $("#jobId").val();

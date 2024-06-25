@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -40,11 +39,12 @@ public class PersonalDashController {
             return "redirect:/";
         }
 
-        // 프로필 작성 여부 확인
         int userNo = (int)sessionUtil.getAttribute("userNo");
-        int profileCheck = personalDashService.profileCheck(userNo);
-        if(profileCheck == 0) {
-            System.out.println("프로필 내용이 없음, 프로필로 이동");
+
+        // 프로필 작성 여부 확인
+        int profileCheck = personalDashService.profileCountByUserNo(userNo);
+        System.out.println("프로필 확인 :::  "+profileCheck);
+        if (profileCheck == 0) {
             return "redirect:/personal/myProfile";
         }
 
@@ -95,12 +95,10 @@ public class PersonalDashController {
             return "redirect:/";
         }
 
-        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
-        UserProfileInfoDTO myProfile = personalDashService.getProfile(userNo); // 기존 작성된 프로필 가져오기
-        if (myProfile == null) {
-            System.out.println("null인가??");
-            return "jsp/personal/personal-profile";
-        }
+        // 프로필 작성 여부 확인
+        int userNo = (int) sessionUtil.getAttribute("userNo");
+        UserProfileInfoDTO myProfile = personalDashService.checkProfile(userNo);
+        System.out.println("myProfile 확인 :::::: "+myProfile);
 
         //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
@@ -185,18 +183,20 @@ public class PersonalDashController {
             return "redirect:/";
         }
 
-        //파일 조회
         int userNo = (int) sessionUtil.getAttribute("userNo");
+
+        // 프로필 작성 여부 확인
+        int profileCheck = personalDashService.profileCountByUserNo(userNo);
+        System.out.println("프로필 확인 :::  "+profileCheck);
+        if (profileCheck == 0) {
+            return "redirect:/personal/myProfile";
+        }
+
+        //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
         if (file != null) {
             System.out.println("file 확인 : "+file);
             model.addAttribute("fileId", file.getFileId());
-        }
-
-        int profileCheck = personalDashService.profileCheck(userNo);
-        if(profileCheck == 0) {
-            System.out.println("프로필 내용이 없음, 프로필로 이동");
-            return "redirect:/personal/myProfile";
         }
 
         return "jsp/personal/personal-manageJobs";
@@ -240,20 +240,22 @@ public class PersonalDashController {
             return "redirect:/";
         }
 
-        //파일 조회
         int userNo = (int) sessionUtil.getAttribute("userNo");
+
+        // 프로필 작성 여부 확인
+        int profileCheck = personalDashService.profileCountByUserNo(userNo);
+        System.out.println("프로필 확인 :::  "+profileCheck);
+        if (profileCheck == 0) {
+            return "redirect:/personal/myProfile";
+        }
+
+        //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
         if (file != null) {
             System.out.println("file 확인 : "+file);
             model.addAttribute("fileId", file.getFileId());
         }
 
-        // 프로필 작성 여부 확인
-        int profileCheck = personalDashService.profileCheck(userNo);
-        if(profileCheck == 0) {
-            System.out.println("프로필 내용이 없음, 프로필로 이동");
-            return "redirect:/personal/myProfile";
-        }
         System.out.println("좋아요 controller끝 ");
 
         return "jsp/personal/personal-likedJobs";

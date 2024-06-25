@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.personal.PersonalDashMapper">
 
-    <select id="profileCheck" parameterType="int" resultType="int">
-        SELECT /*PersonalDashMapper.profileCheck*/
-        count(*) AS countProfile
-        FROM USER_PROFILE_INFO
+    <select id="profileCountByUserNo" parameterType="int" resultType="int">
+        SELECT count(*)
+            AS profileCount
+        FROM user_profile_info
         WHERE USER_NO = #{userNo}
     </select>
 

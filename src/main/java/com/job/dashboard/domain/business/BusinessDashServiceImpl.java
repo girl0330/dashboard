@@ -37,12 +37,21 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
     //기업 프로필 작성
     @Transactional
-    public Map<Object, String> saveProfile(CompanyInfoDTO companyInfoDTO) {
+    public Map<Object, String>  saveProfile(CompanyInfoDTO companyInfoDTO) {
         System.out.println("기업 프로필 작성");
         Map<Object, String > map = new HashMap<>();
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
         companyInfoDTO.setUserNo(userNo);
+
+        // 사업자 번호 체크
+        int businessNumberCheck = businessDashMapper.checkBusinessNumByUserNo(companyInfoDTO.getBusinessNumber());
+        System.out.println("businessNumberCheck:::   "+businessNumberCheck);
+        if (businessNumberCheck > 0 ) {
+            map.put("code", "businessNumError");
+            map.put("message", "이미 사용중인 사업자 번호입니다.");
+            return map;
+        }
 
         // 프로필 체크
         List<CompanyInfoDTO> businessProfile = businessDashMapper.checkBusinessProfile(userNo);

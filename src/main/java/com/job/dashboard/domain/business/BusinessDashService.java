@@ -16,6 +16,8 @@ public interface BusinessDashService {
     //프로필
     Map<Object, String> saveProfile(CompanyInfoDTO companyInfoDTO); //기업 프로필 작성/수정
     CompanyInfoDTO getBusinessProfile(); //기업 프로필 가져오기
+
+
     PageInfo<JobPostDTO> getPostJobList(String keyword, int pageNum, int pageSize); //기업 작성한 공고 리스트
 
 
