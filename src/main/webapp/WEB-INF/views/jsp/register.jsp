@@ -209,31 +209,31 @@
   //DOM이 실행 후 실행 됨
   $(document).ready(function() {
 
-    let valid = true;
-
-    //email 공백검사
-    $("#email").change(function() {
-      const email = $('#email');
-      emptyCheck.emptyChkFn(email);
-    });
-
-    //email 밸리데이션
-    $("#user_register").on("click", function() {
-
-      const email = $('#email').val();
-      validation.email(email);
-    });
-
-
-    // //개인 이메일 중복검사 로직
+    // let valid = true;
+    //
+    // //email 공백검사
     // $("#email").change(function() {
-    //   emailDuplicateCheck.init();
+    //   const email = $('#email');
+    //   emptyCheck.emptyChkFn(email);
     // });
+    //
+    // //email 밸리데이션
+    // $("#user_register").on("click", function() {
+    //
+    //   const email = $('#email').val();
+    //   validation.email(email);
+    // });
+
+
+    //개인 이메일 중복검사 로직
+    $("#email").change(function() {
+      emailDuplicateCheck.init();
+    });
 
     //개인 회원가입 로직
-    // $("#user_register").on("click", function() {
-    //   user_register.init();
-    // });
+    $("#user_register").on("click", function() {
+      user_register.init();
+    });
 
     $("#personalTypeCode").on("click",function () {
       $("#userTypeCode").val("10");

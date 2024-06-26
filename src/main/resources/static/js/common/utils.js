@@ -339,5 +339,13 @@ const commonUtils = {
 			return word.charAt(0).toUpperCase() + word.slice(1); // 첫 글자를 대문자로 변환하고 나머지는 그대로
 		})
 		.join(''); // 다시 합치기
+	},
+
+	customAlert: (message) => {
+		const modalPopup = new bootstrap.Modal(document.getElementById('commonModal'), {
+			keyboard: false
+		});
+		$('#modalBody').text(message);
+		modalPopup.show();
 	}
 }

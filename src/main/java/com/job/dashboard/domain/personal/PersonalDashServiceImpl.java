@@ -57,7 +57,7 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         System.out.println("file?"+userProfileInfoDTO.getFile());
         // 파일 저장
         if (userProfileInfoDTO.getFile() != null) {
-            Map<Object, String> fileResult = businessDashService.saveFile(userProfileInfoDTO.getFile()); // 파일 저장 됨.
+            Map<String, Object> fileResult = businessDashService.saveFile(userProfileInfoDTO.getFile()); // 파일 저장 됨.
             System.out.println("====================fileResult 는 :"+fileResult);
         }
 

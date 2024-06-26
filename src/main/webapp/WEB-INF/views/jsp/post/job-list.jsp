@@ -106,7 +106,18 @@
             alert("??")
             keywordSearch.like();
         })
+
+        $('#keyword').on('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // 기본 Enter 키 동작 방지 (폼 제출 등)
+                keywordSearch.init();
+            }
+        });
     });
+
+    function test() {
+        alert("검색 실행 ");
+    }
 </script>
 <!--=================================
 banner -->

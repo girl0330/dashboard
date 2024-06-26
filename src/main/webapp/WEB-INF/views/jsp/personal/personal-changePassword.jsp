@@ -84,6 +84,17 @@
                         alert(data.message);
                         location.href='/personal/changePassword'
                     }
+                }, error: function (jqXHR, textStatus, errorThrown) {
+                    // 기본 에러 처리
+                    console.log("status::::   " + jqXHR.status);
+                    console.log("responseText:::::   " + jqXHR.responseText);
+                    try {
+                        var response = JSON.parse(jqXHR.responseText);
+                        alert(jqXHR.responseText.userMessage); // 서버에서 정의한 에러 메시지를 사용자에게 표시
+                    } catch (e) {
+                        console.error("Error parsing response:", e);
+                        alert("An unexpected error occurred. Please try again later.");
+                    }
                 }
             })
 
