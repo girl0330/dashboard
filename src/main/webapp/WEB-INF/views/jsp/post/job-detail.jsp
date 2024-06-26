@@ -28,13 +28,14 @@
         success: function (data) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
 
+          /*
           const modalPopup = new bootstrap.Modal(document.getElementById('commonModal'), {
             keyboard: false
           });
-
           $('#modalBody').text(data.message);
           modalPopup.show();
-
+*/
+          commonUtils.customAlert(data.message);
           switch(data.code) {
             case 'loginError':
               $('#confirmBtn').off('click').on('click', function() {
@@ -121,7 +122,6 @@
     // },
 
     cancel: function () {
-
       const jobId = $("#jobId").val();
 
       // 해당 값을 JSON 데이터로 변환

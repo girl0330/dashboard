@@ -54,6 +54,12 @@
                         location.href='/business/profile'
                     } else if (data.code === 'businessNumError') {
                         alert(data.message);
+                    } else if (data.code === 'loginError') {
+                        alert(data.message);
+                        location.href='/user/login'
+                    } else if (data.code === 'loginCodeError') {
+                        alert(data.message);
+                        location.href='/'
                     }
                 },
                 error: function(xhr, status, error) {

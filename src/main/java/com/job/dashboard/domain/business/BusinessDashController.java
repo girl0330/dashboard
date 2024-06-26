@@ -31,13 +31,10 @@ public class BusinessDashController {
     private final BusinessDashService businessDashService;
     private final SessionUtil sessionUtil;
 
-    @Value("${image.upload.dir}") //yml에 작성한 업로드한 파일위치
-    private String uploadFolder;
-
     //파일 업로드
     @PostMapping("/uploadedFile")
     @ResponseBody
-    public Map<Object, String> profileFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public Map<String, Object> profileFile(@RequestParam("file") MultipartFile file) throws IOException {
         System.out.println("file확인? : "+file);
         return businessDashService.saveFile(file);
     }
@@ -45,9 +42,9 @@ public class BusinessDashController {
     //파일 삭제
     @PostMapping("/deleteFile/{fileId}")
     @ResponseBody
-    public Map<Object, String> profileFileDelete(@PathVariable("fileId") int fileId){
+    public Map<String, Object> profileFileDelete(@PathVariable("fileId") int fileId){
         System.out.println("file삭제? : "+fileId);
-        Map<Object, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         businessDashService.deleteFile(fileId);
 
         map.put("code", "success");
@@ -110,12 +107,30 @@ public class BusinessDashController {
     //프로필 저장 (파일 같이)
     @PostMapping("/profileSave")
     @ResponseBody
-    public Map<Object, String> profileSave(CompanyInfoDTO companyInfoDTO) {
+    public Map<String, Object> profileSave(CompanyInfoDTO companyInfoDTO) {
         System.out.println("====기업 프로필 저장====");
+        Map<String, Object> map = new HashMap<>();
+
+        //로그인 확인
+        if(!sessionUtil.loginUserCheck()) {
+            System.out.println("로그인 화면으로 이동");
+            map.put("code", "loginError");
+            map.put("message", "로그인 후 이용해주세요.");
+
+            return map;
+        }
+
+        //회원 코드 확인
+        if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) {
+            map.put("code", "loginCodeError");
+            map.put("message", "기업 회원만 이용가능합니다.");
+
+            return map;
+        }
 
         System.out.println("companyInfoDTO:::   "+companyInfoDTO);
 
-        Map<Object, String> map = businessDashService.saveProfile(companyInfoDTO);
+         map = businessDashService.saveProfile(companyInfoDTO);
         System.out.println("map"+map);
 
         return map;
@@ -247,10 +262,10 @@ public class BusinessDashController {
     // 채용
     @PostMapping("/applyCandidate")
     @ResponseBody
-    public Map<Object, String> applyCandidate (@RequestBody JobApplicationDTO jobApplicationDTO) {
+    public Map<String, Object> applyCandidate (@RequestBody JobApplicationDTO jobApplicationDTO) {
         System.out.println("jobApplicationDTO 확인 : "+ jobApplicationDTO);
 
-        Map<Object, String> map = businessDashService.applyCandidate(jobApplicationDTO);
+        Map<String, Object> map = businessDashService.applyCandidate(jobApplicationDTO);
         System.out.println("map 확인 : "+map);
         return map;
     }
@@ -258,10 +273,10 @@ public class BusinessDashController {
     // 채용 취소
     @PostMapping("/applyCancelCandidate")
     @ResponseBody
-    public Map<Object, String> applyCancelCandidate (@RequestBody JobApplicationDTO jobApplicationDTO) {
+    public Map<String, Object> applyCancelCandidate (@RequestBody JobApplicationDTO jobApplicationDTO) {
         System.out.println("jobApplicationDTO 확인 : "+ jobApplicationDTO);
 
-        Map<Object, String> map = businessDashService.applyCancelCandidate(jobApplicationDTO);
+        Map<String, Object> map = businessDashService.applyCancelCandidate(jobApplicationDTO);
         System.out.println("map 확인 : "+map);
         return map;
     }

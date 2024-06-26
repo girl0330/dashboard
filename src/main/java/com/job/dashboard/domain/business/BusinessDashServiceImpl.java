@@ -37,23 +37,36 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
     //기업 프로필 작성
     @Transactional
-    public Map<Object, String>  saveProfile(CompanyInfoDTO companyInfoDTO) {
+    public Map<String, Object>  saveProfile(CompanyInfoDTO companyInfoDTO) {
         System.out.println("기업 프로필 작성");
-        Map<Object, String > map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
         companyInfoDTO.setUserNo(userNo);
 
         // 사업자 번호 체크
-        int businessNumberCheck = businessDashMapper.checkBusinessNumByUserNo(companyInfoDTO.getBusinessNumber());
-        System.out.println("businessNumberCheck:::   "+businessNumberCheck);
-        if (businessNumberCheck > 0 ) {
-            map.put("code", "businessNumError");
-            map.put("message", "이미 사용중인 사업자 번호입니다.");
-            return map;
+//        int businessNumberCheck = businessDashMapper.checkBusinessNumByUserNo(companyInfoDTO.getBusinessNumber());
+//        System.out.println("businessNumberCheck:::   "+businessNumberCheck);
+//        if (businessNumberCheck > 0 ) {
+//            map.put("code", "businessNumError");
+//            map.put("message", "이미 사용중인 사업자 번호입니다.");
+//            return map;
+//        }
+
+        //파일 아이디 조회
+        int fileId = companyInfoDTO.getFileId();
+        System.out.println("fileId ::  "+ fileId);
+        map.put("fileId",fileId);
+        FileDTO file = businessDashMapper.getFiles(map);
+        System.out.println(file);
+
+        //값 있으면 삭제
+        if (file != null) {
+            deleteFile(file.getFileId());
         }
 
-        // 프로필 체크
+
+        //list로 프로필 가져옴
         List<CompanyInfoDTO> businessProfile = businessDashMapper.checkBusinessProfile(userNo);
         System.out.println("기업 프로필 확인 : "+businessProfile);
 
@@ -97,11 +110,11 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
     //파일 저장
     @Transactional
-    public Map<Object, String> saveFile(MultipartFile file){
+    public Map<String, Object> saveFile(MultipartFile file){
         System.out.println("====프로필 이미지 파일 저장 impl====");
 
         // 결과 맵 생성
-        Map<Object, String> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
         try {
@@ -267,8 +280,8 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
     //지원자 채용
     @Transactional
-    public Map<Object, String> applyCandidate(JobApplicationDTO jobApplicationDTO) {
-        Map<Object, String> map = new HashMap<>();
+    public Map<String, Object> applyCandidate(JobApplicationDTO jobApplicationDTO) {
+        Map<String, Object> map = new HashMap<>();
         System.out.println("지원자 채용 impl");
 
         businessDashMapper.applyCandidate(jobApplicationDTO);
@@ -280,8 +293,8 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
     //지원자 채용 취소
     @Transactional
-    public Map<Object, String> applyCancelCandidate(JobApplicationDTO jobApplicationDTO) {
-        Map<Object, String> map = new HashMap<>();
+    public Map<String, Object> applyCancelCandidate(JobApplicationDTO jobApplicationDTO) {
+        Map<String, Object> map = new HashMap<>();
         System.out.println("지원자 채용 impl");
 
         businessDashMapper.applyCancelCandidate(jobApplicationDTO);

@@ -27,4 +27,5 @@ public class CompanyInfoDTO {
     private int systemUpdaterId;
     private String systemUpdateDatetime;
     private MultipartFile file;
+    private int fileId;
 }
