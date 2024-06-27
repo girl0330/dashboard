@@ -56,7 +56,7 @@
             return valid;
         },
 
-        submitForm : function () {
+        submitForm: function () {
             alert("비빌번호 전송");
             const formData = $('#changePassword').serializeArray();
 
@@ -67,36 +67,37 @@
 
             console.log("formData " + JSON.stringify(jsonData));
 
-            $.ajax({
-                url: "/personal/goChangePassword",
+            const options = {
+                url: '/personal/goChangePassword',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(jsonData),
-                success: function (data) {
-                    console.log(JSON.stringify(data));
-                    if (data.code === 'existError') {
-                        alert(data.message);
 
-                    } else if (data.code === 'checkError') {
-                        alert(data.message);
+                beforeSend: () => {
+                    console.log('요청 전 작업 수행');
+                },
+                customFail: (response) => {
+                    console.error('커스텀 실패 처리:', response);
+                },
+                done: function (response) {
+                    console.log(JSON.stringify(response));
+                    if (response.code === 'existError') {
+                        alert(response.message);
 
-                    } else if (data.code === 'success') {
-                        alert(data.message);
+                    } else if (response.code === 'checkError') {
+                        alert(response.message);
+
+                    } else if (response.code === 'success') {
+                        alert(response.message);
                         location.href='/personal/changePassword'
                     }
-                }, error: function (jqXHR, textStatus, errorThrown) {
-                    // 기본 에러 처리
-                    console.log("status::::   " + jqXHR.status);
-                    console.log("responseText:::::   " + jqXHR.responseText);
-                    try {
-                        var response = JSON.parse(jqXHR.responseText);
-                        alert(jqXHR.responseText.userMessage); // 서버에서 정의한 에러 메시지를 사용자에게 표시
-                    } catch (e) {
-                        console.error("Error parsing response:", e);
-                        alert("An unexpected error occurred. Please try again later.");
-                    }
+                },
+                fail: () => {
+                    console.error('요청 실패');
                 }
-            })
+            };
+
+            ajax.call(options);
 
         }
     }

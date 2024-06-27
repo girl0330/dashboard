@@ -60,38 +60,41 @@
         },
 
         //전송 함수
-        formSubmit : function () {
+        formSubmit: function () {
             const formData = $("#postJobForm").serializeArray();
 
             let jsonData = {};
-
             $.each(formData, function () {
                 jsonData[this.name] = this.value;
             });
 
-            console.log("jsonData로 보기::: "+JSON.stringify(jsonData));
-
-            $.ajax({
-                url: "/business/postUpdate/${initialData.jobId}", // Spring 컨트롤러 URL
+            const options = {
+                url: '/business/postUpdate/${initialData.jobId}',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
-                success: function(data) {
-                    // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-                    console.log(JSON.stringify(data));
-                    if(data.code === 'error') {
-                        alert(data.message);
+                data: JSON.stringify(jsonData),
 
-                    } else if (data.code === 'success'){
-                        alert(data.message);
+                beforeSend: () => {
+                    console.log('요청 전 작업 수행');
+                },
+                customFail: (response) => {
+                    console.error('커스텀 실패 처리:', response);
+                },
+                done: function(response) {
+                    // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+                    console.log(JSON.stringify(response));
+                    if (response.code === 'success'){
+                        alert(response.message);
                         location.href='/business/list'
                     }
                 },
-                error: function(xhr, status, error) {
-                    // 오류 발생 시 실행할 코드
-                    console.error(error);
+                fail: () => {
+                    console.error('요청 실패');
                 }
-            });
+            };
+
+            ajax.call(options);
+
         }
     }
 

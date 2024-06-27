@@ -9,7 +9,6 @@
     },
 
     apply: function () {
-
       const jobId = $("#jobId").val();
 
       const motivationDescription = $("#motivationDescription").val();
@@ -20,12 +19,19 @@
 
       console.log("jsonData: " + JSON.stringify(jsonData));
 
-      $.ajax({
+      const options = {
         url: "/business/apply", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
-        success: function (data) {
+        data: JSON.stringify(jsonData),
+
+        beforeSend: () => {
+          console.log('요청 전 작업 수행');
+        },
+        customFail: (response) => {
+          console.error('커스텀 실패 처리:', response);
+        },
+        done: function (response) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
 
           /*
@@ -35,8 +41,8 @@
           $('#modalBody').text(data.message);
           modalPopup.show();
 */
-          commonUtils.customAlert(data.message);
-          switch(data.code) {
+          commonUtils.customAlert(response.message);
+          switch(response.code) {
             case 'loginError':
               $('#confirmBtn').off('click').on('click', function() {
                 location.href = '/user/login';
@@ -50,76 +56,20 @@
             case 'applyError':
             case 'success':
               $('#exampleModalCenter').modal('hide');
-              $('#confirmBtn').off('click').on('click', function() {
+              $('#button_apply').off('click').on('click', function() {
                 modalPopup.hide();
               });
               break;
           }
         },
-        error: function (xhr, status, error) {
-          // 오류 발생 시 실행할 코드
-          console.error(error);
+        fail: () => {
+          console.error('요청 실패');
         }
-      });
-    },
+      };
 
-    // apply: function () {
-    //
-    //   const options = {
-    //     url: '/business/apply',
-    //     type: 'POST',
-    //     data: {jsonData},
-    //
-    //     beforeSend: () => {
-    //       const jobId = $("#jobId").val();
-    //
-    //       const motivationDescription = $("#motivationDescription").val();
-    //
-    //       let jsonData = {};
-    //       jsonData["jobId"] = jobId;
-    //       jsonData["motivationDescription"] = motivationDescription;
-    //
-    //       console.log("jsonData: " + JSON.stringify(jsonData));
-    //       console.log('요청 전 작업 수행');
-    //     },
-    //     customFail: (response) => {
-    //       console.error('커스텀 실패 처리:', response);
-    //     },
-    //     done: (data) => {
-    //       const modalPopup = new bootstrap.Modal(document.getElementById('commonModal'), {
-    //         keyboard: false
-    //       });
-    //
-    //       $('#modalBody').text(data.message);
-    //       modalPopup.show();
-    //
-    //       switch(data.code) {
-    //         case 'loginError':
-    //           $('#confirmBtn').off('click').on('click', function() {
-    //             location.href = '/user/login';
-    //           });
-    //           break;
-    //         case 'profileError':
-    //           $('#confirmBtn').off('click').on('click', function() {
-    //             location.href = '/personal/myProfile';
-    //           });
-    //           break;
-    //         case 'applyError':
-    //         case 'success':
-    //           $('#exampleModalCenter').modal('hide');
-    //           $('#confirmBtn').off('click').on('click', function() {
-    //             modalPopup.hide();
-    //           });
-    //           break;
-    //       }
-    //     },
-    //     fail: () => {
-    //       console.error('요청 실패');
-    //     }
-    //   };
-    //
-    //   ajax.call(options);
-    // },
+      ajax.call(options);
+
+    },
 
     cancel: function () {
       const jobId = $("#jobId").val();
@@ -129,57 +79,70 @@
       const jsonData = jobId;
       console.log("jsonData: " + JSON.stringify(jsonData));
 
-      $.ajax({
-        url: "/business/applyCancel", // Spring 컨트롤러 URL
+      const options = {
+        url: '/business/applyCancel',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
-        success: function (data) {
+        data: JSON.stringify(jsonData),
+
+        done: (response) => {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-          console.log(JSON.stringify(data));
-          if (data.code === 'success') {
-            alert(data.message);
+          console.log(JSON.stringify(response));
+          if (response.code === 'success') {
+            alert(response.message);
             location.reload();
-          } else if (data.code === 'error') {
-            alert(data.message);
+          } else if (response.code === 'error') {
+            alert(response.message);
             location.reload();
-          } else if (data.code === 'loginError') {
-            alert(data.message);
+          } else if (response.code === 'loginError') {
+            alert(response.message);
             location.href = '/user/login'
           }
         },
-        error: function (xhr, status, error) {
-          // 오류 발생 시 실행할 코드
-          console.error(error);
+        fail: () => {
+          console.error('요청 실패');
         }
-      });
+      };
+
+      ajax.call(options);
+
     },
 
-    like: function () {
 
+    like: function () {
       const jobId = $("#jobId").val();
 
-      $.ajax({
-        url: "/business/like/"+jobId, // Spring 컨트롤러 URL
+      const options = {
+        url: "/business/like/"+jobId,
         type: 'POST',
         contentType: 'application/json',
         data: '',
-        success: function (data) {
-          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-          if (data.code === 'success') {
-            $('#likeIcon').removeClass().addClass(data.like === 1 ? 'fas fa-heart' : 'far fa-heart');
 
-          } else if (data.code === 'error') {
-            alert(data.message);
+        beforeSend: () => {
+          console.log('요청 전 작업 수행');
+        },
+        customFail: (response) => {
+          console.error('커스텀 실패 처리:', response);
+        },
+        done: function (response) {
+          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+          if (response.code === 'success') {
+            $('#likeIcon').removeClass().addClass(response.like === 1 ? 'fas fa-heart' : 'far fa-heart');
+
+          } else if (response.code === 'error') {
+            alert(response.message);
             location.href = '/user/login';
           }
         },
-        error: function (xhr, status, error) {
-          // 오류 발생 시 실행할 코드
-          console.error(error);
+        fail: () => {
+          console.error('요청 실패');
         }
-      });
+      };
+
+      ajax.call(options);
+
     }
+
   }
 
   // DOM 실행 후 안의 내용이 실행 됨
@@ -195,7 +158,7 @@
     });
 
     $('#button_applyCancel').click(function () {
-      application.cancel(); <!-- 고칠 부분 -->
+      application.cancel();
     });
 
     $('#like').click(function () {
@@ -245,23 +208,6 @@ banner -->
       <div class="col-12">
         <div class="job-search-field">
           <div class="job-search-item">
-            <form class="form row">
-              <div class="col-lg-5">
-                <div class="form-group left-icon mb-3">
-                  <input type="text" class="form-control" name="job_title" placeholder="What?">
-                <i class="fas fa-search"></i> </div>
-              </div>
-              <div class="col-lg-5">
-                <div class="form-group left-icon mb-3">
-                  <input type="text" class="form-control" name="job_title" placeholder="Where?">
-                <i class="fas fa-search"></i> </div>
-              </div>
-              <div class="col-lg-2 col-sm-12">
-                <div class="form-group form-action">
-                  <button type="submit" class="btn btn-primary mt-0"><i class="fas fa-search-location"></i> Find Job</button>
-                </div>
-              </div>
-            </form>
           </div>
         </div>
       </div>

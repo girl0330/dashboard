@@ -1,6 +1,8 @@
 package com.job.dashboard.domain.user;
 
 import com.job.dashboard.domain.dto.UserDTO;
+import com.job.dashboard.exception.CustomException;
+import com.job.dashboard.exception.ExceptionErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,10 +25,7 @@ public class UserServiceImpl implements UserService{
         int emailCheck = userMapper.emailDuplicateCheck(userDTO);
         System.out.println("???");
         if (emailCheck > 0) { // 동일한 이메일이 있다면
-            System.out.println("!!!!!");
-            map.put("code","error");
-            map.put("message","이미 사용중인 이메일 입니다.");
-            return map;
+            throw new CustomException(ExceptionErrorCode.EMAIL_ALREADY_IN_USE_TOKEN);
         }
 
         System.out.println("00000");
@@ -44,17 +43,13 @@ public class UserServiceImpl implements UserService{
         int emailCheck = userMapper.emailDuplicateCheck(userDTO);
 
         if (emailCheck > 0) { // 동일한 이메일이 있다면
-            map.put("code","error");
-            map.put("message","이미 사용중인 이메일 입니다.");
-            return map;
+            throw new CustomException(ExceptionErrorCode.EMAIL_ALREADY_IN_USE_TOKEN);
         }
         System.out.println("중복체크 완료");
 
         //비밀번호 1,2 동일 체크
         if (!Objects.equals(userDTO.getPassword(), userDTO.getPassword2())) {
-            map.put("code","error");
-            map.put("message","비밀번호가 일치하지 않습니다.");
-            return map;
+            throw new CustomException(ExceptionErrorCode.NEW_PASSWORD_MISMATCH_TOKEN);
         }
         System.out.println("동일체크 완료");
 
@@ -87,9 +82,7 @@ public class UserServiceImpl implements UserService{
 
         if (hashedPassword == null) {
             System.out.println("그런 이메일 없음.");
-            map.put("code", "error");
-            map.put("message", "아이디가 존재하지 않거나, 일치하지 않습니다.");
-            return map;
+            throw new CustomException(ExceptionErrorCode.MEMBER_NOT_FOUND_TOKEN);
         }
 
         //비밀번호 존재하는지, 일치하는지 확인
@@ -97,9 +90,7 @@ public class UserServiceImpl implements UserService{
         System.out.println(pwCheck); // 일치하면 ture 반환
         if (!pwCheck) {
             System.out.println("해당 비밀번호는 없음");
-            map.put("code", "error");
-            map.put("message", "비밀번호가 존재하지 않거나, 일치하지 않습니다.");
-            return map;
+            throw new CustomException(ExceptionErrorCode.PASSWORD_INCORRECT_TOKEN);
         }
 
         System.out.println("비밀번호가 존재함");
@@ -112,9 +103,7 @@ public class UserServiceImpl implements UserService{
         System.out.println("입력된 타입코드: " + enteredUserTypeCode);
         if (!Objects.equals(getUserTypeCode, enteredUserTypeCode)) {
             System.out.println("타입코드가 일치하지 않습니다.");
-            map.put("code", "error");
-            map.put("message", "로그인한 회원타입이 일치하지 않습니다, 로그인 할 타입을 확인해주세요");
-            return map;
+            throw new CustomException(ExceptionErrorCode.USER_TYPE_CODE_MISMATCH_TOKEN);
         }
 
         //로그인하기

@@ -54,29 +54,11 @@
                             개인회원 <i class="fas fa-chevron-down fa-xs"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/candidates-grid.html">Candidates Grid</a></li>
-                            <li><a class="dropdown-item" href="/candidates-listing.html">Candidates list</a></li>
-                            <li><a class="dropdown-item" href="/candidate-detail.html">Candidates detail</a></li>
-                            <li><a class="dropdown-item" href="/candidates-listing-map.html">Candidates Listing
-                                Map</a></li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="/javascript:void(0)">Dashboard <i
-                                        class="fas fa-chevron-right fa-xs"></i></a>
-                                <ul class="dropdown-menu left-side">
-                                    <li><a class="dropdown-item" href="/personal/dashboard">Dashboard</a></li>
-                                    <li><a class="dropdown-item" href="/personal/myProfile">프로필</a></li>
-                                    <li><a class="dropdown-item" href="/personal/changePassword">비밀번호 변경</a></li>
-                                    <li><a class="dropdown-item" href="/dashboard-candidates-my-resume.html">내
-                                        이력서</a></li>
-                                    <li><a class="dropdown-item" href="/personal/manageJobs">지원현황</a></li>
-                                    <li><a class="dropdown-item" href="/dashboard-candidates-saved-jobs.html">관심있는
-                                        공고</a></li>
-                                    <li><a class="dropdown-item"
-                                           href="/dashboard-candidates-pricing.html">Pricing</a></li>
-                                </ul>
-                            </li>
-                            <li><a class="dropdown-item" href="/my-resume.html">My Resume <span
-                                    class="badge bg-danger ms-2">CV</span></a></li>
+                            <li><a class="dropdown-item" href="/personal/dashboard">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="/personal/myProfile">프로필</a></li>
+                            <li><a class="dropdown-item" href="/personal/changePassword">비밀번호 변경</a></li>
+                            <li><a class="dropdown-item" href="/personal/manageJobs">지원현황</a></li>
+                            <li><a class="dropdown-item" href="/dashboard-candidates-saved-jobs.html">관심있는 공고</a></li>
                         </ul>
                     </li>
                 </c:if>

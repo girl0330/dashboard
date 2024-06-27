@@ -152,20 +152,13 @@ public class PostController {
         List<SelectBoxOptionDTO> jobDayType = commonService.getSelectBoxOption("job_day_type");
         List<SelectBoxOptionDTO> statusType = commonService.getSelectBoxOption("status_type");
 
-        System.out.println("jobType:::   "+jobType);
-        System.out.println("salaryType:::   "+salaryType);
-        System.out.println("employmentType:::   "+employmentType);
-        System.out.println("jobDayType:::   "+jobDayType);
-        System.out.println("statusType:::   "+statusType);
-
-        System.out.println("일치함");
-        System.out.println("initialData  확인 : "+initialData);
         model.addAttribute("jobType",jobType);
         model.addAttribute("salaryType",salaryType);
         model.addAttribute("employmentType",employmentType);
         model.addAttribute("jobDayType",jobDayType);
         model.addAttribute("statusType",statusType);
         model.addAttribute("initialData",initialData);
+
         return "jsp/post/post-a-job-update";
     }
 
@@ -174,7 +167,7 @@ public class PostController {
     public Map<String, Object> updatePost (@PathVariable int jobId, @RequestBody JobPostDTO jobPostDTO ) {
         System.out.println("일단 데이터 확인부터..? "+jobId);
 
-        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
+        int userNo = (int) sessionUtil.getAttribute("userNo");
         System.out.println("userNo 확인  ; "+userNo);
         System.out.println("일단 데이터 확인부터..? "+jobPostDTO);
         Map<String, Object> map = postService.update(userNo, jobPostDTO);

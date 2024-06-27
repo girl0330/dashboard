@@ -10,7 +10,7 @@
         },
 
         // 전송 함수 정의
-        formSubmit : function() {
+        formSubmit: function () {
             const formData = new FormData();
 
             // FormData에 유효한 값만 추가 [분해구조할당 사용]
@@ -38,35 +38,42 @@
                 console.log(key + ": " + value);
             }
 
-            $.ajax({
+            const options = {
                 url: "/business/profileSave", // Spring 컨트롤러 URL
                 type: 'POST',
                 contentType: false, // 파일 전송을 위해 false로 설정
                 processData: false, // 파일 전송을 위해 false로 설정
-                data: formData, // JSON 형식으로 데이터 전송
-                success: function(data) {
+                data: formData,
+
+                beforeSend: () => {
+                    console.log('요청 전 작업 수행');
+                },
+                customFail: (response) => {
+                    console.error('커스텀 실패 처리:', response);
+                },
+                done: function(response) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-                    console.log(JSON.stringify(data));
-                    if(data.code === 'error') {
-                        alert(data.message);
-                    } else if (data.code === 'success'){
-                        alert(data.message);
+                    console.log(JSON.stringify(response));
+                    if(response.code === 'error') {
+                        alert(response.message);
+                    } else if (response.code === 'success'){
+                        alert(response.message);
                         location.href='/business/profile'
-                    } else if (data.code === 'businessNumError') {
-                        alert(data.message);
-                    } else if (data.code === 'loginError') {
-                        alert(data.message);
+                    } else if (response.code === 'loginError') {
+                        alert(response.message);
                         location.href='/user/login'
-                    } else if (data.code === 'loginCodeError') {
-                        alert(data.message);
+                    } else if (response.code === 'loginCodeError') {
+                        alert(response.message);
                         location.href='/'
                     }
                 },
-                error: function(xhr, status, error) {
-                    // 오류 발생 시 실행할 코드
-                    console.error(error);
+                fail: () => {
+                    console.error('요청 실패');
                 }
-            });
+            };
+
+            ajax.call(options);
+
         }
     }
 
@@ -99,26 +106,34 @@
             const fileId = $("#fileId").val();
             console.log("fileId는?  :    "+ JSON.stringify(fileId));
 
-            $.ajax({
+            const options = {
                 url: "/business/deleteFile/"+fileId, // Spring 컨트롤러 URL
                 type: 'POST',
                 contentType: 'application/json',
                 data: '',
-                success: function(data) {
+
+                beforeSend: () => {
+                    console.log('요청 전 작업 수행');
+                },
+                customFail: (response) => {
+                    console.error('커스텀 실패 처리:', response);
+                },
+                done: function(response) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-                    console.log(JSON.stringify(data));
-                    if (data.code === 'success'){
-                        alert(data.message);
+                    console.log(JSON.stringify(response));
+                    if (response.code === 'success'){
+                        alert(response.message);
                         // 이미지 미리보기 삭제
                         const coverImage = document.getElementById('coverImage');
                         coverImage.src = ''; // 미리보기 이미지 초기화
                     }
                 },
-                error: function(xhr, status, error) {
-                    // 오류 발생 시 실행할 코드
-                    console.error(error);
+                fail: () => {
+                    console.error('요청 실패');
                 }
-            });
+            };
+
+            ajax.call(options);
         });
 
         // 주소값

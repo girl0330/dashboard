@@ -65,6 +65,7 @@ public class BusinessDashServiceImpl implements BusinessDashService{
             deleteFile(file.getFileId());
         }
 
+        System.out.println("??확인 ;;;;;");
 
         //list로 프로필 가져옴
         List<CompanyInfoDTO> businessProfile = businessDashMapper.checkBusinessProfile(userNo);
@@ -89,9 +90,9 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         if (fileCheck != null) { //파일이 있음.
             System.out.println("파일이 확인 ::        "+fileCheck);
 
+            map = saveFile(fileCheck);
+            System.out.println("map "+ map);
         }
-        map = saveFile(fileCheck);
-        System.out.println("map "+ map);
 
         map.put("code", "success");
         map.put("message", "프로필 저장 성공!");
