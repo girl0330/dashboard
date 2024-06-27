@@ -6,45 +6,50 @@
         init : function () {
             this.submitAapply();
         },
-        submitAapply : function () {
-
+        submitAapply: function () {
             const jobId = $("#jobId").val();
             const userNo = $("#userNo").val();
-
 
             let jsonData = {}
             jsonData["jobId"] = jobId;
             jsonData["userNo"] = userNo;
-            // 해당 값을 JSON 데이터로 변환 : const jsonData = {"jobId": jobIdInt};(이렇게도 사용할 수 있음.)
 
             console.log("jsonData: "+ JSON.stringify(jsonData));
 
-            $.ajax({
-                url: "/business/applyCandidate", // Spring 컨트롤러 URL
+            const options = {
+                url: '/business/applyCandidate',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
-                success: function(data) {
+                data: JSON.stringify(jsonData),
+
+                beforeSend: () => {
+                    console.log('요청 전 작업 수행');
+                },
+                customFail: (response) => {
+                    console.error('커스텀 실패 처리:', response);
+                },
+                done: function(data) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-                    console.log(JSON.stringify(data));
-                    if(data.code === 'success') {
-                        alert(data.message);
+                    console.log(JSON.stringify(response));
+                    if(response.code === 'success') {
+                        alert(response.message);
                         location.href = '/business/candidateList?jobId='+jobId;
                     }
                 },
-                error: function(xhr, status, error) {
-                    // 오류 발생 시 실행할 코드
-                    console.error(error);
+                fail: () => {
+                    console.error('요청 실패');
                 }
-            });
+            };
+
+            ajax.call(options);
+
         }
     }
     let applyCancelButton = {
         init : function () {
             this.submitApplyCancel();
         },
-        submitApplyCancel : function () {
-
+        submitApplyCancel: function () {
             const jobId = $("#jobId").val();
             const userNo = $("#userNo").val();
 
@@ -53,28 +58,33 @@
             jsonData["jobId"] = jobId;
             jsonData["userNo"] = userNo;
 
-            // 해당 값을 JSON 데이터로 변환
-            // const jsonData = {"jobId": jobIdInt};
-            console.log("jsonData: "+ JSON.stringify(jsonData));
-
-            $.ajax({
-                url: "/business/applyCancelCandidate", // Spring 컨트롤러 URL
+            const options = {
+                url: '/business/applyCancelCandidate',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
-                success: function(data) {
+                data: JSON.stringify(jsonData),
+
+                beforeSend: () => {
+                    console.log('요청 전 작업 수행');
+                },
+                customFail: (response) => {
+                    console.error('커스텀 실패 처리:', response);
+                },
+                done: function(data) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-                    console.log(JSON.stringify(data));
-                    if(data.code === 'success') {
-                        alert(data.message);
+                    console.log(JSON.stringify(response));
+                    if(response.code === 'success') {
+                        alert(response.message);
                         location.href = '/business/candidateList?jobId=' +jobId
                     }
                 },
-                error: function(xhr, status, error) {
-                    // 오류 발생 시 실행할 코드
-                    console.error(error);
+                fail: () => {
+                    console.error('요청 실패');
                 }
-            });
+            };
+
+            ajax.call(options);
+
         }
     }
 

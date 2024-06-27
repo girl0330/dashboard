@@ -5,6 +5,8 @@ import com.job.dashboard.domain.dto.CompanyInfoDTO;
 import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.exception.CustomException;
+import com.job.dashboard.exception.ExceptionErrorCode;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
@@ -113,19 +115,12 @@ public class BusinessDashController {
 
         //로그인 확인
         if(!sessionUtil.loginUserCheck()) {
-            System.out.println("로그인 화면으로 이동");
-            map.put("code", "loginError");
-            map.put("message", "로그인 후 이용해주세요.");
-
-            return map;
+            throw new CustomException(ExceptionErrorCode.UNAUTHORIZED_USER_TOKEN);
         }
 
         //회원 코드 확인
         if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) {
-            map.put("code", "loginCodeError");
-            map.put("message", "기업 회원만 이용가능합니다.");
-
-            return map;
+            throw new CustomException(ExceptionErrorCode.INVALID_MEMBER_TOKEN);
         }
 
         System.out.println("companyInfoDTO:::   "+companyInfoDTO);

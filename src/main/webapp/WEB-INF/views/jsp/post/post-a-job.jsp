@@ -72,41 +72,41 @@
         },
 
         //전송 함수
-        formSubmit : function () {
+        formSubmit: function () {
             const formData = $("#postJobForm").serializeArray();
-
 
             let jsonData = {};
             $.each(formData, function () {
                 jsonData[this.name] = this.value;
             });
 
-            console.log("formDtat::: "+JSON.stringify(jsonData));
-
-            $.ajax({
-                url: "/business/savePost", // Spring 컨트롤러 URL
+            const options = {
+                url: '/business/savePost',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
-                success: function(data) {
-                    // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-                    console.log(JSON.stringify(data));
-                    if(data.code === 'error') {
-                        alert(data.message);
-                    } else if (data.code === 'success'){
-                        alert(data.message);
-                        location.href='/business/list'
-                    } else if (data.code === 'loginError') {
-                        location.href='/user/login'
-                    } else if (date.code === 'userCodeError') {
-                        location.href='/'
-                    }
+                data: JSON.stringify(jsonData),
+
+                beforeSend: () => {
+                    console.log('요청 전 작업 수행');
                 },
-                error: function(xhr, status, error) {
-                    // 오류 발생 시 실행할 코드
-                    console.error(error);
+                customFail: (response) => {
+                    console.error('커스텀 실패 처리:', response);
+                },
+                done: function(response) {
+                    // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+                    console.log(JSON.stringify(response));
+                   if (response.code === 'success'){
+                        alert(response.message);
+                        location.href='/business/list'
+                   }
+                },
+                fail: () => {
+                    console.error('요청 실패');
                 }
-            });
+            };
+
+            ajax.call(options);
+
         }
     }
 

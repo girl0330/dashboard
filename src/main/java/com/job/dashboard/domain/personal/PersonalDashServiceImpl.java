@@ -4,6 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.business.BusinessDashService;
 import com.job.dashboard.domain.dto.*;
+import com.job.dashboard.exception.CustomException;
+import com.job.dashboard.exception.ExceptionErrorCode;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -90,19 +92,14 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         boolean pwCheck = passwordEncoder.matches(enteredPassword, oldPassword);
         System.out.println("비밀번호 서로 맞는지 확인: " + pwCheck);
         if (!pwCheck) {
-            map.put("code", "existError");
-            map.put("message", "입력한 비밀번호가 존재하지 않습니다.");
-            return map;
+            throw new CustomException(ExceptionErrorCode.PASSWORD_MISMATCH_TOKEN);
         }
 
         System.out.println("userNewPassword 확ㅇ니 :: " + userDTO.getNewPassword());
 
         System.out.println("userDto 확ㅇ니::: " + userDTO);
         if (!userDTO.getNewPassword().equals(userDTO.getPassword2())) {
-            System.out.println("불일치");
-            map.put("code", "checkError");
-            map.put("message", "비밀번호가 일치하지 않습니다.");
-            return map;
+            throw new CustomException(ExceptionErrorCode.NEW_PASSWORD_MISMATCH_TOKEN);
         }
         System.out.println("일치. ");
 

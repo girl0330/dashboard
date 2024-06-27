@@ -56,8 +56,7 @@
             return valid;
         },
 
-        submitForm : function () {
-            // alert("비빌번호 전송");
+        submitForm: function () {
             const formData = $('#changePassword').serializeArray();
             console.log("formData " + JSON.stringify(formData));
 
@@ -66,21 +65,21 @@
                 jsonData[this.name] = this.value;
             });
 
-            $.ajax({
-                url: "/personal/goChangePassword",
+            const options = {
+                url: '/personal/goChangePassword',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(jsonData),
-                success: function (data) {
-                    console.log(JSON.stringify(data));
-                    if (data.code === 'error') {
-                        alert(data.message);
-                    } else if (data.code === 'success') {
-                        alert(data.message);
+
+                done: function (response) {
+                    if (response.code === 'success') {
+                        alert(response.message);
                         location.href='/business/changePassword'
                     }
                 }
-            })
+            };
+
+            ajax.call(options);
 
         }
     }

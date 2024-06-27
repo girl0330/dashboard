@@ -8,7 +8,6 @@
         },
 
         keywordSearchSubmit: function (pageNum) {
-            const keyword = $('#keyword').val(); // input 필드에서 값 가져오기
 
             const options = {
                 url: '/personal/ajax/likedJobs',
@@ -16,7 +15,7 @@
                 data: {
                     pageNum: pageNum,
                     pageSize: 10,
-                    keyword: keyword
+                    keyword: ''
                 },
 
                 beforeSend: () => {

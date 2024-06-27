@@ -60,8 +60,9 @@ const ajax = {
 	},
 	error: (status, responseText) => {
 		// 기본 에러 처리
-		console.error(`Error: ${status}`, responseText);
-	},
+		const jsonObj = JSON.parse(responseText);
+		alert(jsonObj.userMessage);
+	}
 }
 
 const validation = {

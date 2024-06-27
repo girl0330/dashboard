@@ -6,9 +6,10 @@
             this.keywordSearchSubmit(1);
         },
 
-        keywordSearchSubmit : function (pageNum) {
+        keywordSearchSubmit: function (pageNum) {
+            const keyword = $('#keyword').val(); // input 필드에서 값 가져오기
 
-            $.ajax({
+            const options = {
                 url: '/personal/ajax/manageJobsList',
                 type: 'GET',
                 data: {
@@ -16,15 +17,25 @@
                     pageSize: 10,
                     keyword: ''
                 },
-                success: function(response) {
+
+                beforeSend: () => {
+                    console.log('요청 전 작업 수행');
+                },
+                customFail: (response) => {
+                    console.error('커스텀 실패 처리:', response);
+                },
+                done: function(response) {
                     $("#amount").text(response.total); //총 게시물 개수
                     keywordSearch.renderJobs(response.list); //리스트 목록
                     renderPagination('pagination',response.pageNum, response.pageSize, response.total, response.pages); //페이징
                 },
-                error: function(xhr, status, error) {
-                    console.error(error);
+                fail: () => {
+                    console.error('요청 실패');
                 }
-            });
+            };
+
+            ajax.call(options);
+
         },
 
         //list 처리

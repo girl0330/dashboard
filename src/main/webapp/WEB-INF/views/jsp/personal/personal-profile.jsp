@@ -47,11 +47,9 @@
     },
 
     // 전송 함수 정의
-    formSubmit : function() {
-      // const formData = $("#saveProfile").serializeArray();
+    formSubmit: function () {
       const formData = new FormData();
 
-      // 데이터 formData로 수집
       $('#saveProfile').serializeArray().forEach(({name, value}) => {
         if (value.trim()) {
           formData.append(name, value);
@@ -70,27 +68,39 @@
         console.log(key + ":" + value);
       }
 
-      $.ajax({
-        url: "/personal/myProfileSave", // Spring 컨트롤러 URL
+      let jsonData = {};
+      $.each(formData, function () {
+        jsonData[this.name] = this.value;
+      });
+
+      const options = {
+        url: '/personal/myProfileSave',
         type: 'POST',
         contentType: false, // 파일 전송을 위해 false로 설정
         processData: false, // 파일 전송을 위해 false로 설정
-        data: formData, // JSON 형식으로 데이터 전송
-        success: function(data) {
+        data: formData,
+
+        beforeSend: () => {
+          console.log('요청 전 작업 수행');
+        },
+        customFail: (response) => {
+          console.error('커스텀 실패 처리:', response);
+        },
+        done: function(response) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-          console.log(JSON.stringify(data));
-          if(data.code === 'error') {
-            alert(data.message);
-          } else if (data.code === 'success'){
-            alert(data.message);
+          console.log(JSON.stringify(response));
+          if (response.code === 'success'){
+            alert(response.message);
             location.href='/personal/myProfile'
           }
         },
-        error: function(xhr, status, error) {
-          // 오류 발생 시 실행할 코드
-          console.error(error);
+        fail: () => {
+          console.error('요청 실패');
         }
-      });
+      };
+
+      ajax.call(options);
+
     }
   }
 
@@ -121,30 +131,40 @@
 
     // 파일 삭제
     $('#fileDelete').on('click', function () {
+
       alert("삭제?")
       const fileId = $("#fileId").val();
       console.log("fileId는?  :    "+ JSON.stringify(fileId));
 
-      $.ajax({
-        url: "/business/deleteFile/"+fileId, // Spring 컨트롤러 URL
+      const options = {
+        url: '/business/deleteFile/'+fileId,
         type: 'POST',
         contentType: 'application/json',
         data: '',
-        success: function(data) {
+
+        beforeSend: () => {
+          console.log('요청 전 작업 수행');
+        },
+        customFail: (response) => {
+          console.error('커스텀 실패 처리:', response);
+        },
+        done: function(response) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-          console.log(JSON.stringify(data));
-          if (data.code === 'success'){
-            alert(data.message);
+          console.log(JSON.stringify(response));
+          if (response.code === 'success'){
+            alert(response.message);
             // 이미지 미리보기 삭제
             const coverImage = document.getElementById('coverImage');
             coverImage.src = ''; // 미리보기 이미지 초기화
           }
         },
-        error: function(xhr, status, error) {
-          // 오류 발생 시 실행할 코드
-          console.error(error);
+        fail: () => {
+          console.error('요청 실패');
         }
-      });
+      };
+
+      ajax.call(options);
+
     });
 
     //핸들폰 입력시 숫자 이외의 문자는 제외시킴

@@ -16,17 +16,6 @@ import static com.job.dashboard.exception.ExceptionErrorCode.*;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    //예상치 못한 예외는 ERROR 레벨
-    //데이터베이스 제약 조건 예외는 WARN 레벨로 처리
-    @ExceptionHandler(value = {
-            SQLIntegrityConstraintViolationException.class, // 데이터베이스 무결성 제약 조건 위반 발생 시
-            DataIntegrityViolationException.class // 데이터베이스 무결성 위반 발생 시
-    })
-    protected ResponseEntity<ExceptionErrorResponse> handleDataException(Exception ex) {
-        log.warn("Data exception occurred: {}", ex.getMessage(), ex);
-        return ExceptionErrorResponse.toResponseEntity(DUPLICATE_RESOURCE);
-    }
-
     @ExceptionHandler(value = {CustomException.class}) // CustomException 발생 시
     protected Object handleCustomException(CustomException ex) {
         log.error("Custom exception occurred: {}", ex.getMessage(), ex);
