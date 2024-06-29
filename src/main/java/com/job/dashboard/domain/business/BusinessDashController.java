@@ -37,7 +37,6 @@ public class BusinessDashController {
     @PostMapping("/uploadedFile")
     @ResponseBody
     public Map<String, Object> profileFile(@RequestParam("file") MultipartFile file) throws IOException {
-        System.out.println("file확인? : "+file);
         return businessDashService.saveFile(file);
     }
 
@@ -45,7 +44,6 @@ public class BusinessDashController {
     @PostMapping("/deleteFile/{fileId}")
     @ResponseBody
     public Map<String, Object> profileFileDelete(@PathVariable("fileId") int fileId){
-        System.out.println("file삭제? : "+fileId);
         Map<String, Object> map = new HashMap<>();
         businessDashService.deleteFile(fileId);
 
@@ -57,7 +55,6 @@ public class BusinessDashController {
     // fileId로 파일 가져오기
     @GetMapping("/uploadedFileGet/{fileId}")
     public ResponseEntity<byte[]> getImgView(@PathVariable("fileId") int fileId) {
-        System.out.println("id = "+fileId);
         try {
             byte[] imageByteArray = businessDashService.loadFileAsBytes(fileId);
             return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
@@ -70,11 +67,8 @@ public class BusinessDashController {
     @GetMapping("/profile")
     public String profileView(Model model)  {
 
-        System.out.println("프로필");
-
         //로그인 확인
         if(!sessionUtil.loginUserCheck()) {
-            System.out.println("로그인 화면으로 이동");
             return "redirect:/user/login";
         }
 
@@ -85,9 +79,8 @@ public class BusinessDashController {
 
         //기존 프로필 가져오기
         int userNo = (int) sessionUtil.getAttribute("userNo");
-        CompanyInfoDTO businessProfile = businessDashService.getBusinessProfile();
-        if (businessProfile == null) {
-            System.out.println("null인가??");
+        CompanyInfoDTO businessProfileInfo = businessDashService.getBusinessProfileInfo();
+        if (businessProfileInfo == null) {
             return "jsp/business/business-profile";
         }
 
@@ -97,20 +90,15 @@ public class BusinessDashController {
             System.out.println("file 확인 : "+file);
             model.addAttribute("fileId", file.getFileId());
         }
-
-        System.out.println("file 확인 : "+file);
-
-        System.out.println("프로필 잘가져오기 있음. :"+ businessProfile);
-        model.addAttribute("company", businessProfile);
+        model.addAttribute("company", businessProfileInfo);
 
         return "jsp/business/business-profile";
     }
 
     //프로필 저장 (파일 같이)
-    @PostMapping("/profileSave")
+    @PostMapping("/insertProfile")
     @ResponseBody
-    public Map<String, Object> profileSave(CompanyInfoDTO companyInfoDTO) {
-        System.out.println("====기업 프로필 저장====");
+    public Map<String, Object> insertProfile(CompanyInfoDTO companyInfoDTO) {
         Map<String, Object> map = new HashMap<>();
 
         //로그인 확인
@@ -123,33 +111,25 @@ public class BusinessDashController {
             throw new CustomException(ExceptionErrorCode.INVALID_MEMBER_TOKEN);
         }
 
-        System.out.println("companyInfoDTO:::   "+companyInfoDTO);
-
-         map = businessDashService.saveProfile(companyInfoDTO);
-        System.out.println("map"+map);
-
-        return map;
+        return businessDashService.insertProfile(companyInfoDTO);
     }
 
     //비밀번호 변경
     @GetMapping("/changePassword")
     public String changePasswordView(Model model)  {
-        System.out.println("비번변경");
 
         if(!sessionUtil.loginUserCheck()) {
-            System.out.println("로그인 화면으로 이동");
             return "redirect:/user/login?test=true";
         }
 
         //회사 이름
-        CompanyInfoDTO businessProfile = businessDashService.getBusinessProfile();
+        CompanyInfoDTO businessProfile = businessDashService.getBusinessProfileInfo();
         model.addAttribute("company", businessProfile);
 
         //파일 조회
         int userNo = (int) sessionUtil.getAttribute("userNo");
         FileDTO file = businessDashService.getFile(userNo);
         if (file != null) {
-            System.out.println("file 확인 : "+file);
             model.addAttribute("fileId", file.getFileId());
         }
 
@@ -160,10 +140,8 @@ public class BusinessDashController {
     //공고 관리
     @GetMapping("/managePostJob")
     public String managePostJobView(Model model) {
-        System.out.println("공고관리");
 
         if(!sessionUtil.loginUserCheck()) { // 로그인
-            System.out.println("로그인 화면으로 이동");
             return "redirect:/user/login";
         }
 
@@ -172,20 +150,18 @@ public class BusinessDashController {
         }
 
         //프로필 작성 확인
-        CompanyInfoDTO businessProfile = businessDashService.getBusinessProfile();
-        if (businessProfile == null) {
-            System.out.println("null인가??");
+        CompanyInfoDTO businessProfileInfo = businessDashService.getBusinessProfileInfo();
+        if (businessProfileInfo == null) {
             return "redirect:/business/profile";
         }
 
         //회사 이름
-        model.addAttribute("company", businessProfile);
+        model.addAttribute("company", businessProfileInfo); //굳이 프로필 전부를 가져올 필요가 있을까?
 
         //파일 조회
         int userNo = (int) sessionUtil.getAttribute("userNo");
         FileDTO file = businessDashService.getFile(userNo);
         if (file != null) {
-            System.out.println("file 확인 : "+file);
             model.addAttribute("fileId", file.getFileId());
         }
 
@@ -197,7 +173,6 @@ public class BusinessDashController {
     public Map<String, Object> ajaxManagePostJob(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                                  @RequestParam(defaultValue = "1") int pageNum,
                                                  @RequestParam(defaultValue = "10") int pageSize) {
-        System.out.println("공고관리");
 
         PageInfo<JobPostDTO> postJobList = businessDashService.getPostJobList(keyword, pageNum, pageSize);
 
@@ -214,8 +189,7 @@ public class BusinessDashController {
 
     //작성한 공고에 지원한 지원자 리스트
     @GetMapping("/candidateList")
-    public String applicantListView (@RequestParam("jobId") int jobId, Model model) {
-        System.out.println(" 해당 공고에 지원한 지원자목록/jobId 확인 : "+ jobId);
+    public String candidateListView (@RequestParam("jobId") int jobId, Model model) {
 
         model.addAttribute("id", jobId);
         return "jsp/business/business-manageCandidate";
@@ -227,7 +201,6 @@ public class BusinessDashController {
                                                   @RequestParam(defaultValue = "1") int pageNum,
                                                   @RequestParam(defaultValue = "10") int pageSize,
                                                   @RequestParam(value = "jobNum") int jobId) {
-        System.out.println("jobNum? "+jobId);
         PageInfo<JobApplicationDTO> candidateList = businessDashService.getCandidateList(keyword, pageNum, pageSize, jobId);
 
         Map<String, Object> response = new HashMap<>();
@@ -237,41 +210,37 @@ public class BusinessDashController {
         response.put("pageSize", candidateList.getPageSize());
         response.put("pages", candidateList.getPages());
 
-        System.out.println("response:::::    "+response);
         return response;
     }
 
     // 지원한 지원자 상세보기
     @GetMapping("/candidateDetail")
-    public String candidateDetail (@RequestParam("userNo") int userNo, @RequestParam("jobId") int jobId, Model model) {
-        System.out.println("지원한 지원자 상세보기"+userNo+"jobId"+jobId);
+    public String candidateDetailView (@RequestParam("userNo") int userNo, @RequestParam("jobId") int jobId, Model model) {
 
-        JobApplicationDTO jobApplicationDTO = businessDashService.getCandidateApplyDetail(userNo,jobId);
-        System.out.println("확인 : "+jobApplicationDTO);
+        JobApplicationDTO candidateDetailInfo = businessDashService.getCandidateDetailInfo(userNo,jobId);
 
-        model.addAttribute("candidateInfo",jobApplicationDTO);
+        model.addAttribute("candidateDetailInfo",candidateDetailInfo);
 
         return "jsp/business/business-candidateDetail";
     }
 
     // 채용
-    @PostMapping("/applyCandidate")
+    @PostMapping("/employCandidate")
     @ResponseBody
-    public Map<String, Object> applyCandidate (@RequestBody JobApplicationDTO jobApplicationDTO) {
-        System.out.println("jobApplicationDTO 확인 : "+ jobApplicationDTO);
+    public Map<String, Object> employCandidate(@RequestBody JobApplicationDTO jobApplicationDTO) {
 
-        Map<String, Object> map = businessDashService.applyCandidate(jobApplicationDTO);
+        Map<String, Object> map = businessDashService.employCandidate(jobApplicationDTO);
         System.out.println("map 확인 : "+map);
         return map;
     }
 
     // 채용 취소
-    @PostMapping("/applyCancelCandidate")
+    @PostMapping("/cancelEmployCandidate")
     @ResponseBody
-    public Map<String, Object> applyCancelCandidate (@RequestBody JobApplicationDTO jobApplicationDTO) {
+    public Map<String, Object> cancelEmployCandidate (@RequestBody JobApplicationDTO jobApplicationDTO) {
         System.out.println("jobApplicationDTO 확인 : "+ jobApplicationDTO);
 
-        Map<String, Object> map = businessDashService.applyCancelCandidate(jobApplicationDTO);
+        Map<String, Object> map = businessDashService.cancelEmployCandidate(jobApplicationDTO);
         System.out.println("map 확인 : "+map);
         return map;
     }

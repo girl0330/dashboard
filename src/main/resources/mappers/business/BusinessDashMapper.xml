@@ -8,8 +8,8 @@
         WHERE BUSINESS_NUMBER = #{businessNumber}
     </select>
 
-    <select id="checkBusinessProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.CompanyInfoDTO">
-        SELECT /* BusinessDashMapper.checkBusinessProfile */
+    <select id="businessProfileList" parameterType="int" resultType="com.job.dashboard.domain.dto.CompanyInfoDTO">
+        SELECT /* BusinessDashMapper.businessProfileList */
             COMPANY_ID,
             USER_NO,
             COMPANY_NAME,
@@ -35,8 +35,8 @@
         FROM COMPANY_INFO
     </select>
 
-    <insert id="saveBusinessProfile" parameterType="com.job.dashboard.domain.dto.CompanyInfoDTO" >
-        INSERT INTO /* BusinessDashMapper.saveBusinessProfile */
+    <insert id="insertProfile" parameterType="com.job.dashboard.domain.dto.CompanyInfoDTO" >
+        INSERT INTO /* BusinessDashMapper.insertProfile */
             company_info
             (
              COMPANY_ID,
@@ -86,8 +86,8 @@
             SYSTEM_UPDATER_ID   = #{userNo}
     </insert>
 
-    <select id="getBusinessProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.CompanyInfoDTO">
-        SELECT /* BusinessDashMapper.getBusinessProfile */
+    <select id="getBusinessProfileInfo" parameterType="int" resultType="com.job.dashboard.domain.dto.CompanyInfoDTO">
+        SELECT /* BusinessDashMapper.getBusinessProfileInfo */
                COMPANY_ID,
                USER_NO,
                COMPANY_NAME,
@@ -166,8 +166,8 @@
         ORDER BY jpi.system_register_datetime DESC
     </select>
 
-    <select id="getCandidateApplyDetail" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        SELECT /* BusinessDashMapper.getCandidateApplyDetail */
+    <select id="getCandidateDetailInfo" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        SELECT /* BusinessDashMapper.getCandidateDetailInfo */
             jai.JOB_ID,
             jai.USER_NO,
             jai.MOTIVATION_DESCRIPTION,
@@ -187,8 +187,8 @@
         AND jai.job_id = #{jobId}
     </select>
 
-    <update id="applyCandidate" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        UPDATE  /* BusinessDashMapper.applyCandidate */
+    <update id="employCandidate" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        UPDATE  /* BusinessDashMapper.employCandidate */
             job_application_info
         SET status_type_code = 'HIRED'
         WHERE USER_NO = #{userNo}
@@ -197,8 +197,8 @@
 --             status_type_code = 'APPLIED'
     </update>
 
-    <update id="applyCancelCandidate" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        UPDATE /* BusinessDashMapper.applyCancelCandidate */
+    <update id="cancelEmployCandidate" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        UPDATE /* BusinessDashMapper.cancelEmployCandidate */
             job_application_info
         SET status_type_code = 'APPLIED'
         WHERE USER_NO = #{userNo}

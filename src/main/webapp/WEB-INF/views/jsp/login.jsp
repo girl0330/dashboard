@@ -81,25 +81,23 @@
 
       console.log("jsonData :" + JSON.stringify(jsonData));
 
-      $.ajax({
+      const options = {
         url: "/user/doLogin", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
-        success: function(data) {
+
+        done: function(response) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-          console.log(JSON.stringify(data));
-          if(data.code === 'error') {
-            alert(data.message);
-          } else if (data.code === 'success'){
+          console.log(JSON.stringify(response));
+          if (response.code === 'success'){
             location.href='/'
           }
         },
-        error: function(xhr, status, error) {
-          // 오류 발생 시 실행할 코드
-          console.error(error);
-        }
-      });
+      };
+
+      ajax.call(options);
+
     }
   }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.job.PostMapper">
-    <insert id="saveJob" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
-        INSERT INTO /*PostMapper.saveJob*/
+    <insert id="insertPost" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
+        INSERT INTO /*PostMapper.insertPost*/
             job_post_info (
                             USER_NO,
                             title,
@@ -109,8 +109,8 @@
                 )
     </insert>
 
-    <select id="getJobDetail" resultType="com.job.dashboard.domain.dto.JobPostDTO" parameterType="int">
-        SELECT /*PostMapper.getJobDetail*/
+    <select id="getJobPostDetailInfo" resultType="com.job.dashboard.domain.dto.JobPostDTO" parameterType="int">
+        SELECT /*PostMapper.getJobPostDetailInfo*/
             jpi.job_id,
             jpi.USER_NO,
             (SELECT fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC LIMIT 1) as file_id,
@@ -149,8 +149,8 @@
         WHERE jpi.job_id = #{jobId}
     </select>
 
-    <update id="updateJob" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
-        UPDATE /*PostMapper.updateJob*/
+    <update id="updateJobPost" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
+        UPDATE /*PostMapper.updateJobPost*/
             job_post_info
         SET
             USER_NO = #{userNo},
@@ -184,8 +184,8 @@
         WHERE job_id = #{jobId}
     </select>
 
-    <delete id="delete" parameterType="int">
-        DELETE /*PostMapper.delete*/
+    <delete id="deleteJobPost" parameterType="int">
+        DELETE /*PostMapper.deleteJobPost*/
         FROM job_post_info
         WHERE job_id = #{jobId}
     </delete>

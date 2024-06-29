@@ -28,12 +28,10 @@ public class PersonalDashController {
         System.out.println("==== 개인 회원 대시보드====");
 
         // 로그인 체크
-        System.out.println("로그인 체크");
         if(!sessionUtil.loginUserCheck()) {
             return "redirect:/user/login";
         }
 
-        System.out.println("/로그인 타입코드 체크");
         //로그인 타입코드 확인하기
         if(!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "10")) {
             return "redirect:/";
@@ -43,7 +41,6 @@ public class PersonalDashController {
 
         // 프로필 작성 여부 확인
         int profileCheck = personalDashService.profileCountByUserNo(userNo);
-        System.out.println("프로필 확인 :::  "+profileCheck);
         if (profileCheck == 0) {
             return "redirect:/personal/myProfile";
         }
@@ -51,7 +48,6 @@ public class PersonalDashController {
         //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
         if (file != null) {
-            System.out.println("file 확인 : "+file);
             model.addAttribute("fileId", file.getFileId());
         }
 
@@ -66,7 +62,7 @@ public class PersonalDashController {
                                                @RequestParam(defaultValue = "1") int pageNum,
                                                @RequestParam(defaultValue = "10") int pageSize) {
 
-        PageInfo<JobApplicationDTO> dashboardList = personalDashService.dashboardList(keyword, pageNum, pageSize);
+        PageInfo<JobApplicationDTO> dashboardList = personalDashService.getDashboardList(keyword, pageNum, pageSize);
 
         Map<String, Object> response = new HashMap<>();
         response.put("list", dashboardList.getList());
@@ -75,70 +71,54 @@ public class PersonalDashController {
         response.put("pageSize", dashboardList.getPageSize());
         response.put("pages", dashboardList.getPages());
 
-        System.out.println("response:::::    "+response);
         return response;
     }
 
     // 프로필
     @GetMapping("/myProfile")
     public String myProfileView(Model model) {
-        System.out.println("==== 개인 회원 프로필페이지 ====");
 
-        System.out.println("로그인 체크");
         if(!sessionUtil.loginUserCheck()) { // 로그인 체크
             return "redirect:/user/login";
         }
 
-        System.out.println("/로그인 타입코드 체크");
         //로그인 타입코드 확인하기
         if(!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "10")) {
             return "redirect:/";
         }
 
-        // 프로필 작성 여부 확인
+        // 작성된 프로필 확인
         int userNo = (int) sessionUtil.getAttribute("userNo");
-        UserProfileInfoDTO myProfile = personalDashService.checkProfile(userNo);
-        System.out.println("myProfile 확인 :::::: "+myProfile);
+        UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
 
         //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
 
         if (file != null) {
-            System.out.println("file 확인 : "+file);
             model.addAttribute("fileId", file.getFileId());
         }
-
-        System.out.println("file 확인 : "+file);
 
         model.addAttribute("profile",myProfile);
         return "jsp/personal/personal-profile";
     }
 
-    @PostMapping("/myProfileSave")
+    @PostMapping("/insertProfile")
     @ResponseBody
-    public Map<Object, String> profileSave(UserProfileInfoDTO userProfileInfoDTO) throws IOException {
-        System.out.println("==== 프로필 저장 =====");
+    public Map<Object, String> insertProfile(UserProfileInfoDTO userProfileInfoDTO) throws IOException {
 
-        System.out.println("입력한 dto------> "+ userProfileInfoDTO);
-
-        Map<Object, String> map = personalDashService.saveProfile(userProfileInfoDTO); // 프로필 저장하기
-        System.out.println("map/////////     "+map);
-        return map;
+        return personalDashService.insertProfile(userProfileInfoDTO);
     }
 
     // 비밀번호 변경
     @GetMapping("/changePassword")
     public String changePasswordView(Model model) {
-        System.out.println("==== 개인 회원 changePassword====");
 
         // 로그인 체크
-        System.out.println("로그인 체크");
         if(!sessionUtil.loginUserCheck()) {
             return "redirect:/user/login";
         }
 
         //로그인 타입코드 확인하기
-        System.out.println("/로그인 타입코드 체크");
         if(!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "10")) {
             return "redirect:/";
         }
@@ -147,14 +127,13 @@ public class PersonalDashController {
         int userNo = (int) sessionUtil.getAttribute("userNo");
         FileDTO file = businessDashService.getFile(userNo);
         if (file != null) {
-            System.out.println("file 확인 : "+file);
             model.addAttribute("fileId", file.getFileId());
         }
 
         return "jsp/personal/personal-changePassword";
     }
 
-    @PostMapping("/goChangePassword")
+    @PostMapping("/doChangePassword")
     @ResponseBody
     public Map<Object, Object> changePassword(@RequestBody UserDTO userDTO) {
         System.out.println("====비밀번호 변경 실행====");

@@ -14,7 +14,7 @@
             const formData = new FormData();
 
             // FormData에 유효한 값만 추가 [분해구조할당 사용]
-            $("#businessSaveProfile").serializeArray().forEach(({ name, value }) => {
+            $("#businessInsertProfile").serializeArray().forEach(({ name, value }) => {
                 if (value.trim()) { // 공백만 있는 값도 제외
                     formData.append(name, value);
                 }
@@ -39,7 +39,7 @@
             }
 
             const options = {
-                url: "/business/profileSave", // Spring 컨트롤러 URL
+                url: "/business/insertProfile", // Spring 컨트롤러 URL
                 type: 'POST',
                 contentType: false, // 파일 전송을 위해 false로 설정
                 processData: false, // 파일 전송을 위해 false로 설정
@@ -193,7 +193,7 @@ My Profile -->
                             <label class="form-label" id="fileUpload">프로필 사진 업로드</label>
                         </div>
                     </div>
-                    <form id="businessSaveProfile" name="businessSaveProfile" enctype="multipart/form-data">
+                    <form id="businessInsertProfile" name="businessInsertProfile" enctype="multipart/form-data">
                         <input type="file" id="fileInput" name="fileInput" style="display:none;" />
                         <div class="row">
                             <div class="form-group col-md-6 mb-3">

@@ -10,19 +10,19 @@ import java.util.Map;
 public interface PostMapper {
 
     //작성
-    void saveJob(JobPostDTO jobPostDTO);
+    void insertPost(JobPostDTO jobPostDTO);
 
     //목록
     List<JobPostDTO> getJobLists(String keyword);
 
     //상세페이지
-    JobPostDTO getJobDetail(int jobId);
+    JobPostDTO getJobPostDetailInfo(int jobId);
 
     //수정
-    void updateJob(JobPostDTO jobPostDTO);
+    void updateJobPost(JobPostDTO jobPostDTO);
 
     //삭제
-    void delete(int jobId);
+    void deleteJobPost(int jobId);
 
     // 로그인 회원의 프로필 유무확인
      UserProfileInfoDTO profileCheck(UserProfileInfoDTO userProfileInfoDTO);

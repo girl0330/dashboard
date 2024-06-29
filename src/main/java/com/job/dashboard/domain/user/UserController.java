@@ -37,13 +37,10 @@ public class UserController {
     }
 
     //계정 등록
-    @PostMapping("/signupInsert")
+    @PostMapping("/insertSignUp")
     @ResponseBody
-    public Map<String, Object> signupInsert(@RequestBody UserDTO userDTO) {
-        System.out.println("회원정보 저장하는 api ");
-        System.out.println("회원가입 입력 정보확인 ::::  " + userDTO);
-        Map<String, Object> map = userService.accountInsert(userDTO);
-        System.out.println("넘어온 정보 확인" + map);
+    public Map<String, Object> insertSignUp(@RequestBody UserDTO userDTO) {
+        Map<String, Object> map = userService. insertUser(userDTO);
         return map;
     }
 
@@ -60,15 +57,13 @@ public class UserController {
     public Map<String, Object> doLogin (@RequestBody UserDTO userDTO, Model model) {
         System.out.println("====회원 로그인===="+userDTO);
 
-        Map<String, Object> map = userService.findAccount(userDTO);
+        Map<String, Object> map = userService.doLogin(userDTO);
 
 
 
         if (!"error".equals(map.get("code"))) {
             sessionUtil.loginUser((UserDTO) map.get("account"));
         }
-
-        System.out.println("??????????? "+map.get("account"));
 
         model.addAttribute("loginUser", map.get("account"));
         return map;
