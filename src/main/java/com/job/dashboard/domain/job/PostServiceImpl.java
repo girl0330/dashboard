@@ -3,7 +3,6 @@ package com.job.dashboard.domain.job;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.domain.dto.LikeDTO;
@@ -32,7 +31,7 @@ public class PostServiceImpl implements PostService {
 
     // 구인 공고 저장
     @Transactional
-    public Map<String, Object> saveJob(JobPostDTO jobPostDTO) {
+    public Map<String, Object> insertPost(JobPostDTO jobPostDTO) {
         System.out.println("====저장 임플=====");
         Map<String, Object> map = new HashMap<>();
 
@@ -41,7 +40,7 @@ public class PostServiceImpl implements PostService {
         jobPostDTO.setStatusTypeCode("OPEN"); //CANCELLED(취소) HIRED(채용) OPEN(구인중) CLOSED(채용마감)
         System.out.println("dto 확인하기 : " + jobPostDTO);
 
-        postMapper.saveJob(jobPostDTO);
+        postMapper.insertPost(jobPostDTO);
         map.put("code", "success");
         map.put("message", "게시글 작성 성공!");
         return map;
@@ -58,23 +57,20 @@ public class PostServiceImpl implements PostService {
     }
 
     //likeList
-    public List<LikeDTO> likeList() {
+    public List<LikeDTO> getLikeList() {
 
         if (sessionUtil.loginUserCheck()) { // 로그인 여부 체크
-            System.out.println("로그인됨.");
             int userNo = (int) sessionUtil.getAttribute("userNo");
             return postMapper.getLikeList(userNo);
         } else {
-            System.out.println("로그인되지 않음.");
             return Collections.emptyList();
         }
     }
 
     // 구인 공고 상세페이지
-    public JobPostDTO detail(int jobId) {
-        System.out.println("====상세페이지 impl 입니다. ====");
+    public JobPostDTO getJobPostDetailInfo(int jobId) {
 
-        return postMapper.getJobDetail(jobId);
+        return postMapper.getJobPostDetailInfo(jobId);
     }
 
     //like
@@ -87,7 +83,7 @@ public class PostServiceImpl implements PostService {
 
     //좋아요 관리
     @Transactional
-    public Map<String, Object> likeCon(int jobId) {
+    public Map<String, Object> likeControl(int jobId) {
 
         Map<String, Object> map = new HashMap<>();
 
@@ -119,9 +115,9 @@ public class PostServiceImpl implements PostService {
     }
     // 구인 공고 수정
     @Transactional
-    public Map<String, Object> update(int userNo, JobPostDTO jobPostDTO) {
+    public Map<String, Object> updateJobPost(int userNo, JobPostDTO jobPostDTO) {
         Map<String, Object> map = new HashMap<>();
-        postMapper.updateJob(jobPostDTO);
+        postMapper.updateJobPost(jobPostDTO);
         map.put("code", "success");
         map.put("message", "게시글 작성 성공!");
         return map;
@@ -129,15 +125,14 @@ public class PostServiceImpl implements PostService {
 
     // 구인 공고 삭제
     @Transactional
-    public void delete(int jobId) {
-        System.out.println("삭제 임플?!");
+    public void deleteJobPost(int jobId) {
 
-        postMapper.delete(jobId);
+        postMapper.deleteJobPost(jobId);
     }
 
     // 공고 지원
     @Transactional
-    public Map<String, Object> applyJob(JobApplicationDTO jobApplicationDTO) {
+    public Map<String, Object> applyJobPost(JobApplicationDTO jobApplicationDTO) {
 
         Map<String, Object> map = new HashMap<>();
 
@@ -150,23 +145,17 @@ public class PostServiceImpl implements PostService {
 
         //지원하기 누르면 프로필작성 확인
         int profileExistCheck = postMapper.profileExistCheck(userNo);
-        System.out.println("프로필작성 되어있으면=1, 아니면=0 : ?"+profileExistCheck);
-
         if (profileExistCheck == 0) {
             throw new CustomException(ExceptionErrorCode.PROFILE_NOT_COMPLETED_TOKEN);
         }
 
         jobApplicationDTO.setUserNo(userNo);
-        System.out.println("jobApplicationDTO 확인: ???????"+ jobApplicationDTO); //지원 공고 id(프론), 지원내용(프론), userNo(세션)
-
 
         //중복지원인지 확인 select count(1) from table where 조건=1 and 조건=2
         int applyCheck = postMapper.applyCheck(jobApplicationDTO);
         if (applyCheck == 1) {
             throw new CustomException(ExceptionErrorCode.EXCEPTION_MESSAGE,"이미 지원 하셨습니다.");
         }
-
-        System.out.println("지원했음.");
 
         jobApplicationDTO.setUserNo(userNo);
         jobApplicationDTO.setStatusTypeCode("APPLIED"); // APPLIED : 지원중, CANCELLED : 지원취소
@@ -191,7 +180,6 @@ public class PostServiceImpl implements PostService {
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
         int applicationUserChe = postMapper.applicationUserChe(userNo); // userNo가 지원했는지 찾음. (지원 = 1, 지원 안함 = 0)
-        System.out.println("유저가 지원했어? "+ applicationUserChe);
         if (applicationUserChe == 0) {
             throw new CustomException(ExceptionErrorCode.EXCEPTION_MESSAGE,"지원 이력이 없습니다.");
         }

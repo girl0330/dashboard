@@ -17,7 +17,7 @@
             console.log("jsonData: "+ JSON.stringify(jsonData));
 
             const options = {
-                url: '/business/applyCandidate',
+                url: '/business/employCandidate',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(jsonData),
@@ -28,7 +28,7 @@
                 customFail: (response) => {
                     console.error('커스텀 실패 처리:', response);
                 },
-                done: function(data) {
+                done: function(response) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
                     console.log(JSON.stringify(response));
                     if(response.code === 'success') {
@@ -59,7 +59,7 @@
             jsonData["userNo"] = userNo;
 
             const options = {
-                url: '/business/applyCancelCandidate',
+                url: '/business/cancelEmployCandidate',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(jsonData),
@@ -70,7 +70,7 @@
                 customFail: (response) => {
                     console.error('커스텀 실패 처리:', response);
                 },
-                done: function(data) {
+                done: function(response) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
                     console.log(JSON.stringify(response));
                     if(response.code === 'success') {
@@ -111,48 +111,48 @@ Change Password -->
             <div class="col-md-12">
                 <div class="user-dashboard-info-box">
                     <div class="section-title-02 mb-4">
-                        <h4>${candidateInfo.name}</h4>
-                        <input type="hidden" class="form-control" value="${candidateInfo.jobId}" id="jobId">
-                        <input type="hidden" class="form-control" value="${candidateInfo.userNo}" id="userNo">
+                        <h4>${candidateDetailInfo.name}</h4>
+                        <input type="hidden" class="form-control" value="${candidateDetailInfo.jobId}" id="jobId">
+                        <input type="hidden" class="form-control" value="${candidateDetailInfo.userNo}" id="userNo">
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <form class="row">
                                 <div class="form-group col-md-3 mb-3">
                                     <label class="form-label">연락처</label>
-                                    <input type="text" class="form-control" value="${candidateInfo.phone}" readonly>
+                                    <input type="text" class="form-control" value="${candidateDetailInfo.phone}" readonly>
                                 </div>
                                 <div class="form-group col-md-3 mb-3">
                                     <label class="form-label">생년월일</label>
-                                    <input type="text" class="form-control" value="${candidateInfo.birth}" readonly>
+                                    <input type="text" class="form-control" value="${candidateDetailInfo.birth}" readonly>
                                 </div>
                                 <div class="form-group col-md-3 mb-3">
                                     <label class="form-label">성별</label>
-                                    <input type="text" class="form-control" value="${candidateInfo.gender}" readonly>
+                                    <input type="text" class="form-control" value="${candidateDetailInfo.gender}" readonly>
                                 </div>
                                 <div class="form-group col-md-3 mb-3">
                                     <label class="form-label">상태</label>
-                                    <input type="hidden" class="form-control" value="${candidateInfo.statusTypeCode}" id="statusTypeCode">
-                                    <input type="text" class="form-control" value="${candidateInfo.statusTypeCodeName}" id="statusTypeCodeName" readonly>
+                                    <input type="hidden" class="form-control" value="${candidateDetailInfo.statusTypeCode}" id="statusTypeCode">
+                                    <input type="text" class="form-control" value="${candidateDetailInfo.statusTypeCodeName}" id="statusTypeCodeName" readonly>
                                 </div>
                                 <div class="form-group col-md-12 mt-0 mb-3">
                                     <label class="form-label">지원자의 지원동기 </label>
-                                    <textarea class="form-control" rows="4" readonly>${candidateInfo.motivationDescription}</textarea>
+                                    <textarea class="form-control" rows="4" readonly>${candidateDetailInfo.motivationDescription}</textarea>
                                 </div>
                                 <div>
-                                지원 날짜 : ${candidateInfo.systemRegisterDatetime}
+                                지원 날짜 : ${candidateDetailInfo.systemRegisterDatetime}
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <c:if test="${candidateInfo.statusTypeCode == 'APPLIED'}">
+                <c:if test="${candidateDetailInfo.statusTypeCode == 'APPLIED'}">
                 <a class="btn btn-outline-primary mb-3 mb-sm-0" href="#" id="applyButton" name="applyButton">채용하기</a>
                 </c:if>
-                <c:if test="${candidateInfo.statusTypeCode == 'HIRED'}">
+                <c:if test="${candidateDetailInfo.statusTypeCode == 'HIRED'}">
                 <a class="btn btn-outline-primary mb-3 mb-sm-0" href="#" id="applyCancelButton" name="applyCancelButton">채용취소하기</a>
                 </c:if>
-                <a class="btn btn-outline-primary mb-3 mb-sm-0"  onclick="location.href = '/business/applicantList?jobId=${candidateInfo.jobId}'">지원자 관리 목록</a>
+                <a class="btn btn-outline-primary mb-3 mb-sm-0"  onclick="location.href = '/business/candidateList?jobId=${candidateDetailInfo.jobId}'">지원자 관리 목록</a>
             </div>
         </div>
     </div>

@@ -68,7 +68,7 @@
             console.log("formData " + JSON.stringify(jsonData));
 
             const options = {
-                url: '/personal/goChangePassword',
+                url: '/personal/doChangePassword',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(jsonData),

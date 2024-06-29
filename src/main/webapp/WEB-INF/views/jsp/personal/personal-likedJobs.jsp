@@ -29,8 +29,10 @@
                     keywordSearch.renderJobs(response.list);
                     renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
                 },
-                fail: () => {
-                    console.error('요청 실패');
+                error: (status, responseText) => {
+                    // 기본 에러 처리
+                    const jsonObj = JSON.parse(responseText);
+                    alert(jsonObj.userMessage);
                 }
             };
 

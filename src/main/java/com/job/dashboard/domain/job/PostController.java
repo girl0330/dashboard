@@ -2,7 +2,6 @@ package com.job.dashboard.domain.job;
 
 
 import com.github.pagehelper.PageInfo;
-import com.job.dashboard.domain.business.BusinessDashService;
 import com.job.dashboard.domain.common.CommonService;
 import com.job.dashboard.domain.dto.*;
 import com.job.dashboard.util.SessionUtil;
@@ -26,7 +25,6 @@ public class PostController {
     //공고 페이지
     @GetMapping("/postAJob")
     public String postAJobView() {
-        System.out.println("====구인공고 작성화면====");
 
         if (!sessionUtil.loginUserCheck()) { // 로그인 체크
             return "redirect:/user/login";
@@ -38,11 +36,8 @@ public class PostController {
 
         //프로필 작성 확인
         int userNo = (int) sessionUtil.getAttribute("userNo");
-        System.out.println("userNo 확인 ::    "+userNo);
         int profileCheck = postService.profileCheck(userNo);
-        System.out.println("profileCheck ;;:: "+ profileCheck);
         if (profileCheck == 0) {
-            System.out.println("????!!!");
             return "redirect:/business/profile";
         }
 
@@ -51,15 +46,13 @@ public class PostController {
     }
 
     //공고 작성
-    @PostMapping("/savePost")
+    @PostMapping("/insertPost")
     @ResponseBody
-    public Map<String, Object> savePost (@RequestBody JobPostDTO jobPostDTO) {
-        System.out.println("====공고 저장====");
+    public Map<String, Object> insertPost (@RequestBody JobPostDTO jobPostDTO) {
         Map<String, Object> map = new HashMap<>();
 
          //로그인한 id를 직접 넣을거임
-        map = postService.saveJob(jobPostDTO);
-        System.out.println("map/::::::::::   "+ map);
+        map = postService.insertPost(jobPostDTO);
         return map;
     }
 
@@ -78,8 +71,7 @@ public class PostController {
                                                @RequestParam(defaultValue = "10") int pageSize) {
 
         PageInfo<JobPostDTO> jobList = postService.jobList(keyword, pageNum, pageSize);
-        List<LikeDTO> likeList = postService.likeList();
-        System.out.println("likeList::::    "+likeList);
+        List<LikeDTO> likeList = postService.getLikeList();
 
         Map<String, Object> response = new HashMap<>();
         response.put("list", jobList.getList());
@@ -89,98 +81,71 @@ public class PostController {
         response.put("pageSize", jobList.getPageSize());
         response.put("pages", jobList.getPages());
 
-        System.out.println("response:::::    "+response);
         return response;
     }
 
 
     //공고 상세 페이지
-    @GetMapping("/detail")
-    public String detail(@RequestParam("jobId") int jobId, Model model) {
-        System.out.println("====상세페이지 ====");
-        System.out.println("jobId??? "+ jobId);
+    @GetMapping("/jobPostDetail")
+    public String jobPostDetailView(@RequestParam("jobId") int jobId, Model model) {
         Map<String, Object> map = new HashMap<>();
 
         if (sessionUtil.loginUserCheck()) { // 로그인시
-            System.out.println("로그인 됨.");
             int userNo = (int) sessionUtil.getAttribute("userNo");
-            System.out.println("유저no확인 ; "+userNo);
-
             map.put("userNo", userNo);
             map.put("jobId", jobId);
-            System.out.println("map 내용확인 : "+map);
 
             int like = postService.findLike(map);
-            System.out.println("like ;; "+like);
 
             model.addAttribute("like", like);
         }
 
-        JobPostDTO detail = postService.detail(jobId);
-        System.out.println("detail?? "+detail);
+        JobPostDTO jobPostDetail = postService.getJobPostDetailInfo(jobId);
 
-        model.addAttribute("detail",detail);
+        model.addAttribute("jobPostDetail",jobPostDetail);
         return "jsp/post/job-detail";
     }
 
     //좋아요 관리
     @PostMapping("/like/{jobId}")
     @ResponseBody
-    public Map<String, Object> likeCon(@PathVariable int jobId) {
-        System.out.println("jobId확인 :: "+jobId);
+    public Map<String, Object> likeControl(@PathVariable int jobId) {
 
-        Map<String, Object> map = postService.likeCon(jobId);
-        System.out.println("likeMap :::   "+ map);
-        return map;
+        return postService.likeControl(jobId);
     }
 
     //공고 수정
     @GetMapping("/update")
-    public String update(@RequestParam("jobId") int jobId, Model model) {
-        System.out.println("수정하기 : id 확인"+jobId);
+    public String updateJobPostView(@RequestParam("jobId") int jobId, Model model) {
         int userNo = (int) sessionUtil.getAttribute("userNo"); //로그인한 userNo 가져옴
 
-        JobPostDTO initialData = postService.detail(jobId);
+        JobPostDTO initialData = postService.getJobPostDetailInfo(jobId);
         if (initialData.getUserNo() != userNo) {
-            System.out.println("작성회원 불일치");
             return "redirect:/";
         }
 
-        List<SelectBoxOptionDTO> jobType = commonService.getSelectBoxOption("job_type");
-        List<SelectBoxOptionDTO> salaryType = commonService.getSelectBoxOption("salary_type");
-        List<SelectBoxOptionDTO> employmentType = commonService.getSelectBoxOption("employment_type");
-        List<SelectBoxOptionDTO> jobDayType = commonService.getSelectBoxOption("job_day_type");
-        List<SelectBoxOptionDTO> statusType = commonService.getSelectBoxOption("status_type");
-
-        model.addAttribute("jobType",jobType);
-        model.addAttribute("salaryType",salaryType);
-        model.addAttribute("employmentType",employmentType);
-        model.addAttribute("jobDayType",jobDayType);
-        model.addAttribute("statusType",statusType);
+        model.addAttribute("jobType",commonService.getSelectBoxOption("job_type"));
+        model.addAttribute("salaryType",commonService.getSelectBoxOption("salary_type"));
+        model.addAttribute("employmentType",commonService.getSelectBoxOption("employment_type"));
+        model.addAttribute("jobDayType",commonService.getSelectBoxOption("job_day_type"));
+        model.addAttribute("statusType",commonService.getSelectBoxOption("status_type"));
         model.addAttribute("initialData",initialData);
 
-        return "jsp/post/post-a-job-update";
+        return "jsp/post/post-a-job-updateJobPost";
     }
 
     @PostMapping("/postUpdate/{jobId}")
     @ResponseBody
-    public Map<String, Object> updatePost (@PathVariable int jobId, @RequestBody JobPostDTO jobPostDTO ) {
-        System.out.println("일단 데이터 확인부터..? "+jobId);
+    public Map<String, Object> updateJobPost (@PathVariable int jobId, @RequestBody JobPostDTO jobPostDTO ) {
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
-        System.out.println("userNo 확인  ; "+userNo);
-        System.out.println("일단 데이터 확인부터..? "+jobPostDTO);
-        Map<String, Object> map = postService.update(userNo, jobPostDTO);
-        System.out.println(map);
+        Map<String, Object> map = postService.updateJobPost(userNo, jobPostDTO);
         return map;
     }
 
     //게시글 삭제
     @GetMapping("/delete")
-    public String delete(@RequestParam("jobId") int jobId){
-        System.out.println("삭제");
-
-        System.out.println("jsp에서 가져온 jobId : "+jobId);
+    public String deleteJobPost(@RequestParam("jobId") int jobId){
 
         if (!sessionUtil.loginUserCheck()) { // 로그인 체크
             return "redirect:/user/login";
@@ -190,15 +155,14 @@ public class PostController {
             return "redirect:/";
         }
 
-        postService.delete(jobId);
+        postService.deleteJobPost(jobId);
         return "redirect:/business/list";
     }
 
     @PostMapping("/apply")
     @ResponseBody
-    public Map<String, Object> applyJob(@RequestBody JobApplicationDTO jobApplicationDTO){
-        System.out.println("지원하기::"+jobApplicationDTO);
-        Map<String, Object> map = postService.applyJob(jobApplicationDTO);
+    public Map<String, Object> applyJobPost(@RequestBody JobApplicationDTO jobApplicationDTO){
+        Map<String, Object> map = postService.applyJobPost(jobApplicationDTO);
         System.out.println("=========================>  map 확인 : "+map);
         return map;
     }
@@ -206,9 +170,6 @@ public class PostController {
     @PostMapping("/applyCancel")
     @ResponseBody
     public Map<String, Object> applyCancelJob(@RequestBody Integer jobId){
-        System.out.println("지원취소하기::");
-        Map<String, Object> map = postService.applyCancelJob(jobId);
-        System.out.println("=========================>  map 확인 : "+map);
-        return map;
+        return postService.applyCancelJob(jobId);
     }
  }

@@ -81,7 +81,7 @@
             });
 
             const options = {
-                url: '/business/savePost',
+                url: '/business/insertPost',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(jsonData),

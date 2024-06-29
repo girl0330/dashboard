@@ -3,15 +3,15 @@
 <mapper namespace="com.job.dashboard.domain.personal.PersonalDashMapper">
 
     <select id="profileCountByUserNo" parameterType="int" resultType="int">
-        SELECT count(*)
-            AS profileCount
+        SELECT /* PersonalDashMapper.profileCountByUserNo */
+            count(*)
+        AS profileCount
         FROM user_profile_info
         WHERE USER_NO = #{userNo}
     </select>
 
-    <select id="getProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.UserProfileInfoDTO">
-        /*기존 프로필 가져오기*/
-        SELECT /* PersonalDashMapper.getProfile */
+    <select id="getProfileInfo" parameterType="int" resultType="com.job.dashboard.domain.dto.UserProfileInfoDTO">
+        SELECT /* PersonalDashMapper.getProfileInfo */
             ui.email,
             ui.user_type_code,
             func_get_detail_name('user_type', ui.user_type_code) AS user_type_code_name,
@@ -31,8 +31,8 @@
         WHERE ui.USER_NO = #{userNo}
     </select>
 
-    <select id="checkProfile" parameterType="int" resultType="com.job.dashboard.domain.dto.UserProfileInfoDTO">
-        SELECT /* PersonalDashMapper.checkProfile */
+    <select id="profileInfoList" parameterType="int" resultType="com.job.dashboard.domain.dto.UserProfileInfoDTO">
+        SELECT /* PersonalDashMapper.profileInfoList */
                 PROFILE_ID,
                USER_NO,
                NAME,
@@ -59,8 +59,8 @@
         FROM USER_PROFILE_INFO
     </select>
 
-    <insert id="saveProfile" parameterType="com.job.dashboard.domain.dto.UserProfileInfoDTO" >
-        INSERT INTO /* PersonalDashMapper.saveProfile */
+    <insert id="insertProfile" parameterType="com.job.dashboard.domain.dto.UserProfileInfoDTO" >
+        INSERT INTO /* PersonalDashMapper.insertProfile */
         USER_PROFILE_INFO
             (
              PROFILE_ID,

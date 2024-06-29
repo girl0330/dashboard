@@ -13,7 +13,7 @@ import java.util.Map;
 public interface PostService {
 
     //저장
-    Map<String, Object> saveJob(JobPostDTO jobPostDTO);
+    Map<String, Object> insertPost(JobPostDTO jobPostDTO);
 
     //목록
     PageInfo<JobPostDTO> jobList(String keyword, int pageNum, int pageSize);
@@ -21,21 +21,21 @@ public interface PostService {
     //like
     int findLike(Map<String, Object> map);
     //좋아요 관리
-    Map<String, Object> likeCon(int jobId);
+    Map<String, Object> likeControl(int jobId);
 
     //상세
-    JobPostDTO detail(int jobId);
+    JobPostDTO getJobPostDetailInfo(int jobId);
 
     //수정
-    Map<String, Object> update(int userNo, JobPostDTO jobPostDTO);
+    Map<String, Object> updateJobPost(int userNo, JobPostDTO jobPostDTO);
 
-//    void delete(int jobId, Integer userNo);
+//    void deleteJobPost(int jobId, Integer userNo);
 
     //삭제
-    void delete(int jobId);
+    void deleteJobPost(int jobId);
 
     //공고 지원
-    Map<String,Object> applyJob(JobApplicationDTO jobApplicationDTO);
+    Map<String,Object> applyJobPost(JobApplicationDTO jobApplicationDTO);
 
     //지원 취소하기
     Map<String, Object> applyCancelJob(Integer jobId);
@@ -43,7 +43,7 @@ public interface PostService {
     int getCountJobs();
 
     //likeList
-    List<LikeDTO> likeList();
+    List<LikeDTO> getLikeList();
 
     // 프로필 존재 확인
     int profileCheck(int userNo);

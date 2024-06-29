@@ -27,23 +27,20 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     //작성된 프로필 확인
-    public UserProfileInfoDTO checkProfile(int userNo) {
+    public UserProfileInfoDTO getProfileInfo(int userNo) {
         System.out.println("====피로필 impl");
-        UserProfileInfoDTO profile = personalDashMapper.getProfile(userNo);
-        System.out.println("이메일 확인 ;;;; "+ profile.getEmail());
-        System.out.println("profile;;;;::::   " + profile);
-        return profile;
+        UserProfileInfoDTO profileInfo = personalDashMapper.getProfileInfo(userNo);
+        return profileInfo;
     }
 
     // 프로필 저장하기
     @Transactional
-    public Map<Object, String> saveProfile(UserProfileInfoDTO userProfileInfoDTO) throws IOException {
-        System.out.println("======profileSave === impl====");
+    public Map<Object, String> insertProfile(UserProfileInfoDTO userProfileInfoDTO) throws IOException {
 
         Map<Object, String> map = new HashMap<>();
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
-        List<UserProfileInfoDTO> profile = personalDashMapper.checkProfile(userNo); //userNo로 프로필 존재 확인
+        List<UserProfileInfoDTO> profile = personalDashMapper.profileInfoList(userNo); //userNo로 프로필 존재 확인
 
         int personalProfile = profile.size();
 
@@ -63,9 +60,9 @@ public class PersonalDashServiceImpl implements PersonalDashService {
             System.out.println("====================fileResult 는 :"+fileResult);
         }
 
-        // systemRegisterId, systemUpdaterId 데이터는?? //pk가 없으면 insert 있으면 update
+        // systemRegisterId, systemUpdaterId 데이터는?? //pk가 없으면 insert 있으면 updateJobPost
         System.out.println("userProfileDTO"+userProfileInfoDTO);
-        personalDashMapper.saveProfile(userProfileInfoDTO);
+        personalDashMapper.insertProfile(userProfileInfoDTO);
 
         map.put("code", "success");
         map.put("message", "프로필 저장 성공!");
@@ -133,7 +130,7 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     }
 
     //dashboard list
-    public PageInfo<JobApplicationDTO> dashboardList(String keyword, int pageNum, int pageSize) {
+    public PageInfo<JobApplicationDTO> getDashboardList(String keyword, int pageNum, int pageSize) {
         System.out.println("최근 지원한 리스트 임플");
 
         Map<String, Object> map = new HashMap<>();

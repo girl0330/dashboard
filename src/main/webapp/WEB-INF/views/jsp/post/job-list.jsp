@@ -47,14 +47,12 @@
             // Create a Set for quick lookup of liked job IDs
             const likedJobIds = new Set(likeList.map(like => like.jobId));
 
-            const likedJobIds1 = likeList.map(like => like.jobId);
-
             list.forEach(job => {
                 // Determine the heart icon class based on whether the jobId is in likedJobIds
                 const heartIconClass = likedJobIds.has(job.jobId) ? 'fas fa-heart text-danger' : 'far fa-heart';
 
                 const jobHtml =
-                    '<div class="col-12" onclick="location.href=\'/business/detail?jobId=' + job.jobId + '\'">' +
+                    '<div class="col-12" onclick="location.href=\'/business/jobPostDetail?jobId=' + job.jobId + '\'">' +
                     '<div class="job-list">' +
                     '<div class="job-list-logo">' +
                     '<img class="img-fluid" src="/business/uploadedFileGet/' + job.fileId + '" alt="">' +

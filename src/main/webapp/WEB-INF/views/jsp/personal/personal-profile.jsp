@@ -50,7 +50,7 @@
     formSubmit: function () {
       const formData = new FormData();
 
-      $('#saveProfile').serializeArray().forEach(({name, value}) => {
+      $('#insertProfile').serializeArray().forEach(({name, value}) => {
         if (value.trim()) {
           formData.append(name, value);
         }
@@ -74,7 +74,7 @@
       });
 
       const options = {
-        url: '/personal/myProfileSave',
+        url: '/personal/insertProfile',
         type: 'POST',
         contentType: false, // 파일 전송을 위해 false로 설정
         processData: false, // 파일 전송을 위해 false로 설정
@@ -217,7 +217,7 @@ My Profile -->
               <label class="form-label" id="fileUpload">프로필 사진 업로드</label>
             </div>
           </div>
-          <form class="mt-4" id="saveProfile" name="saveProfile" enctype="multipart/form-data">
+          <form class="mt-4" id="insertProfile" name="insertProfile" enctype="multipart/form-data">
             <input type="file" id="fileInput" name="fileInput" style="display:none;" />
             <div class="row">
               <div class="form-group mb-3 col-md-6">

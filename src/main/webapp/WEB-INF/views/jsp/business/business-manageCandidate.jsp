@@ -8,11 +8,10 @@
         },
 
         keywordSearchSubmit: function (pageNum) {
-            // 새로운 HTML을 생성하여 삽입
             const keyword = $('#keyword').val(); // input 필드에서 값 가져오기
             const jobNum = $('#jobNum').val(); // jobId
 
-            $.ajax({
+            const options = {
                 url: '/business/ajax/candidateList',
                 type: 'GET',
                 data: {
@@ -21,16 +20,25 @@
                     keyword: keyword,
                     jobNum: jobNum
                 },
-                success: function(response) {
+
+                beforeSend: () => {
+                    console.log('요청 전 작업 수행');
+                },
+                customFail: (response) => {
+                    console.error('커스텀 실패 처리:', response);
+                },
+                done: function(response) {
                     // 성공 시 실행할 코드
                     keywordSearch.renderJobsp(response.list);
                     renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
                 },
-                error: function(xhr, status, error) {
-                    // 오류 발생 시 실행할 코드
-                    console.error(error);
+                fail: () => {
+                    console.error('요청 실패');
                 }
-            });
+            };
+
+            ajax.call(options);
+
         },
         renderJobsp: function(list){
             const container = $("#candidateList");
