@@ -133,6 +133,7 @@ public class PostServiceImpl implements PostService {
     // 공고 지원
     @Transactional
     public Map<String, Object> applyJobPost(JobApplicationDTO jobApplicationDTO) {
+        System.out.println("프론트에서 넘어온 데이터 확인 :::   "+jobApplicationDTO);
 
         Map<String, Object> map = new HashMap<>();
 
@@ -152,8 +153,8 @@ public class PostServiceImpl implements PostService {
         jobApplicationDTO.setUserNo(userNo);
 
         //중복지원인지 확인 select count(1) from table where 조건=1 and 조건=2
-        int applyCheck = postMapper.applyCheck(jobApplicationDTO);
-        if (applyCheck == 1) {
+        int applycount = postMapper.getApplycount(jobApplicationDTO);
+        if (applycount == 1) {
             throw new CustomException(ExceptionErrorCode.EXCEPTION_MESSAGE,"이미 지원 하셨습니다.");
         }
 

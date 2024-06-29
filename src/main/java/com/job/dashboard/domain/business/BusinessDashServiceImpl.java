@@ -53,27 +53,23 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 //            return map;
 //        }
 
+        System.out.println("비지니스 정보 확인 ::::   "+companyInfoDTO);
         //파일 아이디 조회
-        int fileId = companyInfoDTO.getFileId();
-        map.put("fileId",fileId);
-        FileDTO file = businessDashMapper.getFiles(map);
-
-        //값 있으면 삭제
-        if (file != null) {
-            deleteFile(file.getFileId());
+        if(companyInfoDTO.getFile() != null) {
+            deleteFile(companyInfoDTO.getFileId());
         }
 
         //list로 프로필 가져옴
-        List<CompanyInfoDTO> businessProfileLiset = businessDashMapper.businessProfileList(userNo);
+        List<CompanyInfoDTO> businessProfileList = businessDashMapper.getBusinessProfileList(userNo);
 
-        if (businessProfileLiset.isEmpty()){ // 작성된 프로필이 없음.
+        if (businessProfileList.isEmpty()){ // 작성된 프로필이 없음.
             int companyIdSeq = businessDashMapper.getCompanyIdSeq(userNo); // 프로필 pk
             System.out.println("companyIdSeq : "+ companyIdSeq);
 
             companyInfoDTO.setCompanyId(companyIdSeq); // pk 등록
 
         } else { // 작성된 프로필이 있음
-            companyInfoDTO.setCompanyId(businessProfileLiset.get(0).getCompanyId()); //pk 등록
+            companyInfoDTO.setCompanyId(businessProfileList.get(0).getCompanyId()); //pk 등록
             System.out.println("확인: "+ companyInfoDTO);
         }
 
@@ -105,6 +101,7 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     @Transactional
     public Map<String, Object> saveFile(MultipartFile file){
         System.out.println("====프로필 이미지 파일 저장 impl====");
+        System.out.println("넘어온 file??????  "+file);
 
         // 결과 맵 생성
         Map<String, Object> result = new HashMap<>();
@@ -125,9 +122,7 @@ public class BusinessDashServiceImpl implements BusinessDashService{
             Long fileSize = file.getSize();
 
             Path path = Paths.get(uploadFolder + File.separator + file.getOriginalFilename()); // 경로 생성
-            Files.write(path, bytes); // 파일을 지정된 경로에 저장
-
-            System.out.println("파일이 저장될 경로 : " + path.toString());
+            Files.write(path, bytes); // 파일을 경로에 저장
 
             String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
             System.out.println("확장자 확인 : " + fileExtension);
@@ -188,6 +183,7 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
     //파일 조회하기
     public FileDTO getFile(int userNo) {
+        System.out.println("get 파일");
         Map<String, Object> map = new HashMap<>();
         map.put("userNo",userNo);
 

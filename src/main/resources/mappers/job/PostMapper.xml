@@ -114,6 +114,7 @@
             jpi.job_id,
             jpi.USER_NO,
             (SELECT fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC LIMIT 1) as file_id,
+            (SELECT jai.status_type_code FROM job_application_info jai WHERE jai.job_id = jpi.job_id)AS user_status_code,
             jpi.title,
             jpi.description,
             jpi.job_type_code,
@@ -204,8 +205,8 @@
         WHERE USER_NO = #{userNo}
     </select>
 
-    <select id="applyCheck" parameterType="int" resultType="int">
-        SELECT  /*PostMapper.applyCheck*/
+    <select id="getApplycount" parameterType="int" resultType="int">
+        SELECT  /*PostMapper.getApplycount*/
             count(1)
         FROM job_application_info
         WHERE USER_NO = #{userNo}

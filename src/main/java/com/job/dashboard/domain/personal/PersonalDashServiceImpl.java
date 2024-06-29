@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +31,7 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     public UserProfileInfoDTO getProfileInfo(int userNo) {
         System.out.println("====피로필 impl");
         UserProfileInfoDTO profileInfo = personalDashMapper.getProfileInfo(userNo);
+        System.out.println("프로필 확인합니다..........     "+profileInfo);
         return profileInfo;
     }
 
@@ -41,19 +43,26 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
         List<UserProfileInfoDTO> profile = personalDashMapper.profileInfoList(userNo); //userNo로 프로필 존재 확인
+        System.out.println("profile ???:::    "+profile);
 
         int personalProfile = profile.size();
+        System.out.println("이게뭐지????     "+personalProfile);
 
         if (personalProfile == 0) { //프로필 없으면
             int profileSeq = personalDashMapper.getProfileIdSeq(userNo); //pk
             userProfileInfoDTO.setProfileId(profileSeq);
 
         } else { //프로필 있으면
-            userProfileInfoDTO.setProfileId(profile.get(0).getProfileId());
+            userProfileInfoDTO.setProfileId(profile.get(0).getProfileId()); //pk
         }
         userProfileInfoDTO.setUserNo(userNo);
 
-        System.out.println("file?"+userProfileInfoDTO.getFile());
+        System.out.println("userProfileInfoDTO:::::   "+userProfileInfoDTO);
+
+        //기존 프로필에 파일이 저장 되어 있는지 확인
+        Optional.ofNullable(userProfileInfoDTO.getFile())
+                .ifPresent(file -> businessDashService.deleteFile(userProfileInfoDTO.getFileId()));
+
         // 파일 저장
         if (userProfileInfoDTO.getFile() != null) {
             Map<String, Object> fileResult = businessDashService.saveFile(userProfileInfoDTO.getFile()); // 파일 저장 됨.

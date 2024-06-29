@@ -63,6 +63,12 @@
         formData.append('file', file);
       }
 
+      //파일 아이디
+      const fileId = $("#fileId").val();
+      if (fileId) {
+        formData.append('fileId',fileId);
+      }
+
       //확인
       for (let [key, value] of formData.entries()) {
         console.log(key + ":" + value);

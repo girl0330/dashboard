@@ -8,8 +8,8 @@
         WHERE BUSINESS_NUMBER = #{businessNumber}
     </select>
 
-    <select id="businessProfileList" parameterType="int" resultType="com.job.dashboard.domain.dto.CompanyInfoDTO">
-        SELECT /* BusinessDashMapper.businessProfileList */
+    <select id="getBusinessProfileList" parameterType="int" resultType="com.job.dashboard.domain.dto.CompanyInfoDTO">
+        SELECT /* BusinessDashMapper.getBusinessProfileList */
             COMPANY_ID,
             USER_NO,
             COMPANY_NAME,

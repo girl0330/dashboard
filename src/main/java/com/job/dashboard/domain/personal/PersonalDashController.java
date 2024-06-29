@@ -105,6 +105,7 @@ public class PersonalDashController {
     @PostMapping("/insertProfile")
     @ResponseBody
     public Map<Object, String> insertProfile(UserProfileInfoDTO userProfileInfoDTO) throws IOException {
+        System.out.println("넘어온 userProfileInfo 확인 하기::::    "+userProfileInfoDTO);
 
         return personalDashService.insertProfile(userProfileInfoDTO);
     }

@@ -45,31 +45,15 @@
                 processData: false, // 파일 전송을 위해 false로 설정
                 data: formData,
 
-                beforeSend: () => {
-                    console.log('요청 전 작업 수행');
-                },
-                customFail: (response) => {
-                    console.error('커스텀 실패 처리:', response);
-                },
                 done: function(response) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
                     console.log(JSON.stringify(response));
-                    if(response.code === 'error') {
-                        alert(response.message);
-                    } else if (response.code === 'success'){
+                    if (response.code === 'success'){
                         alert(response.message);
                         location.href='/business/profile'
-                    } else if (response.code === 'loginError') {
-                        alert(response.message);
-                        location.href='/user/login'
-                    } else if (response.code === 'loginCodeError') {
-                        alert(response.message);
-                        location.href='/'
                     }
                 },
-                fail: () => {
-                    console.error('요청 실패');
-                }
+
             };
 
             ajax.call(options);

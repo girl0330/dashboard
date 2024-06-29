@@ -14,7 +14,7 @@ import java.util.Map;
 public interface BusinessDashMapper {
 
     // 프로필
-    List<CompanyInfoDTO> businessProfileList(int userNo); // 프로필 존재 체크
+    List<CompanyInfoDTO> getBusinessProfileList(int userNo); // 프로필 존재 체크
     int getCompanyIdSeq(int userNo); //프로필 pk
     void insertProfile(CompanyInfoDTO companyInfoDTO);  // 프로필 작성, 수정
     CompanyInfoDTO getBusinessProfileInfo(int userNo);  // 프로필 가져오기

@@ -378,15 +378,15 @@ job list -->
       <!--=================================
       sidebar -->
       <div class="col-lg-6">
-        <c:if test="${sessionScope.userTypeCode == 10 }">
-          <div class="sidebar mb-0">
-            <c:if test="${jobPostDetail.statusTypeCode == 'OPEN'}">
-            <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="far fa-paper-plane"></i>지원하기</a>
-            <a class="btn btn-primary" href="#" id="button_applyCancel" name="button_applyCancel"><i class="far fa-paper-plane"></i>지원취소하기</a>
-              <%--              <c:if test="${detail.jaiStatusTypeCode == 'APPLIED'}">--%>
-              <%--              </c:if>--%>
-            </c:if>
-          </div>
+        <c:if test="${jobPostDetail.statusTypeCode == 'OPEN'}">
+          <c:choose>
+            <c:when test="${userStatusCode != 'APPLIED'}">
+              <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="far fa-paper-plane"></i>지원하기</a>
+            </c:when>
+            <c:otherwise>
+              <a class="btn btn-primary" href="#" id="button_applyCancel" name="button_applyCancel"><i class="far fa-paper-plane"></i>지원취소하기</a>
+            </c:otherwise>
+          </c:choose>
         </c:if>
       </div>
       <!--=================================
