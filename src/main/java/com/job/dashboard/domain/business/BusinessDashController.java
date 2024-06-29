@@ -99,6 +99,8 @@ public class BusinessDashController {
     @PostMapping("/insertProfile")
     @ResponseBody
     public Map<String, Object> insertProfile(CompanyInfoDTO companyInfoDTO) {
+
+        System.out.println("프로필 확인 하기 ;;;;;;    "+companyInfoDTO);
         Map<String, Object> map = new HashMap<>();
 
         //로그인 확인

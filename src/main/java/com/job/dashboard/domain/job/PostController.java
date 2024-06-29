@@ -102,6 +102,7 @@ public class PostController {
 
         JobPostDTO jobPostDetail = postService.getJobPostDetailInfo(jobId);
 
+        model.addAttribute("userStatusCode",jobPostDetail.getUserStatusCode());
         model.addAttribute("jobPostDetail",jobPostDetail);
         return "jsp/post/job-detail";
     }

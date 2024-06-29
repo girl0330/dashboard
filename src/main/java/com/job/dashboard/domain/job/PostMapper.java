@@ -34,7 +34,7 @@ public interface PostMapper {
     int profileCount(int userNo);
 
     //중복 지원 체크
-    int applyCheck(JobApplicationDTO jobApplicationDTO);
+    int getApplycount(JobApplicationDTO jobApplicationDTO);
 
     //공고 지원하기
     void insertJobApplicationInfo(JobApplicationDTO jobApplicationDTO);

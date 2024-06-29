@@ -33,23 +33,24 @@
 
     <select id="profileInfoList" parameterType="int" resultType="com.job.dashboard.domain.dto.UserProfileInfoDTO">
         SELECT /* PersonalDashMapper.profileInfoList */
-                PROFILE_ID,
-               USER_NO,
-               NAME,
-               PHONE,
-               BIRTH,
-               GENDER,
-               ZIPCODE,
-               ADDRESS,
-               ADDRESS_DETAIL,
-               LONGITUDE,
-               LATITUDE,
-               PART_TIME_EXPERIENCE,
-               SYSTEM_REGISTER_ID,
-               SYSTEM_REGISTER_DATETIME,
-               SYSTEM_UPDATER_ID,
-               SYSTEM_UPDATE_DATETIME
-        FROM USER_PROFILE_INFO
+            upi.PROFILE_ID,
+            upi.USER_NO,
+            (SELECT fi.file_id FROM file_info fi WHERE USER_NO = fi.user_no LIMIT 1)AS fileId,
+            upi.NAME,
+            upi.PHONE,
+            upi.BIRTH,
+            upi.GENDER,
+            upi.ZIPCODE,
+            upi.ADDRESS,
+            upi.ADDRESS_DETAIL,
+            upi.LONGITUDE,
+            upi.LATITUDE,
+            upi.PART_TIME_EXPERIENCE,
+            upi.SYSTEM_REGISTER_ID,
+            upi.SYSTEM_REGISTER_DATETIME,
+            upi.SYSTEM_UPDATER_ID,
+            upi.SYSTEM_UPDATE_DATETIME
+        FROM USER_PROFILE_INFO upi
         WHERE USER_NO = #{userNo}
     </select>
 
