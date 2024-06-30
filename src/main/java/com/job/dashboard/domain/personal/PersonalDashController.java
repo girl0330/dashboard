@@ -25,7 +25,6 @@ public class PersonalDashController {
     // dashboard 리스트
     @GetMapping("/dashboard")
     public String dashboardView(Model model) {
-        System.out.println("==== 개인 회원 대시보드====");
 
         // 로그인 체크
         if(!sessionUtil.loginUserCheck()) {
@@ -105,7 +104,6 @@ public class PersonalDashController {
     @PostMapping("/insertProfile")
     @ResponseBody
     public Map<Object, String> insertProfile(UserProfileInfoDTO userProfileInfoDTO) throws IOException {
-        System.out.println("넘어온 userProfileInfo 확인 하기::::    "+userProfileInfoDTO);
 
         return personalDashService.insertProfile(userProfileInfoDTO);
     }
@@ -137,17 +135,11 @@ public class PersonalDashController {
     @PostMapping("/doChangePassword")
     @ResponseBody
     public Map<Object, Object> changePassword(@RequestBody UserDTO userDTO) {
-        System.out.println("====비밀번호 변경 실행====");
-
-        System.out.println("입력한 내용 확인 : "+userDTO);
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
         userDTO.setUserNo(userNo);
-        Map<Object, Object> map = personalDashService.changePassword(userDTO);
-        System.out.println("비밀번호 변경했음. 확인해봄:"+ map);
-
-        return map;
+        return personalDashService.changePassword(userDTO);
     }
 
     // manageJobsList
@@ -167,7 +159,6 @@ public class PersonalDashController {
 
         // 프로필 작성 여부 확인
         int profileCheck = personalDashService.profileCountByUserNo(userNo);
-        System.out.println("프로필 확인 :::  "+profileCheck);
         if (profileCheck == 0) {
             return "redirect:/personal/myProfile";
         }
@@ -175,7 +166,6 @@ public class PersonalDashController {
         //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
         if (file != null) {
-            System.out.println("file 확인 : "+file);
             model.addAttribute("fileId", file.getFileId());
         }
 
@@ -187,8 +177,7 @@ public class PersonalDashController {
     @ResponseBody
     public Map<String, Object> ajaxManageJobsList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                                @RequestParam(defaultValue = "1") int pageNum,
-                                               @RequestParam(defaultValue = "10") int pageSize,
-                                                  Model model) {
+                                               @RequestParam(defaultValue = "10") int pageSize) {
 
         PageInfo<JobApplicationDTO> recentlyApplyJobList = personalDashService.applyStatusList(keyword, pageNum, pageSize);
 
@@ -199,14 +188,12 @@ public class PersonalDashController {
         response.put("pageSize", recentlyApplyJobList.getPageSize());
         response.put("pages", recentlyApplyJobList.getPages());
 
-        System.out.println("response:::::    "+response);
         return response;
     }
 
     // 관심 공고 목록들
     @GetMapping("/likedJobs")
     public String likedJobsView(Model model) {
-        System.out.println("==== 개인 회원 likedJobs====");
 
         // 로그인 체크
         System.out.println("로그인 체크");
@@ -224,7 +211,6 @@ public class PersonalDashController {
 
         // 프로필 작성 여부 확인
         int profileCheck = personalDashService.profileCountByUserNo(userNo);
-        System.out.println("프로필 확인 :::  "+profileCheck);
         if (profileCheck == 0) {
             return "redirect:/personal/myProfile";
         }
@@ -232,11 +218,8 @@ public class PersonalDashController {
         //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
         if (file != null) {
-            System.out.println("file 확인 : "+file);
             model.addAttribute("fileId", file.getFileId());
         }
-
-        System.out.println("좋아요 controller끝 ");
 
         return "jsp/personal/personal-likedJobs";
     }
@@ -248,7 +231,6 @@ public class PersonalDashController {
                                                   @RequestParam(defaultValue = "1") int pageNum,
                                                   @RequestParam(defaultValue = "10") int pageSize) {
 
-        System.out.println("좋아요 ajax start");
         PageInfo<JobPostDTO> likedJobsList = personalDashService.likedJobsList(keyword, pageNum, pageSize);
 
         Map<String, Object> response = new HashMap<>();

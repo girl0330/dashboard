@@ -29,10 +29,7 @@ public class PersonalDashServiceImpl implements PersonalDashService {
 
     //작성된 프로필 확인
     public UserProfileInfoDTO getProfileInfo(int userNo) {
-        System.out.println("====피로필 impl");
-        UserProfileInfoDTO profileInfo = personalDashMapper.getProfileInfo(userNo);
-        System.out.println("프로필 확인합니다..........     "+profileInfo);
-        return profileInfo;
+        return personalDashMapper.getProfileInfo(userNo);
     }
 
     // 프로필 저장하기
@@ -43,10 +40,8 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
         List<UserProfileInfoDTO> profile = personalDashMapper.profileInfoList(userNo); //userNo로 프로필 존재 확인
-        System.out.println("profile ???:::    "+profile);
 
         int personalProfile = profile.size();
-        System.out.println("이게뭐지????     "+personalProfile);
 
         if (personalProfile == 0) { //프로필 없으면
             int profileSeq = personalDashMapper.getProfileIdSeq(userNo); //pk
@@ -57,20 +52,16 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         }
         userProfileInfoDTO.setUserNo(userNo);
 
-        System.out.println("userProfileInfoDTO:::::   "+userProfileInfoDTO);
-
         //기존 프로필에 파일이 저장 되어 있는지 확인
         Optional.ofNullable(userProfileInfoDTO.getFile())
                 .ifPresent(file -> businessDashService.deleteFile(userProfileInfoDTO.getFileId()));
 
         // 파일 저장
         if (userProfileInfoDTO.getFile() != null) {
-            Map<String, Object> fileResult = businessDashService.saveFile(userProfileInfoDTO.getFile()); // 파일 저장 됨.
-            System.out.println("====================fileResult 는 :"+fileResult);
+            businessDashService.saveFile(userProfileInfoDTO.getFile()); // 파일 저장 됨.
         }
 
         // systemRegisterId, systemUpdaterId 데이터는?? //pk가 없으면 insert 있으면 updateJobPost
-        System.out.println("userProfileDTO"+userProfileInfoDTO);
         personalDashMapper.insertProfile(userProfileInfoDTO);
 
         map.put("code", "success");
@@ -83,31 +74,23 @@ public class PersonalDashServiceImpl implements PersonalDashService {
 
     // 비밀번호 업데이트
     public Map<Object, Object> changePassword(UserDTO userDTO) {
-        System.out.println("비번 업뎃 임플");
         Map<Object, Object> map = new HashMap<>();
 
         String enteredPassword = userDTO.getPassword();
-        System.out.println("입력한 비밀번호 : " + enteredPassword);
 
         int userNo = userDTO.getUserNo();
         /*  UserDTO oldPassword = personalDashMapper.getOldPassword(userNo);
         * String password = oldPassword.getPassword();*/
         String oldPassword = personalDashMapper.getOldPassword(userNo).getPassword();
-        System.out.println("이전 비번 :: " + oldPassword);
 
         boolean pwCheck = passwordEncoder.matches(enteredPassword, oldPassword);
-        System.out.println("비밀번호 서로 맞는지 확인: " + pwCheck);
         if (!pwCheck) {
             throw new CustomException(ExceptionErrorCode.PASSWORD_MISMATCH_TOKEN);
         }
 
-        System.out.println("userNewPassword 확ㅇ니 :: " + userDTO.getNewPassword());
-
-        System.out.println("userDto 확ㅇ니::: " + userDTO);
         if (!userDTO.getNewPassword().equals(userDTO.getPassword2())) {
             throw new CustomException(ExceptionErrorCode.NEW_PASSWORD_MISMATCH_TOKEN);
         }
-        System.out.println("일치. ");
 
         // 새 비밀번호 암호화
         String encodedNewPassword = passwordEncoder.encode(userDTO.getNewPassword());
@@ -115,7 +98,6 @@ public class PersonalDashServiceImpl implements PersonalDashService {
 
         userDTO.setPassword(encodedNewPassword);
         personalDashMapper.updatePassword(userDTO);
-        System.out.println("update문이 실행??" + userDTO);
         map.put("code", "success");
         map.put("message", "비밀번호 변경 성공");
 
@@ -124,14 +106,12 @@ public class PersonalDashServiceImpl implements PersonalDashService {
 
     //지원형황 리스트
     public PageInfo<JobApplicationDTO> applyStatusList(String keyword, int pageNum, int pageSize) {
-        System.out.println("현재 지원현황 리스트 임플");
 
         Map<String, Object> map = new HashMap<>();
-        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
+        int userNo = (int) sessionUtil.getAttribute("userNo");
 
         map.put("userNo", userNo);
         map.put("keyword", keyword);
-        System.out.println(" map 에 들어간거 확인 :: "+map);
 
         PageHelper.startPage(pageNum, pageSize);
         List<JobApplicationDTO> applyStatusList = personalDashMapper.applyStatusList(map) ;
@@ -140,14 +120,12 @@ public class PersonalDashServiceImpl implements PersonalDashService {
 
     //dashboard list
     public PageInfo<JobApplicationDTO> getDashboardList(String keyword, int pageNum, int pageSize) {
-        System.out.println("최근 지원한 리스트 임플");
 
         Map<String, Object> map = new HashMap<>();
-        Integer userNo = (Integer) sessionUtil.getAttribute("userNo");
+        int userNo = (int) sessionUtil.getAttribute("userNo");
 
         map.put("userNo", userNo);
         map.put("keyword", keyword);
-        System.out.println("map??:: "+map);
 
         PageHelper.startPage(pageNum, pageSize);
         List<JobApplicationDTO> dashboardList = personalDashMapper.getDashboardList(map) ;
@@ -156,14 +134,12 @@ public class PersonalDashServiceImpl implements PersonalDashService {
 
     //졸아요 리스트
     public PageInfo<JobPostDTO> likedJobsList(String keyword, int pageNum, int pageSize) {
-        System.out.println("좋아요 리스트 임플");
 
         Map<String, Object> map = new HashMap<>();
-        Integer userNo = (Integer) sessionUtil.getAttribute("userNo"); //로그인 정보
+        int userNo = (int) sessionUtil.getAttribute("userNo"); //로그인 정보
 
         map.put("userNo", userNo);
         map.put("keyword", keyword);
-        System.out.println("map??:: "+map);
 
         PageHelper.startPage(pageNum, pageSize);
         List<JobPostDTO> likedJobsList = personalDashMapper.getLikeJobsList(map);

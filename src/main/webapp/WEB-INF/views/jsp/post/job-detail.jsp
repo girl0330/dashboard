@@ -367,7 +367,7 @@ job list -->
             </div>
           </div>
           <div class="col-12 text-center mt-4 mt-sm-5">
-            <a class="btn btn-outline-primary mb-3 mb-sm-0"  onclick="location.href='/business/list'">공고목록</a>
+            <a class="btn btn-outline-primary mb-3 mb-sm-0"  onclick="location.href='/business/postJobList'">공고목록</a>
           <c:if test="${sessionScope.userNo eq jobPostDetail.userNo}">
             <a class="btn btn-outline-primary mb-3 mb-sm-0" onclick="location.href='/business/updateJobPost?jobId=${jobPostDetail.jobId}'" id="button_update" name="button_update">수정하기</a>
             <a class="btn btn-outline-primary mb-3 mb-sm-0"  onclick="location.href='/business/deleteJobPost?jobId=${jobPostDetail.jobId}'" id="button_delete" name="button_delete">삭제하기</a>

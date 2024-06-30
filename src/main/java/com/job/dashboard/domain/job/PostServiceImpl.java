@@ -32,13 +32,11 @@ public class PostServiceImpl implements PostService {
     // 구인 공고 저장
     @Transactional
     public Map<String, Object> insertPost(JobPostDTO jobPostDTO) {
-        System.out.println("====저장 임플=====");
         Map<String, Object> map = new HashMap<>();
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
         jobPostDTO.setUserNo(userNo);
         jobPostDTO.setStatusTypeCode("OPEN"); //CANCELLED(취소) HIRED(채용) OPEN(구인중) CLOSED(채용마감)
-        System.out.println("dto 확인하기 : " + jobPostDTO);
 
         postMapper.insertPost(jobPostDTO);
         map.put("code", "success");
@@ -51,8 +49,6 @@ public class PostServiceImpl implements PostService {
         PageHelper.startPage(pageNum, pageSize);
 
         List<JobPostDTO> list = postMapper.getJobLists(keyword);
-        System.out.println("list확인 ;; "+list);
-
         return new PageInfo<>(list);
     }
 
@@ -76,8 +72,6 @@ public class PostServiceImpl implements PostService {
     //like
     public int findLike(Map<String, Object> map) {
 
-        System.out.println("map 확인 ::"+map);
-
         return postMapper.findLike(map);
     }
 
@@ -97,7 +91,6 @@ public class PostServiceImpl implements PostService {
 
         map.put("userNo", userNo);
         map.put("jobId", jobId);
-        System.out.println("map확인 ::: "+map);
 
         int like = postMapper.findLike(map);
         if(like > 0) {// 좋아요 누른상테
@@ -133,7 +126,6 @@ public class PostServiceImpl implements PostService {
     // 공고 지원
     @Transactional
     public Map<String, Object> applyJobPost(JobApplicationDTO jobApplicationDTO) {
-        System.out.println("프론트에서 넘어온 데이터 확인 :::   "+jobApplicationDTO);
 
         Map<String, Object> map = new HashMap<>();
 

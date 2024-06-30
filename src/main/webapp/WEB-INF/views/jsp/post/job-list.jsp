@@ -11,7 +11,7 @@
             const keyword = $('#keyword').val(); // input 필드에서 값 가져오기
 
             const options = {
-                url: '/business/ajax/list',
+                url: '/business/ajax/postJobList',
                 type: 'GET',
                 data: {
                     pageNum: pageNum,

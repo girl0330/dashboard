@@ -6,7 +6,29 @@
 <script>
     let business_profile = {
         init : function () {
+            // 공백검사
+            if (!this.emptyCheck()) {
+                return;
+            }
             this.formSubmit();
+        },
+        // 공백검사
+        emptyCheck : function() {
+            let valid = true;
+            $('[data-valid="true"]').each(function() {
+                // 각 요소의 이름과 값을 출력 (또는 다른 작업 수행)
+                console.log($(this).attr('name') + ': ' + $(this).val());
+                const fields = $(this);
+                const removeBlank = fields.val().replace(/\s*/g, "");
+                if (removeBlank === "") {
+                    let text = $(this).attr('data-name');
+                    alert(text+"반드시 입력해주세요");
+                    fields.focus();
+                    valid = false;
+                    return valid;
+                }
+            });
+            return valid;
         },
 
         // 전송 함수 정의
@@ -181,17 +203,17 @@ My Profile -->
                         <input type="file" id="fileInput" name="fileInput" style="display:none;" />
                         <div class="row">
                             <div class="form-group col-md-6 mb-3">
-                                <label class="form-label">기업 이름</label>
+                                <label class="form-label">기업 이름<span class="font-danger">*</span></label>
                                 <input type="hidden" value="${company.companyId}" id="companyId" name="companyId">
-                                <input type="text" class="form-control" value="${company.companyName}" id="companyName" name="companyName">
+                                <input type="text" class="form-control" value="${company.companyName}" id="companyName" name="companyName" data-valid="true" data-name="기업 이름">
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="form-label">기업 연락처 ['-'를 제외]</label>
-                                <input type="text" class="form-control" value="${company.officePhone}" id="officePhone" name="officePhone">
+                                <label class="form-label">기업 연락처 ['-'를 제외]<span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value="${company.officePhone}" id="officePhone" name="officePhone" data-valid="true" data-name="기업 연락처">
                             </div>
                             <div class="form-group col-md-4 mb-3 select-border">
-                                <label class="form-label" for="industryCode">산업종류</label>
-                                <select class="form-control basic-select" name="industryCode" id="industryCode" >
+                                <label class="form-label" for="industryCode">산업종류<span class="font-danger">*</span></label>
+                                <select class="form-control basic-select" name="industryCode" id="industryCode" data-valid="true" data-name="산업종류">
                                     <option value="" selected="selected">선택</option>
                                     <option value="IT" ${company.industryCode == 'IT' ? 'selected="selected"' : ''}>IT</option>
                                     <option value="SELF" ${company.industryCode == 'SELF' ? 'selected="selected"' : ''}>자영업</option>
@@ -208,30 +230,30 @@ My Profile -->
                                 </select>
                             </div>
                             <div class="form-group col-md-4 mb-3 select-border">
-                                <label class="form-label" for="businessTypeCode">회사종류</label>
-                                <select class="form-control basic-select" name="businessTypeCode" id="businessTypeCode">
+                                <label class="form-label" for="businessTypeCode">회사종류<span class="font-danger">*</span></label>
+                                <select class="form-control basic-select" name="businessTypeCode" id="businessTypeCode" data-valid="true" data-name="회사종류">
                                     <option value="">선택</option>
                                     <option value="CORP" ${company.businessTypeCode == 'CORP' ? 'selected="selected"' : ''}>법인사업자</option>
                                     <option value="GEN" ${company.businessTypeCode == 'GEN' ? 'selected="selected"' : ''}>일반사업자 </option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4 mb-3">
-                                <label class="form-label">사업자 번호 ['-'를 제외]</label>
-                                <input type="text" class="form-control" value="${company.businessNumber}"  name="businessNumber" id="businessNumber">
+                                <label class="form-label">사업자 번호 ['-'를 제외]<span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" value="${company.businessNumber}"  name="businessNumber" id="businessNumber" data-valid="true" data-name="사업자 번호">
                             </div>
                             <div class="form-group mb-3 col-md-3">
-                                <label class="form-label">우편번호</label>
-                                <input type="text" class="form-control" id="zipcode" placeholder="우편번호" value="${company.zipcode}" name="zipcode" readonly>
+                                <label class="form-label">우편번호<span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" id="zipcode" placeholder="우편번호" value="${company.zipcode}" name="zipcode" data-valid="true" data-name="우편번호" readonly>
                                 <input type="hidden" class="form-control" id="latitude" name="latitude" data-name="위도">
                                 <input type="hidden" class="form-control" id="longitude" name="longitude" data-name="경도">
                             </div>
                             <div class="form-group mb-3 col-md-9">
-                                <label class="form-label">도로명주소 </label>
-                                <input type="text" class="form-control" id="address" placeholder="도로명주소" value="${company.address}" name="address" readonly>
+                                <label class="form-label">도로명주소 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" id="address" placeholder="도로명주소" value="${company.address}" name="address" data-valid="true" data-name="도로명주소" readonly>
                             </div>
                             <div class="form-group mb-3 col-md-12">
-                                <label class="form-label">상세주소 </label>
-                                <input type="text" class="form-control" id="addressDetail" placeholder="상세주소" value="${company.addressDetail}" name="addressDetail">
+                                <label class="form-label">상세주소 <span class="font-danger">*</span></label>
+                                <input type="text" class="form-control" id="addressDetail" placeholder="상세주소" value="${company.addressDetail}" name="addressDetail" data-valid="true" data-name="상세주소">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 회사 소개 </label>

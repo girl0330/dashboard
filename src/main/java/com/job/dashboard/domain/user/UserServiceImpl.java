@@ -20,15 +20,13 @@ public class UserServiceImpl implements UserService{
 
     //이메일 중복인가 확인
     public Map<String, Object> emailDuplicateCheck(UserDTO userDTO) {
-        System.out.println("====이메일 중복인가 확인 impl=====");
         Map<String, Object> map = new HashMap<>();
+
         int email = userMapper.getEmailCount(userDTO);
-        System.out.println("???");
         if (email > 0) { // 동일한 이메일이 있다면
             throw new CustomException(ExceptionErrorCode.EMAIL_ALREADY_IN_USE_TOKEN);
         }
 
-        System.out.println("00000");
         map.put("code", "success");
         map.put("message","사용가능한 이에일 입니다.");
         return map;
@@ -91,13 +89,13 @@ public class UserServiceImpl implements UserService{
         }
 
         //로그인하기
-        UserDTO userAccount = userMapper.doLogin(userDTO);
+        UserDTO userInfo = userMapper.doLogin(userDTO);
 
         UserDTO user = new UserDTO();
 
-        user.setUserNo(userAccount.getUserNo());
-        user.setEmail(userAccount.getEmail());
-        user.setUserTypeCode(userAccount.getUserTypeCode());
+        user.setUserNo(userInfo.getUserNo());
+        user.setEmail(userInfo.getEmail());
+        user.setUserTypeCode(userInfo.getUserTypeCode());
 
         map.put("account",user);
         map.put("code","success");
