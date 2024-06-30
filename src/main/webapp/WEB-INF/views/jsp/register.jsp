@@ -2,104 +2,110 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
   //개인회원 이메일 중복검사
-  let emailDuplicateCheck = {
-    init: function () {
-      if (!this.emailEmptyChkFn()) {
+  const emailValid = {
+    init: function() {
+      this.duplicateCheck(function (isValid) {
+        alert("isval:::   " + isValid);
+        return isValid;
+      });
+    },
+    duplicateCheck: function(callback) {
+
+      if (!this.emptyCheck()) {
+        callback(false); // 비어있는 경우 콜백에 false 전달
         return;
       }
-      if (!this.emailValidationChk()) {
+
+      if (!this.typeCheck()) {
+        callback(false); // 형식이 맞지 않는 경우 콜백에 false 전달
         return;
       }
-      if (!this.emailDuplicateCheck()) {
-        console.log("??????");
-        return false;
-      }
-      return true;
-    },
-    emailEmptyChkFn: function () {
-      let valid = true;
-      const email = $('#email');
-      // const input = email.find("input[type='text']");
 
-      const removeBlankData = email.val().replace(/\s*/g, "");
-      if (removeBlankData === "") {
-        let text = email.data('name');
-        alert(text + "이 비어있습니다.");
-        email.focus();
-        valid = false;
-      }
-      return valid;
-    },
-
-    emailValidationChk: function () {
-      let valid = true;
-      const email = $('#email').val();
-      console.log("email"+email);
-
-      let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailRegex.test(email)) {
-          alert("이메일 형식으로 입력해주세요.")
-          $('#email').focus();
-          valid = false;
-        }
-        return valid;
-    },
-
-    emailDuplicateCheck : function () {
 
       let jsonData = {};
-      let valid = true;
       jsonData['email'] = $("#email").val();
 
-      console.log("jsonData : "+JSON.stringify(jsonData));
+      console.log("jsonData : " + JSON.stringify(jsonData));
 
-      $.ajax({
+      const options = {
         url: "/user/emailDuplicateCheck", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
-        success: function(data) {
-          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-          console.log(JSON.stringify(data));
-          if(data.code === 'error') {
-            alert(data.message);
-            valid = false;
-          } else if (data.code === 'success'){
-            alert(data.message);
+
+        done: function(response) {
+          if (response.code === 'success') {
+            $("#email").removeClass("is-invalid");
+            $("#emailError").hide();
+            callback(true);
           }
         },
-        error: function(xhr, status, error) {
-          // 오류 발생 시 실행할 코드
-          console.error(error);
+        fail: function(jqXHR) {
+          const jsonObj = JSON.parse(jqXHR.responseText);
+          $("#email").addClass("is-invalid");
+          $("#emailError").text(jsonObj.userMessage).show();
+          callback(false);
         }
-      });
-      console.log("valid:::   "+valid);
-      return valid;
+      };
+      ajax.call(options);
+    },
+    emptyCheck: function() {
+      const email = $('#email');
+      const removeBlankData = email.val().replace(/\s*/g, "");
+
+      if (!removeBlankData) {
+        let text = email.data('name') || "이메일";
+        $("#email").addClass("is-invalid");
+        $("#emailError").text(text + "이 비어있습니다.").show();
+        email.focus();
+        return false;
+      }
+      return true;
+    },
+    typeCheck: function() {
+      const email = $('#email').val();
+      let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+      if (!emailRegex.test(email)) {
+        $("#email").addClass("is-invalid");
+        $("#emailError").text("유효한 이메일 형식으로 입력해주세요.").show();
+        $('#email').focus();
+        return false;
+      }
+      return true;
     }
-  }
+  };
 
   //개인회원 로그인 실행
   let user_register = {
     init : function () {
 
-      if(!emailDuplicateCheck.init()) {
+      if (!emailValid.emptyCheck()) {
         return;
       }
 
-      if (!this.emptyChkFn()) {
+      if (!emailValid.typeCheck()) {
         return;
       }
-      if (!this.validationChk()) {
-        return;
-      }
-      if (!this.checkFn()) {
-        return;
-      }
-      this.formSubmit();
+
+      emailValid.duplicateCheck(function(isValid) {
+        if (isValid) {
+          if (!this.emptyChkFn()) {
+            return;
+          }
+          if (!this.validationChk()) {
+            return;
+          }
+          if (!this.checkFn()) {
+            return;
+          }
+          this.formSubmit();
+        }
+      }.bind(this)); // 콜백 함수 내에서 this를 사용하기 위해 bind 처리
     },
 
     /*공백 검사*/
-    emptyChkFn : function () {
+    emptyChkFn : function() {
       let valid = true;
       const form = $('#userForm');
       const inputs = form.find("input[type='text'], input[type='password']");
@@ -109,7 +115,8 @@
         const removeBlankData = input.val().replace(/\s*/g, "");
         if (removeBlankData === "") {
           let text = input.data('name');
-          alert(text + "은/는 필수로 입력 값입니다.");
+          input.addClass("is-invalid");
+          $("#passwordError").text(text + "은/는 필수로 입력 값입니다.").show();
           input.focus();
           valid = false;
           return valid;  // each 루프 중지
@@ -120,7 +127,7 @@
     },
 
     //validationChk 함수 정의
-    validationChk : function () {
+    validationChk : function() {
       let valid = true;
       const password = $('#password').val();
       const password2 = $('#password2').val();
@@ -128,40 +135,47 @@
       // 비밀번호 조건, 길이, 비밀번호 확인
       let pwRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
       if (!pwRegex.test(password)) {
-        alert("비밀번호 형식을 확인해주세요")
+        $("#password, #password2").addClass("is-invalid");
+        $("#passwordError").text("비밀번호 형식을 확인해주세요").show();
         $('#password').focus();
         valid = false;
         return valid;
       }
 
       if (password.length > 15 || password.length < 8) {
-        alert("비밀번호를 8~15자로 사용해주세요")
+        $("#password, #password2").addClass("is-invalid");
+        $("#passwordError").text("비밀번호를 8~15자로 사용해주세요.").show();
         $('#password').focus();
         valid = false;
         return valid;
       }
 
       if (password !== password2) {
-        alert("비밀번호를 확인해주세요")
+        $("#password, #password2").addClass("is-invalid");
+        $("#passwordError").text("비밀번호를 확인해주세요.").show();
         $('#password2').focus();
         valid = false;
         return valid;
       }
 
+      $("#password, #password2").removeClass("is-invalid");
+      $("#passwordError").hide();
       return valid;
     },
 
-    checkFn : function () {
+    checkFn : function() {
       let valid = true;
       const form = $('#userForm');
       const checkBox = form.find("input[type='checkbox']");
       const isChecked = checkBox.prop('checked');
 
       if (!isChecked) {
-        alert("동의여부는 필수 입력 값입니다.");
+        $("#termsError").text("동의여부는 필수 입력 값입니다.").show();
         valid = false;
         return valid;
       }
+
+      $("#termsError").hide();
       return valid;
     }, // 이상무
 
@@ -184,7 +198,7 @@
       console.log(jsonData);
 
       $.ajax({
-        url: "/user/signupInsert", // Spring 컨트롤러 URL
+        url: "/user/insertSignUp", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
@@ -209,25 +223,11 @@
   //DOM이 실행 후 실행 됨
   $(document).ready(function() {
 
-    // let valid = true;
-    //
-    // //email 공백검사
-    // $("#email").change(function() {
-    //   const email = $('#email');
-    //   emptyCheck.emptyChkFn(email);
-    // });
-    //
-    // //email 밸리데이션
-    // $("#user_register").on("click", function() {
-    //
-    //   const email = $('#email').val();
-    //   validation.email(email);
-    // });
-
-
     //개인 이메일 중복검사 로직
     $("#email").change(function() {
-      emailDuplicateCheck.init();
+      emailValid.duplicateCheck(function(isVaild) {
+        console.log("isvalid:::   "+isVaild);
+      });
     });
 
     //개인 회원가입 로직
@@ -311,10 +311,12 @@ Register -->
                   <div class="mb-3 col-md-12">
                     <label class="form-label" for="email">이메일 * </label>
                     <input type="text" class="form-control" id="email" name="email" data-name="이메일">
+                    <div id="emailError" class="invalid-feedback" style="display: none;">email valid message</div>
                   </div>
                   <div class="mb-3 col-md-6">
                     <label class="form-label"for="password">비밀번호 *</label>
                     <input type="password" class="form-control" id="password" name="password" data-name="비밀번호">
+                    <div id="passwordError" class="invalid-feedback" style="display: none;">password valid message</div>
                   </div>
                   <div class="mb-3 col-md-6">
                     <label class="form-label" for="password2">비밀번호 재입력 *</label>
@@ -326,6 +328,7 @@ Register -->
                       <label class="form-check-label" for="terms">
                         <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">이용약관</a>에 전체동의
                       </label>
+                      <div id="termsError" class="invalid-feedback" style="display: none;">terms valid message</div>
                     </div>
                   </div>
                 </div>

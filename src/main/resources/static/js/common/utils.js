@@ -51,9 +51,8 @@ const ajax = {
 		} catch (jqXHR) {
 			if (fail) {
 				fail(jqXHR);
-			}
-
-			if (jqXHR.status !== 0) {
+			} else {
+				// fail 콜백이 없는 경우에만 기본 에러 처리를 수행
 				ajax.error(jqXHR.status, jqXHR.responseText);
 			}
 		}
