@@ -87,7 +87,6 @@ public class BusinessDashController {
         //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
         if (file != null) {
-            System.out.println("file 확인 : "+file);
             model.addAttribute("fileId", file.getFileId());
         }
         model.addAttribute("company", businessProfileInfo);
@@ -99,9 +98,6 @@ public class BusinessDashController {
     @PostMapping("/insertProfile")
     @ResponseBody
     public Map<String, Object> insertProfile(CompanyInfoDTO companyInfoDTO) {
-
-        System.out.println("프로필 확인 하기 ;;;;;;    "+companyInfoDTO);
-        Map<String, Object> map = new HashMap<>();
 
         //로그인 확인
         if(!sessionUtil.loginUserCheck()) {
@@ -231,9 +227,7 @@ public class BusinessDashController {
     @ResponseBody
     public Map<String, Object> employCandidate(@RequestBody JobApplicationDTO jobApplicationDTO) {
 
-        Map<String, Object> map = businessDashService.employCandidate(jobApplicationDTO);
-        System.out.println("map 확인 : "+map);
-        return map;
+        return businessDashService.employCandidate(jobApplicationDTO);
     }
 
     // 채용 취소
@@ -242,9 +236,7 @@ public class BusinessDashController {
     public Map<String, Object> cancelEmployCandidate (@RequestBody JobApplicationDTO jobApplicationDTO) {
         System.out.println("jobApplicationDTO 확인 : "+ jobApplicationDTO);
 
-        Map<String, Object> map = businessDashService.cancelEmployCandidate(jobApplicationDTO);
-        System.out.println("map 확인 : "+map);
-        return map;
+        return businessDashService.cancelEmployCandidate(jobApplicationDTO);
     }
 
 

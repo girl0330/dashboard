@@ -22,9 +22,9 @@ public class PostController {
     private final SessionUtil sessionUtil;
     private final CommonService commonService;
 
-    //공고 페이지
-    @GetMapping("/postAJob")
-    public String postAJobView() {
+    //공고작성 페이지
+    @GetMapping("/writePostJob")
+    public String writePostJobView() {
 
         if (!sessionUtil.loginUserCheck()) { // 로그인 체크
             return "redirect:/user/login";
@@ -41,7 +41,6 @@ public class PostController {
             return "redirect:/business/profile";
         }
 
-        System.out.println("usertypecode가 20임 이제 다음으로 진행하겠음.");
         return "jsp/post/post-a-job";
     }
 
@@ -52,19 +51,18 @@ public class PostController {
         Map<String, Object> map = new HashMap<>();
 
          //로그인한 id를 직접 넣을거임
-        map = postService.insertPost(jobPostDTO);
-        return map;
+        return postService.insertPost(jobPostDTO);
     }
 
 
     //공고리스트 이동
-    @GetMapping("/list")
+    @GetMapping("/postJobList")
     public String jobPostView() {
         return "jsp/post/job-list";
     }
 
     //ajax 공고 리스트
-    @GetMapping("/ajax/list")
+    @GetMapping("/ajax/postJobList")
     @ResponseBody
     public Map<String, Object> ajaxJobPostList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                                @RequestParam(defaultValue = "1") int pageNum,
@@ -140,8 +138,7 @@ public class PostController {
     public Map<String, Object> updateJobPost (@PathVariable int jobId, @RequestBody JobPostDTO jobPostDTO ) {
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
-        Map<String, Object> map = postService.updateJobPost(userNo, jobPostDTO);
-        return map;
+        return postService.updateJobPost(userNo, jobPostDTO);
     }
 
     //게시글 삭제
@@ -157,15 +154,13 @@ public class PostController {
         }
 
         postService.deleteJobPost(jobId);
-        return "redirect:/business/list";
+        return "redirect:/business/postJobList";
     }
 
     @PostMapping("/apply")
     @ResponseBody
     public Map<String, Object> applyJobPost(@RequestBody JobApplicationDTO jobApplicationDTO){
-        Map<String, Object> map = postService.applyJobPost(jobApplicationDTO);
-        System.out.println("=========================>  map 확인 : "+map);
-        return map;
+        return postService.applyJobPost(jobApplicationDTO);
     }
 
     @PostMapping("/applyCancel")

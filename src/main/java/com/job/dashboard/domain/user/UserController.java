@@ -21,7 +21,6 @@ public class UserController {
     //회원가입 페이지
     @GetMapping("/signup")
     public String signupView() {
-        System.out.println("====회원가입 페이지====");
         return "jsp/register";
     }
 
@@ -29,25 +28,20 @@ public class UserController {
     @PostMapping("/emailDuplicateCheck")
     @ResponseBody
     public Map<String, Object> emailDuplicateCheck(@RequestBody UserDTO userDTO) {
-        System.out.println("===email확인=== : "+userDTO);
 
-        Map<String, Object> map = userService.emailDuplicateCheck(userDTO);
-        System.out.println("넘어온 정보 확인" + map);
-        return map;
+        return userService.emailDuplicateCheck(userDTO);
     }
 
     //계정 등록
     @PostMapping("/insertSignUp")
     @ResponseBody
     public Map<String, Object> insertSignUp(@RequestBody UserDTO userDTO) {
-        Map<String, Object> map = userService. insertUser(userDTO);
-        return map;
+        return userService. insertUser(userDTO);
     }
 
     //로그인 페이지
     @GetMapping("/login")
     public String loginView() {
-        System.out.println("====로그인 페이지====");
         return "jsp/login";
     }
 
@@ -55,11 +49,8 @@ public class UserController {
     @PostMapping("/doLogin")
     @ResponseBody
     public Map<String, Object> doLogin (@RequestBody UserDTO userDTO, Model model) {
-        System.out.println("====회원 로그인===="+userDTO);
 
         Map<String, Object> map = userService.doLogin(userDTO);
-
-
 
         if (!"error".equals(map.get("code"))) {
             sessionUtil.loginUser((UserDTO) map.get("account"));
@@ -72,7 +63,6 @@ public class UserController {
     //로그아웃
     @GetMapping("/logout")
     public String logout() {
-        System.out.println("====로그아웃====");
         // 세션 제거
         sessionUtil.logoutUser();
         // 로그아웃 후 리다이렉션할 페이지로 이동

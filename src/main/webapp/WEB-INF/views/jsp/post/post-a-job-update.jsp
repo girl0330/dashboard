@@ -85,7 +85,7 @@
                     console.log(JSON.stringify(response));
                     if (response.code === 'success'){
                         alert(response.message);
-                        location.href='/business/list'
+                        location.href='/business/postJobList'
                     }
                 },
                 fail: () => {

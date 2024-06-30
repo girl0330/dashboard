@@ -25,7 +25,7 @@
                     </c:otherwise>
                 </c:choose>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="/business/list">
+                    <a class="nav-link dropdown-toggle" href="/business/postJobList">
                         공고 리스트
                     </a>
                 </li>
@@ -42,7 +42,7 @@
                             <li><a class="dropdown-item" href="/business/changePassword">비밀번호 변경</a></li>
 <%--                            <li><a class="dropdown-item" href="/business/manageCandidate">지원자 관리</a></li>--%>
                             <li><a class="dropdown-item" href="/business/managePostJob">공고 관리</a></li>
-                            <li><a class="dropdown-item" href="/business/postAJob">공고 작성하기</a></li>
+                            <li><a class="dropdown-item" href="/business/writePostJob">공고 작성하기</a></li>
 
                         </ul>
                     </li>
@@ -83,7 +83,7 @@
                 </div>
             </c:if>
             <c:if test="${sessionScope.userTypeCode == 20 }">
-                <a class="btn btn-white btn-md" href="/business/postAJob"> <i class="fas fa-plus-circle"></i>공고 작성</a>
+                <a class="btn btn-white btn-md" href="/business/writePostJob"> <i class="fas fa-plus-circle"></i>공고 작성</a>
             </c:if>
         </div>
     </div>
