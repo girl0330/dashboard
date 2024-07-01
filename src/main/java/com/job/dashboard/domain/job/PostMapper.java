@@ -61,4 +61,7 @@ public interface PostMapper {
     void deleteLike(Map<String, Object> map); //like 삭제
     List<LikeDTO> getLikeList(int userNo); //like 리스트 가져오기
 
+    JobApplicationDTO getUserStatusCode(Map<String, Object> map);
+
+    int getCountUserStatusCode(Map<String, Object> map);
 }

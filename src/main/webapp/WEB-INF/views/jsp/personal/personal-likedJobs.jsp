@@ -45,7 +45,7 @@
 
             list.forEach(likedJob => {
                 const jobHtml =
-                    '<div class="col-12" onclick="location.href=\'/business/detail?jobId=' + likedJob.jobId + '\'">' +
+                    '<div class="col-12" onclick="location.href=\'/business/jobPostDetail?jobId=' + likedJob.jobId + '\'">' +
                     '<div class="job-list">' +
                     '<div class="job-list-logo">' +
                     '<img class="img-fluid" src="/business/uploadedFileGet/' + likedJob.fileId + '" alt="">' +

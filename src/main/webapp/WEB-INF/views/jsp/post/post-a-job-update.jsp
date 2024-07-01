@@ -23,7 +23,7 @@
         //공백 검사
         Validate_required_fields : function () {
             let valid = true;
-            $('[valid="true"]').each(function() {
+            $('[data-valid="true"]').each(function() {
                 // 각 요소의 이름과 값을 출력 (또는 다른 작업 수행)
                 console.log($(this).attr('name') + ': ' + $(this).val());
                 const fields = $(this);
@@ -69,7 +69,7 @@
             });
 
             const options = {
-                url: '/business/postUpdate/${initialData.jobId}',
+                url: '/business/updateJobPost/${initialData.jobId}',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(jsonData),
@@ -181,7 +181,7 @@ tab -->
                                 <input type="hidden" value="${initialData.userNo}" name="userNo" id="userNo">
                                 <input type="hidden" value="${initialData.jobId}" name="jobId" id="jobId">
                                 <label class="mb-2"> 공고 제목 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value="${initialData.title}" placeholder="공고 제목을 입력해주세요." name="title" id="title" valid="true" data-name="공고 제목">
+                                <input type="text" class="form-control" value="${initialData.title}" placeholder="공고 제목을 입력해주세요." name="title" id="title" data-valid="true" data-name="공고 제목">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 상세모집내용 </label>
@@ -189,13 +189,13 @@ tab -->
                             </div>
                             <div class="form-group mb-3 col-md-3">
                                 <label class="form-label">우편번호 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" id="zipcode" value="${initialData.zipcode}" name="zipcode" valid="true" data-name="우편번호" readonly>
+                                <input type="text" class="form-control" id="zipcode" value="${initialData.zipcode}" name="zipcode" data-valid="true" data-name="우편번호" readonly>
                                 <input type="hidden" class="form-control" id="latitude" name="latitude" value="${initialData.latitude}" data-name="위도">
                                 <input type="hidden" class="form-control" id="longitude" name="longitude" value="${initialData.longitude}" data-name="경도">
                             </div>
                             <div class="form-group mb-3 col-md-9">
                                 <label class="form-label">도로명주소 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" id="address" value="${initialData.address}" name="address" valid="true" data-name="도로명주소" readonly>
+                                <input type="text" class="form-control" id="address" value="${initialData.address}" name="address" data-valid="true" data-name="도로명주소" readonly>
                             </div>
                             <div class="form-group mb-3 col-md-12">
                                 <label class="form-label">상세주소 <span class="font-danger">*</span></label>
@@ -203,7 +203,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label class="mb-2"> 담당자 연락처 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value="${initialData.managerNumber}" name="managerNumber" id="managerNumber_num" valid="true" data-name="담당자 연락처">
+                                <input type="text" class="form-control" value="${initialData.managerNumber}" name="managerNumber" id="managerNumber_num" data-valid="true" data-name="담당자 연락처">
                             </div>
 
                             <div class="row mt-4 mt-lg-5">
@@ -213,7 +213,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2" for="jobTypeCode"> 모집직종 <span class="font-danger">*</span></label>
-                                <select class="form-control basic-select" value="${initialData.jobTypeCode}" id="jobTypeCode" name="jobTypeCode" valid="true" data-name="모집직종">
+                                <select class="form-control basic-select" id="jobTypeCode" name="jobTypeCode" data-valid="true" data-name="모집직종">
                                     <c:forEach var="jobType" items="${jobType}">
                                         <option value="${jobType.value}" ${initialData.jobTypeCode == jobType.value ? 'selected="selected"' : ''}>${jobType.text}</option>
                                     </c:forEach>
@@ -221,7 +221,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2"  for="numberOfStaff_num"> 모집인원 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value="${initialData.numberOfStaff}" name="numberOfStaff" id="numberOfStaff_num" valid="true" data-name="모집인원">
+                                <input type="text" class="form-control" value="${initialData.numberOfStaff}" name="numberOfStaff" id="numberOfStaff_num" data-valid="true" data-name="모집인원">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 우대 조건 </label>
@@ -236,7 +236,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2"  for="salaryTypeCode"> 급여 타입 <span class="font-danger">*</span></label>
-                                <select class="form-control basic-select" id="salaryTypeCode" name="salaryTypeCode" valid="true" data-name="급여 타입">
+                                <select class="form-control basic-select" id="salaryTypeCode" name="salaryTypeCode" data-valid="true" data-name="급여 타입">
                                     <c:forEach var="salaryType" items="${salaryType}">
                                         <option value="${salaryType.value}" ${initialData.salaryTypeCode == salaryType.value ? 'selected="selected"' : ''}>${salaryType.text}</option>
                                     </c:forEach>
@@ -244,11 +244,11 @@ tab -->
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label class="mb-2" for="salary_num"> 급여 액수 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value="${initialData.salary}" placeholder="" name="salary" id="salary_num" valid="true" data-name="급여 액수">
+                                <input type="text" class="form-control" value="${initialData.salary}" placeholder="" name="salary" id="salary_num" data-valid="true" data-name="급여 액수">
                             </div>
                             <div class="form-group col-md-3 select-border mb-3">
                                 <label class="mb-2"  for="employmentTypeCode"> 고용 유형 </label>
-                                <select class="form-control basic-select" id="employmentTypeCode" name="employmentTypeCode" valid="true" data-name="고용 유형">
+                                <select class="form-control basic-select" id="employmentTypeCode" name="employmentTypeCode" data-valid="true" data-name="고용 유형">
                                     <c:forEach var="employmentType" items="${employmentType}">
                                         <option value="${employmentType.value}" ${initialData.employmentTypeCode == employmentType.value ? 'selected="selected"' : ''}>${employmentType.text}</option>
                                     </c:forEach>
@@ -256,11 +256,11 @@ tab -->
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label class="mb-2"> 근무시간 </label>
-                                <input type="text" class="form-control" value="${initialData.jobTime}" name="jobTime" id="jobTime_num" valid="true" data-name="근무시간">
+                                <input type="text" class="form-control" value="${initialData.jobTime}" name="jobTime" id="jobTime_num" data-valid="true" data-name="근무시간">
                             </div>
                             <div class="form-group col-md-3 mb-3">
                                 <label class="mb-2" for="jobDayTypeCode"> 근무요일 </label>
-                                <select class="form-control basic-select" id="jobDayTypeCode" name="jobDayTypeCode" valid="true" data-name="근무요일">
+                                <select class="form-control basic-select" id="jobDayTypeCode" name="jobDayTypeCode" data-valid="true" data-name="근무요일">
                                     <c:forEach var="jobDayType" items="${jobDayType}">
                                         <option value="${jobDayType.value}" ${initialData.jobDayTypeCode == jobDayType.value ? 'selected="selected"' : ''}>${jobDayType.text}</option>
                                     </c:forEach>
@@ -277,7 +277,7 @@ tab -->
                                 </div>
                             </div>
                             <div class="form-group col-md-3 select-border mb-3">
-                                <select class="form-control basic-select" value="${initialData.statusTypeCode}" id="statusTypeCode" name="statusTypeCode" valid="true" data-name="공고 상태">
+                                <select class="form-control basic-select" value="${initialData.statusTypeCode}" id="statusTypeCode" name="statusTypeCode" data-valid="true" data-name="공고 상태">
                                     <c:forEach var="statusType" items="${statusType}">
                                         <option value="${statusType.value}" ${initialData.statusTypeCode == statusType.value ? 'selected="selected"' : ''}>${statusType.text}</option>
                                     </c:forEach>

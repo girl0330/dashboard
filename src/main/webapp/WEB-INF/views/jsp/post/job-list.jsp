@@ -19,20 +19,11 @@
                     keyword: keyword
                 },
 
-                beforeSend: () => {
-                    console.log('요청 전 작업 수행');
-                },
-                customFail: (response) => {
-                    console.error('커스텀 실패 처리:', response);
-                },
                 done: (response) => {
                     $('#amount').text(response.total);
                     keywordSearch.renderJobs(response);
                     renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
                 },
-                fail: () => {
-                    console.error('요청 실패');
-                }
             };
 
             ajax.call(options);

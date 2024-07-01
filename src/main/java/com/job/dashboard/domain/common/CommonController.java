@@ -22,6 +22,7 @@ public class CommonController {
     @GetMapping("/getSelectBoxOption")
     @ResponseBody
     public Map<String, List<SelectBoxOptionDTO>> getSelectBoxOption(@RequestParam List<String> groupCodes) {
+        System.out.println("groupCodes:::::::      "+groupCodes);
         return groupCodes.stream()
                 .collect(Collectors.toMap(
                         groupCode -> groupCode,

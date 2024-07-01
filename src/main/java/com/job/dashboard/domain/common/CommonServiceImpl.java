@@ -17,6 +17,14 @@ public class CommonServiceImpl implements CommonService {
 
     @Override
     public List<SelectBoxOptionDTO> getSelectBoxOption(String groupCode) {
-        return commonMapper.getSelectBoxOption(groupCode);
+
+        List<SelectBoxOptionDTO> options = commonMapper.getSelectBoxOption(groupCode);
+
+        // 리스트의 값을 출력
+        for (SelectBoxOptionDTO option : options) {
+            System.out.println("그룹코드 확인 :::::: "+option);
+        }
+        return options;
+//        return commonMapper.getSelectBoxOption(groupCode);
     }
 }

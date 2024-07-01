@@ -47,4 +47,10 @@ public interface PostService {
 
     // 프로필 존재 확인
     int profileCheck(int userNo);
+
+    // 유저 지원상태 가져오기
+    JobApplicationDTO getUserStatusCode(Map<String, Object> map);
+
+    // 지원 상태 int로 가져오기
+    int getCountUserStatusCode(Map<String, Object> map);
 }

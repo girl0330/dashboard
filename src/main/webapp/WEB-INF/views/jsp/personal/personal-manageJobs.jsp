@@ -48,7 +48,7 @@
                 const tableHtml =
                     '<tr>' +
                     '<th scope="row">' +
-                    '<a href="#" class="text-primary" onclick="location.href=\'/business/detail?jobId=' + applyStatusJob.jobId + '\'" id="look" name="look">' +
+                    '<a href="#" class="text-primary" onclick="location.href=\'/business/jobPostDetail?jobId=' + applyStatusJob.jobId + '\'" id="look" name="look">' +
                     '<h6 class="mb-0">' + applyStatusJob.title + '</h6>' +
                     '</a>' +
                     '<p class="mb-1 mt-2"><i class="fas fa-map-marker-alt pe-1">' + applyStatusJob.address + '</i></p>' +

@@ -10,6 +10,13 @@
             if (!this.emptyCheck()) {
                 return;
             }
+            //기업 연락처, 사업자번호
+            if(!this.onlyNumber()) {
+                return;
+            }
+            if (!this.profileValidation()) {
+
+            }
             this.formSubmit();
         },
         // 공백검사
@@ -28,6 +35,37 @@
                     return valid;
                 }
             });
+            return valid;
+        },
+        //숫자만 사용
+        onlyNumber : function () {
+            let valid = true;
+            $('input[id*="Number"]').each(function () {
+                console.log($(this).attr('name') + '-' + $(this).val());
+                const numberField = $(this).val();
+
+                let nonNumericPattern = /[^0-9]/g;
+                if (nonNumericPattern.test(numberField)) {
+                    let text = $(this).attr('data-name');
+                    alert(text + '에 숫자만 입력해주세요.');
+                    $(this).focus();
+                    valid = false;
+                    return valid;
+                }
+            })
+            return valid;
+        },
+        profileValidation : function () {
+            let valid = true;
+            const companyName = $('#companyName').val();
+
+            let nameRegex = /[.!@#$%^&*]+/;
+            if (nameRegex.test(companyName)) {
+                alert("특수문자는 사용할 수 없습니다.");
+                $('#companyName').focus();
+                valid = false;
+                return valid;
+            }
             return valid;
         },
 
@@ -75,7 +113,6 @@
                         location.href='/business/profile'
                     }
                 },
-
             };
 
             ajax.call(options);
@@ -118,12 +155,6 @@
                 contentType: 'application/json',
                 data: '',
 
-                beforeSend: () => {
-                    console.log('요청 전 작업 수행');
-                },
-                customFail: (response) => {
-                    console.error('커스텀 실패 처리:', response);
-                },
                 done: function(response) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
                     console.log(JSON.stringify(response));
@@ -134,9 +165,6 @@
                         coverImage.src = ''; // 미리보기 이미지 초기화
                     }
                 },
-                fail: () => {
-                    console.error('요청 실패');
-                }
             };
 
             ajax.call(options);
@@ -161,6 +189,10 @@
             }).open();
         });
     });
+
+    const parentIds = ['industryCode','businessTypeCode'];
+    const groupCodes = ['industry','business_type'];
+    selectUtils.ajaxOption(parentIds, groupCodes);
 </script>
 <!--=================================
 Dashboard Nav -->
@@ -209,25 +241,16 @@ My Profile -->
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label class="form-label">기업 연락처 ['-'를 제외]<span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value="${company.officePhone}" id="officePhone" name="officePhone" data-valid="true" data-name="기업 연락처">
+                                <input type="text" class="form-control" value="${company.officePhone}" id="officePhoneNumber" name="officePhone" data-valid="true" data-name="기업 연락처">
                             </div>
                             <div class="form-group col-md-4 mb-3 select-border">
                                 <label class="form-label" for="industryCode">산업종류<span class="font-danger">*</span></label>
-                                <select class="form-control basic-select" name="industryCode" id="industryCode" data-valid="true" data-name="산업종류">
-                                    <option value="" selected="selected">선택</option>
-                                    <option value="IT" ${company.industryCode == 'IT' ? 'selected="selected"' : ''}>IT</option>
-                                    <option value="SELF" ${company.industryCode == 'SELF' ? 'selected="selected"' : ''}>자영업</option>
-                                    <option value="MAN" ${company.industryCode == 'MAN' ? 'selected="selected"' : ''}>제조업</option>
-                                    <option value="SER" ${company.industryCode == 'SER' ? 'selected="selected"' : ''}>서비스업</option>
-                                    <option value="FIN" ${company.industryCode == 'FIN' ? 'selected="selected"' : ''}>금융업</option>
-                                    <option value="EDU" ${company.industryCode == 'EDU' ? 'selected="selected"' : ''}>교육업</option>
-                                    <option value="CON" ${company.industryCode == 'CON' ? 'selected="selected"' : ''}>건설업</option>
-                                    <option value="MED" ${company.industryCode == 'MED' ? 'selected="selected"' : ''}>의료업</option>
-                                    <option value="AGR" ${company.industryCode == 'AGR' ? 'selected="selected"' : ''}>농업</option>
-                                    <option value="DIS" ${company.industryCode == 'DIS' ? 'selected="selected"' : ''}>유통업</option>
-                                    <option value="PUB" ${company.industryCode == 'PUB' ? 'selected="selected"' : ''}>공공기관</option>
-                                    <option value="OTH" ${company.industryCode == 'OTH' ? 'selected="selected"' : ''}>기타</option>
+                                <select class="form-control basic-select" id="industryCode" name="industryCode" data-valid="true" data-name="산업종류">
+                                    <c:forEach var="industry" items="${industry}">
+                                        <option value="${industry.value}" ${company.industryCode == industry.value ? 'selected="selected"' : ''}>${industry.text}</option>
+                                    </c:forEach>
                                 </select>
+
                             </div>
                             <div class="form-group col-md-4 mb-3 select-border">
                                 <label class="form-label" for="businessTypeCode">회사종류<span class="font-danger">*</span></label>
