@@ -47,7 +47,7 @@
                     '<tr>' +
                     '<th scope="row">' +
                     '<span class="clickable-title">' +
-                    '<a href="#" onclick="location.href=\'/business/detail?jobId=' + postJob.jobId + '\'">' +
+                    '<a href="#" onclick="location.href=\'/business/jobPostDetail?jobId=' + postJob.jobId + '\'">' +
                     '<h5>' + postJob.title + ' (' + postJob.jobTypeCodeName + ')</h5>' +
                     '</a>' +
                     '</span>' +

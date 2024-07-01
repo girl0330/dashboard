@@ -114,7 +114,6 @@
             jpi.job_id,
             jpi.USER_NO,
             (SELECT fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC LIMIT 1) as file_id,
-            (SELECT jai.status_type_code FROM job_application_info jai WHERE jai.job_id = jpi.job_id)AS user_status_code,
             jpi.title,
             jpi.description,
             jpi.job_type_code,
@@ -148,6 +147,20 @@
             INNER JOIN company_info ci ON jpi.user_no = ci.user_no
             INNER JOIN user_info ui ON jpi.user_no = ui.user_no
         WHERE jpi.job_id = #{jobId}
+    </select>
+
+    <select id="getUserStatusCode" parameterType="map" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
+        SELECT  /*PostMapper.getUserStatusCode*/
+            status_type_code
+        FROM job_application_info
+        WHERE user_no = #{userNo} AND job_id = #{jobId}
+    </select>
+
+    <select id="getCountUserStatusCode" parameterType="map" resultType="int">
+        SELECT /*PostMapper.getCountUserStatusCode*/
+            COUNT(1)
+        FROM job_application_info
+        WHERE user_no = #{userNo} AND job_id = #{jobId}
     </select>
 
     <update id="updateJobPost" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
@@ -221,6 +234,7 @@
                                 status_type_code,
                                 motivation_description,
                                 system_register_id,
+                                system_register_datetime,
                                 system_updater_id
         ) VALUES (
                     #{jobId},
@@ -228,6 +242,7 @@
                     #{statusTypeCode},
                     #{motivationDescription},
                     #{userNo},
+                    now(),
                     #{userNo}
                     )
     </insert>

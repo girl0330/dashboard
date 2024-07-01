@@ -59,5 +59,4 @@ public class JobPostDTO extends UserDTO  {
     private String email;//이메일
     private String jaiStatusTypeCode;
     private String jaiStatusTypeCodeName;
-    private String userStatusCode;
 }

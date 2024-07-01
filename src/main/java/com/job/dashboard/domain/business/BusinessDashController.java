@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.business;
 
 import com.github.pagehelper.PageInfo;
+import com.job.dashboard.domain.common.CommonService;
 import com.job.dashboard.domain.dto.CompanyInfoDTO;
 import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
@@ -32,6 +33,7 @@ import java.util.*;
 public class BusinessDashController {
     private final BusinessDashService businessDashService;
     private final SessionUtil sessionUtil;
+    private final CommonService commonService;
 
     //파일 업로드
     @PostMapping("/uploadedFile")
@@ -89,6 +91,12 @@ public class BusinessDashController {
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
         }
+
+        System.out.println("b:::::::::::: "+businessProfileInfo);
+        System.out.println("businessType 확인 :::: "+commonService.getSelectBoxOption("businessType"));
+        //common으로 option code가져오기
+        model.addAttribute("industry",commonService.getSelectBoxOption("industry"));
+        model.addAttribute("businessType",commonService.getSelectBoxOption("businessType"));
         model.addAttribute("company", businessProfileInfo);
 
         return "jsp/business/business-profile";

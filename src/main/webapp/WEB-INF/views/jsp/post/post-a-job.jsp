@@ -54,7 +54,7 @@
         //validation 검사(모집인원, 급여액수, 근무시간 숫자만 사용)
         validationCheck : function () {
             let valid = true;
-            $('input[name*="num"]').each(function () {
+            $('input[id*="num"]').each(function () {
                 console.log($(this).attr('name') + '-' + $(this).val());
                 const numField = $(this).val();
 
@@ -63,7 +63,7 @@
                 if (nonNumericPattern.test(numField)) {
                     let text = $(this).attr('data-name');
                     alert(text + '에 숫자만 입력해주세요.');
-                    numField.focus();
+                    $(this).focus();
                     valid = false;
                     return valid;
                 }
@@ -226,7 +226,7 @@ tab -->
                             </div>
                             <div class="form-group col-md-12 mb-3" >
                                 <label class="mb-2"> 담당자 연락처 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value=""  name="managerNumber" id="managerNumber_num" data-valid="true" data-name="담당자 연락처">
+                                <input type="text" class="form-control" value=""  name="managerNumber" id="num_managerNumber" data-valid="true" data-name="담당자 연락처">
                             </div>
 
                             <div class="row mt-4 mt-lg-5">
@@ -236,12 +236,11 @@ tab -->
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2" for="jobTypeCode"> 모집직종 <span class="font-danger">*</span></label>
-                                <select class="form-control basic-select" id="jobTypeCode" name="jobTypeCode" data-valid="true" data-name="모집직종">
-                                </select>
+                                <select class="form-control basic-select" id="jobTypeCode" name="jobTypeCode" data-valid="true" data-name="모집직종"> </select>
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2" > 모집인원 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value="" name="numberOfStaff" id="numberOfStaff_num" data-valid="true" data-name="모집인원">
+                                <input type="text" class="form-control" value="" name="numberOfStaff" id="numberOfStaff" data-valid="true" data-name="모집인원">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label class="mb-2"> 우대 조건 </label>
@@ -256,27 +255,23 @@ tab -->
                             </div>
                             <div class="form-group col-md-6 select-border mb-3">
                                 <label class="mb-2"  for="salaryTypeCode"> 급여 타입 <span class="font-danger">*</span></label>
-                                <select class="form-control basic-select" id="salaryTypeCode" name="salaryTypeCode" data-valid="true" data-name="급여 타입">
-                                </select>
+                                <select class="form-control basic-select" id="salaryTypeCode" name="salaryTypeCode" data-valid="true" data-name="급여 타입"> </select>
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label class="mb-2" > 급여 액수 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value=""  name="salary" id="salary_num" data-valid="true" data-name="급여 액수">
+                                <input type="text" class="form-control" value=""  name="salary" id="num_salary" data-valid="true" data-name="급여 액수">
                             </div>
-
-                            <div class="form-group col-md-4 select-border mb-3">
+                            <div class="form-group col-md-3 select-border mb-3">
                                 <label class="mb-2"  for="employmentTypeCode"> 고용 유형 <span class="font-danger">*</span></label>
-                                <select class="form-control basic-select" id="employmentTypeCode" name="employmentTypeCode" data-valid="true" data-name="고용 유형">
-                                </select>
-                            </div>
-                            <div id="tesJobDayTypeCode" class="form-group col-md-3 mb-3" >
-                                <label class="mb-2"> 근무요일 <span class="font-danger">*</span></label>
-                                <select class="form-control basic-select" id="jobDayTypeCode" name="jobDayTypeCode" data-valid="true" data-name="근무요일">
-                                </select>
+                                <select class="form-control basic-select" id="employmentTypeCode" name="employmentTypeCode" data-valid="true" data-name="고용 유형"> </select>
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="mb-2" > 근무시간 <span class="font-danger">*</span></label>
-                                <input type="text" class="form-control" value="" name="jobTime" id="jobTime_num" data-valid="true" data-name="근무시간">
+                                <label class="mb-2"> 근무시간 </label>
+                                <input type="text" class="form-control" value="${initialData.jobTime}" name="jobTime" id="jobTime_num" data-valid="true" data-name="근무시간">
+                            </div>
+                            <div class="form-group col-md-3 mb-3">
+                                <label class="mb-2"> 근무요일 <span class="font-danger">*</span></label>
+                                <select class="form-control basic-select" id="jobDayTypeCode" name="jobDayTypeCode" data-valid="true" data-name="근무요일"> </select>
                             </div>
 <%--                            <div class="form-group col-md-3 mb-3">--%>
 <%--                                <label class="mb-2" for="jobDayTypeCode"> 근무요일 <span class="font-danger">*</span></label>--%>

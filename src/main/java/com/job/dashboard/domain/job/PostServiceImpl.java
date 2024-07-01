@@ -138,7 +138,7 @@ public class PostServiceImpl implements PostService {
 
         //지원하기 누르면 프로필작성 확인
         int profileExistCheck = postMapper.profileExistCheck(userNo);
-        if (profileExistCheck == 0) {
+        if (profileExistCheck == 0) { // 프로필이 없음.
             throw new CustomException(ExceptionErrorCode.PROFILE_NOT_COMPLETED_TOKEN);
         }
 
@@ -150,11 +150,12 @@ public class PostServiceImpl implements PostService {
             throw new CustomException(ExceptionErrorCode.EXCEPTION_MESSAGE,"이미 지원 하셨습니다.");
         }
 
-        jobApplicationDTO.setUserNo(userNo);
         jobApplicationDTO.setStatusTypeCode("APPLIED"); // APPLIED : 지원중, CANCELLED : 지원취소
 
+        System.out.println("insert하기 전 지원 data확인 :::::       "+jobApplicationDTO);
         //insert
         postMapper.insertJobApplicationInfo(jobApplicationDTO);
+        System.out.println("insert한 최종 데이터 확인 :::::::::      "+jobApplicationDTO);
         map.put("code", "success");
         map.put("message", "지원 성공!");
         return map;
@@ -186,6 +187,14 @@ public class PostServiceImpl implements PostService {
         map.put("code", "success");
         map.put("message","지원이 성공적으로 취소되었습니다.");
         return map;
+    }
+
+    public JobApplicationDTO getUserStatusCode(Map<String, Object> map) {
+        return postMapper.getUserStatusCode(map);
+    }
+
+    public int getCountUserStatusCode(Map<String, Object> map) {
+        return postMapper.getCountUserStatusCode(map);
     }
 
     public int getCountJobs() {

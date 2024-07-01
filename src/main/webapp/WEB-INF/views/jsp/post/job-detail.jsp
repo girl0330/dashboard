@@ -25,45 +25,19 @@
         contentType: 'application/json',
         data: JSON.stringify(jsonData),
 
-        beforeSend: () => {
-          console.log('요청 전 작업 수행');
-        },
-        customFail: (response) => {
-          console.error('커스텀 실패 처리:', response);
-        },
-        done: function (response) {
+        done: (response) => {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-
-          /*
-          const modalPopup = new bootstrap.Modal(document.getElementById('commonModal'), {
-            keyboard: false
-          });
-          $('#modalBody').text(data.message);
-          modalPopup.show();
-*/
-          commonUtils.customAlert(response.message);
-          switch(response.code) {
-            case 'loginError':
-              $('#confirmBtn').off('click').on('click', function() {
-                location.href = '/user/login';
-              });
-              break;
-            case 'profileError':
-              $('#confirmBtn').off('click').on('click', function() {
-                location.href = '/personal/myProfile';
-              });
-              break;
-            case 'applyError':
-            case 'success':
-              $('#exampleModalCenter').modal('hide');
-              $('#button_apply').off('click').on('click', function() {
-                modalPopup.hide();
-              });
-              break;
+          if (response.code === 'success') {
+            alert(response.message);
+            location.reload();
           }
+
         },
-        fail: () => {
-          console.error('요청 실패');
+        fail: function (jqXHR) {
+          const jsonObj = JSON.parse(jqXHR.responseText);
+          alert(jsonObj.userMessage);
+          $(".modal-content").hide();
+          location.href = '/personal/myProfile';
         }
       };
 
@@ -99,9 +73,6 @@
             location.href = '/user/login'
           }
         },
-        fail: () => {
-          console.error('요청 실패');
-        }
       };
 
       ajax.call(options);
@@ -118,12 +89,6 @@
         contentType: 'application/json',
         data: '',
 
-        beforeSend: () => {
-          console.log('요청 전 작업 수행');
-        },
-        customFail: (response) => {
-          console.error('커스텀 실패 처리:', response);
-        },
         done: function (response) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
           if (response.code === 'success') {
@@ -134,9 +99,6 @@
             location.href = '/user/login';
           }
         },
-        fail: () => {
-          console.error('요청 실패');
-        }
       };
 
       ajax.call(options);
@@ -155,6 +117,7 @@
 
     $('#button_apply').click(function () {
       application.apply();
+      $(".modal-content").hide();
     });
 
     $('#button_applyCancel').click(function () {
@@ -178,15 +141,15 @@
 
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-// 마커가 표시될 위치입니다
+  // 마커가 표시될 위치입니다
     var markerPosition  = new kakao.maps.LatLng(latitude, longitude);
 
-// 마커를 생성합니다
+  // 마커를 생성합니다
     var marker = new kakao.maps.Marker({
       position: markerPosition
     });
 
-// 마커가 지도 위에 표시되도록 설정합니다
+  // 마커가 지도 위에 표시되도록 설정합니다
     marker.setMap(map);
 
 
@@ -195,10 +158,6 @@
 
 
 </script>
-<!-- Button trigger modal 일단 대기 갑자기 생김-->
-<%--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">--%>
-<%--  Open Modal--%>
-<%--</button>--%>
 
 <!--=================================
 banner -->
@@ -268,17 +227,6 @@ job list -->
                   </div>
                 </div>
               </div>
-              <c:if test="${jobPostDetail.requirement}!= 'null'">
-              <div class="col-md-6 col-sm-6 mb-4">
-                <div class="d-flex">
-                  <i class="font-xll text-primary align-self-center flaticon-tick"></i>
-                  <div class="feature-info-content ps-3">
-                    <label class="mb-1">우대조건</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${jobPostDetail.requirement}</span>
-                  </div>
-                </div>
-              </div>
-              </c:if>
               <div class="col-md-6 col-sm-6 mb-4">
                 <div class="d-flex">
                   <i class="font-xll text-primary align-self-center flaticon-users"></i>
@@ -288,7 +236,15 @@ job list -->
                   </div>
                 </div>
               </div>
-              <c:if test="${jobPostDetail.requirement}!= 'null'">
+              <div class="col-md-6 col-sm-6 mb-4">
+                <div class="d-flex">
+                  <i class="font-xll text-primary align-self-center flaticon-tick"></i>
+                  <div class="feature-info-content ps-3">
+                    <label class="mb-1">우대조건</label>
+                    <span class="mb-0 fw-bold d-block text-dark">${jobPostDetail.requirement}</span>
+                  </div>
+                </div>
+              </div>
                 <div class="col-md-6 col-sm-6 mb-4">
                   <div class="d-flex">
                     <i class="font-xll text-primary align-self-center flaticon-tick"></i>
@@ -298,7 +254,6 @@ job list -->
                     </div>
                   </div>
                 </div>
-              </c:if>
             </div>
             <hr>
             <div class="row">
@@ -351,12 +306,14 @@ job list -->
               </div>
             </div>
           </div>
-          <div class="border p-4 mt-4 mt-lg-5">
-            <div class="my-4 my-lg-2">
-              <h5 class="mb-3 mb-md-4">${jobPostDetail.title}</h5>
-              <p>${jobPostDetail.description}</p>
+          <c:if test="${jobPostDetail.description != null }">
+            <div class="border p-4 mt-4 mt-lg-5">
+              <div class="my-4 my-lg-2">
+                <h5 class="mb-3 mb-md-4"></h5>
+                <p>${jobPostDetail.description}</p>
+              </div>
             </div>
-          </div>
+          </c:if>
           <div class="border p-4 mt-4 mt-lg-5">
             <div class="company-address widget-box">
               <div class="company-address-map" id="map" style="width: 100%; height: 400px;"></div>
@@ -378,9 +335,9 @@ job list -->
       <!--=================================
       sidebar -->
       <div class="col-lg-6">
-        <c:if test="${jobPostDetail.statusTypeCode == 'OPEN'}">
+        <c:if test="${jobPostDetail.statusTypeCode == 'OPEN' && sessionScope.userNo != null}">
           <c:choose>
-            <c:when test="${userStatusCode != 'APPLIED'}">
+            <c:when test="${userStatusCode == 0}">
               <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="far fa-paper-plane"></i>지원하기</a>
             </c:when>
             <c:otherwise>
@@ -437,7 +394,7 @@ feature -->
 Apply Modal Popup -->
   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
+      <div class="modal-content" id="modal-content">
         <form name="formApply" id="formApply">
           <div class="modal-header p-4">
             <h4 class="mb-0 text-center">공고 지원</h4>
