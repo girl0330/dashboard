@@ -70,6 +70,7 @@ public class PostController {
                                                @RequestParam(defaultValue = "10") int pageSize) {
         System.out.println("공고 리스트");
         PageInfo<JobPostDTO> jobList = postService.jobList(keyword, pageNum, pageSize);
+        System.out.println("jobList확인 ::::::::::      "+jobList);
         List<LikeDTO> likeList = postService.getLikeList();
 
         Map<String, Object> response = new HashMap<>();

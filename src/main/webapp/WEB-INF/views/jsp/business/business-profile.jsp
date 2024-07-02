@@ -190,8 +190,8 @@
         });
     });
 
-    const parentIds = ['industryCode','businessTypeCode'];
-    const groupCodes = ['industry','business_type'];
+    const parentIds = ['industryCode'];
+    const groupCodes = ['industry'];
     selectUtils.ajaxOption(parentIds, groupCodes);
 </script>
 <!--=================================
@@ -255,9 +255,9 @@ My Profile -->
                             <div class="form-group col-md-4 mb-3 select-border">
                                 <label class="form-label" for="businessTypeCode">회사종류<span class="font-danger">*</span></label>
                                 <select class="form-control basic-select" name="businessTypeCode" id="businessTypeCode" data-valid="true" data-name="회사종류">
-                                    <option value="">선택</option>
-                                    <option value="CORP" ${company.businessTypeCode == 'CORP' ? 'selected="selected"' : ''}>법인사업자</option>
-                                    <option value="GEN" ${company.businessTypeCode == 'GEN' ? 'selected="selected"' : ''}>일반사업자 </option>
+                                    <c:forEach var="businessType" items="${businessType}">
+                                        <option value="${businessType.value}" ${company.businessTypeCode == businessType.value ? 'selected="selected"' : ''}>${businessType.text}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
                             <div class="form-group col-md-4 mb-3">

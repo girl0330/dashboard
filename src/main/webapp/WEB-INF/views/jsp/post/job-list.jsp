@@ -42,11 +42,15 @@
                 // Determine the heart icon class based on whether the jobId is in likedJobIds
                 const heartIconClass = likedJobIds.has(job.jobId) ? 'fas fa-heart text-danger' : 'far fa-heart';
 
+                // Determine the image source based on whether the file is null
+                const imgSrc = job.fileId > 0 ? '/business/uploadedFileGet/' + job.fileId : '/images/svg/07.svg' ;
+
+
                 const jobHtml =
                     '<div class="col-12" onclick="location.href=\'/business/jobPostDetail?jobId=' + job.jobId + '\'">' +
                     '<div class="job-list">' +
                     '<div class="job-list-logo">' +
-                    '<img class="img-fluid" src="/business/uploadedFileGet/' + job.fileId + '" alt="">' +
+                    '<img class="img-fluid" src="' + imgSrc + '" alt="">' +
                     '</div>' +
                     '<div class="job-list-details">' +
                     '<div class="job-list-info">' +

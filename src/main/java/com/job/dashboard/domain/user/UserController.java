@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.user;
 
 import com.job.dashboard.domain.dto.UserDTO;
+import com.job.dashboard.domain.kakao.KakaoApi;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
@@ -17,6 +18,7 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
     private final SessionUtil sessionUtil;
+//    private final KakaoApi kakaoApi;
 
     //회원가입 페이지
     @GetMapping("/signup")
@@ -68,4 +70,22 @@ public class UserController {
         // 로그아웃 후 리다이렉션할 페이지로 이동
         return "redirect:/login";
     }
+
+    //카톡 로그인
+//    @GetMapping("/login/kakao")
+//    public String kakaoLogin(@RequestParam String code) {
+//        //인가 코드 받기 (@RequestParam String code)
+//
+//        //2. 토큰 받기
+//        String accessToken = kakaoApi.getAccessToken(code);
+//
+//        //3. 사용자 정보
+//        Map<String, Object> userInfo = kakaoApi.getUserInfo(accessToken);
+//        String nickname = (String)userInfo.get("email");
+//
+//        System.out.println("nickname ::::::   "+nickname);
+//        System.out.println("accessToken :::::::  "+accessToken);
+//
+//        return "redirect:/login";
+//    }
 }

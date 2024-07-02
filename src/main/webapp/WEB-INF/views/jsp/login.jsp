@@ -204,22 +204,33 @@ Signin -->
           <div class="mt-4">
             <fieldset>
               <legend class="px-2">Login or Sign up with</legend>
-              <div class="social-login">
-                <ul class="list-unstyled d-flex mb-0">
-                  <li class="facebook text-center">
-                    <a href="#"> <i class="fab fa-facebook-f me-4"></i>Login with Facebook</a>
-                  </li>
-                  <li class="twitter text-center">
-                    <a href="#"> <i class="fab fa-twitter me-4"></i>Login with Twitter</a>
-                  </li>
-                  <li class="google text-center">
-                    <a href="#"> <i class="fab fa-google me-4"></i>Login with Google</a>
-                  </li>
-                  <li class="linkedin text-center">
-                    <a href="#"> <i class="fab fa-linkedin-in me-4"></i>Login with Linkedin</a>
-                  </li>
-                </ul>
+              <!-- kakao button -->
+              <div class="text-center">
+                <c:url var="kakaoLoginUrl" value="https://kauth.kakao.com/oauth/authorize">
+                  <c:param name="client_id" value="${kakaoApiKey}" />
+                  <c:param name="redirect_uri" value="${redirectUri}" />
+                  <c:param name="response_type" value="code" />
+                </c:url>
+                <a href="${kakaoLoginUrl}">
+                  <img src="/images/kakao_login_medium_wide.png" alt="Kakao Login">
+                </a>
               </div>
+              <%--              <div class="social-login">--%>
+<%--                <ul class="list-unstyled d-flex mb-0">--%>
+<%--                  <li class="facebook text-center">--%>
+<%--                    <a href="#"> <i class="fab fa-facebook-f me-4"></i>Login with Facebook</a>--%>
+<%--                  </li>--%>
+<%--                  <li class="twitter text-center">--%>
+<%--                    <a href="#"> <i class="fab fa-twitter me-4"></i>Login with Twitter</a>--%>
+<%--                  </li>--%>
+<%--                  <li class="google text-center">--%>
+<%--                    <a href="#"> <i class="fab fa-google me-4"></i>Login with Google</a>--%>
+<%--                  </li>--%>
+<%--                  <li class="linkedin text-center">--%>
+<%--                    <a href="#"> <i class="fab fa-linkedin-in me-4"></i>Login with Linkedin</a>--%>
+<%--                  </li>--%>
+<%--                </ul>--%>
+<%--              </div>--%>
             </fieldset>
           </div>
         </div>

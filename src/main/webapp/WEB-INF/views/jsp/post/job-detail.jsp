@@ -335,7 +335,7 @@ job list -->
       <!--=================================
       sidebar -->
       <div class="col-lg-6">
-        <c:if test="${jobPostDetail.statusTypeCode == 'OPEN' && sessionScope.userNo != null}">
+        <c:if test="${jobPostDetail.statusTypeCode == 'OPEN' && sessionScope.userNo != null && userTypeCode == 10}" >
           <c:choose>
             <c:when test="${userStatusCode == 0}">
               <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="far fa-paper-plane"></i>지원하기</a>

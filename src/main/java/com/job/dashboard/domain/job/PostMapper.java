@@ -64,4 +64,6 @@ public interface PostMapper {
     JobApplicationDTO getUserStatusCode(Map<String, Object> map);
 
     int getCountUserStatusCode(Map<String, Object> map);
+
+//    int getFile();
 }

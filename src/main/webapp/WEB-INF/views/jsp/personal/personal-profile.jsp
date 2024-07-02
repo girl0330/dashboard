@@ -7,13 +7,33 @@
 <script>
   let personal_profile = {
     init: function () {
+      //null 체크
+      if(!this.profileEmptyCheck()) {
+        return;
+      }
       //프로필 validation체크
       if (!this.profileValidation()) {
         return;
       }
-
       //프로필 저장 버튼
       this.formSubmit();
+    },
+    profileEmptyCheck : function () {
+      let valid = true;
+      $('[data-valid="true"]').each(function() {
+        // 각 요소의 이름과 값을 출력 (또는 다른 작업 수행)
+        console.log($(this).attr('name') + ': ' + $(this).val());
+        const fields = $(this);
+        const removeBlank = fields.val().replace(/\s*/g, "");
+        if (removeBlank === "") {
+          let text = $(this).attr('data-name');
+          alert(text+"반드시 입력해주세요");
+          fields.focus();
+          valid = false;
+          return valid;
+        }
+      });
+      return valid;
     },
 
     //프로필 validation체크
@@ -209,18 +229,18 @@ My Profile -->
             <input type="file" id="fileInput" name="fileInput" style="display:none;" />
             <div class="row">
               <div class="form-group mb-3 col-md-6">
-                <label class="form-label">이름</label>
-                <input type="text" class="form-control" value="${profile.name}" id="name" name="name">
+                <label class="form-label">이름<span class="font-danger">*</span></label>
+                <input type="text" class="form-control" value="${profile.name}" id="name" name="name" data-valid="true" data-name="이름">
               </div>
               <div class="form-group mb-3 col-md-6">
-                <label class="form-label">Email</label>
+                <label class="form-label">Email<span class="font-danger">*</span></label>
                 <input type="email" class="form-control" value="${profile.email}" id="email" name="email" disabled>
               </div>
 
               <div class="form-group mb-3 col-md-6 datetimepickers">
-                <label class="form-label">생년월일</label>
+                <label class="form-label">생년월일<span class="font-danger">*</span></label>
                 <div class="input-group date" id="datetimepicker-01" data-target-input="nearest">
-                  <input type="text" class="form-control datetimepicker-input" value="${profile.birth}" data-target="#datetimepicker-01" id="birth" name="birth">
+                  <input type="text" class="form-control datetimepicker-input" value="${profile.birth}" data-target="#datetimepicker-01" id="birth" name="birth" data-valid="true" data-name="생년월일">
                   <div class="input-group-append d-flex" data-target="#datetimepicker-01" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                   </div>
@@ -228,11 +248,11 @@ My Profile -->
               </div>
 
               <div class="form-group mb-3 col-md-6">
-                <label class="form-label">핸드폰 ['-'를 제외]</label>
-                <input type="text" class="form-control" value="${profile.phone}" id="phone" name="phone">
+                <label class="form-label">핸드폰 ['-'를 제외]<span class="font-danger">*</span></label>
+                <input type="text" class="form-control" value="${profile.phone}" id="phone" name="phone" data-valid="true" data-name="핸드폰">
               </div>
               <div class="form-group mb-3 col-md-12" >
-                <label class="d-block mb-3">성별</label>
+                <label class="d-block mb-3">성별<span class="font-danger">*</span></label>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" value="Male" name="gender" id="Male" ${profile.gender == "Male" ? "checked" : ""}>
                   <label class="form-check-label" for="Male">남자</label>
@@ -243,18 +263,18 @@ My Profile -->
                 </div>
               </div>
               <div class="form-group mb-3 col-md-3">
-                <label class="form-label">우편번호</label>
-                <input type="text" class="form-control" id="zipcode" placeholder="우편번호" value="${profile.zipcode}" name="zipcode" readonly>
+                <label class="form-label">우편번호<span class="font-danger">*</span></label>
+                <input type="text" class="form-control" id="zipcode" placeholder="우편번호" value="${profile.zipcode}" name="zipcode" data-valid="true" data-name="우편번호" readonly>
                 <input type="hidden" class="form-control" id="latitude" name="latitude" data-name="위도">
                 <input type="hidden" class="form-control" id="longitude" name="longitude" data-name="경도">
               </div>
               <div class="form-group mb-3 col-md-9">
-                <label class="form-label">도로명주소 </label>
-                <input type="text" class="form-control" id="address" placeholder="도로명주소" value="${profile.address}" name="address" readonly>
+                <label class="form-label">도로명주소 <span class="font-danger">*</span></label>
+                <input type="text" class="form-control" id="address" placeholder="도로명주소" value="${profile.address}" name="address" data-valid="true" data-name="도로명주소" readonly>
               </div>
               <div class="form-group mb-3 col-md-12">
-                <label class="form-label">상세주소 </label>
-                <input type="text" class="form-control" id="addressDetail" placeholder="상세주소" value="${profile.addressDetail}" name="addressDetail">
+                <label class="form-label">상세주소 <span class="font-danger">*</span></label>
+                <input type="text" class="form-control" id="addressDetail" placeholder="상세주소" value="${profile.addressDetail}" name="addressDetail" data-valid="true" data-name="상세주소">
               </div>
               <div class="form-group mb-3 col-md-6" >
                 <label class="d-block mb-3">알바 경험</label>
