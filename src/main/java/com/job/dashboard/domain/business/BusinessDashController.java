@@ -92,11 +92,13 @@ public class BusinessDashController {
             model.addAttribute("fileId", file.getFileId());
         }
 
+        System.out.println("i::::::::::::  "+commonService.getSelectBoxOption("industry"));
+        System.out.println("businessType 확인 :::: "+commonService.getSelectBoxOption("business_type"));
         System.out.println("b:::::::::::: "+businessProfileInfo);
-        System.out.println("businessType 확인 :::: "+commonService.getSelectBoxOption("businessType"));
+
         //common으로 option code가져오기
         model.addAttribute("industry",commonService.getSelectBoxOption("industry"));
-        model.addAttribute("businessType",commonService.getSelectBoxOption("businessType"));
+        model.addAttribute("businessType",commonService.getSelectBoxOption("business_type"));
         model.addAttribute("company", businessProfileInfo);
 
         return "jsp/business/business-profile";

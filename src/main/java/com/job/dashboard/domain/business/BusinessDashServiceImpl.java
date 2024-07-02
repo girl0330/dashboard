@@ -6,6 +6,8 @@ import com.job.dashboard.domain.dto.CompanyInfoDTO;
 import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.exception.CustomException;
+import com.job.dashboard.exception.ExceptionErrorCode;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
@@ -22,6 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+
+import static org.flywaydb.core.internal.util.StringUtils.getFileExtension;
 
 @Service
 @RequiredArgsConstructor
@@ -111,12 +115,20 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
             String originalFilename = file.getOriginalFilename();
 
-            Long fileSize = file.getSize();
-
             Path path = Paths.get(uploadFolder + File.separator + file.getOriginalFilename()); // 경로 생성
             Files.write(path, bytes); // 파일을 경로에 저장
 
+            //파일 확장자
             String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            System.out.println("파일 확장자 확인 ::::  "+fileExtension);
+
+            //파일 사이즈
+            Long fileSize = file.getSize();
+
+            Map<String, Object> fileInfo  = new HashMap<>();
+            fileInfo .put("fileExtension", fileExtension);
+            fileInfo .put("fileSize", fileSize);
+            validateFile(fileInfo );
 
             // 파일 이름으로 쓸 UUID 생성
             String uuid = UUID.randomUUID().toString();
@@ -147,6 +159,26 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         }
         return result;
     }
+
+    //파일 유효성 검사
+    private void validateFile(Map<String, Object> fileInfo ) throws CustomException {
+        String[] allowedExtensions = { ".jpg", ".jpeg" };
+        String fileExtension = (String) fileInfo.get("fileExtension");
+        System.out.println("넘어온 파일 확장자:::::    "+fileExtension);
+        Long fileSize = (Long) fileInfo.get("fileSize");
+
+        String toLowerFileExtension = fileExtension.toLowerCase();
+
+        if (!Arrays.asList(allowedExtensions).contains(toLowerFileExtension)) {
+            throw new CustomException(ExceptionErrorCode.EXCEPTION_MESSAGE,"허용되지 않는 파일 형식입니다.");
+        }
+
+        long maxSize = 300 * 1024; // 5MB
+        if (fileSize > maxSize) {
+            throw new CustomException(ExceptionErrorCode.EXCEPTION_MESSAGE,"파일 크기가 허용된 한도를 초과했습니다.");
+        }
+    }
+
 
     // 파일 가져오기
     @Override

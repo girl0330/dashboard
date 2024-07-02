@@ -49,6 +49,10 @@ public class PostServiceImpl implements PostService {
         PageHelper.startPage(pageNum, pageSize);
 
         List<JobPostDTO> list = postMapper.getJobLists(keyword);
+
+        for (JobPostDTO jobPost : list) {
+            System.out.println(jobPost);
+        }
         return new PageInfo<>(list);
     }
 
@@ -197,6 +201,9 @@ public class PostServiceImpl implements PostService {
         return postMapper.getCountUserStatusCode(map);
     }
 
+//    public int getFile() {
+//        return postMapper.getFile();
+//    }
     public int getCountJobs() {
         return postMapper.getCountJobs();  // 총 게시물 수를 세는 메서드
     }

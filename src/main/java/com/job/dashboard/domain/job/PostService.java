@@ -53,4 +53,7 @@ public interface PostService {
 
     // 지원 상태 int로 가져오기
     int getCountUserStatusCode(Map<String, Object> map);
+
+    // 리스트에 보내줄 파일 가져오기
+//    int getFile();
 }
