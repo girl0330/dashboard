@@ -2,12 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.notification.NotificationMapper">
 
-    <select id="findNotificationsByUserId" resultType="com.job.dashboard.domain.dto.NotificationDTO">
-        SELECT * FROM notifications WHERE user_no = #{userId}
+    <select id="findNotificationsByUserNo" resultType="com.job.dashboard.domain.dto.NotificationDTO">
+        SELECT /* NotificationMapper.findNotificationsByUserNo */
+            NOTIFY_ID,
+            USER_NO,
+            MESSAGE,
+            TYPE,
+            SHOW_YN
+          FROM notifications WHERE user_no = #{userNo} AND show_yn = 'N'
     </select>
 
     <insert id="insertNotification" parameterType="com.job.dashboard.domain.dto.NotificationDTO">
-        INSERT INTO notifications (user_no, message, type, system_register_id, system_updater_id) VALUES (#{userId}, #{message}, #{type}, #{userId}, #{userId})
+        INSERT /* NotificationMapper.insertNotification */
+          INTO notifications (user_no, message, type, system_register_id, system_updater_id)
+        VALUES (#{userNo}, #{message}, #{type}, #{userNo}, #{userNo})
     </insert>
 
 </mapper>

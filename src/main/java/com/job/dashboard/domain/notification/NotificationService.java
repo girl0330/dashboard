@@ -4,6 +4,7 @@ import com.job.dashboard.domain.dto.NotificationDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -13,47 +14,52 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationService {
 
-    private static final Long DEFAULT_TIMEOUT = 600L * 1000 * 60;
+    private static final Long DEFAULT_TIMEOUT = 60 * 1000L;
 
     private final EmitterRepository emitterRepository;
     private final NotificationMapper notificationMapper;
 
-    public SseEmitter subscribe(Long userId) {
-        SseEmitter emitter = createEmitter(userId);
-        sendNotification(userId, "SSE connection established.", "connection");
+    public SseEmitter subscribe(int userNo) {
+        SseEmitter emitter = createEmitter(userNo);
+        sendNotification(userNo, "SSE 연결 완료.", "connect");
         return emitter;
     }
 
-    public void sendNotification(Long userId, String message, String type) {
-        NotificationDTO notification = new NotificationDTO(userId, message, type);
+    public void sendNotification(int userNo, String message, String type) {
+        NotificationDTO notification = new NotificationDTO(userNo, message, type);
         notificationMapper.insertNotification(notification);
-        SseEmitter emitter = emitterRepository.get(userId);
+        SseEmitter emitter = emitterRepository.get(userNo);
+
+        String eventId = userNo + "_" + System.currentTimeMillis();
+
+        System.out.println("eventId:::   "+eventId);
+
 
         if (emitter != null) {
             try {
                 emitter.send(SseEmitter.event()
-                        .id(String.valueOf(userId))
+                        .id(eventId)
                         .name(type)
                         .data(message)
-                        .comment("New notification"));
+                        .comment("신규 알림"));
             } catch (IOException e) {
-                emitterRepository.deleteById(userId);
+                emitterRepository.deleteById(userNo);
                 emitter.completeWithError(e);
-                System.out.println("Failed to send event to user " + userId + ": " + e.getMessage());
+                System.out.println("알림 전송 오류 유저번호 : " + userNo + " : " + e.getMessage());
             }
         }
     }
 
-    public List<NotificationDTO> getNotificationsByUserId(Long userId) {
-        return notificationMapper.findNotificationsByUserId(userId);
+    public List<NotificationDTO> getNotificationsByUserId(int userNo) {
+        return notificationMapper.findNotificationsByUserNo(userNo);
     }
 
-    private SseEmitter createEmitter(Long userId) {
+    private SseEmitter createEmitter(int userNo) {
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
-        emitterRepository.save(userId, emitter);
+        emitterRepository.save(userNo, emitter);
 
-        emitter.onCompletion(() -> emitterRepository.deleteById(userId));
-        emitter.onTimeout(() -> emitterRepository.deleteById(userId));
+        emitter.onCompletion(() -> emitterRepository.deleteById(userNo));
+        emitter.onTimeout(() -> emitterRepository.deleteById(userNo));
 
         return emitter;
     }

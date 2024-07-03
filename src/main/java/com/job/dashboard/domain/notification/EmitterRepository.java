@@ -11,17 +11,17 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class EmitterRepository {
 
-    private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
+    private final Map<Integer, SseEmitter> emitters = new ConcurrentHashMap<>();
 
-    public void save(Long id, SseEmitter emitter) {
-        emitters.put(id, emitter);
+    public void save(int userNo, SseEmitter emitter) {
+        emitters.put(userNo, emitter);
     }
 
-    public void deleteById(Long userId) {
-        emitters.remove(userId);
+    public void deleteById(int userNo) {
+        emitters.remove(userNo);
     }
 
-    public SseEmitter get(Long userId) {
-        return emitters.get(userId);
+    public SseEmitter get(int userNo) {
+        return emitters.get(userNo);
     }
 }
