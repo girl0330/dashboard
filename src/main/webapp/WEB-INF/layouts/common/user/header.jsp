@@ -5,6 +5,11 @@
         alert('로그인 후 이용해주세요.');
         window.location = "/user/login";
     }
+
+    function logout() {
+        sessionStorage.removeItem("LoginCheck");
+        window.location = "/user/logout";
+    }
 </script>
 <nav class="navbar navbar-static-top navbar-expand-lg header-sticky">
     <div class="container-fluid">
@@ -72,8 +77,7 @@
             </c:if>
             <c:if test="${sessionScope.userNo != null && sessionScope.userNo != 0}">
                 <div class="login d-inline-block me-4">
-                    <a href="/user/logout"><i
-                            class="far fa-user pe-2"></i>로그아웃</a>
+                    <a href="#" onclick="logout();"><i class="far fa-user pe-2"></i>로그아웃</a>
                 </div>
             </c:if>
             <c:if test="${sessionScope.userNo == null || sessionScope.userNo == 0}">

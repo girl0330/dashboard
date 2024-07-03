@@ -10,5 +10,5 @@ public interface NotificationMapper {
 
     void insertNotification(NotificationDTO notification);
 
-    List<NotificationDTO> findNotificationsByUserId(Long userId);
+    List<NotificationDTO> findNotificationsByUserNo(int userNo);
 }
