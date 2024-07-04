@@ -1,15 +1,12 @@
 package com.job.dashboard.domain.user;
 
 import com.job.dashboard.domain.dto.UserDTO;
-import com.job.dashboard.domain.kakao.KakaoApi;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
@@ -57,8 +54,6 @@ public class UserController {
         if (!"error".equals(map.get("code"))) {
             sessionUtil.loginUser((UserDTO) map.get("account"));
         }
-
-        model.addAttribute("loginUser", map.get("account"));
         return map;
     }
 
