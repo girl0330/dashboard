@@ -3,6 +3,8 @@ package com.job.dashboard.domain.notification;
 import com.job.dashboard.domain.dto.NotificationDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ public class NotificationController {
 
     private final SessionUtil sessionUtil;
     private final NotificationService notificationService;
+    private static final Logger logger = LoggerFactory.getLogger(NotificationController.class);
+
     /**
      * 구독하기
      * */
@@ -27,8 +31,8 @@ public class NotificationController {
         }
 
         int userNo = (int)sessionUtil.getAttribute("userNo");
-
         SseEmitter emitter = notificationService.subscribe(userNo);
+        logger.info("User {} subscribed", userNo);
         return new ResponseEntity<>(emitter, HttpStatus.OK);
     }
 
