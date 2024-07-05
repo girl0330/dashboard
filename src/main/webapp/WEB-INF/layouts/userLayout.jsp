@@ -11,9 +11,9 @@
 </head>
 <body>
 <!-- header start -->
-<header class="header bg-dark">
+<%--<header class="header bg-dark">--%>
   <tiles:insertAttribute name="header" />
-</header>
+<%--</header>--%>
 <tiles:insertAttribute name="script" />
 <!--  header end -->
 
