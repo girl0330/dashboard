@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<script type="text/javascript" src="https://developers.kakao.com/sdk/js/kakao.min.js" charset="utf-8"></script>
 <script>
   let user_login = {
     init : function () {
@@ -115,7 +117,29 @@
     $("#companyTypeCode").on("click",function () {
       $("#userTypeCode").val("20");
     });
+
+    // // Kakao 초기화
+    // Kakao.init('afcb905c7668725d0a22469ede432941'); // 카카오 앱 키 입력
+    // Kakao.isInitialized();
   });
+
+  // 카카오 로그인 함수
+  // function loginWithKakao() {
+  //   window.Kakao.Auth.authorize({
+  //     scope:'profile_nickname',
+  //     success: function (authObj) {
+  //       console.log(authObj);
+  //       window.Kakao.API.request({
+  //         url:'/v2/user/me',
+  //         success: res => {
+  //           const kakao_account = res.kakao_account;
+  //           console.log(kakao_account);
+  //         }
+  //       })
+  //     }
+  //     // redirectUri: 'http://localhost:8080/kakao_callback' // 등록한 리다이렉트 URI 입력
+  //   });
+  // }
 </script>
 
 <!--=================================
@@ -207,15 +231,11 @@ Signin -->
               <legend class="px-2">Login or Sign up with</legend>
               <!-- kakao button -->
               <div class="text-center">
-                <c:url var="kakaoLoginUrl" value="https://kauth.kakao.com/oauth/authorize">
-                  <c:param name="client_id" value="${kakaoApiKey}" />
-                  <c:param name="redirect_uri" value="${redirectUri}" />
-                  <c:param name="response_type" value="code" />
-                </c:url>
-                <a href="${kakaoLoginUrl}">
+                <a href="/kakao/login">
                   <img src="/images/kakao_login_medium_wide.png" alt="Kakao Login">
                 </a>
               </div>
+            </fieldset>
               <%--              <div class="social-login">--%>
 <%--                <ul class="list-unstyled d-flex mb-0">--%>
 <%--                  <li class="facebook text-center">--%>
@@ -232,7 +252,7 @@ Signin -->
 <%--                  </li>--%>
 <%--                </ul>--%>
 <%--              </div>--%>
-            </fieldset>
+
           </div>
         </div>
       </div>

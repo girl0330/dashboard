@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.user.UserMapper">
     <select id="getEmailCount" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="int">
-        SELECT /*UserMapper.emailDuplicateCheck*/
+        SELECT /*UserMapper.getEmailCount*/
             count(*) AS countemail
         FROM user_info
         WHERE email = #{email}
     </select>
 
     <insert id="insertUser" parameterType="com.job.dashboard.domain.dto.UserDTO">
-        INSERT INTO      /*UserMapper.accountInsert*/ user_info
+        INSERT INTO      /*UserMapper.insertUser*/ user_info
         (
             email,
             password ,
@@ -17,39 +17,44 @@
             system_register_id,
             system_register_datetime,
             system_updater_id,
-            system_update_datetime
+            system_update_datetime,
+            login_type_code
         )  VALUES (
             #{email},
             #{password},
             #{userTypeCode},
             #{userNo},
-            #{systemRegisterDatetime},
+            now(),
             #{userNo},
-            #{systemUpdateDatetime}
+            now(),
+            #{loginTypeCode}
                     )
     </insert>
 
     <select id="getHashedPassword" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="java.lang.String">
-        SELECT /*UserMapper.getHashedPassword*/ password
+        SELECT /*UserMapper.getHashedPassword*/
+              password
         FROM user_info
         WHERE email = #{email}
     </select>
 
     <select id="getUserTypeCode" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="java.lang.String">
-        SELECT /*UserMapper.getUserTypeCode*/ user_type_code
+        SELECT /*UserMapper.getUserTypeCode*/
+              user_type_code
         FROM user_info
         WHERE email = #{email}
     </select>
 
-    <select id="doLogin" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="com.job.dashboard.domain.dto.UserDTO">
-        SELECT /*UserMapper.doLogin*/ USER_NO,
-               email,
-               password,
-               user_type_code,
-               system_register_id,
-               system_register_datetime,
-               system_updater_id,
-               system_update_datetime
+    <select id="getLoginUserInfo" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="com.job.dashboard.domain.dto.UserDTO">
+        SELECT /*UserMapper.getLoginUserInfo*/
+              user_no,
+              email,
+              password,
+              user_type_code,
+              system_register_id,
+              system_register_datetime,
+              system_updater_id,
+              system_update_datetime
         FROM user_info
         WHERE email = #{email}
           AND password = #{password}
