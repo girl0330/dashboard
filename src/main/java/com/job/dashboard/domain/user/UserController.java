@@ -35,7 +35,7 @@ public class UserController {
     @PostMapping("/insertSignUp")
     @ResponseBody
     public Map<String, Object> insertSignUp(@RequestBody UserDTO userDTO) {
-        return userService. insertUser(userDTO);
+        return userService.insertUser(userDTO);
     }
 
     //로그인 페이지
@@ -47,13 +47,14 @@ public class UserController {
     //로그인
     @PostMapping("/doLogin")
     @ResponseBody
-    public Map<String, Object> doLogin (@RequestBody UserDTO userDTO, Model model) {
+    public Map<String, Object> doLogin (@RequestBody UserDTO userDTO) {
 
         Map<String, Object> map = userService.doLogin(userDTO);
 
         if (!"error".equals(map.get("code"))) {
-            sessionUtil.loginUser((UserDTO) map.get("account"));
+            sessionUtil.loginUser((UserDTO) map.get("userLoginInfo"));
         }
+
         return map;
     }
 
@@ -66,21 +67,10 @@ public class UserController {
         return "redirect:/login";
     }
 
-    //카톡 로그인
-//    @GetMapping("/login/kakao")
-//    public String kakaoLogin(@RequestParam String code) {
-//        //인가 코드 받기 (@RequestParam String code)
-//
-//        //2. 토큰 받기
-//        String accessToken = kakaoApi.getAccessToken(code);
-//
-//        //3. 사용자 정보
-//        Map<String, Object> userInfo = kakaoApi.getUserInfo(accessToken);
-//        String nickname = (String)userInfo.get("email");
-//
-//        System.out.println("nickname ::::::   "+nickname);
-//        System.out.println("accessToken :::::::  "+accessToken);
-//
-//        return "redirect:/login";
-//    }
+    //비밀번호 재설정
+    @GetMapping("/findPassword")
+    public String findPasswordView() {
+        return "jsp/findPassword";
+    }
+
 }

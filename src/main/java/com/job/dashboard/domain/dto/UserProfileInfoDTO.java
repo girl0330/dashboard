@@ -26,4 +26,5 @@ public class UserProfileInfoDTO extends UserDTO{
     private MultipartFile file;
     private int fileId;
     private int profileCount;
+    private String loginTypeCode;
 }

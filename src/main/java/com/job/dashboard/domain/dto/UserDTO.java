@@ -15,5 +15,7 @@ public class UserDTO {
     private String systemRegisterDatetime;
     private int systemUpdaterId;
     private String systemUpdateDatetime;
+    private String loginTypeCode;
+
 }
 

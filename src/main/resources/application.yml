@@ -41,3 +41,11 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+
+kakao:
+  auth-url: "https://kauth.kakao.com/oauth/authorize"
+  token-url: "https://kauth.kakao.com/oauth/token"
+  user-info-url: "https://kapi.kakao.com/v2/user/me"
+  client-id: "edd0be297e8b2b3f4147902b858d4b18"
+  redirect-uri: "http://localhost:8080/user/kakao/login"
+  client-secret: "57U4j6jgipImquildgBymVr4gk5X77d6"

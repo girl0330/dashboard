@@ -52,6 +52,10 @@ public class UserServiceImpl implements UserService{
         String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
 
         userDTO.setPassword(encodedPassword);
+        if (userDTO.getLoginTypeCode() != null) {
+            userDTO.setLoginTypeCode("20");
+            System.out.println("userDTO확인- 카카오톡으로 로그인 ::: "+userDTO);
+        }
 
         userMapper.insertUser(userDTO);
         map.put("code", "success");
@@ -89,7 +93,7 @@ public class UserServiceImpl implements UserService{
         }
 
         //로그인하기
-        UserDTO userInfo = userMapper.doLogin(userDTO);
+        UserDTO userInfo = userMapper.getLoginUserInfo(userDTO);
 
         UserDTO user = new UserDTO();
 
@@ -97,7 +101,7 @@ public class UserServiceImpl implements UserService{
         user.setEmail(userInfo.getEmail());
         user.setUserTypeCode(userInfo.getUserTypeCode());
 
-        map.put("account",user);
+        map.put("userLoginInfo",user);
         map.put("code","success");
         map.put("message","로그인 성공!");
         return map;

@@ -15,7 +15,7 @@ public interface UserMapper {
     String getHashedPassword(String email);
 
     //저장되어 있는 계정 가져오기 (로그인)
-    UserDTO doLogin(UserDTO userDTO);
+    UserDTO getLoginUserInfo(UserDTO userDTO);
 
     //타입코드 가져오기
     String getUserTypeCode(String email);
