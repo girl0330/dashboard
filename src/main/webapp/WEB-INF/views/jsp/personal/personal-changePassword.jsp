@@ -47,7 +47,7 @@
                 return valid;
             }
             if (new_password !== password2 ) {
-                alert("비밀번호를 확인해주세요.")
+                alert("입력한 비밀번호와 일치하지 않습니다.")
                 $('#password2').focus();
                 valid = false;
                 return valid;

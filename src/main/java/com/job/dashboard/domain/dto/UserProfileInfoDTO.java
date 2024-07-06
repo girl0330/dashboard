@@ -27,4 +27,5 @@ public class UserProfileInfoDTO extends UserDTO{
     private int fileId;
     private int profileCount;
     private String loginTypeCode;
+    private String email;
 }

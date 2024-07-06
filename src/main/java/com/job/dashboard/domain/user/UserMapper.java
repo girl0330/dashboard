@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.user;
 
 import com.job.dashboard.domain.dto.UserDTO;
+import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -20,4 +21,12 @@ public interface UserMapper {
     //타입코드 가져오기
     String getUserTypeCode(String email);
 
+    //email 확인
+    int getCheckEmail(String email);
+
+    //이름, 핸드폰
+    int getCheckIdentity(UserProfileInfoDTO userProfileInfoDTO);
+
+
+    void updatePassword(UserDTO userDTO);
 }

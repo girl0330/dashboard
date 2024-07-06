@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.user;
 
 import com.job.dashboard.domain.dto.UserDTO;
+import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 
 import java.util.Map;
 
@@ -11,4 +12,10 @@ public interface UserService {
 
     // 이메일 중복인지 확인
     Map<String, Object> emailDuplicateCheck(UserDTO userDTO);
+
+    Boolean getCheckEmail(String email);
+
+    Map<String, Object> getCheckIdentity(UserProfileInfoDTO userProfileInfoDTO);
+
+    Map<String, Object> passwordReset(UserDTO userDTO);
 }

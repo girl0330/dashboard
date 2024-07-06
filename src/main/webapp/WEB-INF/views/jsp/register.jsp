@@ -152,7 +152,7 @@
 
       if (password !== password2) {
         $("#password, #password2").addClass("is-invalid");
-        $("#passwordError").text("비밀번호를 확인해주세요.").show();
+        $("#passwordError").text("입력한 비밀번호와 일치하지 않습니다.").show();
         $('#password2').focus();
         valid = false;
         return valid;
