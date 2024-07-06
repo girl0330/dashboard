@@ -14,10 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class KakaoServiceImple implements KakaoService{
+public class KakaoServiceImple implements KakaoService {
     private final KakaoMapper kakaoMapper;
     private final UserService userService;
     private final UserMapper userMapper;
@@ -40,61 +41,38 @@ public class KakaoServiceImple implements KakaoService{
 
     public ModelAndView handleKakaoLogin(String code) {
         RestTemplate restTemplate = new RestTemplate();
+        ModelAndView modelAndView = new ModelAndView();
         String accessToken = getAccessToken(restTemplate, code);
 
         if (accessToken != null) {
-            JsonNode userInfoByToken = getUserInfo(restTemplate, accessToken); //id, connected_at, pofperties(nickname)
+            JsonNode kakaoUserInfo = getKakaoUserInfo(restTemplate, accessToken); //id, connected_at, pofperties(nickname)
+            String kakaoUserId = String.valueOf(kakaoUserInfo.get("id"));
 
-            System.out.println("카카톡에서 넘어온 토근 확인 (userInfo) :: "+userInfoByToken);
-            UserDTO user = new UserDTO();
-            user.setEmail(userInfoByToken.get("id").asText());  //(email <= id)
+            kakaoMapper.getUserInfo(kakaoUserId).ifPresentOrElse(
+                    userInfo -> {
+                        handleExistingUser(userInfo, modelAndView);
+                    },
+                    () -> {
+                        //값이 없을경우
+                        UserDTO userDTO = new UserDTO();
+                        userDTO.setEmail(kakaoUserId);
+                        userDTO.setPassword("abc135!!"); // 비번
+                        userDTO.setPassword2("abc135!!");
+                        userDTO.setUserTypeCode("10"); //회원 유형 코드
+                        userDTO.setLoginTypeCode("20"); //로그인 유형 코드
 
-            // 카카오톡 회원가입 유저인지 확인
-            int countUserEmail = kakaoMapper.getUserEmailCoun(user);
-            if (countUserEmail > 0) { // 회원가입한 유저
-                UserDTO userInfo = kakaoMapper.getUserInfo(user); // user_no, email, password, user_type_code...
-                System.out.println("회원가입한 유저 정보 확인 (userInfo) ::::  "+userInfo);
+                        Map<String, Object> map = userService.insertUser(userDTO);
 
-                Map<String, Object> map = new HashMap<>();
-                map.put("userLoginInfo",userInfo);
-                map.put("code","success");
-                map.put("message","로그인 성공!");
-
-                sessionUtil.loginUser((UserDTO) map.get("userLoginInfo"));
-                return createModelAndView("jsp/index", userInfo);
-            }
-            // 처음 카카오톡 회원가입한 유저
-            System.out.println("userInfoByToken 정보 확인 ::::  "+userInfoByToken);
-            user.setPassword("1234"); // 비번
-            user.setPassword2("1234");
-            user.setUserTypeCode("10"); //회원 유형 코드
-            user.setLoginTypeCode("20"); //로그인 유형 코드
-            System.out.println("user에 넣은 정보 확인 :::  "+user);
-
-            Map<String, Object> map = userService.insertUser(user);
-
-            // 로그인을 위한 select 쿼리
-            if ("success".equals(map.get("code"))) {
-                UserDTO userInfo = userMapper.getLoginUserInfo(user); //user_no, email, password, user_type_code...
-
-                System.out.println("로그인을 위한 select 쿼리 정보(userInfo)"+userInfo);
-
-                user.setUserNo(userInfo.getUserNo());
-                user.setEmail(userInfo.getEmail());
-                user.setUserTypeCode(userInfo.getUserTypeCode());
-
-                System.out.println("session에 넘겨주기 위해 저장한 정보 확인 ::: "+user);
-
-                map.put("userLoginInfo",user);
-                map.put("code","success");
-                map.put("message","로그인 성공!");
-                sessionUtil.loginUser((UserDTO) map.get("userLoginInfo"));
-            }
-
-            return createModelAndView("jsp/index", null);
+                        if ("success".equals(map.get("code"))) {
+                            UserDTO userInfo = userMapper.getLoginUserInfo(userDTO); //user_no, email, password, user_type_code...
+                            handleExistingUser(userInfo, modelAndView);
+                        }
+                    }
+            );
         } else {
-            return createModelAndView("jsp/user/login", null);
+            modelAndView.setViewName("jsp/user/login");
         }
+        return modelAndView;
     }
 
 
@@ -119,7 +97,7 @@ public class KakaoServiceImple implements KakaoService{
     }
 
     ///액세스 토큰으로 사용자 정보를 가져옴
-    private JsonNode getUserInfo(RestTemplate restTemplate, String accessToken) {
+    private JsonNode getKakaoUserInfo(RestTemplate restTemplate, String accessToken) {
         String userInfoResponse = restTemplate.getForObject(kakaoUserInfoUrl + "?access_token=" + accessToken, String.class);
         ObjectMapper mapper = new ObjectMapper();
 
@@ -131,11 +109,8 @@ public class KakaoServiceImple implements KakaoService{
         }
     }
 
-    //modelAndView
-    private ModelAndView createModelAndView(String viewName, UserDTO userInfo) {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName(viewName);
-        mav.addObject("userInfo", userInfo);
-        return mav;
+    private void handleExistingUser(UserDTO userInfo, ModelAndView modelAndView) {
+        sessionUtil.loginUser(userInfo);
+        modelAndView.setViewName("jsp/index");
     }
 }

@@ -22,7 +22,8 @@ VALUES
     ('salary_type', '급여 종류 코드', '급여 종류를 나타내는 코드', 1, 1),
     ('job_day_type', '근무 날짜 종류 코드', '근무 날짜 종류를 나타내는 코드', 1, 1),
     ('employment_type', '고용 유형 코드', '고용 유형을 나타내는 코드', 1, 1),
-    ('status_type', '지원 상태 코드', '지원 상태를 나타내는 코드', 1, 1);
+    ('status_type', '지원 상태 코드', '지원 상태를 나타내는 코드', 1, 1),
+    ('login_type', '로그인 상태 코드', '로그인 종류를 나타내는 코드', 1, 1);
 
 
 -- code_detail definition
@@ -134,19 +135,42 @@ VALUES
     ('status_type', 'OPEN', '구인 중', '채용이 진행 중임', 1, NULL, 1,  1),
     ('status_type', 'CLOSED', '채용 마감', '채용이 마감됨', 1, NULL, 1,  1);
 
+-- 로그인 상태 코드
+INSERT INTO code_detail
+(group_code, detail_code, detail_name, description, code_used, user_defined_value, system_register_id, system_updater_id)
+VALUES
+    ('login_type', '10', '일반로그인', '일반적인 회원가입을 통해 로그인한 사용자를 나타내는 코드', 1, NULL, 1,  1),
+    ('login_type', '20', '카카오로그인', '카카오톡 회원가입을 통해 로그인한 사용자를 나타내는 코드', 1, NULL, 1,  1);
+
 -- user_info definition
 drop table if exists user_info;
 CREATE TABLE user_info (
                            user_no int NOT NULL AUTO_INCREMENT COMMENT '사용자 번호',
                            email varchar(255) NOT NULL COMMENT '이메일',
                            password varchar(255) NOT NULL COMMENT '비밀번호',
-                           user_type_code varchar(255) NOT NULL COMMENT '사용자 유형 코드',
+                           user_type_code varchar(10) NOT NULL COMMENT '사용자 유형 코드',
+                           login_type_code varchar(10) DEFAULT NULL,
                            system_register_id int NOT NULL COMMENT '시스템 등록자 ID',
                            system_register_datetime timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '시스템 등록 날짜',
                            system_updater_id int NOT NULL COMMENT '시스템 수정자 ID',
                            system_update_datetime timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '시스템 수정 날짜',
                            PRIMARY KEY (user_no)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='사용자 정보 테이블';
+
+
+drop table if exists notification_info;
+CREATE TABLE notification_info (
+                                 notify_id int(11) NOT NULL AUTO_INCREMENT,
+                                 user_no int(11) NOT NULL COMMENT '사용자 번호',
+                                 message text NOT NULL COMMENT '메시지',
+                                 notify_type_code varchar(50) NOT NULL COMMENT '알림 유형 코드',
+                                 show_yn varchar(2) DEFAULT 'N' COMMENT '확인 여부',
+                                 system_register_id int(11) NOT NULL COMMENT '시스템 등록자 ID',
+                                 system_register_datetime timestamp NULL DEFAULT current_timestamp() COMMENT '시스템 등록 날짜',
+                                 system_updater_id int(11) NOT NULL COMMENT '시스템 수정자 ID',
+                                 system_update_datetime timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT '시스템 수정 날짜',
+                                 PRIMARY KEY (notify_id)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='알림 정보 테이블';
 
 
 -- company_info definition

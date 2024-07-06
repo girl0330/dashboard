@@ -7,12 +7,12 @@ public class NotificationDTO {
     private Long notifyId;
     private int userNo;
     private String message;
-    private String type;
+    private String notifyTypeCode;
     private String showYn;
 
-    public NotificationDTO(int userNo, String message, String type) {
+    public NotificationDTO(int userNo, String message, String notifyTypeCode) {
         this.userNo = userNo;
         this.message = message;
-        this.type = type;
+        this.notifyTypeCode = notifyTypeCode;
     }
 }

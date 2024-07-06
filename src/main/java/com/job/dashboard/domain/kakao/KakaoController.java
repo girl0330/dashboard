@@ -24,7 +24,6 @@ public class KakaoController {
 
     @GetMapping("/kakao/login")
     public String kakaoLoginView() {
-        System.out.println("카카오 로그인 ");
         return "redirect:" + kakaoAuthUrl + "?client_id=" + clientId + "&redirect_uri=" + redirectUri + "&response_type=code";
     }
 

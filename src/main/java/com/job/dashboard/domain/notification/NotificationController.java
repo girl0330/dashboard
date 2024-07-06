@@ -41,7 +41,7 @@ public class NotificationController {
      * */
     @PostMapping("/send/{userNo}")
     public void sendNotification(@PathVariable int userNo, @RequestBody NotificationDTO request) {
-        notificationService.sendNotification(userNo, request.getMessage(), request.getType());
+        notificationService.sendNotification(userNo, request.getMessage(), request.getNotifyTypeCode());
     }
 
     /**

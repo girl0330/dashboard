@@ -7,15 +7,15 @@
             NOTIFY_ID,
             USER_NO,
             MESSAGE,
-            TYPE,
+            NOTIFY_TYPE_CODE,
             SHOW_YN
-          FROM notifications WHERE user_no = #{userNo} AND show_yn = 'N'
+          FROM notification_info WHERE user_no = #{userNo} AND show_yn = 'N'
     </select>
 
     <insert id="insertNotification" parameterType="com.job.dashboard.domain.dto.NotificationDTO">
         INSERT /* NotificationMapper.insertNotification */
-          INTO notifications (user_no, message, type, system_register_id, system_updater_id)
-        VALUES (#{userNo}, #{message}, #{type}, #{userNo}, #{userNo})
+          INTO notification_info (user_no, message, NOTIFY_TYPE_CODE, system_register_id, system_updater_id)
+        VALUES (#{userNo}, #{message}, #{notifyTypeCode}, #{userNo}, #{userNo})
     </insert>
 
 </mapper>
