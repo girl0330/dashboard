@@ -52,10 +52,6 @@ public class UserServiceImpl implements UserService{
         String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
 
         userDTO.setPassword(encodedPassword);
-        if (userDTO.getLoginTypeCode() != null) {
-            userDTO.setLoginTypeCode("20");
-            System.out.println("userDTO확인- 카카오톡으로 로그인 ::: "+userDTO);
-        }
 
         userMapper.insertUser(userDTO);
         map.put("code", "success");

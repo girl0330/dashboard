@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.kakao.KakaoMapper">
-    <select id="getUserEmailCoun" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="int">
-        SELECT /*KakaoMapper.getUserEmailCoun*/
-            count(*) AS countemail
-        FROM user_info
-        WHERE email = #{email}
-    </select>
-
-    <select id="getUserInfo" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="com.job.dashboard.domain.dto.UserDTO">
+    <select id="getUserInfo" resultType="com.job.dashboard.domain.dto.UserDTO">
         SELECT /*KakaoMapper.getUserInfo*/
             user_no,
             email,
@@ -19,7 +12,6 @@
             system_updater_id,
             system_update_datetime
         FROM user_info
-        WHERE email = #{email}
-
+        WHERE email = #{kakaoUserId}
     </select>
 </mapper>

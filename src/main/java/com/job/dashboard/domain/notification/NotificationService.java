@@ -28,9 +28,9 @@ public class NotificationService {
         return emitter;
     }
 
-    public void sendNotification(int userNo, String message, String type) {
-        NotificationDTO notification = new NotificationDTO(userNo, message, type);
-        if(!"connect".equals(type)) {
+    public void sendNotification(int userNo, String message, String notifyTypeCode) {
+        NotificationDTO notification = new NotificationDTO(userNo, message, notifyTypeCode);
+        if(!"connect".equals(notifyTypeCode)) {
             notificationMapper.insertNotification(notification);
         }
         SseEmitter emitter = emitterRepository.get(userNo);
@@ -40,7 +40,7 @@ public class NotificationService {
             try {
                 emitter.send(SseEmitter.event()
                         .id(eventId)
-                        .name(type)
+                        .name(notifyTypeCode)
                         .data(message)
                         .comment("신규 알림"));
             } catch (IOException e) {
