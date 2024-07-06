@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.user;
 
 import com.job.dashboard.domain.dto.UserDTO;
+import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.exception.CustomException;
 import com.job.dashboard.exception.ExceptionErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -100,6 +101,50 @@ public class UserServiceImpl implements UserService{
         map.put("userLoginInfo",user);
         map.put("code","success");
         map.put("message","로그인 성공!");
+        return map;
+    }
+
+    // 이메일 확인
+    public Boolean getCheckEmail(String email) {
+        int checkEmail = userMapper.getCheckEmail(email);
+        if (checkEmail < 1) { // 유저 정보 없음.
+            throw new CustomException(ExceptionErrorCode.MEMBER_NOT_FOUND_TOKEN);
+        }
+        return true;
+    }
+
+    //신원 확인
+    public Map<String, Object> getCheckIdentity(UserProfileInfoDTO userProfileInfoDTO) {
+        int checkIdentity = userMapper.getCheckIdentity(userProfileInfoDTO);
+        System.out.println("checkIdenttity:::"+checkIdentity);
+
+        if(checkIdentity != 1) {
+            throw new CustomException(ExceptionErrorCode.EXCEPTION_MESSAGE,"email과 일치하는 정보가 없습니다, 다시 확인해주세요");
+        }
+        String randomString = RandomString.generateRandomString(10);
+        System.out.println("Generated Random String:::" + randomString);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("randomString",randomString);
+        return map;
+    }
+
+    // 비밀번호 재설정
+    public Map<String, Object> passwordReset(UserDTO userDTO) {
+        //비밀번호 1,2 동일 체크
+        if (!Objects.equals(userDTO.getPassword(), userDTO.getPassword2())) {
+            throw new CustomException(ExceptionErrorCode.NEW_PASSWORD_MISMATCH_TOKEN);
+        }
+
+        String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+        System.out.println("encodedPassword:::  "+encodedPassword);
+        userDTO.setPassword(encodedPassword);
+
+        userMapper.updatePassword(userDTO);
+        Map<String, Object>map = new HashMap<>();
+        map.put("code", "success");
+        map.put("message", "비밀번호 변경 성공, 로그인 화면으로 이동합니다.");
+
         return map;
     }
 }

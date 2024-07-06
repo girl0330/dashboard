@@ -131,7 +131,7 @@ const validation = {
 			return valid;
 		}
 		if (password2 !== password3 ) {
-			alert("비밀번호를 확인해주세요.")
+			alert("입력한 비밀번호와 일치하지 않습니다.")
 			$('#'+focusId3).focus();
 			valid = false;
 			return valid;

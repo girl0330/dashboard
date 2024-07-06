@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.user;
 
 import com.job.dashboard.domain.dto.UserDTO;
+import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -70,7 +71,34 @@ public class UserController {
     //비밀번호 재설정
     @GetMapping("/findPassword")
     public String findPasswordView() {
-        return "jsp/findPassword";
+        return "jsp/user-findPassword";
+    }
+
+    //재설정- 이메일 확인
+    @PostMapping("/checkEmail")
+    @ResponseBody
+    public Boolean getCheckEmail(@RequestBody UserDTO userDTO) {
+        return userService.getCheckEmail(userDTO.getEmail());
+    }
+
+    //재설정- 이름, 폰번호 확인
+    @PostMapping("/checkIdentity")
+    @ResponseBody
+    public Map<String, Object> checkIdntity(@RequestBody UserProfileInfoDTO userProfileInfoDTO, Model model) {
+        System.out.println("이름, 폰번호, email 확인 ::::  "+userProfileInfoDTO.getName() + "/" +userProfileInfoDTO.getPhone()+ "/" +userProfileInfoDTO.getEmail());
+        Map<String, Object> map = userService.getCheckIdentity(userProfileInfoDTO);
+
+        System.out.println("randomString확인 ::::  "+map.get("randomString"));
+        model.addAttribute("randomString", map.get("randomString"));
+        return map;
+    }
+
+    //재설정- 비밀번호 재설정
+    @PostMapping("/passwordReset")
+    @ResponseBody
+    public Map<String, Object> passwordReset(@RequestBody UserDTO userDTO) {
+        System.out.println("넘어온 데이터 확인 ::::  "+userDTO);
+        return userService.passwordReset(userDTO);
     }
 
 }

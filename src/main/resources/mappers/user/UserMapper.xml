@@ -60,5 +60,31 @@
           AND password = #{password}
     </select>
 
+    <select id="getCheckEmail" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="int">
+        SELECT /*UserMapper.getCheckEmail*/
+            count(*) AS countemail
+        FROM user_info
+        WHERE email = #{email}
+    </select>
+
+    <select id="getCheckIdentity" parameterType="com.job.dashboard.domain.dto.UserProfileInfoDTO" resultType="int">
+        SELECT /*UserMapper.getCheckIdentity*/
+            count(*) AS countIdentity
+        FROM user_info ui
+                 INNER JOIN user_profile_info upi ON ui.user_no = upi.user_no
+        WHERE ui.email = #{email}
+          AND upi.name = #{name}
+          AND upi.phone = #{phone}
+    </select>
+
+    <select id="updatePassword" parameterType="com.job.dashboard.domain.dto.UserDTO">
+        UPDATE /* UserMapper.updatePassword */
+            user_info
+        SET
+            PASSWORD = #{password},
+            SYSTEM_UPDATE_DATETIME = now()
+        WHERE
+            email = #{email}
+    </select>
 </mapper>
 
