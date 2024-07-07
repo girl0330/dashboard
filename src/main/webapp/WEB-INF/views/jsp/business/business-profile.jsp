@@ -190,9 +190,6 @@
         });
     });
 
-    const parentIds = ['industryCode'];
-    const groupCodes = ['industry'];
-    selectUtils.ajaxOption(parentIds, groupCodes);
 </script>
 <!--=================================
 Dashboard Nav -->
@@ -246,6 +243,7 @@ My Profile -->
                             <div class="form-group col-md-4 mb-3 select-border">
                                 <label class="form-label" for="industryCode">산업종류<span class="font-danger">*</span></label>
                                 <select class="form-control basic-select" id="industryCode" name="industryCode" data-valid="true" data-name="산업종류">
+                                    <option value="">선택</option>
                                     <c:forEach var="industry" items="${industry}">
                                         <option value="${industry.value}" ${company.industryCode == industry.value ? 'selected="selected"' : ''}>${industry.text}</option>
                                     </c:forEach>
@@ -255,6 +253,7 @@ My Profile -->
                             <div class="form-group col-md-4 mb-3 select-border">
                                 <label class="form-label" for="businessTypeCode">회사종류<span class="font-danger">*</span></label>
                                 <select class="form-control basic-select" name="businessTypeCode" id="businessTypeCode" data-valid="true" data-name="회사종류">
+                                    <option value="">선택</option>
                                     <c:forEach var="businessType" items="${businessType}">
                                         <option value="${businessType.value}" ${company.businessTypeCode == businessType.value ? 'selected="selected"' : ''}>${businessType.text}</option>
                                     </c:forEach>

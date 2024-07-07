@@ -162,7 +162,7 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
     //파일 유효성 검사
     private void validateFile(Map<String, Object> fileInfo ) throws CustomException {
-        String[] allowedExtensions = { ".jpg", ".jpeg" };
+        String[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
         String fileExtension = (String) fileInfo.get("fileExtension");
         System.out.println("넘어온 파일 확장자:::::    "+fileExtension);
         Long fileSize = (Long) fileInfo.get("fileSize");
