@@ -218,7 +218,7 @@ Signin -->
                   </div>
                   <div class="col-md-6">
                     <div class="mt-3 mt-md-0 forgot-pass">
-                      <a href="#">비밀번호 찾기</a>
+                      <a href="/user/findPassword">비밀번호 찾기</a>
                       <p class="mt-1">회원이 아니신가요? <a href="/user/signup"> 회원가입 하기</a></p>
                     </div>
                   </div>

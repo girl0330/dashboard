@@ -70,7 +70,7 @@ public class KakaoServiceImple implements KakaoService {
                     }
             );
         } else {
-            modelAndView.setViewName("jsp/user/login");
+            modelAndView.setViewName("redirect:/user/login");
         }
         return modelAndView;
     }
@@ -111,6 +111,6 @@ public class KakaoServiceImple implements KakaoService {
 
     private void handleExistingUser(UserDTO userInfo, ModelAndView modelAndView) {
         sessionUtil.loginUser(userInfo);
-        modelAndView.setViewName("jsp/index");
+        modelAndView.setViewName("redirect:/");
     }
 }

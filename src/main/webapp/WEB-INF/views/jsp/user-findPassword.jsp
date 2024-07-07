@@ -161,6 +161,7 @@
                     console.log(response);
                     alert(response.randomString);
                     $("#randomString").val(response.randomString);
+                    $("#confirm_string_box").addClass("active show");
 
                 }
             };
@@ -292,29 +293,31 @@
                     <h4>본인 확인</h4>
                 </div>
                 <div class="row">
-                    <form class="row align-items-end justify-content-center">
-                        <div class="form-group col-md-4 mb-md-0 mb-3">
+                    <form class="row align-items-end justify-content-center mb-3">
+                        <div class="form-group col-md-2 mb-md-0 mb-3">
                             <label class="mb-2">이름</label>
                             <input type="text" id="userName" name="name" class="form-control" value="">
                         </div>
-                        <div class="form-group col-md-4 mb-md-0 mb-3">
+                        <div class="form-group col-md-3 mb-md-0 mb-3">
                             <label class="mb-2">휴대폰 번호</label>
                             <input type="text" class="form-control" id="userPhone" name="phone" value="">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <a class="btn btn-outline-primary d-grid" id="identityCheckBtn" href="#">확인</a>
                             <input type="hidden" id="randomString">
                         </div>
                     </form>
-                    <form class="row align-items-end justify-content-center">
-                        <div class="form-group col-md-4">
-                            <label class="mb-2">인증번호 확인</label>
-                            <input type="text" id="confirmString" class="form-control" value="">
-                        </div>
-                        <div class="col-md-3">
-                            <a class="btn btn-outline-primary d-grid" id="confirm" href="#">확인</a>
-                        </div>
-                    </form>
+                    <div class="tab-pane fade" id="confirm_string_box">
+                        <form class="row align-items-end justify-content-center">
+                            <div class="form-group col-md-5">
+                                <label class="mb-2">인증번호 확인</label>
+                                <input type="text" id="confirmString" class="form-control" value="">
+                            </div>
+                            <div class="col-md-2">
+                                <a class="btn btn-outline-primary d-grid" id="confirm" href="#">확인</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>

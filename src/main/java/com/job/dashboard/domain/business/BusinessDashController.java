@@ -79,12 +79,10 @@ public class BusinessDashController {
             return "redirect:/";
         }
 
+        System.out.println("");
         //기존 프로필 가져오기
         int userNo = (int) sessionUtil.getAttribute("userNo");
         CompanyInfoDTO businessProfileInfo = businessDashService.getBusinessProfileInfo();
-        if (businessProfileInfo == null) {
-            return "jsp/business/business-profile";
-        }
 
         //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
@@ -92,6 +90,7 @@ public class BusinessDashController {
             model.addAttribute("fileId", file.getFileId());
         }
 
+        System.out.println("?");
         System.out.println("i::::::::::::  "+commonService.getSelectBoxOption("industry"));
         System.out.println("businessType 확인 :::: "+commonService.getSelectBoxOption("business_type"));
         System.out.println("b:::::::::::: "+businessProfileInfo);
