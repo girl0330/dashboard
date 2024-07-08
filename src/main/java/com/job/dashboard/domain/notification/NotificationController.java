@@ -31,7 +31,8 @@ public class NotificationController {
         }
 
         int userNo = (int)sessionUtil.getAttribute("userNo");
-        SseEmitter emitter = notificationService.subscribe(userNo);
+
+        SseEmitter emitter = notificationService.subscribe(userNo); //SseEmitter 서버에서 클라이언트로 비동기 이벤트를 보내는 데 사용
         logger.info("User {} subscribed", userNo);
         return new ResponseEntity<>(emitter, HttpStatus.OK);
     }

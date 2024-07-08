@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.domain.dto.LikeDTO;
+import com.job.dashboard.domain.notification.NotificationService;
 import com.job.dashboard.exception.CustomException;
 import com.job.dashboard.exception.ExceptionErrorCode;
 import com.job.dashboard.util.SessionUtil;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
     private final SessionUtil sessionUtil;
+    private final NotificationService notificationService;
 
     //프로필 확인
     public int profileCheck(int userNo) {
@@ -156,6 +158,11 @@ public class PostServiceImpl implements PostService {
 
         jobApplicationDTO.setStatusTypeCode("APPLIED"); // APPLIED : 지원중, CANCELLED : 지원취소
 
+        //공고 작성한 userNo가져오기
+        int businessUserNo = postMapper.getWriteUserNo(jobApplicationDTO.getJobId());
+
+        notificationService.sendNotification(businessUserNo, userNo+"님이 지원 하셨습니다. ","app"); //(기업 회원한테 보낼 알림)
+
         System.out.println("insert하기 전 지원 data확인 :::::       "+jobApplicationDTO);
         //insert
         postMapper.insertJobApplicationInfo(jobApplicationDTO);
@@ -164,6 +171,7 @@ public class PostServiceImpl implements PostService {
         map.put("message", "지원 성공!");
         return map;
     }
+
 
     //공고취소하기
     @Transactional

@@ -236,23 +236,6 @@ Signin -->
                 </a>
               </div>
             </fieldset>
-              <%--              <div class="social-login">--%>
-<%--                <ul class="list-unstyled d-flex mb-0">--%>
-<%--                  <li class="facebook text-center">--%>
-<%--                    <a href="#"> <i class="fab fa-facebook-f me-4"></i>Login with Facebook</a>--%>
-<%--                  </li>--%>
-<%--                  <li class="twitter text-center">--%>
-<%--                    <a href="#"> <i class="fab fa-twitter me-4"></i>Login with Twitter</a>--%>
-<%--                  </li>--%>
-<%--                  <li class="google text-center">--%>
-<%--                    <a href="#"> <i class="fab fa-google me-4"></i>Login with Google</a>--%>
-<%--                  </li>--%>
-<%--                  <li class="linkedin text-center">--%>
-<%--                    <a href="#"> <i class="fab fa-linkedin-in me-4"></i>Login with Linkedin</a>--%>
-<%--                  </li>--%>
-<%--                </ul>--%>
-<%--              </div>--%>
-
           </div>
         </div>
       </div>
