@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 	const startSse = () => {
-		const eventSource = new EventSource('/api/v1/notification/subscribe');
+		const eventSource = new EventSource('/api/v1/notification/subscribe'); // SSE 엔드포인트 (서버와 SSE 연결을 설정)
 
 		eventSource.onmessage = event => {
 			alert("Notification: " + event.data);

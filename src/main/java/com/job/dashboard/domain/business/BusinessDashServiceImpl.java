@@ -6,6 +6,7 @@ import com.job.dashboard.domain.dto.CompanyInfoDTO;
 import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.domain.notification.NotificationService;
 import com.job.dashboard.exception.CustomException;
 import com.job.dashboard.exception.ExceptionErrorCode;
 import com.job.dashboard.util.SessionUtil;
@@ -32,6 +33,7 @@ import static org.flywaydb.core.internal.util.StringUtils.getFileExtension;
 public class BusinessDashServiceImpl implements BusinessDashService{
     private final BusinessDashMapper businessDashMapper;
     private final SessionUtil sessionUtil;
+    private final NotificationService notificationService;
 
     //파일 인스턴스 변수들
     @Value("${image.upload.dir}")
@@ -275,6 +277,10 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         Map<String, Object> map = new HashMap<>();
 
         businessDashMapper.employCandidate(jobApplicationDTO);
+
+        int userNo = jobApplicationDTO.getUserNo();
+        notificationService.sendNotification(userNo, "채용 되었습니다.","hir"); // (개인유저한테 알려줘야함.)
+
         map.put("code", "success");
         map.put("message", "성공적으로 채용했습니다.");
 

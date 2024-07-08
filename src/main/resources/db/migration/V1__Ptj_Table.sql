@@ -23,7 +23,8 @@ VALUES
     ('job_day_type', '근무 날짜 종류 코드', '근무 날짜 종류를 나타내는 코드', 1, 1),
     ('employment_type', '고용 유형 코드', '고용 유형을 나타내는 코드', 1, 1),
     ('status_type', '지원 상태 코드', '지원 상태를 나타내는 코드', 1, 1),
-    ('login_type', '로그인 상태 코드', '로그인 종류를 나타내는 코드', 1, 1);
+    ('login_type', '로그인 상태 코드', '로그인 종류를 나타내는 코드', 1, 1),
+    ('notify_type_code', '알림 종류 코드', '알림 종류를 나타내는 코드', 1, 1);
 
 
 -- code_detail definition
@@ -141,6 +142,13 @@ INSERT INTO code_detail
 VALUES
     ('login_type', '10', '일반로그인', '일반적인 회원가입을 통해 로그인한 사용자를 나타내는 코드', 1, NULL, 1,  1),
     ('login_type', '20', '카카오로그인', '카카오톡 회원가입을 통해 로그인한 사용자를 나타내는 코드', 1, NULL, 1,  1);
+
+-- 알림 종류 코드
+INSERT INTO code_detail
+(group_code, detail_code, detail_name, description, code_used, user_defined_value, system_register_id, system_updater_id)
+VALUES
+    ('notify_type', 'APP', '지원함', '구직자가 회사 지원했음을 알려주는 코드', 1, NULL, 1,  1),
+    ('notify_type', 'HIR', '채용함', '고용주가 구직자를 채용했음을 알려주는 코드', 1, NULL, 1,  1);
 
 -- user_info definition
 drop table if exists user_info;

@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationService {
 
-    private static final Long DEFAULT_TIMEOUT = 60 * 1000L;
+    private static final Long DEFAULT_TIMEOUT = 5 * 60 * 1000L; //5분설정
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
     private final EmitterRepository emitterRepository;
@@ -23,18 +23,21 @@ public class NotificationService {
 
 
     public SseEmitter subscribe(int userNo) {
-        SseEmitter emitter = createEmitter(userNo);
+        SseEmitter emitter = createEmitter(userNo); //userNo를 eitter객체로 생성
         sendNotification(userNo, "SSE 연결 완료.", "connect");
         return emitter;
     }
 
     public void sendNotification(int userNo, String message, String notifyTypeCode) {
         NotificationDTO notification = new NotificationDTO(userNo, message, notifyTypeCode);
-        if(!"connect".equals(notifyTypeCode)) {
-            notificationMapper.insertNotification(notification);
+        if(!"connect".equals(notifyTypeCode)) { //notifyTypeCode가 connect가 아니면 DB에 notifyTypeCode가 저장됨.
+            notificationMapper.insertNotification(notification); // 알림보낼 타입 코드 저장
         }
-        SseEmitter emitter = emitterRepository.get(userNo);
-        String eventId = userNo + "_" + System.currentTimeMillis();
+        SseEmitter emitter = emitterRepository.get(userNo);  //emitter객체 꺼내옴
+        String eventId = userNo + "_" + System.currentTimeMillis(); //emitter객체 식별
+
+        System.out.println("eventId ;;"+eventId);
+        System.out.println("emitter::   "+emitter);
 
         if (emitter != null) {
             try {
@@ -54,6 +57,7 @@ public class NotificationService {
     }
 
     public List<NotificationDTO> getNotificationsByUserId(int userNo) {
+        System.out.println("userNo가 넘어옴? ::: " + userNo);
         return notificationMapper.findNotificationsByUserNo(userNo);
     }
 
@@ -72,4 +76,6 @@ public class NotificationService {
 
         return emitter;
     }
+
+    // 알림 삭제 ?
 }

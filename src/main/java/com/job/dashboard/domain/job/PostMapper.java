@@ -52,7 +52,7 @@ public interface PostMapper {
     int getCountJobs ();
 
     // 작성한 userNo
-    Integer getWriteUserNo(int jobId);
+    int getWriteUserNo(int jobId);
 
 
     //like

@@ -4,6 +4,7 @@ package com.job.dashboard.domain.job;
 import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.common.CommonService;
 import com.job.dashboard.domain.dto.*;
+import com.job.dashboard.domain.notification.NotificationService;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ public class PostController {
     private final PostService postService;
     private final SessionUtil sessionUtil;
     private final CommonService commonService;
+    private final NotificationService notificationService;
 
     //공고작성 페이지
     @GetMapping("/writePostJob")
@@ -169,7 +171,7 @@ public class PostController {
 
     @PostMapping("/apply")
     @ResponseBody
-    public Map<String, Object> applyJobPost(@RequestBody JobApplicationDTO jobApplicationDTO){
+    public Map<String, Object> applyJobPost(@RequestBody JobApplicationDTO jobApplicationDTO){ //jobId
         System.out.println("지원하면 들어오는 정보 확인 ::::::    "+jobApplicationDTO);
         return postService.applyJobPost(jobApplicationDTO);
     }
@@ -178,5 +180,16 @@ public class PostController {
     @ResponseBody
     public Map<String, Object> applyCancelJob(@RequestBody Integer jobId){
         return postService.applyCancelJob(jobId);
+    }
+
+    //알람 리스트 api
+    @GetMapping("/api/alramList")
+    @ResponseBody
+    public List<NotificationDTO> alramList() {
+        System.out.println("알람 리스트 확인 ;;;");
+
+        int userNo = (int) sessionUtil.getAttribute("userNo");
+
+        return notificationService.getNotificationsByUserId(userNo);
     }
  }
