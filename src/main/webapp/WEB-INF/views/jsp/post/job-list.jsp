@@ -19,8 +19,8 @@
                     keyword: keyword
                 },
 
-                done: (response) => {
-                    $('#amount').text(response.total);
+                done: (response) => { //결과 받기
+                    $('#amount').text(response.total); // 결과중 total만 따로 빼서 id='amount'에 text형태로 넣기
                     keywordSearch.renderJobs(response);
                     renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
                 },
@@ -31,6 +31,7 @@
         },
         renderJobs: function(response){
             const list = response.list;
+            console.log("list 확인 ;; "+JSON.stringify(list));
             const likeList = response.likeList;
             const container = $("#jobList");
             container.empty();
