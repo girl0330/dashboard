@@ -183,13 +183,18 @@ public class PostController {
     }
 
     //알람 리스트 api
-    @GetMapping("/api/alramList")
+    @GetMapping("/api/notificationList")
     @ResponseBody
     public List<NotificationDTO> alramList() {
         System.out.println("알람 리스트 확인 ;;;");
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
-        return notificationService.getNotificationsByUserId(userNo);
+        List<NotificationDTO> notificationList =  notificationService.getNotificationsByUserId(userNo);
+
+        System.out.println("notificationList 정보 확인 :: "+notificationList);
+
+        return notificationList;
     }
+//
  }

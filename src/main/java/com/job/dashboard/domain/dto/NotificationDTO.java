@@ -6,9 +6,12 @@ import lombok.Data;
 public class NotificationDTO {
     private Long notifyId;
     private int userNo;
+    private String name;
     private String message;
     private String notifyTypeCode;
     private String showYn;
+    private int systemRegisterId;
+    private String systemRegisterDatetime;
 
     public NotificationDTO(int userNo, String message, String notifyTypeCode) {
         this.userNo = userNo;

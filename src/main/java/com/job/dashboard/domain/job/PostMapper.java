@@ -65,5 +65,8 @@ public interface PostMapper {
 
     int getCountUserStatusCode(Map<String, Object> map);
 
+    //지원한 user이름 가져오기
+    UserProfileInfoDTO getUserName(int userNo);
+
 //    int getFile();
 }

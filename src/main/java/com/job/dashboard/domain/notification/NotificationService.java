@@ -1,6 +1,7 @@
 package com.job.dashboard.domain.notification;
 
 import com.job.dashboard.domain.dto.NotificationDTO;
+import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +31,14 @@ public class NotificationService {
 
     public void sendNotification(int userNo, String message, String notifyTypeCode) {
         NotificationDTO notification = new NotificationDTO(userNo, message, notifyTypeCode);
+
+        SessionUtil sessionUtil = new SessionUtil();
+
+        notification.setSystemRegisterId((int) sessionUtil.getAttribute("userNo"));
         if(!"connect".equals(notifyTypeCode)) { //notifyTypeCode가 connect가 아니면 DB에 notifyTypeCode가 저장됨.
             notificationMapper.insertNotification(notification); // 알림보낼 타입 코드 저장
         }
+
         SseEmitter emitter = emitterRepository.get(userNo);  //emitter객체 꺼내옴
         String eventId = userNo + "_" + System.currentTimeMillis(); //emitter객체 식별
 
@@ -56,7 +62,7 @@ public class NotificationService {
         }
     }
 
-    public List<NotificationDTO> getNotificationsByUserId(int userNo) {
+    public List<NotificationDTO> getNotificationsByUserId(int userNo) { //로그인 한사람
         System.out.println("userNo가 넘어옴? ::: " + userNo);
         return notificationMapper.findNotificationsByUserNo(userNo);
     }

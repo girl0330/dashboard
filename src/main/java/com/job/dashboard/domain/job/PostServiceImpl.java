@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.domain.dto.LikeDTO;
+import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.domain.notification.NotificationService;
 import com.job.dashboard.exception.CustomException;
 import com.job.dashboard.exception.ExceptionErrorCode;
@@ -160,8 +161,12 @@ public class PostServiceImpl implements PostService {
 
         //공고 작성한 userNo가져오기
         int businessUserNo = postMapper.getWriteUserNo(jobApplicationDTO.getJobId());
+        System.out.println("businessUserNO 확인: "+businessUserNo);
 
-        notificationService.sendNotification(businessUserNo, userNo+"님이 지원 하셨습니다. ","app"); //(기업 회원한테 보낼 알림)
+        //지원한 유저의 이름 가져오기
+        UserProfileInfoDTO userProfileInfoDTO = postMapper.getUserName(userNo);
+
+        notificationService.sendNotification(businessUserNo, userProfileInfoDTO.getName()+"님이 지원 하셨습니다. ","app"); //(기업 회원한테 보낼 알림)
 
         System.out.println("insert하기 전 지원 data확인 :::::       "+jobApplicationDTO);
         //insert

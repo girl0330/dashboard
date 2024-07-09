@@ -273,4 +273,11 @@
         FROM job_like_info
         WHERE user_no = #{userNo}
     </select>
+
+    <select id="getUserName" parameterType="int" resultType="com.job.dashboard.domain.dto.UserProfileInfoDTO">
+        SELECT  /*PostMapper.getUserName*/
+            name
+        FROM user_profile_info
+        WHERE user_no = #{userNo}
+    </select>
 </mapper>

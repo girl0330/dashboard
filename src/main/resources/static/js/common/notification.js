@@ -10,6 +10,16 @@ document.addEventListener("DOMContentLoaded", () => {
 			console.log("Notification: " + event.data);
 		});
 
+		//지원 알림
+		eventSource.addEventListener('app', event => {
+			console.log("app: " + event.data);
+		});
+
+		//채용 알림
+		eventSource.addEventListener('hir', event => {
+			console.log("hir: " + event.data);
+		});
+
 		eventSource.onerror = event => {
 			console.error("EventSource failed: ", event);
 			eventSource.close();

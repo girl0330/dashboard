@@ -4,18 +4,28 @@
 
     <select id="findNotificationsByUserNo" resultType="com.job.dashboard.domain.dto.NotificationDTO">
         SELECT /* NotificationMapper.findNotificationsByUserNo */
-            NOTIFY_ID,
-            USER_NO,
-            MESSAGE,
-            NOTIFY_TYPE_CODE,
-            SHOW_YN
-          FROM notification_info WHERE user_no = #{userNo} AND show_yn = 'N'
+            d.NOTIFY_ID,
+            d.USER_NO,
+            d.MESSAGE,
+            d.NOTIFY_TYPE_CODE,
+            d.SHOW_YN,
+            (
+                SELECT
+                    ifnull(b.company_name,c.NAME)
+                FROM
+                    user_info a
+                        LEFT JOIN company_info b ON a.user_no = b.user_no
+                        LEFT JOIN user_profile_info c ON a.user_no = c.USER_NO
+                WHERE a.user_no = d.system_register_id
+            ) AS 'name',
+                func_format_time_ago(d.system_register_datetime) AS system_register_datetime
+        FROM notification_info d WHERE d.user_no = #{userNo} AND d.show_yn = 'N'
     </select>
 
     <insert id="insertNotification" parameterType="com.job.dashboard.domain.dto.NotificationDTO">
         INSERT /* NotificationMapper.insertNotification */
-          INTO notification_info (user_no, message, NOTIFY_TYPE_CODE, system_register_id, system_updater_id)
-        VALUES (#{userNo}, #{message}, #{notifyTypeCode}, #{userNo}, #{userNo})
+          INTO notification_info (user_no, message, NOTIFY_TYPE_CODE, system_register_id, system_updater_id, system_register_datetime)
+        VALUES (#{userNo}, #{message}, #{notifyTypeCode}, #{systemRegisterId}, #{systemRegisterId}, now())
     </insert>
 
 </mapper>
