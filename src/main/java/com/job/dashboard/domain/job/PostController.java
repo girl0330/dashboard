@@ -166,7 +166,7 @@ public class PostController {
 
         postService.deleteJobPost(jobId);
         System.out.println("삭제됨");
-        return "redirect:/business/postJobList";
+        return "jsp/post/job-list";
     }
 
     @PostMapping("/apply")

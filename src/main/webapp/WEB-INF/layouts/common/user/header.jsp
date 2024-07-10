@@ -24,19 +24,16 @@
     }
     function notificationList(response) {
         console.log("확인 :::  " + JSON.stringify(response));
-        const container = $("#notificationList");
 
+        const container = $("#notificationList");
         container.empty();
 
         response.forEach((item, index) => {
-            let a = response.length;
-            let x = response.length - 1;
-            console.log("index::::   "+index+ "      a::::    "+a+"              x::::::         "+x);
+            const hrefUrl = item.userTypeCode === 10 ? '/personal/manageJobs' : '/business/managePostJob';
             const isLastItem = index === response.length - 1;
-            console.log("isLastItem:::   "+isLastItem);
             const notificationHtml =
                 '<li>' +
-                   '<a class="dropdown-item custom-dropdown-item" href="#">' +
+                   '<a class="dropdown-item custom-dropdown-item" href="' + hrefUrl  + '">' +
                         '<img src="https://via.placeholder.com/40" alt="avatar"/>' +
                         '<div class="content">' +
                             '<div class="header">' +
@@ -47,7 +44,6 @@
                         '</div>' +
                     '</a>' +
                 '</li>';
-
                 container.append(notificationHtml);
 
             if (!isLastItem) {
@@ -176,16 +172,17 @@
                     </a>
                     <ul class="dropdown-menu gap-1 p-2 rounded-3 mx-0 shadow w-220px" data-bs-theme="light">
                         <li class="dropdown-header text-sm">내 계정</li>
-                        <li>
-                            <a class="dropdown-item text-sm d-flex gap-2 align-items-center" href="/personal/myProfile">
-                                <img src="/images/svg/icon-person.svg" alt="mdo" width="20" height="20" class="bi">
-                                프로필
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
                         <c:if test="${sessionScope.userTypeCode == 10 }">
+                            <li>
+                                <a class="dropdown-item text-sm d-flex gap-2 align-items-center" href="/personal/myProfile">
+                                    <img src="/images/svg/icon-person.svg" alt="mdo" width="20" height="20" class="bi">
+                                    프로필
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
                             <li class="dropdown-header text-sm">개인회원</li>
                             <li>
                                 <a class="dropdown-item text-sm d-flex gap-2 align-items-center" href="/personal/manageJobs">
@@ -206,6 +203,15 @@
                         </c:if>
 
                         <c:if test="${sessionScope.userTypeCode == 20 }">
+                            <li>
+                                <a class="dropdown-item text-sm d-flex gap-2 align-items-center" href="/business/profile">
+                                    <img src="/images/svg/icon-person.svg" alt="mdo" width="20" height="20" class="bi">
+                                    프로필
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li class="dropdown-header text-sm">기업회원</li>
                             <li>
                                 <a class="dropdown-item text-sm dropdown-item-danger d-flex gap-2 align-items-center" href="/business/writePostJob">

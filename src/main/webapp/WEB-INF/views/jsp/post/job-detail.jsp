@@ -232,7 +232,7 @@ job list -->
                   <i class="font-xll text-primary align-self-center flaticon-users"></i>
                   <div class="feature-info-content ps-3">
                     <label class="mb-1">모집인원</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${jobPostDetail.numberOfStaff}</span>
+                    <span class="mb-0 fw-bold d-block text-dark">${jobPostDetail.numberOfStaff} 명</span>
                   </div>
                 </div>
               </div>
@@ -258,7 +258,6 @@ job list -->
             <hr>
             <div class="row">
               <h5 class="mb-4">근무조건</h5>
-
               <div class="col-md-4 col-sm-6 mb-4">
                 <div class="d-flex">
                   <i class="font-xll text-primary align-self-center flaticon-hand-shake"></i>
@@ -282,7 +281,7 @@ job list -->
                   <i class="font-xll text-primary align-self-center flaticon-hand-shake"></i>
                   <div class="feature-info-content ps-3">
                     <label class="mb-1">근무시간</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${jobPostDetail.jobTime}</span>
+                    <span class="mb-0 fw-bold d-block text-dark">${jobPostDetail.jobTime} 시간</span>
                   </div>
                 </div>
               </div>
@@ -300,25 +299,25 @@ job list -->
                   <i class="font-xll text-primary align-self-center flaticon-money"></i>
                   <div class="feature-info-content ps-3">
                     <label class="mb-1">금액</label>
-                    <span class="mb-0 fw-bold d-block text-dark">${jobPostDetail.salary}</span>
+                    <span class="mb-0 fw-bold d-block text-dark">${jobPostDetail.salary} 원</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <c:if test="${jobPostDetail.description != null }">
-            <div class="border p-4 mt-4 mt-lg-5">
-              <div class="my-4 my-lg-2">
-                <h5 class="mb-3 mb-md-4"></h5>
-                <p>${jobPostDetail.description}</p>
-              </div>
-            </div>
-          </c:if>
           <div class="border p-4 mt-4 mt-lg-5">
+            <h5 class="mb-4">모집내용</h5>
+            <div class="my-4 my-lg-2">
+              <h5 class="mb-3 mb-md-4"></h5>
+              <p>${jobPostDetail.description}</p>
+            </div>
+          </div>
+          <div class="border p-4 mt-4 mt-lg-5">
+            <h5 class="mb-4">근무지 위치</h5>
             <div class="company-address widget-box">
               <div class="company-address-map" id="map" style="width: 100%; height: 400px;"></div>
               <ul class="list-unstyled mt-3">
-                <li><a href="tel:+905389635487"><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="ps-2">${jobPostDetail.officePhone}</span></a></li>
+                <li><a href="tel:+905389635487"><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="ps-2">${jobPostDetail.managerNumber}</span></a></li>
                 <li><a href="mailto:ali.potenza@job.com"><i class="fas fa-envelope fa-fw"></i><span class="ps-2">${jobPostDetail.email}</span></a></li>
               </ul>
             </div>

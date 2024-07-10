@@ -278,8 +278,9 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
         businessDashMapper.employCandidate(jobApplicationDTO);
 
-        int userNo = jobApplicationDTO.getUserNo();
-        notificationService.sendNotification(userNo, "채용 되었습니다.","hir"); // (개인유저한테 알려줘야함.)
+        int userNo = jobApplicationDTO.getUserNo(); //지원한 userNo
+
+        notificationService.sendNotification(userNo, " 채용 되었습니다.","hir"); // (개인유저한테 알려줘야함.)
 
         map.put("code", "success");
         map.put("message", "성공적으로 채용했습니다.");
@@ -293,6 +294,11 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         Map<String, Object> map = new HashMap<>();
 
         businessDashMapper.cancelEmployCandidate(jobApplicationDTO);
+
+        int userNo = jobApplicationDTO.getUserNo(); //지원한 userNo
+
+        notificationService.sendNotification(userNo, " 채용 취소되었습니다.","hir"); // (개인유저한테 알려줘야함.)
+
         map.put("code", "success");
         map.put("message", "성공적으로 취소했습니다.");
 
