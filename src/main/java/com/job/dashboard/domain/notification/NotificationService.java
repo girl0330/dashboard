@@ -33,8 +33,8 @@ public class NotificationService {
         NotificationDTO notification = new NotificationDTO(userNo, message, notifyTypeCode);
 
         SessionUtil sessionUtil = new SessionUtil();
-
         notification.setSystemRegisterId((int) sessionUtil.getAttribute("userNo"));
+
         if(!"connect".equals(notifyTypeCode)) { //notifyTypeCode가 connect가 아니면 DB에 notifyTypeCode가 저장됨.
             notificationMapper.insertNotification(notification); // 알림보낼 타입 코드 저장
         }

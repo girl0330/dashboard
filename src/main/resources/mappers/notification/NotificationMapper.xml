@@ -4,22 +4,27 @@
 
     <select id="findNotificationsByUserNo" resultType="com.job.dashboard.domain.dto.NotificationDTO">
         SELECT /* NotificationMapper.findNotificationsByUserNo */
-            d.NOTIFY_ID,
-            d.USER_NO,
-            d.MESSAGE,
-            d.NOTIFY_TYPE_CODE,
-            d.SHOW_YN,
+            ni.NOTIFY_ID,
+            ni.USER_NO,
+            ni.MESSAGE,
+            ni.NOTIFY_TYPE_CODE,
+            ni.SHOW_YN,
+            ni.system_register_id,
             (
                 SELECT
-                    ifnull(b.company_name,c.NAME)
+                    ifnull(ci.company_name,upi.NAME)
                 FROM
-                    user_info a
-                        LEFT JOIN company_info b ON a.user_no = b.user_no
-                        LEFT JOIN user_profile_info c ON a.user_no = c.USER_NO
-                WHERE a.user_no = d.system_register_id
+                    user_info ui
+                        LEFT JOIN company_info ci ON ui.user_no = ci.user_no
+                        LEFT JOIN user_profile_info upi ON ui.user_no = upi.USER_NO
+                WHERE ui.user_no = ni.system_register_id
             ) AS 'name',
-                func_format_time_ago(d.system_register_datetime) AS system_register_datetime
-        FROM notification_info d WHERE d.user_no = #{userNo} AND d.show_yn = 'N'
+            ( SELECT ui.user_type_code FROM user_info ui WHERE ui.user_no = ni.user_no)AS user_type_code,
+            func_format_time_ago(ni.system_register_datetime) AS system_register_datetime
+        FROM notification_info ni
+        WHERE ni.user_no = #{userNo}
+        AND ni.show_yn = 'N'
+        ORDER BY ni.system_register_datetime DESC
     </select>
 
     <insert id="insertNotification" parameterType="com.job.dashboard.domain.dto.NotificationDTO">

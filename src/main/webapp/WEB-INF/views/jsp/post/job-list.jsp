@@ -1,5 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<style>
+    .job-search-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        max-width: 600px; /* 검색창이 너무 커지지 않도록 최대 너비 설정 */
+        margin: 0 auto; /* 중앙 정렬을 위해 자동 마진 */
+    }
+
+    .form-group {
+        flex-grow: 1;
+        margin-right: 10px;
+        min-width: 200px; /* 최소 너비 설정 */
+    }
+</style>
+
 <script>
     const keywordSearch = {
         init : function () {
@@ -41,7 +58,11 @@
 
             list.forEach(job => {
                 // Determine the heart icon class based on whether the jobId is in likedJobIds
+
                 const heartIconClass = likedJobIds.has(job.jobId) ? 'fas fa-heart text-danger' : 'far fa-heart';
+                // if (job.userTypeCode === 20) {
+                //     job-list-favourite-time.hide();
+                // }
 
                 // Determine the image source based on whether the file is null
                 const imgSrc = job.fileId > 0 ? '/business/uploadedFileGet/' + job.fileId : '/images/svg/07.svg' ;
@@ -65,7 +86,7 @@
                     '</ul>' +
                     '<ul class="list-unstyled">' +
                     '<li><i class="fas fa-map-marker-alt pe-1"></i>' + job.address + '</li>' +
-                    '<li><a class="freelance" href="#"><i class="fas fa-suitcase pe-1"></i>' + job.salaryTypeCodeName + ':' + job.salary + '</a></li>' +
+                    '<li><a class="freelance"><i class="fas fa-suitcase pe-1"></i>' + job.salaryTypeCodeName + ':' + job.salary + '</a></li>' +
                     '</ul>' +
                     '</div>' +
                     '</div>' +
@@ -115,7 +136,7 @@
 </script>
 <!--=================================
 banner -->
-<section class="header-inner header-inner-big bg-holder text-white" style="background-image: url(/images/bg/banner-01.jpg);">
+<section class="header-inner bg-light" >
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -173,35 +194,35 @@ banner -->
 
 <!--=================================
 feature info section -->
-<section class="feature-info-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 mb-lg-0 mb-4">
-                <div class="feature-info feature-info-02 p-4 p-lg-5 bg-primary">
-                    <div class="feature-info-icon mb-3 mb-sm-0 text-dark">
-                        <i class="flaticon-team"></i>
-                    </div>
-                    <div class="feature-info-content text-white ps-sm-4 ps-0">
-                        <p>Jobseeker</p>
-                        <h5 class="text-white">Looking For Job?</h5>
-                    </div>
-                    <a class="ms-auto align-self-center" href="#">Apply now<i class="fas fa-long-arrow-alt-right"></i> </a>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="feature-info feature-info-02 p-4 p-lg-5 bg-dark">
-                    <div class="feature-info-icon mb-3 mb-sm-0 text-primary">
-                        <i class="flaticon-job-3"></i>
-                    </div>
-                    <div class="feature-info-content text-white ps-sm-4 ps-0">
-                        <p>Recruiter</p>
-                        <h5 class="text-white">Are You Recruiting?</h5>
-                    </div>
-                    <a class="ms-auto align-self-center" href="#">Post a job<i class="fas fa-long-arrow-alt-right"></i> </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<%--<section class="feature-info-section">--%>
+<%--    <div class="container">--%>
+<%--        <div class="row">--%>
+<%--            <div class="col-lg-6 mb-lg-0 mb-4">--%>
+<%--                <div class="feature-info feature-info-02 p-4 p-lg-5 bg-primary">--%>
+<%--                    <div class="feature-info-icon mb-3 mb-sm-0 text-dark">--%>
+<%--                        <i class="flaticon-team"></i>--%>
+<%--                    </div>--%>
+<%--                    <div class="feature-info-content text-white ps-sm-4 ps-0">--%>
+<%--                        <p>Jobseeker</p>--%>
+<%--                        <h5 class="text-white">Looking For Job?</h5>--%>
+<%--                    </div>--%>
+<%--                    <a class="ms-auto align-self-center" href="#">Apply now<i class="fas fa-long-arrow-alt-right"></i> </a>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--            <div class="col-lg-6">--%>
+<%--                <div class="feature-info feature-info-02 p-4 p-lg-5 bg-dark">--%>
+<%--                    <div class="feature-info-icon mb-3 mb-sm-0 text-primary">--%>
+<%--                        <i class="flaticon-job-3"></i>--%>
+<%--                    </div>--%>
+<%--                    <div class="feature-info-content text-white ps-sm-4 ps-0">--%>
+<%--                        <p>Recruiter</p>--%>
+<%--                        <h5 class="text-white">Are You Recruiting?</h5>--%>
+<%--                    </div>--%>
+<%--                    <a class="ms-auto align-self-center" href="#">Post a job<i class="fas fa-long-arrow-alt-right"></i> </a>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</section>--%>
 <!--=================================
 feature info section -->

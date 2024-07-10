@@ -9,6 +9,7 @@ public class NotificationDTO {
     private String name;
     private String message;
     private String notifyTypeCode;
+    private int userTypeCode;
     private String showYn;
     private int systemRegisterId;
     private String systemRegisterDatetime;
