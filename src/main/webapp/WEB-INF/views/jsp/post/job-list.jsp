@@ -60,16 +60,13 @@
                 // Determine the heart icon class based on whether the jobId is in likedJobIds
 
                 const heartIconClass = likedJobIds.has(job.jobId) ? 'fas fa-heart text-danger' : 'far fa-heart';
-                // if (job.userTypeCode === 20) {
-                //     job-list-favourite-time.hide();
-                // }
 
                 // Determine the image source based on whether the file is null
                 const imgSrc = job.fileId > 0 ? '/business/uploadedFileGet/' + job.fileId : '/images/svg/07.svg' ;
 
 
                 const jobHtml =
-                    '<div class="col-12" onclick="location.href=\'/business/jobPostDetail?jobId=' + job.jobId + '\'">' +
+                    '<div class="col-12 job-item" data-job-id="' + job.jobId + '">' +
                     '<div class="job-list">' +
                     '<div class="job-list-logo">' +
                     '<img class="img-fluid" src="' + imgSrc + '" alt="">' +
@@ -92,13 +89,42 @@
                     '</div>' +
                     '</div>' +
                     '<div class="job-list-favourite-time">' +
-                    '<a class="job-list-favourite order-2" id="like" href="#"><i class="' + heartIconClass + '" ></i></a>' +
+                    '<a class="job-list-favourite order-2 like-button" data-job-id="' + job.jobId + '"><i class="' + heartIconClass + '" ></i></a>' +
                     '<span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>' + job.systemRegisterDatetime + '</span>' +
                     '</div>' +
                     '</div>' +
                     '</div>';
                 container.append(jobHtml);
             });
+
+        },
+        likeButton : function ($likeButton) {
+
+            const jobId = $likeButton.data('job-id');
+
+            const options = {
+                url: '/business/like/'+jobId,
+                type: 'POST',
+                contentType: 'application/json',
+                data: '',
+
+                done: function (response) {
+                    // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+                    if (response.code === 'success') {
+                        const like = $likeButton.find('i');
+                        if (like.hasClass('far')) {
+                            like.removeClass('far fa-heart').addClass('fas fa-heart text-danger');
+                        } else {
+                            like.removeClass('fas fa-heart text-danger').addClass('far fa-heart');
+                        }
+                    } else if (response.code === 'error') {
+                        alert(response.message);
+                        location.href = '/user/login';
+                    }
+                },
+            };
+
+            ajax.call(options);
         }
     }
 
@@ -122,11 +148,25 @@
             keywordSearch.like();
         })
 
-        $('#keyword').on('keydown', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault(); // 기본 Enter 키 동작 방지 (폼 제출 등)
+        $('#keyword').on('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // 기본 Enter 키 동작 방지 (폼 제출 등)
                 keywordSearch.init();
             }
+        });
+
+        $(document).on('click', '.like-button', function (e) {
+            e.preventDefault();
+            e.stopPropagation()
+
+            const $likeButton = $(this);
+            keywordSearch.likeButton($likeButton);
+        });
+
+        // job-item 클릭 이벤트 핸들러 추가
+        $(document).on('click', '.job-item', function() {
+            const jobId = $(this).data('job-id');
+            location.href = '/business/jobPostDetail?jobId=' + jobId;
         });
     });
 

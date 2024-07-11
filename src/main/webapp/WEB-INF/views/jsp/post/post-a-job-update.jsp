@@ -85,7 +85,8 @@
                     console.log(JSON.stringify(response));
                     if (response.code === 'success'){
                         alert(response.message);
-                        location.href='/business/postJobList'
+                        location.href='/business/jobPostDetail?jobId=${initialData.jobId}'
+
                     }
                 },
                 fail: () => {

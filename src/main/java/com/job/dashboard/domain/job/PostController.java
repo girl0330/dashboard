@@ -120,6 +120,7 @@ public class PostController {
     @PostMapping("/like/{jobId}")
     @ResponseBody
     public Map<String, Object> likeControl(@PathVariable int jobId) {
+        System.out.println("좋아요 클릭?");
 
         return postService.likeControl(jobId);
     }
