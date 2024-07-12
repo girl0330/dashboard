@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<style>
+    .section-margin-top {
+        margin-top: 70px; /* 원하는 간격으로 설정 */
+    }
+</style>
 <script>
     const keywordSearch = {
         init : function () {
@@ -20,21 +25,12 @@
                     keyword: keyword,
                     jobNum: jobNum
                 },
-
-                beforeSend: () => {
-                    console.log('요청 전 작업 수행');
-                },
-                customFail: (response) => {
-                    console.error('커스텀 실패 처리:', response);
-                },
                 done: function(response) {
+                    console.log("response 확인 :: "+JSON.stringify(response));
                     // 성공 시 실행할 코드
                     keywordSearch.renderJobsp(response.list);
                     renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
                 },
-                fail: () => {
-                    console.error('요청 실패');
-                }
             };
 
             ajax.call(options);
@@ -68,6 +64,7 @@
         keywordSearch.init();
 
         $('#searchButton').on('click', function (e) {
+            alert("!")
             e.preventDefault();
             keywordSearch.init();
         });
@@ -80,14 +77,8 @@
     });
 </script>
 <!--=================================
-Dashboard Nav -->
-<%@ include file="businessMenuInclude.jsp"%>
-<!--=================================
-Dashboard Nav -->
-
-<!--=================================
 Manage Jobs -->
-<section>
+<section class="section-margin-top">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -99,10 +90,17 @@ Manage Jobs -->
                                 <h4 class="mb-0">${applicantList[0].title}</h4>
                             </div>
                         </div>
-                        <div class="col-md-5 col-sm-7 mt-3 mt-sm-0">
-                            <div class="search">
-                                <i class="fas fa-search"></i>
-                                <input type="text" class="form-control" placeholder="Search...">
+                        <div class="row mb-4">
+                            <div class="col-md-7 col-sm-5 d-flex align-items-center">
+                                <div class="section-title-02 mb-0 ">
+                                    <h2 class="mb-0">지원자 리스트</h2>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-7 mt-3 mt-sm-0">
+                                <div class="search">
+                                    <i class="fas fa-search" id="searchButton"></i>
+                                    <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Search...">
+                                </div>
                             </div>
                         </div>
                     </div>

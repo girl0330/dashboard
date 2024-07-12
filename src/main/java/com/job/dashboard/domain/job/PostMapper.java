@@ -34,7 +34,7 @@ public interface PostMapper {
     int profileCount(int userNo);
 
     //중복 지원 체크
-    int getApplycount(JobApplicationDTO jobApplicationDTO);
+    int getApplyCount(int jobId);
 
     //공고 지원하기
     void insertJobApplicationInfo(JobApplicationDTO jobApplicationDTO);
@@ -52,7 +52,7 @@ public interface PostMapper {
     int getCountJobs ();
 
     // 작성한 userNo
-    int getWriteUserNo(int jobId);
+    JobPostDTO getPostInfo(int jobId);
 
 
     //like
@@ -67,6 +67,8 @@ public interface PostMapper {
 
     //지원한 user이름 가져오기
     UserProfileInfoDTO getUserName(int userNo);
+
+
 
 //    int getFile();
 }

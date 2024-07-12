@@ -187,6 +187,13 @@
         AND jai.job_id = #{jobId}
     </select>
 
+    <select id="getJobPostTile" parameterType="com.job.dashboard.domain.dto.JobPostDTO" resultType="com.job.dashboard.domain.dto.JobPostDTO">
+        SELECT /* BusinessDashMapper.getJobPostTile */
+        title
+        FROM job_post_info
+        WHERE job_id = #{jobId}
+    </select>
+
     <update id="employCandidate" parameterType="com.job.dashboard.domain.dto.JobApplicationDTO">
         UPDATE  /* BusinessDashMapper.employCandidate */
             job_application_info

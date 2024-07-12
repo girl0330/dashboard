@@ -14,6 +14,7 @@ public class JobPostDTO extends UserDTO  {
     private int userNo; // 로그인한 회원 아이디
     private String title; // 공고 제목 -
     private String description; // 공고 내용-
+    private String userTypeCode;
 
     private String zipcode; //우편번호
     private String address; //도로명주소
@@ -38,6 +39,7 @@ public class JobPostDTO extends UserDTO  {
     private String statusTypeCode;
     private String statusTypeCodeName;
     private int countApplication;
+    private String deleteYn;
 
     private int systemRegisterId;
     private String systemRegisterDatetime;

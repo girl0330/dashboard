@@ -37,6 +37,9 @@
                 },
 
                 done: (response) => { //결과 받기
+                    console.log("확인 :; "+JSON.stringify(response.list))
+                    // console.log("유저타입코드 확인 ::: "+JSON.stringify(response.list.userTypecode));
+                    // console.log("유저코드 2;;;;"+JSON.stringify(response.list.get("userTypeCode")));
                     $('#amount').text(response.total); // 결과중 total만 따로 빼서 id='amount'에 text형태로 넣기
                     keywordSearch.renderJobs(response);
                     renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
@@ -49,6 +52,7 @@
         renderJobs: function(response){
             const list = response.list;
             console.log("list 확인 ;; "+JSON.stringify(list));
+            const userTypeCode = response.userTypeCode;
             const likeList = response.likeList;
             const container = $("#jobList");
             container.empty();
@@ -58,14 +62,13 @@
 
             list.forEach(job => {
                 // Determine the heart icon class based on whether the jobId is in likedJobIds
-
                 const heartIconClass = likedJobIds.has(job.jobId) ? 'fas fa-heart text-danger' : 'far fa-heart';
 
                 // Determine the image source based on whether the file is null
                 const imgSrc = job.fileId > 0 ? '/business/uploadedFileGet/' + job.fileId : '/images/svg/07.svg' ;
 
 
-                const jobHtml =
+                let jobHtml =
                     '<div class="col-12 job-item" data-job-id="' + job.jobId + '">' +
                     '<div class="job-list">' +
                     '<div class="job-list-logo">' +
@@ -88,8 +91,11 @@
                     '</div>' +
                     '</div>' +
                     '</div>' +
-                    '<div class="job-list-favourite-time">' +
-                    '<a class="job-list-favourite order-2 like-button" data-job-id="' + job.jobId + '"><i class="' + heartIconClass + '" ></i></a>' +
+                    '<div class="job-list-favourite-time">';
+                if (userTypeCode !== "20") {
+                    jobHtml += '<a class="job-list-favourite order-2 like-button" data-job-id="' + job.jobId + '"><i class="' + heartIconClass + '" ></i></a>';
+                }
+                jobHtml +=
                     '<span class="job-list-time order-1"><i class="far fa-clock pe-1"></i>' + job.systemRegisterDatetime + '</span>' +
                     '</div>' +
                     '</div>' +

@@ -135,8 +135,20 @@
             jai.application_id,
             jai.job_id,
             jai.USER_NO,
-            jai.status_type_code,
-            func_get_detail_name('status_type', jai.status_type_code) AS status_type_code_name,
+            (
+                CASE
+                    WHEN jpi.status_type_code = 'CLOSED' THEN jpi.status_type_code
+                    WHEN jpi.status_type_code = 'OPEN' THEN jai.status_type_code
+                    ELSE jai.status_type_code
+                    END
+                ) AS status_type_code,
+            (
+                CASE
+                    WHEN jpi.status_type_code = 'CLOSED' THEN func_get_detail_name('status_type', jpi.status_type_code)
+                    WHEN jpi.status_type_code = 'OPEN' THEN func_get_detail_name('status_type', jai.status_type_code)
+                    ELSE func_get_detail_name('status_type', jai.status_type_code)
+                    END
+                ) AS status_type_code_name,
             DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
             jpi.title,
             jpi.zipcode,
@@ -146,8 +158,8 @@
         FROM
             job_application_info jai
                 INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
-        WHERE jai.USER_NO = #{userNo}
-          AND jpi.title LIKE CONCAT('%', #{keyword}, '%')
+        WHERE jai.USER_NO = 2
+          AND jpi.title LIKE CONCAT('%', '', '%')
         ORDER BY jai.system_register_datetime DESC
     </select>
 

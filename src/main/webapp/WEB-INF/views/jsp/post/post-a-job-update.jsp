@@ -279,9 +279,8 @@ tab -->
                             </div>
                             <div class="form-group col-md-3 select-border mb-3">
                                 <select class="form-control basic-select" value="${initialData.statusTypeCode}" id="statusTypeCode" name="statusTypeCode" data-valid="true" data-name="공고 상태">
-                                    <c:forEach var="statusType" items="${statusType}">
-                                        <option value="${statusType.value}" ${initialData.statusTypeCode == statusType.value ? 'selected="selected"' : ''}>${statusType.text}</option>
-                                    </c:forEach>
+                                    <option value="OPEN" ${initialData.statusTypeCode == 'OPEN' ? 'selected="selected"' : ''}>구인 중</option>
+                                    <option value="CLOSED" ${initialData.statusTypeCode == 'CLOSED' ? 'selected="selected"' : ''}>채용 마감</option>
                                 </select>
                             </div>
 

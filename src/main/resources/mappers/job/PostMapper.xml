@@ -24,7 +24,8 @@
                             etc,
                             system_register_id,
                             system_updater_id,
-                            status_type_code
+                            status_type_code,
+                            delete_yn
         )
         VALUES (
                 #{userNo},
@@ -47,7 +48,8 @@
                 #{etc},
                 #{userNo},
                 #{userNo},
-                'OPEN'
+                'OPEN',
+                'n'
                 )
     </insert>
 
@@ -191,9 +193,10 @@
             job_id = #{jobId}
     </update>
 
-    <select id="getWriteUserNo" resultType="int" parameterType="int">
-        SELECT /*PostMapper.getWriteUserNo*/
-            USER_NO
+    <select id="getPostInfo" resultType="com.job.dashboard.domain.dto.JobPostDTO" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
+        SELECT /*PostMapper.getPostInfo*/
+            USER_NO,
+            title
         FROM job_post_info
         WHERE job_id = #{jobId}
     </select>
@@ -218,8 +221,8 @@
         WHERE USER_NO = #{userNo}
     </select>
 
-    <select id="getApplycount" parameterType="int" resultType="int">
-        SELECT  /*PostMapper.getApplycount*/
+    <select id="getApplyCount" parameterType="int" resultType="int">
+        SELECT  /*PostMapper.getApplyCount*/
             count(1)
         FROM job_application_info
         WHERE USER_NO = #{userNo}

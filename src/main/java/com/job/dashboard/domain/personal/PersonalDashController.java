@@ -49,6 +49,9 @@ public class PersonalDashController {
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
         }
+        //이름 노출 시키기
+        UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
+        model.addAttribute("profile",myProfile);
 
         return "jsp/personal/personal-dashboard";
     }
@@ -90,6 +93,7 @@ public class PersonalDashController {
         int userNo = (int) sessionUtil.getAttribute("userNo");
         UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
 
+        System.out.println("myprofile:::: "+myProfile);
         //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
 
@@ -129,6 +133,9 @@ public class PersonalDashController {
             model.addAttribute("fileId", file.getFileId());
         }
 
+        //이름 노출 시키기
+        UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
+        model.addAttribute("profile",myProfile);
         return "jsp/personal/personal-changePassword";
     }
 
@@ -168,6 +175,9 @@ public class PersonalDashController {
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
         }
+        //이름 노출 시키기
+        UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
+        model.addAttribute("profile",myProfile);
 
         return "jsp/personal/personal-manageJobs";
     }
@@ -220,6 +230,9 @@ public class PersonalDashController {
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
         }
+        //이름 노출 시키기
+        UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
+        model.addAttribute("profile",myProfile);
 
         return "jsp/personal/personal-likedJobs";
     }

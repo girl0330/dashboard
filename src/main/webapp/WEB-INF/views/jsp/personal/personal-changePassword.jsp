@@ -57,7 +57,6 @@
         },
 
         submitForm: function () {
-            alert("비빌번호 전송");
             const formData = $('#changePassword').serializeArray();
 
             let jsonData = {};

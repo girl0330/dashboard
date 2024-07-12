@@ -6,6 +6,7 @@ import com.job.dashboard.domain.dto.CompanyInfoDTO;
 import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.domain.job.PostService;
 import com.job.dashboard.exception.CustomException;
 import com.job.dashboard.exception.ExceptionErrorCode;
 import com.job.dashboard.util.SessionUtil;
@@ -216,6 +217,7 @@ public class BusinessDashController {
         response.put("pageNum", candidateList.getPageNum());
         response.put("pageSize", candidateList.getPageSize());
         response.put("pages", candidateList.getPages());
+
 
         return response;
     }

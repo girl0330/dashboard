@@ -4,18 +4,40 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=afcb905c7668725d0a22469ede432941"></script>
 <script>
   const application = {
-    init: function () {
+    checkDuplicateApply: function () {
+      let jsonData = {};
+      jsonData["jobId"] = $("#jobId").val();
+      console.log("? :: "+JSON.stringify(jsonData))
+      const options = {
+        url: "/business/ajax/checkDuplicateApply", // Spring 컨트롤러 URL
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(jsonData),
+
+        done: (response) => {
+          // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
+          if (response.code === 'success') {
+            $("#exampleModalCenter").modal('show');
+          }
+
+        },
+        fail: function (jqXHR) {
+          const jsonObj = JSON.parse(jqXHR.responseText);
+          alert(jsonObj.userMessage);
+          $(".modal-content").hide();
+          location.href = '/personal/myProfile';
+        }
+      };
+
+      ajax.call(options);
 
     },
 
     apply: function () {
-      const jobId = $("#jobId").val();
-
-      const motivationDescription = $("#motivationDescription").val();
 
       let jsonData = {};
-      jsonData["jobId"] = jobId;
-      jsonData["motivationDescription"] = motivationDescription;
+      jsonData["jobId"] = $("#jobId").val();
+      jsonData["motivationDescription"] = $("#motivationDescription").val();
 
       console.log("jsonData: " + JSON.stringify(jsonData));
 
@@ -115,6 +137,10 @@
       $('#motivationDescription').val("");
     });
 
+    $('#check_duplicate_button').click(function () {
+      application.checkDuplicateApply();
+    });
+
     $('#button_apply').click(function () {
       application.apply();
       $(".modal-content").hide();
@@ -161,7 +187,7 @@
 
 <!--=================================
 banner -->
-<section class="header-inner header-inner-big bg-holder text-white" style="background-image: url(/images/bg/banner-01.jpg);">
+<section class="header-inner bg-light">
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -337,7 +363,7 @@ job list -->
         <c:if test="${jobPostDetail.statusTypeCode == 'OPEN' && sessionScope.userNo != null && userTypeCode == 10}" >
           <c:choose>
             <c:when test="${userStatusCode == 0}">
-              <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="far fa-paper-plane"></i>지원하기</a>
+              <a class="btn btn-primary" href="#" id="check_duplicate_button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="far fa-paper-plane"></i>지원하기</a>
             </c:when>
             <c:otherwise>
               <a class="btn btn-primary" href="#" id="button_applyCancel" name="button_applyCancel"><i class="far fa-paper-plane"></i>지원취소하기</a>
