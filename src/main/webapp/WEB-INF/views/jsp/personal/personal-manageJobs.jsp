@@ -98,7 +98,7 @@ Manage Jobs -->
 
                     <table class="table table-bordered">
                         <thead class="bg-light">
-                        <tr >
+                        <tr>
                             <th scope="col">지원한 공고 제목</th>
                             <th scope="col">지원 현황</th>
                         </tr>

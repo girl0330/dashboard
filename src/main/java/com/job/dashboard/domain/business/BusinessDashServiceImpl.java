@@ -274,13 +274,19 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     //지원자 채용
     @Transactional
     public Map<String, Object> employCandidate(JobApplicationDTO jobApplicationDTO) {
+        System.out.println("tlqkfroQkrclsp?"+jobApplicationDTO); // jobId, 지원자 userNo
         Map<String, Object> map = new HashMap<>();
 
         businessDashMapper.employCandidate(jobApplicationDTO);
 
+        // jobId로 공고 제목 가져오기
+        JobPostDTO jobPost = businessDashMapper.getJobPostTile(jobApplicationDTO.getJobId());
+        System.out.println("? "+jobPost);
         int userNo = jobApplicationDTO.getUserNo(); //지원한 userNo
 
-        notificationService.sendNotification(userNo, " 채용 되었습니다.","hir"); // (개인유저한테 알려줘야함.)
+        // 공고 제목 가져오기
+
+        notificationService.sendNotification(userNo, jobPost.getTitle()+"에 채용 되었습니다.","hir"); // (개인유저한테 알려줘야함.)
 
         map.put("code", "success");
         map.put("message", "성공적으로 채용했습니다.");
@@ -296,8 +302,8 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         businessDashMapper.cancelEmployCandidate(jobApplicationDTO);
 
         int userNo = jobApplicationDTO.getUserNo(); //지원한 userNo
-
-        notificationService.sendNotification(userNo, " 채용 취소되었습니다.","hir"); // (개인유저한테 알려줘야함.)
+        JobPostDTO jobPost = businessDashMapper.getJobPostTile(jobApplicationDTO.getJobId());
+        notificationService.sendNotification(userNo, "\"" + jobPost.getTitle() + "\"에 채용 취소되었습니다.","hir"); // (개인유저한테 알려줘야함.)
 
         map.put("code", "success");
         map.put("message", "성공적으로 취소했습니다.");

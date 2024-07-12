@@ -102,16 +102,10 @@ Manage Jobs -->
                                 <h2 class="mb-0">작성한 공고</h2>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-5 col-sm-7 mt-3 mt-sm-0">
-                                <form class="form row">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Search...">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button" id="searchButton"><i class="fas fa-search-location"></i> 검색하기</button>
-                                        </div>
-                                    </div>
-                                </form>
+                        <div class="col-md-5 col-sm-7 mt-3 mt-sm-0">
+                            <div class="search">
+                                <i class="fas fa-search" id="searchButton"></i>
+                                <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Search...">
                             </div>
                         </div>
                     </div>

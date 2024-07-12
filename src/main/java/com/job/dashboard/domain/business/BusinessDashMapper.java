@@ -35,4 +35,6 @@ public interface BusinessDashMapper {
 
     //사업자 번호 체크
     int checkBusinessNumByUserNo(int userNo);
+
+    JobPostDTO getJobPostTile(int jobId);
 }

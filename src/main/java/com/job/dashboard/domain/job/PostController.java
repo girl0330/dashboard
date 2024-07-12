@@ -70,12 +70,16 @@ public class PostController {
     public Map<String, Object> ajaxJobPostList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                                @RequestParam(defaultValue = "1") int pageNum,
                                                @RequestParam(defaultValue = "10") int pageSize) {
+
+        String userTypeCode = (String) sessionUtil.getAttribute("userTypeCode");
+        System.out.println("세션에서 가져온 userTypeCode확인 :: "+ userTypeCode);
         System.out.println("공고 리스트");
         PageInfo<JobPostDTO> jobList = postService.jobList(keyword, pageNum, pageSize);
         System.out.println("jobList확인 ::::::::::      "+jobList);
         List<LikeDTO> likeList = postService.getLikeList();
 
         Map<String, Object> response = new HashMap<>();
+        response.put("userTypeCode", userTypeCode);
         response.put("list", jobList.getList());
         response.put("likeList", likeList);
         response.put("total", jobList.getTotal());
@@ -168,6 +172,12 @@ public class PostController {
         postService.deleteJobPost(jobId);
         System.out.println("삭제됨");
         return "jsp/post/job-list";
+    }
+    @PostMapping("ajax/checkDuplicateApply")
+    @ResponseBody
+    public Map<String, Object> checkDuplicateApply(@RequestBody JobApplicationDTO jobApplicationDTO){ //jobId
+        System.out.println("지원 중복체크 정보 확인 ::::::    "+jobApplicationDTO);
+        return postService.checkDuplicateApply(jobApplicationDTO);
     }
 
     @PostMapping("/apply")

@@ -8,6 +8,7 @@ import com.job.dashboard.exception.CustomException;
 import com.job.dashboard.exception.ExceptionErrorCode;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -115,6 +116,14 @@ public class PersonalDashServiceImpl implements PersonalDashService {
 
         PageHelper.startPage(pageNum, pageSize);
         List<JobApplicationDTO> applyStatusList = personalDashMapper.applyStatusList(map) ;
+
+        for (JobApplicationDTO apply : applyStatusList) {
+            System.out.println("statusTypeCode는 "+apply.getStatusTypeCode());
+        }
+
+
+        System.out.println("지원상태코드 확인::::"+applyStatusList);
+
         return new PageInfo<>(applyStatusList);
     }
 

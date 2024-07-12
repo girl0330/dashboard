@@ -52,10 +52,10 @@ public class PostServiceImpl implements PostService {
         PageHelper.startPage(pageNum, pageSize);
 
         List<JobPostDTO> list = postMapper.getJobLists(keyword);
-        System.out.println("????"+list);
 
         for (JobPostDTO jobPost : list) {
-            System.out.println(jobPost);
+            System.out.println("첵첵:: "+jobPost);
+
         }
         return new PageInfo<>(list);
     }
@@ -152,22 +152,23 @@ public class PostServiceImpl implements PostService {
 
         jobApplicationDTO.setUserNo(userNo);
 
-        //중복지원인지 확인 select count(1) from table where 조건=1 and 조건=2
-        int applycount = postMapper.getApplycount(jobApplicationDTO);
-        if (applycount == 1) {
-            throw new CustomException(ExceptionErrorCode.EXCEPTION_MESSAGE,"이미 지원 하셨습니다.");
-        }
+
 
         jobApplicationDTO.setStatusTypeCode("APPLIED"); // APPLIED : 지원중, CANCELLED : 지원취소
 
-        //공고 작성한 userNo가져오기
-        int businessUserNo = postMapper.getWriteUserNo(jobApplicationDTO.getJobId()); //지원한 공고Id로 공고 작성자 가져옴
-        System.out.println("businessUserNO 확인: "+businessUserNo);
+//        //공고 작성한 userNo가져오기, 공고 제목가져오기
+//        int businessUserNo = postMapper.getWriteUserNo(jobApplicationDTO.getJobId()); //지원한 공고Id로 공고 작성자 가져옴
+//        System.out.println("businessUserNO 확인: "+businessUserNo);
+//
+//        //지원한 공고제목 가져오기
+//        UserProfileInfoDTO userProfileInfoDTO = postMapper.getUserName(userNo);
+//        System.out.println("tq?"+userProfileInfoDTO);
 
-        //지원한 유저의 이름 가져오기
-        UserProfileInfoDTO userProfileInfoDTO = postMapper.getUserName(userNo);
+        //공고 작성한 userNo가져오기, 공고 제목가져오기
+        JobPostDTO postInfo = postMapper.getPostInfo(jobApplicationDTO.getJobId()); //지원한 공고Id로 공고 작성자 가져옴
+        System.out.println("userNo 확인: "+postInfo.getUserNo() + "title 확인 : " +postInfo.getTitle());
 
-        notificationService.sendNotification(businessUserNo, userProfileInfoDTO.getName()+"님이 지원 하셨습니다. ","app"); //(기업 회원한테 보낼 알림)
+        notificationService.sendNotification(postInfo.getUserNo(), postInfo.getTitle()+"에 지원 하셨습니다. ","app"); //(기업 회원한테 보낼 알림)
 
         System.out.println("insert하기 전 지원 data확인 :::::       "+jobApplicationDTO);
         //insert
@@ -178,6 +179,18 @@ public class PostServiceImpl implements PostService {
         return map;
     }
 
+    // 공고 중복 지원 확인
+    public Map<String, Object> checkDuplicateApply(JobApplicationDTO jobApplicationDTO) {
+        //중복지원인지 확인 select count(1) from table where 조건=1 and 조건=2
+        int applycount = postMapper.getApplyCount(jobApplicationDTO.getJobId());
+        if (applycount == 1) {
+            throw new CustomException(ExceptionErrorCode.EXCEPTION_MESSAGE,"이미 지원 하셨습니다.");
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", "success");
+        return map;
+    }
 
     //공고취소하기
     @Transactional
@@ -203,15 +216,19 @@ public class PostServiceImpl implements PostService {
 
         System.out.println("공고지원자 dto확인 ;; "+jobApplicationDTO);
 
-        //공고 작성한 userNo가져오기
-        int businessUserNo = postMapper.getWriteUserNo(jobApplicationDTO.getJobId());
-        System.out.println("businessUserNO 확인: "+businessUserNo);
+//        //공고 작성한 userNo가져오기
+//        int businessUserNo = postMapper.getWriteUserNo(jobApplicationDTO.getJobId());
+//        System.out.println("businessUserNO 확인: "+businessUserNo);
 
-        //지원 취소한 유저의 이름 가져오기
-        UserProfileInfoDTO userProfileInfoDTO = postMapper.getUserName(userNo);
-        System.out.println("userPfofileInfoDTO확인 ::: "+userProfileInfoDTO);
+        //공고 작성한 userNo가져오기, 공고 제목가져오기
+        JobPostDTO postInfo = postMapper.getPostInfo(jobApplicationDTO.getJobId()); //지원한 공고Id로 공고 작성자 가져옴
+        System.out.println("userNo 확인: "+postInfo.getUserNo() + "title 확인 : " + postInfo.getTitle());
 
-        notificationService.sendNotification(businessUserNo, userProfileInfoDTO.getName()+"님이 지원을 취소 하셨습니다. ","app"); //(기업 회원한테 보낼 알림)
+//        //지원 취소한 유저의 이름 가져오기
+//        UserProfileInfoDTO userProfileInfoDTO = postMapper.getUserName(userNo);
+//        System.out.println("userPfofileInfoDTO확인 ::: "+userProfileInfoDTO);
+
+        notificationService.sendNotification(postInfo.getUserNo(), postInfo.getTitle()+"에 지원을 취소 하셨습니다. ","app"); //(기업 회원한테 보낼 알림)
 
         postMapper.deleteJobApplicationInfo(jobApplicationDTO);
         map.put("code", "success");

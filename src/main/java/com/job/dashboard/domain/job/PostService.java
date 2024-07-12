@@ -54,6 +54,9 @@ public interface PostService {
     // 지원 상태 int로 가져오기
     int getCountUserStatusCode(Map<String, Object> map);
 
+    // 중복 지원 확인
+    Map<String, Object> checkDuplicateApply(JobApplicationDTO jobApplicationDTO);
+
     // 리스트에 보내줄 파일 가져오기
 //    int getFile();
 }
