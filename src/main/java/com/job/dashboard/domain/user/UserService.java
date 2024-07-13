@@ -1,5 +1,6 @@
 package com.job.dashboard.domain.user;
 
+import com.job.dashboard.domain.dto.TermsInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
 import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 
@@ -18,4 +19,9 @@ public interface UserService {
     Map<String, Object> getCheckIdentity(UserProfileInfoDTO userProfileInfoDTO);
 
     Map<String, Object> passwordReset(UserDTO userDTO);
+
+    //이용약관 가져오기
+    TermsInfoDTO getTermsTypeCode(int termsTypeCode);
+
+
 }

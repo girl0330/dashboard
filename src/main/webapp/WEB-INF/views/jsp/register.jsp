@@ -326,7 +326,7 @@ Register -->
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="ture" id="terms" name="terms">
                       <label class="form-check-label" for="terms">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">이용약관</a>에 전체동의
+                        <a href="/user/terms" target="_blank" rel="noopener noreferrer">이용약관</a>에 전체동의
                       </label>
                       <div id="termsError" class="invalid-feedback" style="display: none;">terms valid message</div>
                     </div>
