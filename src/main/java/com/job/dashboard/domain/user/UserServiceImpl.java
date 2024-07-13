@@ -1,5 +1,6 @@
 package com.job.dashboard.domain.user;
 
+import com.job.dashboard.domain.dto.TermsInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
 import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.exception.CustomException;
@@ -146,5 +147,10 @@ public class UserServiceImpl implements UserService{
         map.put("message", "비밀번호 변경 성공, 로그인 화면으로 이동합니다.");
 
         return map;
+    }
+
+    //이용약관 가져오기
+    public TermsInfoDTO getTermsTypeCode(int termsTypeCode) {
+        return userMapper.getTermsTypeCode(termsTypeCode);
     }
 }

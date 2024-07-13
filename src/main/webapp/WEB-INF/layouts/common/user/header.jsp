@@ -56,7 +56,20 @@
         });
     }
 
+    // Create a new EventSource instance
+    const eventSource = new EventSource('/notifications');
 
+    // Event listener for server-sent events
+    eventSource.onmessage = function(event) {
+        // Display the notification
+        const notification = document.getElementById('notification');
+        notification.style.display = 'block';
+    };
+
+    // Optional: Event listener for errors
+    eventSource.onerror = function(error) {
+        console.error('EventSource failed:', error);
+    };
 </script>
 <style>
     .form-control-dark {
@@ -116,9 +129,16 @@
         color: #6c757d;
     }
 
+    #notification {
+        display: none;
+        background-color: #ffcc00;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #e6b800;
+        border-radius: 5px;
+    }
 
 </style>
-
 <header class="border-bottom">
     <div class="container" >
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -131,7 +151,7 @@
                         공고 리스트
                     </a>
                 </li>
-
+                <li id="notification">New job application received!</li>
             </ul>
 
             <div class="col-md-6 text-end me-2">
@@ -147,6 +167,7 @@
                         <img src="/images/svg/icon-bookmark.svg" alt="mdo" width="24" height="24">
                     </a>
                 </div>
+
                 <div class="dropdown text-end">
                     <a href="#" class="d-inline-flex link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false" onclick="notification()">
                         <img src="/images/svg/bel.svg" alt="mdo" width="24" height="24" class="rounded-circle">

@@ -1,5 +1,6 @@
 package com.job.dashboard.domain.user;
 
+import com.job.dashboard.domain.dto.TermsInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
 import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import com.job.dashboard.util.SessionUtil;
@@ -99,6 +100,17 @@ public class UserController {
     public Map<String, Object> passwordReset(@RequestBody UserDTO userDTO) {
         System.out.println("넘어온 데이터 확인 ::::  "+userDTO);
         return userService.passwordReset(userDTO);
+    }
+
+    //이용약관
+    @GetMapping("/terms")
+    public String termsView(Model model) {
+        System.out.println("약관동의 페이지 ");
+
+        model.addAttribute("termsTypeCode10",userService.getTermsTypeCode(10)); // 이용약관
+        model.addAttribute("termsTypeCode20",userService.getTermsTypeCode(20)); // 개인정보
+
+        return "jsp/terms_and_conditions";
     }
 
 }

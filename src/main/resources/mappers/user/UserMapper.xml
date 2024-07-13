@@ -86,5 +86,22 @@
         WHERE
             email = #{email}
     </select>
+
+    <select id="getTermsTypeCode" resultType="com.job.dashboard.domain.dto.TermsInfoDTO">
+        SELECT
+            term_id,
+            terms_type_code,
+            func_get_detail_name('terms_type', terms_type_code) AS terms_type_name,
+            terms_content,
+            version,
+            system_register_id,
+            system_register_datetime,
+            system_update_id,
+            system_update_datetime
+        FROM
+            terms_info
+        where terms_type_code = #{termsTypeCode} ORDER BY system_register_datetime DESC LIMIT 1
+    </select>
+
 </mapper>
 

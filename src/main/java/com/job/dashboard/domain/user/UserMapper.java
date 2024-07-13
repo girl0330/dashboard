@@ -1,5 +1,6 @@
 package com.job.dashboard.domain.user;
 
+import com.job.dashboard.domain.dto.TermsInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
 import com.job.dashboard.domain.dto.UserProfileInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,4 +30,6 @@ public interface UserMapper {
 
 
     void updatePassword(UserDTO userDTO);
+
+    TermsInfoDTO getTermsTypeCode(int termsTypeCode);
 }
