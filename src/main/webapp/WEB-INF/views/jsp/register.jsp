@@ -328,7 +328,14 @@ Register -->
                       <label class="form-check-label" for="terms">
                         <a href="/user/terms" target="_blank" rel="noopener noreferrer">이용약관</a>에 전체동의
                       </label>
-                      <div id="termsError" class="invalid-feedback" style="display: none;">terms valid message</div>
+                    </div>
+                  </div>
+                  <div class="mb-3 col-12">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="ture" id="privacy" name="privacy">
+                      <label class="form-check-label" for="terms">
+                        <a href="/user/privacy" target="_blank" rel="noopener noreferrer">개인정보</a>에 전체동의
+                      </label>
                     </div>
                   </div>
                 </div>

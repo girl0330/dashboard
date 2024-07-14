@@ -7,6 +7,7 @@ import com.job.dashboard.domain.dto.JobApplicationDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.domain.dto.LikeDTO;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public interface PostService {
     //like
     int findLike(Map<String, Object> map);
     //좋아요 관리
-    Map<String, Object> likeControl(int jobId);
+    Map<String, Object> likeControl(int jobId, HttpServletRequest request);
 
     //상세
     JobPostDTO getJobPostDetailInfo(int jobId);

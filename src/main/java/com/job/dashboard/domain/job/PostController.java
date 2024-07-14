@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +28,16 @@ public class PostController {
 
     //공고작성 페이지
     @GetMapping("/writePostJob")
-    public String writePostJobView() {
+    public String writePostJobView(HttpServletRequest request) {
+
+        System.out.println("? 뭐지?");
 
         if (!sessionUtil.loginUserCheck()) { // 로그인 체크
-            return "redirect:/user/login";
+            System.out.println("로그인 체크");
+            String currentUrl = request.getRequestURL().toString();
+            request.getSession().setAttribute("prevPage", currentUrl);
+            System.out.println("현재 url 세션에 넣기:  "+currentUrl);
+            return "jsp/login";
         }
 
         if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"),"20")) { // 횐원코드 체크
@@ -123,10 +131,10 @@ public class PostController {
     //좋아요 관리
     @PostMapping("/like/{jobId}")
     @ResponseBody
-    public Map<String, Object> likeControl(@PathVariable int jobId) {
+    public Map<String, Object> likeControl(@PathVariable int jobId, HttpServletRequest request) {
         System.out.println("좋아요 클릭?");
 
-        return postService.likeControl(jobId);
+        return postService.likeControl(jobId, request);
     }
 
     //공고 수정

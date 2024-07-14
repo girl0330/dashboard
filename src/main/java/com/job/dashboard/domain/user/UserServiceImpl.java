@@ -92,6 +92,7 @@ public class UserServiceImpl implements UserService{
 
         //로그인하기
         UserDTO userInfo = userMapper.getLoginUserInfo(userDTO);
+        System.out.println("userInfo 데이터 확인 :;;; "+userInfo);
 
         UserDTO user = new UserDTO();
 

@@ -92,11 +92,13 @@
         done: function(response) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
           console.log(JSON.stringify(response));
-          if (response.code === 'success'){
+          if (response.code === 'success') {
             sessionStorage.setItem("LoginCheck", true);
-            location.href='/'
+            location.href = '/'
+          } else if (response.code === 'redirect') {
+            window.location.href = response.redirectUrl;
           }
-        },
+        }
       };
 
       ajax.call(options);
