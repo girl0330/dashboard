@@ -92,7 +92,7 @@
                     '</div>' +
                     '</div>' +
                     '<div class="job-list-favourite-time">';
-                if (userTypeCode !== "20") {
+                if (userTypeCode == '10') {
                     jobHtml += '<a class="job-list-favourite order-2 like-button" data-job-id="' + job.jobId + '"><i class="' + heartIconClass + '" ></i></a>';
                 }
                 jobHtml +=
@@ -125,6 +125,7 @@
                         }
                     } else if (response.code === 'error') {
                         alert(response.message);
+                        console.log("response::::::  "+response);
                         location.href = '/user/login';
                     }
                 },

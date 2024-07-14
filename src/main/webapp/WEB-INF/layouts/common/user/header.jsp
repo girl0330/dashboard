@@ -154,6 +154,14 @@
                 <li id="notification">New job application received!</li>
             </ul>
 
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li class="nav-item dropdown ">
+                    <a class="dropdown-item text-sm dropdown-item-danger d-flex gap-2 align-items-center" href="/business/writePostJob">
+                        <img src="/images/svg/pen.svg" alt="mdo" width="17" height="17" class="bi"> 공고작성
+                    </a>
+                </li>
+            </ul>
+
             <div class="col-md-6 text-end me-2">
                 <c:if test="${sessionScope.userNo == null || sessionScope.userNo == 0}">
                     <button type="button" class="btn btn-outline-primary rounded-pill me-2 px-4" onclick="window.location.href='/user/login'">로그인</button>

@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -85,13 +86,16 @@ public class PostServiceImpl implements PostService {
 
     //좋아요 관리
     @Transactional
-    public Map<String, Object> likeControl(int jobId) {
+    public Map<String, Object> likeControl(int jobId, HttpServletRequest request) {
 
         Map<String, Object> map = new HashMap<>();
 
         if (!sessionUtil.loginUserCheck()) { // 로그인 체크
             map.put("code", "error");
             map.put("message", "로그인 후 이용해 주세요");
+            String currentUrl = request.getRequestURL().toString();
+            request.getSession().setAttribute("prevPage", currentUrl);
+            System.out.println("현재 url 세션에 넣기:  "+currentUrl);
             return map;
         }
 

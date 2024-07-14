@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Controller
@@ -49,13 +50,38 @@ public class UserController {
     //로그인
     @PostMapping("/doLogin")
     @ResponseBody
-    public Map<String, Object> doLogin (@RequestBody UserDTO userDTO) {
+        public Map<String, Object> doLogin (@RequestBody UserDTO userDTO, HttpServletRequest request) {
 
         Map<String, Object> map = userService.doLogin(userDTO);
+        System.out.println("로그인 완");
+        System.out.println("map확인 ;::: "+map);
 
         if (!"error".equals(map.get("code"))) {
             sessionUtil.loginUser((UserDTO) map.get("userLoginInfo"));
         }
+
+        String prevPage = (String) request.getSession().getAttribute("prevPage");
+        String referer = request.getHeader("Referer");
+
+        System.out.println("이전 페이지 url : " + prevPage);
+        System.out.println("Referer 헤더 값 : " + referer);
+
+        //이전 페이지 없음지 않거나,  이전 페이지는 있지만 referer은 없음. referer이 login을 포함 하면 이전 페이지로 이동시킬 필요 없음.
+        if (prevPage != null && (referer == null || !referer.contains("/login"))) {
+            System.out.println("이전 페이지 있음");
+            request.getSession().removeAttribute("prevPage");
+            map.put("code","redirect");
+            map.put("redirectUrl", prevPage);
+            return map;
+        } else if (prevPage != null) {
+            // Referer 헤더가 없더라도 prevPage 값이 있는 경우 처리
+            System.out.println("Referer 헤더가 없지만, 이전 페이지 있음");
+            request.getSession().removeAttribute("prevPage");
+            map.put("code","redirect");
+            map.put("redirectUrl", prevPage);
+            return map;
+        }
+        System.out.println("map확인? ;::: "+map);
 
         return map;
     }
@@ -111,6 +137,17 @@ public class UserController {
         model.addAttribute("termsTypeCode20",userService.getTermsTypeCode(20)); // 개인정보
 
         return "jsp/terms_and_conditions";
+    }
+
+    //개인정보
+    @GetMapping("/privacy")
+    public String privacyView(Model model) {
+        System.out.println("개인정보 페이지 ");
+
+        model.addAttribute("termsTypeCode10",userService.getTermsTypeCode(10)); // 이용약관
+        model.addAttribute("termsTypeCode20",userService.getTermsTypeCode(20)); // 개인정보
+
+        return "jsp/privacy_policy_agreed";
     }
 
 }
