@@ -136,8 +136,23 @@ public class UserController {
         model.addAttribute("termsTypeCode10",userService.getTermsTypeCode(10)); // 이용약관
         model.addAttribute("termsTypeCode20",userService.getTermsTypeCode(20)); // 개인정보
 
-        return "jsp/terms_and_conditions";
+        return "jsp/terms";
     }
+    @GetMapping("/ajax/terms")
+    @ResponseBody
+    public TermsInfoDTO termsInfo(@RequestParam int termsTypeCode) {
+        System.out.println("ajax 약관동의 페이지 ");
+        System.out.println("termsTypeCode :::: " + termsTypeCode);
+        TermsInfoDTO result = null;
+
+        if (termsTypeCode == 10) {
+            result = userService.getTermsTypeCode(10);
+        } else if (termsTypeCode == 20) {
+            result = userService.getTermsTypeCode(20);
+        }
+        return result;
+    }
+
 
     //개인정보
     @GetMapping("/privacy")

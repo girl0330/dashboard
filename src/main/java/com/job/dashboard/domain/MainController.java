@@ -1,7 +1,5 @@
 package com.job.dashboard.domain;
 
-import com.job.dashboard.domain.business.BusinessDashService;
-import com.job.dashboard.domain.dto.FileDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
