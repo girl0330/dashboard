@@ -2,6 +2,7 @@ package com.job.dashboard.domain.job;
 
 
 import com.github.pagehelper.PageInfo;
+import com.job.dashboard.domain.business.BusinessDashService;
 import com.job.dashboard.domain.common.CommonService;
 import com.job.dashboard.domain.dto.*;
 import com.job.dashboard.domain.notification.NotificationService;
@@ -25,6 +26,7 @@ public class PostController {
     private final SessionUtil sessionUtil;
     private final CommonService commonService;
     private final NotificationService notificationService;
+    private final BusinessDashService businessDashService;
 
     //공고작성 페이지
     @GetMapping("/writePostJob")
@@ -67,8 +69,18 @@ public class PostController {
 
     //공고리스트 이동
     @GetMapping("/postJobList")
-    public String jobPostView() {
+    public String jobPostView(Model model) {
         System.out.println("공고리스트 뷰");
+
+        if (sessionUtil.loginUserCheck()) {
+            int userNo = (int) sessionUtil.getAttribute("userNo");
+            //파일 조회
+            FileDTO file = businessDashService.getFile(userNo);
+            if (file != null) {
+                model.addAttribute("fileId", file.getFileId());
+            }
+        }
+
         return "jsp/post/job-list";
     }
 
@@ -177,6 +189,7 @@ public class PostController {
             return "redirect:/";
         }
 
+        System.out.println("구인 공고 삭제 컨트롤");
         postService.deleteJobPost(jobId);
         System.out.println("삭제됨");
         return "jsp/post/job-list";

@@ -55,6 +55,7 @@
 
     <select id="getJobLists" parameterType="map" resultType="com.job.dashboard.domain.dto.JobPostDTO">
         SELECT /*PostMapper.getJobLists*/
+            jpi.delete_yn,
             jpi.job_id,
             jpi.USER_NO,
             (SELECT  fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC LIMIT 1) AS file_id,
@@ -201,11 +202,13 @@
         WHERE job_id = #{jobId}
     </select>
 
-    <delete id="deleteJobPost" parameterType="int">
-        DELETE /*PostMapper.deleteJobPost*/
-        FROM job_post_info
-        WHERE job_id = #{jobId}
-    </delete>
+
+    <update id="updateDeleteY" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
+        update /*PostMapper.deleteJobPost*/
+            job_post_info
+        SET delete_yn = 'y'
+        WHERE job_id = #{job_id};
+    </update>
 
     <select id="profileCheck" parameterType="com.job.dashboard.domain.dto.UserProfileInfoDTO" resultType="int">
         SELECT /*PostMapper.profileCheck*/

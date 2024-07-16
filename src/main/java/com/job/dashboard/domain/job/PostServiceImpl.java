@@ -131,8 +131,9 @@ public class PostServiceImpl implements PostService {
     // 구인 공고 삭제
     @Transactional
     public void deleteJobPost(int jobId) {
-
-        postMapper.deleteJobPost(jobId);
+        System.out.println("구인 공고 삭제 임플");
+        System.out.println("jobId확인 :::::  "+jobId);
+        postMapper.updateDeleteY(jobId);
     }
 
     // 공고 지원

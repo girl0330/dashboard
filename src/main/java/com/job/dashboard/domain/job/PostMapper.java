@@ -22,7 +22,7 @@ public interface PostMapper {
     void updateJobPost(JobPostDTO jobPostDTO);
 
     //삭제
-    void deleteJobPost(int jobId);
+    void updateDeleteY(int jobId);
 
     // 로그인 회원의 프로필 유무확인
      UserProfileInfoDTO profileCheck(UserProfileInfoDTO userProfileInfoDTO);

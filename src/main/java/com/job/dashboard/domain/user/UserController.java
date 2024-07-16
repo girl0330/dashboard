@@ -18,7 +18,6 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
     private final SessionUtil sessionUtil;
-//    private final KakaoApi kakaoApi;
 
     //회원가입 페이지
     @GetMapping("/signup")
@@ -92,7 +91,7 @@ public class UserController {
         // 세션 제거
         sessionUtil.logoutUser();
         // 로그아웃 후 리다이렉션할 페이지로 이동
-        return "redirect:/login";
+        return "redirect:/";
     }
 
     //비밀번호 재설정
