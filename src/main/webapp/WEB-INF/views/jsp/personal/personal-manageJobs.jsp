@@ -52,6 +52,8 @@
                     '<h6 class="mb-0">' + applyStatusJob.title + '</h6>' +
                     '</a>' +
                     '<p class="mb-1 mt-2"><i class="fas fa-map-marker-alt pe-1">' + applyStatusJob.address + '</i></p>' +
+                    '</th>' +
+                    '<th scope="row">' +
                     '<p class="mb-0">지원한 날짜 : ' + applyStatusJob.systemRegisterDatetime + '</p>' +
                     '</th>' +
                     '<td>' + applyStatusJob.statusTypeCodeName + '</td>' +
@@ -87,7 +89,7 @@ Manage Jobs -->
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="user-dashboard-info-box mb-0">
+                <div class="mb-0">
                     <div class="row mb-4">
                         <div class="col-md-7 col-sm-5 d-flex align-items-center">
                             <div class="section-title-02 mb-0 ">
@@ -96,11 +98,12 @@ Manage Jobs -->
                         </div>
                     </div>
 
-                    <table class="table table-bordered">
-                        <thead class="bg-light">
+                    <table class="table table-hover">
+                        <thead>
                         <tr>
                             <th scope="col">지원한 공고 제목</th>
                             <th scope="col">지원 현황</th>
+                            <th scope="col">지원한 날짜</th>
                         </tr>
                         </thead>
                         <tbody id="applyStatusJobList">

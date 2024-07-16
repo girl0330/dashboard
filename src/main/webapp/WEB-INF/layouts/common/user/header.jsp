@@ -138,6 +138,42 @@
         border-radius: 5px;
     }
 
+    .position-relative {
+        position: relative;
+    }
+
+    .position-absolute {
+        position: absolute;
+    }
+
+    .translate-middle {
+        transform: translate(-50%, -50%);
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.3em 0.5em; /* 배지의 패딩을 줄여서 크기 조정 */
+        font-size: 0.7em; /* 글꼴 크기를 줄여서 배지 크기 조정 */
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.375rem;
+        color: #fff;
+    }
+
+    .bg-primary {
+        background-color: #007bff;
+    }
+
+    .top-0 {
+        top: 0;
+    }
+
+    .start-100 {
+        left: 100%;
+    }
 </style>
 <header class="border-bottom">
     <div class="container" >
@@ -148,16 +184,7 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li class="nav-item dropdown ">
                     <a class="nav-link text-dark" href="/business/postJobList">
-                        공고 리스트
-                    </a>
-                </li>
-                <li id="notification">New job application received!</li>
-            </ul>
-
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li class="nav-item dropdown ">
-                    <a class="dropdown-item text-sm dropdown-item-danger d-flex gap-2 align-items-center" href="/business/writePostJob">
-                        <img src="/images/svg/pen.svg" alt="mdo" width="17" height="17" class="bi"> 공고작성
+                        <img src="/images/svg/list.svg" width="25" height="25" class="bi"> 공고 리스트
                     </a>
                 </li>
             </ul>
@@ -172,13 +199,34 @@
             <c:if test="${sessionScope.userNo != null && sessionScope.userNo != 0}">
                 <div class="text-end me-2">
                     <a href="/personal/likedJobs" class="d-inline-flex link-body-emphasis text-decoration-none">
-                        <img src="/images/svg/icon-bookmark.svg" alt="mdo" width="24" height="24">
+                        <img src="/images/svg/icon-bookmark.svg" alt="mdo" width="30" height="30">
                     </a>
                 </div>
 
-                <div class="dropdown text-end">
+<%--                <div class="dropdown text-end me-2">--%>
+<%--                    <a href="#" class="d-inline-flex link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false" onclick="notification()">--%>
+<%--                        <img src="/images/svg/bel.svg" alt="mdo" width="24" height="24" class="rounded-circle">--%>
+<%--                    </a>--%>
+<%--                    <ul class="dropdown-menu custom-dropdown-menu" id="notificationList" aria-labelledby="notificationDropdown">--%>
+<%--                        <li>--%>
+<%--                            <a class="dropdown-item custom-dropdown-item" href="#">--%>
+<%--                                <img src="https://via.placeholder.com/40" alt="avatar">--%>
+<%--                                <div class="content">--%>
+<%--                                    <div class="header">--%>
+<%--                                        <span>옥단냥고양이</span>--%>
+<%--                                        <small>약 1시간 전</small>--%>
+<%--                                    </div>--%>
+<%--                                    <span>님의 회원님이 작성하신 "취업의 현실"에 추천을 하였습니다.</span>--%>
+<%--                                </div>--%>
+<%--                            </a>--%>
+<%--                        </li>--%>
+<%--                    </ul>--%>
+<%--                </div>--%>
+
+                <div class="dropdown text-end me-2 position-relative">
                     <a href="#" class="d-inline-flex link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false" onclick="notification()">
-                        <img src="/images/svg/bel.svg" alt="mdo" width="24" height="24" class="rounded-circle">
+                        <img src="/images/svg/bel.svg" alt="mdo" width="30" height="30" class="rounded-circle">
+                        <span class="badge bg-primary position-absolute top-0 start-100 translate-middle">4</span>
                     </a>
                     <ul class="dropdown-menu custom-dropdown-menu" id="notificationList" aria-labelledby="notificationDropdown">
                         <li>
@@ -195,9 +243,10 @@
                         </li>
                     </ul>
                 </div>
+
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/business/uploadedFileGet/${fileId}" alt="mdo" width="32" height="32" class="rounded-circle">
+                        <img src="/business/uploadedFileGet/${fileId}" alt="mdo" width="40" height="40" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu gap-1 p-2 rounded-3 mx-0 shadow w-220px" data-bs-theme="light">
                         <li class="dropdown-header text-sm">내 계정</li>

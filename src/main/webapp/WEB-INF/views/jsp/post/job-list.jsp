@@ -61,6 +61,10 @@
             const likedJobIds = new Set(likeList.map(like => like.jobId));
 
             list.forEach(job => {
+                if (job.deleteYn === 'y') {
+                    return;
+                }
+
                 // Determine the heart icon class based on whether the jobId is in likedJobIds
                 const heartIconClass = likedJobIds.has(job.jobId) ? 'fas fa-heart text-danger' : 'far fa-heart';
 
@@ -83,8 +87,6 @@
                     '<div class="job-list-option">' +
                     '<ul class="list-unstyled">' +
                     '<li><a href="#"><i class="fas fa-filter pe-1"></i>' + job.jobTypeCodeName + '</a></li>' +
-                    '</ul>' +
-                    '<ul class="list-unstyled">' +
                     '<li><i class="fas fa-map-marker-alt pe-1"></i>' + job.address + '</li>' +
                     '<li><a class="freelance"><i class="fas fa-suitcase pe-1"></i>' + job.salaryTypeCodeName + ':' + job.salary + '</a></li>' +
                     '</ul>' +

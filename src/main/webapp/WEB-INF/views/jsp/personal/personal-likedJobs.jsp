@@ -101,7 +101,11 @@ Candidates Dashboard -->
             <div class="col-md-12">
                 <div class="row mb-3 mb-lg-5 mt-3 mt-lg-0">
                     <div class="col-lg-4 mb-4 mb-lg-0">
+<%--                        <div class="btn btn-danger mb-2">--%>
+<%--                            <i class="fas fa-heart text-alt"></i> <span class="text-white" id="amount">00</span>--%>
+<%--                        </div>--%>
                         <div class="candidates-feature-info bg-danger">
+
                             <div class="candidates-info-icon text-white">
                                 <i class="fas fa-heart text-alt"></i>
                             </div>
@@ -114,7 +118,7 @@ Candidates Dashboard -->
                         </div>
                     </div>
                 </div>
-                <div class="user-dashboard-info-box mb-0 pb-4">
+                <div class="mb-0 pb-4">
                     <div class="section-title-02 mb-4">
                         <h4>관심있는 공고</h4>
                     </div>

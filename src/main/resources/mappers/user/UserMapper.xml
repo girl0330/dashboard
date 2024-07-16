@@ -9,7 +9,8 @@
     </select>
 
     <insert id="insertUser" parameterType="com.job.dashboard.domain.dto.UserDTO">
-        INSERT INTO      /*UserMapper.insertUser*/ user_info
+        INSERT INTO      /*UserMapper.insertUser*/
+        user_info
         (
             email,
             password ,

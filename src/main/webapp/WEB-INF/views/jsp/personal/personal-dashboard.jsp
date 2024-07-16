@@ -106,7 +106,7 @@ Candidates Dashboard -->
                     </div>
                 </div>
 
-                <div class="user-dashboard-info-box mb-0 pb-4">
+                <div class="mb-0 pb-4">
                     <div class="section-title">
                         <h4>최근 지원한 공고 목록</h4>
                     </div>
