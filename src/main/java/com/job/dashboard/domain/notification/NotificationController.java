@@ -24,7 +24,7 @@ public class NotificationController {
     /**
      * 구독하기
      * */
-    @GetMapping(value = "/subscribe", produces = "text/event-stream;charset=UTF-8")
+    @GetMapping(value = "/notifications", produces = "text/event-stream;charset=UTF-8")
     public ResponseEntity<SseEmitter> subscribe() {
         if (!sessionUtil.loginUserCheck()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

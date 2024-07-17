@@ -4,6 +4,7 @@
     <select id="getLikeListUp" resultType="com.job.dashboard.domain.dto.JobPostDTO">
         SELECT /*MainMapper.getLikeListUp*/
             jpi.job_id,
+            jpi.delete_yn,
             jpi.USER_NO,
             (SELECT  fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC LIMIT 1) AS file_id,
             jpi.title,
@@ -23,11 +24,13 @@
                         FROM job_like_info
                         GROUP BY job_id
                                         ) jli ON jpi.job_id = jli.job_id
+        WHERE jpi.delete_yn = 'N'
         ORDER BY jli.likesCount DESC, jpi.job_id LIMIT 6
     </select>
     <select id="getRecentListUp" resultType="com.job.dashboard.domain.dto.JobPostDTO">
     SELECT /*MainMapper.getRecentListUp*/
     jpi.job_id,
+    jpi.delete_yn,
     jpi.USER_NO,
     (SELECT  fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC LIMIT 1) AS file_id,
     jpi.title,
@@ -42,6 +45,7 @@
     jpi.status_type_code,
     func_get_detail_name('status_type', jpi.status_type_code) AS status_type_code_name
     FROM job_post_info jpi
+    WHERE jpi.delete_yn = 'n'
     ORDER BY jpi.system_register_datetime DESC LIMIT 6
     </select>
 </mapper>

@@ -96,7 +96,7 @@
           if (!this.validationChk()) {
             return;
           }
-          if (!this.checkFn()) {
+          if (!this.termsCheckFn()) {
             return;
           }
           this.formSubmit();
@@ -163,7 +163,7 @@
       return valid;
     },
 
-    checkFn : function() {
+    termsCheckFn : function() {
       let valid = true;
       const form = $('#userForm');
       const checkBox = form.find("input[type='checkbox']");
@@ -230,7 +230,7 @@
       });
     });
 
-    //개인 회원가입 로직
+    //유저 회원가입 로직
     $("#user_register").on("click", function() {
       user_register.init();
     });
@@ -327,14 +327,7 @@ Register -->
                       <input class="form-check-input" type="checkbox" value="ture" id="terms" name="terms">
                       <label class="form-check-label" for="terms">
                         <a href="/user/terms" target="_blank" rel="noopener noreferrer">이용약관</a>에 전체동의
-                      </label>
-                    </div>
-                  </div>
-                  <div class="mb-3 col-12">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="ture" id="privacy" name="privacy">
-                      <label class="form-check-label" for="terms">
-                        <a href="/user/privacy" target="_blank" rel="noopener noreferrer">개인정보</a>에 전체동의
+                        <div id="termsError" class="invalid-feedback" style="display: none;">email valid message</div>
                       </label>
                     </div>
                   </div>

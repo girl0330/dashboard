@@ -40,14 +40,20 @@ Jobs-listing -->
                 <div class="col-lg-6 mb-4 mb-sm-0" data-job-id="${hotJob.jobId}">
                   <div class="job-list">
                     <div class="job-list-logo">
-                      <img class="img-fluid" src="/business/uploadedFileGet/${hotJob.fileId}" alt="">
+                      <c:choose>
+                        <c:when test="${hotJob.fileId == 0}">
+                          <img class="img-fluid" src="/images/svg/07.svg" alt="">
+                        </c:when>
+                        <c:otherwise>
+                          <img class="img-fluid" src="/business/uploadedFileGet/${hotJob.fileId}" alt="">
+                        </c:otherwise>
+                      </c:choose>
                     </div>
                     <div class="job-list-details">
                       <div class="job-list-info">
                         <div class="job-list-title">
                           <input type="hidden" id="jobPostId" name="jobPostId" value="${hotJob.jobId}">
-                          <h5 class="mb-0"><a
-                                  href="/business/jobPostDetail?jobId= + ${hotJob.jobId}">${hotJob.title}</a></h5>
+                          <h5 class="mb-0"><a href="/business/jobPostDetail?jobId= + ${hotJob.jobId}">${hotJob.title}</a></h5>
                         </div>
                         <div class="job-list-option">
                           <ul class="list-unstyled">
@@ -79,7 +85,14 @@ Jobs-listing -->
                 <div class="col-lg-6 mb-4 mb-sm-0" data-job-id="${recentJob.jobId}">
                   <div class="job-list">
                     <div class="job-list-logo">
-                      <img class="img-fluid" src="/business/uploadedFileGet/${recentJob.fileId}" alt="">
+                      <c:choose>
+                        <c:when test="${recentJob.fileId == 0}">
+                          <img class="img-fluid" src="/images/svg/07.svg" alt="">
+                        </c:when>
+                        <c:otherwise>
+                          <img class="img-fluid" src="/business/uploadedFileGet/${recentJob.fileId}" alt="">
+                        </c:otherwise>
+                      </c:choose>
                     </div>
                     <div class="job-list-details">
                       <div class="job-list-info">
