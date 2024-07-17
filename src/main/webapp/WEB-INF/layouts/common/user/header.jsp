@@ -199,7 +199,7 @@
             <c:if test="${sessionScope.userNo != null && sessionScope.userNo != 0}">
                 <div class="text-end me-2">
                     <a href="/personal/likedJobs" class="d-inline-flex link-body-emphasis text-decoration-none">
-                        <img src="/images/svg/icon-bookmark.svg" alt="mdo" width="30" height="30">
+                        <img src="/images/svg/icon-bookmark.svg" alt="mdo" width="25" height="25">
                     </a>
                 </div>
 
@@ -225,7 +225,7 @@
 
                 <div class="dropdown text-end me-2 position-relative">
                     <a href="#" class="d-inline-flex link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false" onclick="notification()">
-                        <img src="/images/svg/bel.svg" alt="mdo" width="30" height="30" class="rounded-circle">
+                        <img src="/images/svg/bel.svg" alt="mdo" width="25" height="25" class="rounded-circle">
                         <span class="badge bg-primary position-absolute top-0 start-100 translate-middle">4</span>
                     </a>
                     <ul class="dropdown-menu custom-dropdown-menu" id="notificationList" aria-labelledby="notificationDropdown">
@@ -245,9 +245,18 @@
                 </div>
 
                 <div class="dropdown text-end">
-                    <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/business/uploadedFileGet/${fileId}" alt="mdo" width="40" height="40" class="rounded-circle">
-                    </a>
+                    <c:choose>
+                        <c:when test="${fileId > 0}">
+                            <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="/business/uploadedFileGet/${fileId}" alt="mdo" width="30" height="30" class="rounded-circle">
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="/images/svg/07.svg" alt="mdo" width="30" height="30" class="rounded-circle">
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
                     <ul class="dropdown-menu gap-1 p-2 rounded-3 mx-0 shadow w-220px" data-bs-theme="light">
                         <li class="dropdown-header text-sm">내 계정</li>
                         <c:if test="${sessionScope.userTypeCode == 10 }">
