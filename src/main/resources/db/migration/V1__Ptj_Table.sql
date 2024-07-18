@@ -150,6 +150,38 @@ VALUES
     ('notify_type', 'APP', '지원함', '구직자가 회사 지원했음을 알려주는 코드', 1, NULL, 1,  1),
     ('notify_type', 'HIR', '채용함', '고용주가 구직자를 채용했음을 알려주는 코드', 1, NULL, 1,  1);
 
+-- 이용약관 코드
+INSERT INTO code_detail
+(group_code, detail_code, detail_name, description, code_used, user_defined_value, system_register_id, system_updater_id)
+VALUES
+    ('terms_type', '10', '이용약관', '이용약관 내용', 1, NULL, 1,  1),
+    ('terms_type', '20', '개인정보 처리방침', '개인정보 처리방침 내용', 1, NULL, 1,  1);
+
+-- ptj.terms_info definition
+
+CREATE TABLE terms_info (
+                              term_id int NOT NULL AUTO_INCREMENT,
+                              terms_type_code varchar(50) DEFAULT NULL,
+                              terms_content text,
+                              version varchar(50) DEFAULT NULL,
+                              system_register_id int DEFAULT NULL,
+                              system_register_datetime timestamp NULL DEFAULT NULL,
+                              system_update_id int DEFAULT NULL,
+                              system_update_datetime timestamp NULL DEFAULT NULL,
+                              PRIMARY KEY (term_id)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ptj.terms_info_history definition
+
+CREATE TABLE terms_info_history (
+                                      terms_history_id int NOT NULL AUTO_INCREMENT,
+                                      user_no int DEFAULT NULL,
+                                      terms_id int DEFAULT NULL,
+                                      status varchar(2) DEFAULT NULL,
+                                      agreed_datetime timestamp NULL DEFAULT NULL,
+                                      PRIMARY KEY (terms_history_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 -- user_info definition
 drop table if exists user_info;
 CREATE TABLE user_info (
