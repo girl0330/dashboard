@@ -282,6 +282,7 @@ CREATE TABLE job_post_info (
                                ADDRESS_DETAIL varchar(50) DEFAULT NULL COMMENT '상세 주소',
                                latitude decimal(9,6) DEFAULT NULL COMMENT '위도',
                                longitude decimal(9,6) DEFAULT NULL COMMENT '경도',
+                               delete_yn varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
                                PRIMARY KEY (job_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='구인공고 테이블';
 
