@@ -72,17 +72,8 @@
     };
 </script>
 <style>
-    .form-control-dark {
-        border-color: var(--bs-gray);
-    }
-
-    .form-control-dark:focus {
-        border-color: #fff;
-        box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
-    }
-
-    .text-small {
-        font-size: 85%;
+    body {
+        padding-top: 70px; /* 헤더 높이만큼 padding 추가 */
     }
 
     .dropdown-menu {
@@ -175,7 +166,7 @@
         left: 100%;
     }
 </style>
-<header class="border-bottom">
+<header class="border-bottom fixed-top bg-white">
     <div class="container" >
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a class="navbar-brand" href="/">
@@ -184,7 +175,7 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li class="nav-item dropdown ">
                     <a class="nav-link text-dark" href="/business/postJobList">
-                        <img src="/images/svg/list.svg" width="25" height="25" class="bi"> 공고 리스트
+                        공고 리스트
                     </a>
                 </li>
             </ul>

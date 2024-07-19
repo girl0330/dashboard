@@ -23,3 +23,5 @@
 <!-- 페이지 처리 -->
 <script src="/js/common/pagination.js"></script>
 
+<script src="/js/countUp.min.js"></script>
+
