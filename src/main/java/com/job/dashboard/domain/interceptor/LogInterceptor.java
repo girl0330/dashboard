@@ -8,6 +8,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
+
 @Component
 @RequiredArgsConstructor
 public class LogInterceptor implements HandlerInterceptor {
@@ -17,11 +19,24 @@ public class LogInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 요청 전 처리 로직
         System.out.println("preHandle: 요청 처리 전");
-//
-//        if (!sessionUtil.loginUserCheck()) {
-//            response.sendRedirect("/user/login");
-//            return false; // 페이지 접근 거부
-//        }
+
+        if (!sessionUtil.loginUserCheck()) {
+            response.sendRedirect("/user/login");
+            return false; // 페이지 접근 거부
+        }
+
+        String url = request.getRequestURI();
+        String userTypeCode = (String) sessionUtil.getAttribute("userTypeCode");
+
+        if (url.startsWith("/business") && !Objects.equals(userTypeCode, "20")) {
+            response.sendRedirect("/");
+            return false;
+        }
+
+        if (url.startsWith("/personal") && !Objects.equals(userTypeCode,"10")) {
+            response.sendRedirect("/");
+            return false;
+        }
 
         return true; // false를 반환하면 요청 처리가 중단됨
     }

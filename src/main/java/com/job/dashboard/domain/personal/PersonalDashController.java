@@ -26,16 +26,6 @@ public class PersonalDashController {
     @GetMapping("/dashboard")
     public String dashboardView(Model model) {
 
-        // 로그인 체크
-        if(!sessionUtil.loginUserCheck()) {
-            return "redirect:/user/login";
-        }
-
-        //로그인 타입코드 확인하기
-        if(!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "10")) {
-            return "redirect:/";
-        }
-
         int userNo = (int)sessionUtil.getAttribute("userNo");
 
         // 프로필 작성 여부 확인
@@ -80,20 +70,10 @@ public class PersonalDashController {
     @GetMapping("/myProfile")
     public String myProfileView(Model model) {
 
-        if(!sessionUtil.loginUserCheck()) { // 로그인 체크
-            return "redirect:/user/login";
-        }
-
-        //로그인 타입코드 확인하기
-        if(!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "10")) {
-            return "redirect:/";
-        }
-
         // 작성된 프로필 확인
         int userNo = (int) sessionUtil.getAttribute("userNo");
         UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
 
-        System.out.println("myprofile:::: "+myProfile);
         //파일 조회
         FileDTO file = businessDashService.getFile(userNo);
 
@@ -115,16 +95,6 @@ public class PersonalDashController {
     // 비밀번호 변경
     @GetMapping("/changePassword")
     public String changePasswordView(Model model) {
-
-        // 로그인 체크
-        if(!sessionUtil.loginUserCheck()) {
-            return "redirect:/user/login";
-        }
-
-        //로그인 타입코드 확인하기
-        if(!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "10")) {
-            return "redirect:/";
-        }
 
         //파일 조회
         int userNo = (int) sessionUtil.getAttribute("userNo");
@@ -152,15 +122,6 @@ public class PersonalDashController {
     // manageJobsList
     @GetMapping("/manageJobs")
     public String manageJobsView(Model model) {
-        System.out.println("==== 개인 회원 manageJobs====");
-
-        if(!sessionUtil.loginUserCheck()) { //로그인 체크
-            return "redirect:/user/login";
-        }
-
-        if(!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "10")) { //로그인 타입코드 체크
-            return "redirect:/";
-        }
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
@@ -205,18 +166,6 @@ public class PersonalDashController {
     @GetMapping("/likedJobs")
     public String likedJobsView(Model model) {
 
-        // 로그인 체크
-        System.out.println("로그인 체크");
-        if(!sessionUtil.loginUserCheck()) {
-            return "redirect:/user/login";
-        }
-
-        //로그인 타입코드 확인하기
-        System.out.println("/로그인 타입코드 체크");
-        if(!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "10")) {
-            return "redirect:/";
-        }
-
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
         // 프로필 작성 여부 확인
@@ -256,7 +205,5 @@ public class PersonalDashController {
         System.out.println("response:::::    "+response);
         return response;
     }
-
-    // 알림 불러오기
 
 }

@@ -4,7 +4,6 @@
 <script>
     let tab = {
         tabChange : function (termsTypeCode) {
-            alert("!!!")
             let jsonData = {}
             jsonData["termsTypeCode"] = termsTypeCode;
             alert(JSON.stringify(termsTypeCode));
@@ -39,13 +38,11 @@
 
     $(document).ready(function() {
         $("#termsAndConditions").on("click", function () {
-            alert("??")
             const termsTypeCode = $("#termTypeCode").val();
             console.log("termsTypeCode 타입코드 ::: "+termsTypeCode);
             tab.tabChange(termsTypeCode);
         })
         $("#privacyPolicyAgreed").on("click", function () {
-            alert("!!")
             const termsTypeCode = $("#privacyTypeCode").val();
             console.log("privacyTypeCode 타입코드 ::: "+termsTypeCode);
             tab.tabChange(termsTypeCode);

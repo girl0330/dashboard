@@ -35,12 +35,10 @@ public class  MainController {
 
         //hotJobsList
         List<JobPostDTO> likeListUp = mainService.getLikeListUp();
-        System.out.println("좋아요 많은 순으로 조회한 리스트 "+likeListUp);
         model.addAttribute("likeListUp",likeListUp);
 
         //recentJobsList
         List<JobPostDTO> recentListUp = mainService.getRecentListUp();
-        System.out.println("최신 올린 순으로 조회한 리스트 "+recentListUp);
         model.addAttribute("recentListUp",recentListUp);
         return "jsp/index";
     }

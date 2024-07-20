@@ -71,8 +71,6 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         return map;
     }
 
-    //
-
     // 비밀번호 업데이트
     public Map<Object, Object> changePassword(UserDTO userDTO) {
         Map<Object, Object> map = new HashMap<>();
@@ -80,8 +78,6 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         String enteredPassword = userDTO.getPassword();
 
         int userNo = userDTO.getUserNo();
-        /*  UserDTO oldPassword = personalDashMapper.getOldPassword(userNo);
-        * String password = oldPassword.getPassword();*/
         String oldPassword = personalDashMapper.getOldPassword(userNo).getPassword();
 
         boolean pwCheck = passwordEncoder.matches(enteredPassword, oldPassword);
@@ -121,9 +117,6 @@ public class PersonalDashServiceImpl implements PersonalDashService {
             System.out.println("statusTypeCode는 "+apply.getStatusTypeCode());
         }
 
-
-        System.out.println("지원상태코드 확인::::"+applyStatusList);
-
         return new PageInfo<>(applyStatusList);
     }
 
@@ -153,10 +146,6 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         PageHelper.startPage(pageNum, pageSize);
         List<JobPostDTO> likedJobsList = personalDashMapper.getLikeJobsList(map);
         return new PageInfo<>(likedJobsList);
-    }
-
-    public int getCountJobs() {
-        return personalDashMapper.getCountJobs();  // 총 게시물 수를 세는 메서드
     }
 
     public int profileCountByUserNo(int userNo) {

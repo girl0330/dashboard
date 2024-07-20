@@ -25,7 +25,7 @@ public interface PersonalDashMapper {
     //dashboard list
     List<JobApplicationDTO> getDashboardList(Map<String, Object> map);
 
-    int getCountJobs();
+//    int getCountJobs();
 
     //좋아요 리스트
     List<JobPostDTO> getLikeJobsList(Map<String, Object> map);

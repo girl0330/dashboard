@@ -64,7 +64,6 @@
         keywordSearch.init();
 
         $('#searchButton').on('click', function (e) {
-            alert("!")
             e.preventDefault();
             keywordSearch.init();
         });

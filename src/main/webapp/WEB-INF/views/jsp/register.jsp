@@ -5,7 +5,6 @@
   const emailValid = {
     init: function() {
       this.duplicateCheck(function (isValid) {
-        alert("isval:::   " + isValid);
         return isValid;
       });
     },

@@ -153,7 +153,6 @@
         });
 
         $('#like').click(function () {
-            alert("??")
             keywordSearch.like();
         })
 
@@ -180,7 +179,6 @@
     });
 
     function test() {
-        alert("검색 실행 ");
     }
 </script>
 <!--=================================
