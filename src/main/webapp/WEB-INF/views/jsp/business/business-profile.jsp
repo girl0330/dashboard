@@ -206,18 +206,6 @@ My Profile -->
                     <div class="section-title-02 mb-4">
                         <h4>기본 정보</h4>
                     </div>
-<%--                    <div class="cover-photo-contact">--%>
-<%--                        <form action="" method="post" enctype="multipart/form-data">--%>
-<%--                            <div class="cover-photo">--%>
-<%--                                <img class="img-fluid " src="images/bg/cover-bg.png" alt="">--%>
-<%--                                <i class="fas fa-times-circle"></i>--%>
-<%--                            </div>--%>
-<%--                            <div class="upload-file">--%>
-<%--                                <label for="formFile" class="form-label">Upload Cover Photo</label>--%>
-<%--                                <input class="form-control" type="file" id="formFile">--%>
-<%--                            </div>--%>
-<%--                        </form>--%>
-<%--                    </div>--%>
                     <div class="cover-photo-contact mb-3 " >
                         <div class="cover-photo">
                             <img class="img-fluid" id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="Uploaded Image" style="width: 225px; height: 225px;" >

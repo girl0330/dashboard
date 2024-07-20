@@ -98,26 +98,12 @@ public class BusinessDashController {
     @ResponseBody
     public Map<String, Object> insertProfile(CompanyInfoDTO companyInfoDTO) {
 
-        //로그인 확인
-        if(!sessionUtil.loginUserCheck()) {
-            throw new CustomException(ExceptionErrorCode.UNAUTHORIZED_USER_TOKEN);
-        }
-
-        //회원 코드 확인
-        if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) {
-            throw new CustomException(ExceptionErrorCode.INVALID_MEMBER_TOKEN);
-        }
-
         return businessDashService.insertProfile(companyInfoDTO);
     }
 
     //비밀번호 변경
     @GetMapping("/changePassword")
     public String changePasswordView(Model model)  {
-
-        if(!sessionUtil.loginUserCheck()) {
-            return "redirect:/user/login?test=true";
-        }
 
         //회사 이름
         CompanyInfoDTO businessProfile = businessDashService.getBusinessProfileInfo();
@@ -137,14 +123,6 @@ public class BusinessDashController {
     //공고 관리
     @GetMapping("/managePostJob")
     public String managePostJobView(Model model) {
-
-        if(!sessionUtil.loginUserCheck()) { // 로그인
-            return "redirect:/user/login";
-        }
-
-        if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) { //회원 타입
-            return "redirect:/";
-        }
 
         //프로필 작성 확인
         CompanyInfoDTO businessProfileInfo = businessDashService.getBusinessProfileInfo();

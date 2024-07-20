@@ -153,7 +153,6 @@
         });
 
         $('#like').click(function () {
-            alert("??")
             keywordSearch.like();
         })
 
