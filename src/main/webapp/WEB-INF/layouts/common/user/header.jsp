@@ -23,8 +23,6 @@
         ajax.call(options);
     }
     function notificationList(response) {
-        console.log("확인 :::  " + JSON.stringify(response));
-
         const container = $("#notificationList");
         container.empty();
 
@@ -56,20 +54,20 @@
         });
     }
 
-    // Create a new EventSource instance
-    const eventSource = new EventSource('/notifications');
-
-    // Event listener for server-sent events
-    eventSource.onmessage = function(event) {
-        // Display the notification
-        const notification = document.getElementById('notification');
-        notification.style.display = 'block';
-    };
-
-    // Optional: Event listener for errors
-    eventSource.onerror = function(error) {
-        console.error('EventSource failed:', error);
-    };
+    // // Create a new EventSource instance
+    // const eventSource = new EventSource('/notifications');
+    //
+    // // Event listener for server-sent events
+    // eventSource.onmessage = function(event) {
+    //     // Display the notification
+    //     const notification = document.getElementById('notification');
+    //     notification.style.display = 'block';
+    // };
+    //
+    // // Optional: Event listener for errors
+    // eventSource.onerror = function(error) {
+    //     console.error('EventSource failed:', error);
+    // };
 </script>
 <style>
     body {
@@ -193,26 +191,6 @@
                         <img src="/images/svg/icon-bookmark.svg" alt="mdo" width="25" height="25">
                     </a>
                 </div>
-
-<%--                <div class="dropdown text-end me-2">--%>
-<%--                    <a href="#" class="d-inline-flex link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false" onclick="notification()">--%>
-<%--                        <img src="/images/svg/bel.svg" alt="mdo" width="24" height="24" class="rounded-circle">--%>
-<%--                    </a>--%>
-<%--                    <ul class="dropdown-menu custom-dropdown-menu" id="notificationList" aria-labelledby="notificationDropdown">--%>
-<%--                        <li>--%>
-<%--                            <a class="dropdown-item custom-dropdown-item" href="#">--%>
-<%--                                <img src="https://via.placeholder.com/40" alt="avatar">--%>
-<%--                                <div class="content">--%>
-<%--                                    <div class="header">--%>
-<%--                                        <span>옥단냥고양이</span>--%>
-<%--                                        <small>약 1시간 전</small>--%>
-<%--                                    </div>--%>
-<%--                                    <span>님의 회원님이 작성하신 "취업의 현실"에 추천을 하였습니다.</span>--%>
-<%--                                </div>--%>
-<%--                            </a>--%>
-<%--                        </li>--%>
-<%--                    </ul>--%>
-<%--                </div>--%>
 
                 <div class="dropdown text-end me-2 position-relative">
                     <a href="#" class="d-inline-flex link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false" onclick="notification()">

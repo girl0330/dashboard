@@ -143,46 +143,119 @@
       <h3>지금 여기에서 멋진 만남이 시작됩니다.</h3>
       <p class="text-muted">"OKKY Talent를 통해 새로운 기회를 만들어보세요!"</p>
     </div>
+  </div>
+</section>
 
-    <div class="row g-4">
-      <div class="col-md-6">
-        <div class="okky-jobs-card-custom" style="background-image: url('/images/position-cover.png');">
-          <div class="okky-jobs-card-custom-overlay"></div>
-          <div class="okky-jobs-card-custom-content">
-            <h2 class="p-custom text-white">Position</h2>
-            <p class="mb-4">괜찮은 직장이 모여있는 곳</p>
-            <div class="d-flex justify-content-center gap-4 p-4">
-              <button class="btn btn-light btn-custom">
-                <span class="fs-6 fw-lighter">Contract</span>
-                <span class="fs-4 fw-bolder">계약직</span>
-              </button>
-              <button class="btn btn-light btn-custom">
-                <span class="fs-6 fw-lighter">Fulltime</span>
-                <span class="fs-4 fw-bolder">정규직</span>
-              </button>
-            </div>
-          </div>
+<section class="p-4 mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="browse-job d-flex">
+        <h3 class="mb-3">Browse Listing </h3>
+        <div class="justify-content-center flex-fill">
+          <ul class="nav nav-tabs nav-tabs-02 justify-content-center d-flex mb-3 mb-md-0" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="Hot-tab" data-bs-toggle="tab" href="#Hot" role="tab" aria-controls="Hot" aria-selected="true">Hot Jobs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="Recent-tab" data-bs-toggle="tab" href="#Recent" role="tab" aria-controls="Recent" aria-selected="false">Recent Jobs</a>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="okky-jobs-card-custom" style="background-image: url('/images/talent-cover.png');">
-          <div class="okky-jobs-card-custom-overlay"></div>
-          <div class="okky-jobs-card-custom-content">
-            <h2 class="p-custom text-white">Position</h2>
-            <p class="mb-4">멋진 인재가 모여있는 곳</p>
-            <div class="d-flex justify-content-center gap-4 p-4">
-              <button class="btn btn-light btn-custom">
-                <span class="fs-6 fw-lighter">Talent Search</span>
-                <span class="fs-4 fw-bolder">인재찾기</span>
-              </button>
-              <button class="btn btn-light btn-custom">
-                <span class="fs-6 fw-lighter">Resume</span>
-                <span class="fs-4 fw-bolder">이력서 등록</span>
-              </button>
+        <div class="tab-content " id="myTabContent">
+          <!-- Hot jobs -->
+          <div class="tab-pane fade active show" id="Hot" role="tabpanel" aria-labelledby="Hot-tab">
+            <div class="row">
+              <c:forEach var="hotJob" items="${likeListUp}">
+                <div class="col-lg-12 mb-4 mb-sm-0" data-job-id="${hotJob.jobId}">
+                  <div class="job-list">
+                    <div class="job-list-logo">
+                      <c:choose>
+                        <c:when test="${hotJob.fileId == 0}">
+                          <img class="img-fluid" src="/images/svg/07.svg" alt="">
+                        </c:when>
+                        <c:otherwise>
+                          <img class="img-fluid" src="/business/uploadedFileGet/${hotJob.fileId}" alt="">
+                        </c:otherwise>
+                      </c:choose>
+                    </div>
+                    <div class="job-list-details">
+                      <div class="job-list-info">
+                        <div class="job-list-title">
+                          <input type="hidden" id="jobPostId" name="jobPostId" value="${hotJob.jobId}">
+                          <h5 class="mb-0"><a href="/business/jobPostDetail?jobId= + ${hotJob.jobId}">${hotJob.title}</a></h5>
+                        </div>
+                        <div class="job-list-option">
+                          <ul class="list-unstyled">
+                            <li><a href="#"><i class="fas fa-filter pe-1"></i>${hotJob.jobTypeCodeName}</a></li>class="fas fa-suitcase pe-1"></i>${hotJob.salaryTypeCodeName}:${hotJob.salary}</a>
+                            </li>
+                          </ul>
+                          <ul class="list-unstyled">
+                            <li><i class="fas fa-map-marker-alt pe-1"></i>${hotJob.address}</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="job-list-favourite-time">
+                      <span class="job-list-time order-1">
+                        <i class="far fa-clock pe-1"></i>${hotJob.systemRegisterDatetime}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </c:forEach>
             </div>
           </div>
+          <!-- Recent jobs -->
+          <div class="tab-pane fade " id="Recent" role="tabpanel" aria-labelledby="Recent-tab">
+            <div class="row">
+              <c:forEach var="recentJob" items="${recentListUp}">
+                <div class="col-lg-12 mb-4 mb-sm-0" data-job-id="${recentJob.jobId}">
+                  <div class="job-list">
+                    <div class="job-list-logo">
+                      <c:choose>
+                        <c:when test="${recentJob.fileId == 0}">
+                          <img class="img-fluid" src="/images/svg/07.svg" alt="">
+                        </c:when>
+                        <c:otherwise>
+                          <img class="img-fluid" src="/business/uploadedFileGet/${recentJob.fileId}" alt="">
+                        </c:otherwise>
+                      </c:choose>
+                    </div>
+                    <div class="job-list-details">
+                      <div class="job-list-info">
+                        <div class="job-list-title">
+                          <h5 class="mb-0"><a href="/business/jobPostDetail?jobId= + ${recentJob.jobId}">${recentJob.title}</a></h5>
+                        </div>
+                        <div class="job-list-option">
+                          <ul class="list-unstyled">
+                            <li><a href="#"><i class="fas fa-filter pe-1"></i>${recentJob.jobTypeCodeName}</a></li>
+                            <li><a class="freelance"><i
+                                    class="fas fa-suitcase pe-1"></i>${recentJob.salaryTypeCodeName}:${recentJob.salary}</a>
+                            </li>
+                          </ul>
+                          <ul class="list-unstyled">
+                            <li><i class="fas fa-map-marker-alt pe-1"></i>${recentJob.address}</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="job-list-favourite-time">
+                      <span class="job-list-time order-1">
+                        <i class="far fa-clock pe-1"></i>${recentJob.systemRegisterDatetime}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </c:forEach>
+            </div>
+          </div>
+          <!-- Popular jobs -->
         </div>
-      </div>
+        <div class="col-12 justify-content-center d-flex mt-md-5 mt-4">
+          <a class="btn btn-outline btn-lg" href="/business/postJobList">더 많은 공고 보기</a>
+        </div>
+
     </div>
   </div>
 </section>

@@ -54,10 +54,6 @@ public class PostServiceImpl implements PostService {
 
         List<JobPostDTO> list = postMapper.getJobLists(keyword);
 
-        for (JobPostDTO jobPost : list) {
-            System.out.println("첵첵:: "+jobPost);
-
-        }
         return new PageInfo<>(list);
     }
 

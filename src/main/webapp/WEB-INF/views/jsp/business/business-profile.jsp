@@ -145,7 +145,6 @@
 
         // 파일 삭제
         $('#fileDelete').on('click', function () {
-            alert("삭제?")
             const fileId = $("#fileId").val();
             console.log("fileId는?  :    "+ JSON.stringify(fileId));
 

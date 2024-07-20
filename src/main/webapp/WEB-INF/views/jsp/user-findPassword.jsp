@@ -1,4 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <style>
     .nav-tabs.nav-tabs-03 li:after {
@@ -170,7 +169,6 @@
 
         confirmStringSubmit : function () {
             let valid = true;
-            alert("확인 버튼 누름")
             const randomString = $("#randomString").val();
             const confirmString = $("#confirmString").val();
 
@@ -179,7 +177,6 @@
                 valid = false;
                 return valid;
             }
-            alert("본인인증 성공")
             // active 클래스 제거
             $("#identity_check_tab").removeClass("active");
             $("#identity_check").removeClass("active show");

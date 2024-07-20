@@ -70,17 +70,6 @@ public class BusinessDashController {
     @GetMapping("/profile")
     public String profileView(Model model)  {
 
-        //로그인 확인
-        if(!sessionUtil.loginUserCheck()) {
-            return "redirect:/user/login";
-        }
-
-        //회원 코드 확인
-        if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"), "20")) {
-            return "redirect:/";
-        }
-
-        System.out.println("");
         //기존 프로필 가져오기
         int userNo = (int) sessionUtil.getAttribute("userNo");
         CompanyInfoDTO businessProfileInfo = businessDashService.getBusinessProfileInfo();

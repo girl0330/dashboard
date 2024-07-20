@@ -26,12 +26,22 @@ inner banner -->
         <div class="row">
             <div class="col-12">
                 <div class="jobber-user-info">
-                    <div class="profile-avatar">
-                        <img class="img-fluid " id="bannerCoverImage" src="/business/uploadedFileGet/${fileId}" alt="">
-                    </div>
-                    <div class="profile-avatar-info ms-4">
-                        <h3>${company.companyName}</h3>
-                    </div>
+                    <c:choose>
+                        <c:when test="${fileId > 0}"><div class="profile-avatar">
+                            <img class="img-fluid" src="/business/uploadedFileGet/${fileId}" alt="">
+                        </div>
+                            <div class="profile-avatar-info ms-4">
+                                <h3>${company.companyName}</h3>
+                            </div>
+                        </c:when>
+                        <c:otherwise><div class="profile-avatar">
+                            <img class="img-fluid" src="/images/svg/07.svg" alt="">
+                        </div>
+                            <div class="profile-avatar-info ms-4">
+                                <h3>회원님 환영합니다.</h3>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>

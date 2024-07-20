@@ -30,27 +30,26 @@ public class PostController {
 
     //공고작성 페이지
     @GetMapping("/writePostJob")
-    public String writePostJobView(HttpServletRequest request) {
+    public String writePostJobView(HttpServletRequest request, Model model) {
 
-        System.out.println("? 뭐지?");
-
+        //이전 페이지 session저장
         if (!sessionUtil.loginUserCheck()) { // 로그인 체크
-            System.out.println("로그인 체크");
             String currentUrl = request.getRequestURL().toString();
             request.getSession().setAttribute("prevPage", currentUrl);
-            System.out.println("현재 url 세션에 넣기:  "+currentUrl);
             return "jsp/login";
-        }
-
-        if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"),"20")) { // 횐원코드 체크
-            return "redirect:/";
         }
 
         //프로필 작성 확인
         int userNo = (int) sessionUtil.getAttribute("userNo");
         int profileCheck = postService.profileCheck(userNo);
-        if (profileCheck == 0) {
+        if (profileCheck < 1) {
             return "redirect:/business/profile";
+        }
+
+        //파일 조회
+        FileDTO file = businessDashService.getFile(userNo);
+        if (file != null) {
+            model.addAttribute("fileId", file.getFileId());
         }
 
         return "jsp/post/post-a-job";
@@ -60,7 +59,6 @@ public class PostController {
     @PostMapping("/insertPost")
     @ResponseBody
     public Map<String, Object> insertPost (@RequestBody JobPostDTO jobPostDTO) {
-        Map<String, Object> map = new HashMap<>();
 
          //로그인한 id를 직접 넣을거임
         return postService.insertPost(jobPostDTO);
@@ -80,7 +78,6 @@ public class PostController {
                 model.addAttribute("fileId", file.getFileId());
             }
         }
-
         return "jsp/post/job-list";
     }
 
@@ -92,10 +89,7 @@ public class PostController {
                                                @RequestParam(defaultValue = "10") int pageSize) {
 
         String userTypeCode = (String) sessionUtil.getAttribute("userTypeCode");
-        System.out.println("세션에서 가져온 userTypeCode확인 :: "+ userTypeCode);
-        System.out.println("공고 리스트");
         PageInfo<JobPostDTO> jobList = postService.jobList(keyword, pageNum, pageSize);
-        System.out.println("jobList확인 ::::::::::      "+jobList);
         List<LikeDTO> likeList = postService.getLikeList();
 
         Map<String, Object> response = new HashMap<>();
@@ -114,27 +108,20 @@ public class PostController {
     //공고 상세 페이지
     @GetMapping("/jobPostDetail")
     public String jobPostDetailView(@RequestParam("jobId") int jobId, Model model) {
-        System.out.println(" 공고상세페이지 ");
         Map<String, Object> map = new HashMap<>();
 
         if (sessionUtil.loginUserCheck()) { // 로그인시
-            System.out.println("로그인 확인 ");
             int userNo = (int) sessionUtil.getAttribute("userNo");
             map.put("userNo", userNo);
             map.put("jobId", jobId);
 
             int like = postService.findLike(map);
-//            JobApplicationDTO userStatusCode = postService.getUserStatusCode(map);
-//            System.out.println("유저 지원상태 확인 :::::   "+ userStatusCode);
 
             int userStatusCode = postService.getCountUserStatusCode(map);
-            System.out.println("로그인한자의 지원 상태:::::::::::          "+userStatusCode);
             model.addAttribute("userStatusCode",userStatusCode);
             model.addAttribute("like", like);
         }
-
         JobPostDTO jobPostDetail = postService.getJobPostDetailInfo(jobId);
-        System.out.println("jobPostDetail:::::::      "+jobPostDetail);
 
         model.addAttribute("jobPostDetail",jobPostDetail);
         return "jsp/post/job-detail";
@@ -144,7 +131,6 @@ public class PostController {
     @PostMapping("/like/{jobId}")
     @ResponseBody
     public Map<String, Object> likeControl(@PathVariable int jobId, HttpServletRequest request) {
-        System.out.println("좋아요 클릭?");
 
         return postService.likeControl(jobId, request);
     }
@@ -185,11 +171,6 @@ public class PostController {
             return "redirect:/user/login";
         }
 
-        if (!Objects.equals(sessionUtil.getAttribute("userTypeCode"),"20")) { // 횐원코드 체크
-            return "redirect:/";
-        }
-
-        System.out.println("구인 공고 삭제 컨트롤");
         postService.deleteJobPost(jobId);
         System.out.println("삭제됨");
         return "jsp/post/job-list";
@@ -197,14 +178,12 @@ public class PostController {
     @PostMapping("ajax/checkDuplicateApply")
     @ResponseBody
     public Map<String, Object> checkDuplicateApply(@RequestBody JobApplicationDTO jobApplicationDTO){ //jobId
-        System.out.println("지원 중복체크 정보 확인 ::::::    "+jobApplicationDTO);
         return postService.checkDuplicateApply(jobApplicationDTO);
     }
 
     @PostMapping("/apply")
     @ResponseBody
     public Map<String, Object> applyJobPost(@RequestBody JobApplicationDTO jobApplicationDTO){ //jobId
-        System.out.println("지원하면 들어오는 정보 확인 ::::::    "+jobApplicationDTO);
         return postService.applyJobPost(jobApplicationDTO);
     }
 
@@ -218,13 +197,10 @@ public class PostController {
     @GetMapping("/api/notificationList")
     @ResponseBody
     public List<NotificationDTO> alramList() {
-        System.out.println("알람 리스트 확인 ;;;");
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
-        List<NotificationDTO> notificationList =  notificationService.getNotificationsByUserId(userNo);
-
-        System.out.println("notificationList 정보 확인 :: "+notificationList);
+        List<NotificationDTO> notificationList = notificationService.getNotificationsByUserId(userNo);
 
         return notificationList;
     }
