@@ -61,12 +61,9 @@ public class KakaoServiceImple implements KakaoService {
                         userDTO.setUserTypeCode("10"); //회원 유형 코드
                         userDTO.setLoginTypeCode("20"); //로그인 유형 코드
 
-                        Map<String, Object> map = userService.insertUser(userDTO);
+                        UserDTO userInfo = userMapper.getLoginUserInfo(userDTO); //user_no, email, password, user_type_code...
+                        handleExistingUser(userInfo, modelAndView);
 
-                        if ("success".equals(map.get("code"))) {
-                            UserDTO userInfo = userMapper.getLoginUserInfo(userDTO); //user_no, email, password, user_type_code...
-                            handleExistingUser(userInfo, modelAndView);
-                        }
                     }
             );
         } else {

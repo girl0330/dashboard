@@ -38,6 +38,9 @@ public class UserServiceImpl implements UserService{
     public Map<String, Object> insertUser(UserDTO userDTO) {
         Map<String, Object> map = new HashMap<>();
 
+        //회원가입 코드 일반 회원가입("10"), 카카오 회원가입("20")
+        userDTO.setLoginTypeCode("10");
+
         //이메일 중복 체크
         int email = userMapper.getEmailCount(userDTO);
 
@@ -54,6 +57,7 @@ public class UserServiceImpl implements UserService{
         String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
 
         userDTO.setPassword(encodedPassword);
+        System.out.println("회원가입 정보 확인 : "+userDTO);
 
         userMapper.insertUser(userDTO);
         map.put("code", "success");

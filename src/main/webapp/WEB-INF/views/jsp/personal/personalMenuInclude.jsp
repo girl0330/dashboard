@@ -44,7 +44,9 @@ Dashboard Nav -->
                     <c:if  test="${userTypeCode == '10'}">
                         <ul class="list-unstyled mb-0" id="menu">
                             <li><a href="/personal/myProfile">프로필</a></li>
-                            <li><a href="/personal/changePassword">비밀번호 변경</a></li>
+                            <c:if test="${profile.loginTypeCode == '10'}">
+                                <li><a href="/personal/changePassword">비밀번호 변경</a></li>
+                            </c:if>
                             <li><a href="/personal/dashboard">내가 지원한 공고 현황</a></li>
                             <li><a href="/personal/manageJobs">내 지원 상태</a></li>
                             <li><a href="/personal/likedJobs">내가 관심있는 공고</a></li>

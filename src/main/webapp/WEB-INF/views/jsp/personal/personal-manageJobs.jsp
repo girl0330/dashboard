@@ -51,10 +51,10 @@
                     '<a href="#" class="text-primary" onclick="location.href=\'/business/jobPostDetail?jobId=' + applyStatusJob.jobId + '\'" id="look" name="look">' +
                     '<h6 class="mb-0">' + applyStatusJob.title + '</h6>' +
                     '</a>' +
-                    '<p class="mb-1 mt-2"><i class="fas fa-map-marker-alt pe-1">' + applyStatusJob.address + '</i></p>' +
+                    '<p class="mb-1 mt-2"><i class="fas fa-map-marker-alt pe-1 md-12">' + applyStatusJob.address + '</i></p>' +
                     '</th>' +
                     '<th scope="row">' +
-                    '<p class="mb-0">지원한 날짜 : ' + applyStatusJob.systemRegisterDatetime + '</p>' +
+                    '<p class="mb-0">' + applyStatusJob.systemRegisterDatetime + '</p>' +
                     '</th>' +
                     '<td>' + applyStatusJob.statusTypeCodeName + '</td>' +
                     '</tr>'
@@ -102,8 +102,8 @@ Manage Jobs -->
                         <thead>
                         <tr>
                             <th scope="col">지원한 공고 제목</th>
-                            <th scope="col">지원 현황</th>
                             <th scope="col">지원한 날짜</th>
+                            <th scope="col">지원 현황</th>
                         </tr>
                         </thead>
                         <tbody id="applyStatusJobList">

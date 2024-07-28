@@ -54,20 +54,6 @@
         });
     }
 
-    // // Create a new EventSource instance
-    // const eventSource = new EventSource('/notifications');
-    //
-    // // Event listener for server-sent events
-    // eventSource.onmessage = function(event) {
-    //     // Display the notification
-    //     const notification = document.getElementById('notification');
-    //     notification.style.display = 'block';
-    // };
-    //
-    // // Optional: Event listener for errors
-    // eventSource.onerror = function(error) {
-    //     console.error('EventSource failed:', error);
-    // };
 </script>
 <style>
     body {
@@ -195,7 +181,7 @@
                 <div class="dropdown text-end me-2 position-relative">
                     <a href="#" class="d-inline-flex link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false" onclick="notification()">
                         <img src="/images/svg/bel.svg" alt="mdo" width="25" height="25" class="rounded-circle">
-                        <span class="badge bg-primary position-absolute top-0 start-100 translate-middle">4</span>
+<%--                        <span class="badge bg-primary position-absolute top-0 start-100 translate-middle">4</span>--%>
                     </a>
                     <ul class="dropdown-menu custom-dropdown-menu" id="notificationList" aria-labelledby="notificationDropdown">
                         <li>

@@ -11,7 +11,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CommonServiceImpl implements CommonService {
-    private final SessionUtil sessionUtil;
     private final CommonMapper commonMapper;
 
 
@@ -22,9 +21,7 @@ public class CommonServiceImpl implements CommonService {
 
         // 리스트의 값을 출력
         for (SelectBoxOptionDTO option : options) {
-            System.out.println("그룹코드 확인 :::::: "+option);
         }
         return options;
-//        return commonMapper.getSelectBoxOption(groupCode);
     }
 }

@@ -91,7 +91,6 @@ public class PostServiceImpl implements PostService {
             map.put("message", "로그인 후 이용해 주세요");
             String currentUrl = request.getRequestURL().toString();
             request.getSession().setAttribute("prevPage", currentUrl);
-            System.out.println("현재 url 세션에 넣기:  "+currentUrl);
             return map;
         }
 
@@ -127,8 +126,6 @@ public class PostServiceImpl implements PostService {
     // 구인 공고 삭제
     @Transactional
     public void deleteJobPost(int jobId) {
-        System.out.println("구인 공고 삭제 임플");
-        System.out.println("jobId확인 :::::  "+jobId);
         postMapper.updateDeleteY(jobId);
     }
 
@@ -153,28 +150,15 @@ public class PostServiceImpl implements PostService {
 
         jobApplicationDTO.setUserNo(userNo);
 
-
-
         jobApplicationDTO.setStatusTypeCode("APPLIED"); // APPLIED : 지원중, CANCELLED : 지원취소
-
-//        //공고 작성한 userNo가져오기, 공고 제목가져오기
-//        int businessUserNo = postMapper.getWriteUserNo(jobApplicationDTO.getJobId()); //지원한 공고Id로 공고 작성자 가져옴
-//        System.out.println("businessUserNO 확인: "+businessUserNo);
-//
-//        //지원한 공고제목 가져오기
-//        UserProfileInfoDTO userProfileInfoDTO = postMapper.getUserName(userNo);
-//        System.out.println("tq?"+userProfileInfoDTO);
 
         //공고 작성한 userNo가져오기, 공고 제목가져오기
         JobPostDTO postInfo = postMapper.getPostInfo(jobApplicationDTO.getJobId()); //지원한 공고Id로 공고 작성자 가져옴
-        System.out.println("userNo 확인: "+postInfo.getUserNo() + "title 확인 : " +postInfo.getTitle());
 
         notificationService.sendNotification(postInfo.getUserNo(), postInfo.getTitle()+"에 지원 하셨습니다. ","app"); //(기업 회원한테 보낼 알림)
 
-        System.out.println("insert하기 전 지원 data확인 :::::       "+jobApplicationDTO);
         //insert
         postMapper.insertJobApplicationInfo(jobApplicationDTO);
-        System.out.println("insert한 최종 데이터 확인 :::::::::      "+jobApplicationDTO);
         map.put("code", "success");
         map.put("message", "지원 성공!");
         return map;
@@ -215,19 +199,8 @@ public class PostServiceImpl implements PostService {
         jobApplicationDTO.setJobId(jobId); // 지원 취소 공고id
         jobApplicationDTO.setUserNo(userNo); // 지원 취소한 userNo
 
-        System.out.println("공고지원자 dto확인 ;; "+jobApplicationDTO);
-
-//        //공고 작성한 userNo가져오기
-//        int businessUserNo = postMapper.getWriteUserNo(jobApplicationDTO.getJobId());
-//        System.out.println("businessUserNO 확인: "+businessUserNo);
-
         //공고 작성한 userNo가져오기, 공고 제목가져오기
         JobPostDTO postInfo = postMapper.getPostInfo(jobApplicationDTO.getJobId()); //지원한 공고Id로 공고 작성자 가져옴
-        System.out.println("userNo 확인: "+postInfo.getUserNo() + "title 확인 : " + postInfo.getTitle());
-
-//        //지원 취소한 유저의 이름 가져오기
-//        UserProfileInfoDTO userProfileInfoDTO = postMapper.getUserName(userNo);
-//        System.out.println("userPfofileInfoDTO확인 ::: "+userProfileInfoDTO);
 
         notificationService.sendNotification(postInfo.getUserNo(), postInfo.getTitle()+"에 지원을 취소 하셨습니다. ","app"); //(기업 회원한테 보낼 알림)
 
