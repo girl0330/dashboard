@@ -15,6 +15,7 @@
             ui.email,
             ui.user_type_code,
             func_get_detail_name('user_type', ui.user_type_code) AS user_type_code_name,
+            ui.login_type_code,
             up.NAME,
             up.PHONE,
             up.BIRTH,
@@ -158,7 +159,7 @@
         FROM
             job_application_info jai
                 INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
-        WHERE jai.USER_NO = 2
+        WHERE jai.USER_NO = #{userNo}
           AND jpi.title LIKE CONCAT('%', '', '%')
         ORDER BY jai.system_register_datetime DESC
     </select>

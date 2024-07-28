@@ -68,7 +68,6 @@ public class PostController {
     //공고리스트 이동
     @GetMapping("/postJobList")
     public String jobPostView(Model model) {
-        System.out.println("공고리스트 뷰");
 
         if (sessionUtil.loginUserCheck()) {
             int userNo = (int) sessionUtil.getAttribute("userNo");
@@ -157,7 +156,7 @@ public class PostController {
 
     @PostMapping("/updateJobPost/{jobId}")
     @ResponseBody
-    public Map<String, Object> updateJobPost (@PathVariable int jobId, @RequestBody JobPostDTO jobPostDTO ) {
+    public Map<String, Object> updateJobPost (@RequestBody JobPostDTO jobPostDTO ) {
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
         return postService.updateJobPost(userNo, jobPostDTO);
@@ -172,7 +171,6 @@ public class PostController {
         }
 
         postService.deleteJobPost(jobId);
-        System.out.println("삭제됨");
         return "jsp/post/job-list";
     }
     @PostMapping("ajax/checkDuplicateApply")

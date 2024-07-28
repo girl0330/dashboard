@@ -113,10 +113,6 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         PageHelper.startPage(pageNum, pageSize);
         List<JobApplicationDTO> applyStatusList = personalDashMapper.applyStatusList(map) ;
 
-        for (JobApplicationDTO apply : applyStatusList) {
-            System.out.println("statusTypeCode는 "+apply.getStatusTypeCode());
-        }
-
         return new PageInfo<>(applyStatusList);
     }
 

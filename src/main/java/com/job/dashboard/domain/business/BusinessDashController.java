@@ -80,11 +80,6 @@ public class BusinessDashController {
             model.addAttribute("fileId", file.getFileId());
         }
 
-        System.out.println("?");
-        System.out.println("i::::::::::::  "+commonService.getSelectBoxOption("industry"));
-        System.out.println("businessType 확인 :::: "+commonService.getSelectBoxOption("business_type"));
-        System.out.println("b:::::::::::: "+businessProfileInfo);
-
         //common으로 option code가져오기
         model.addAttribute("industry",commonService.getSelectBoxOption("industry"));
         model.addAttribute("businessType",commonService.getSelectBoxOption("business_type"));
@@ -157,8 +152,6 @@ public class BusinessDashController {
         response.put("pageNum", postJobList.getPageNum());
         response.put("pageSize", postJobList.getPageSize());
         response.put("pages", postJobList.getPages());
-
-        System.out.println("response:::::    "+response);
         return response;
     }
 
@@ -212,7 +205,6 @@ public class BusinessDashController {
     @PostMapping("/cancelEmployCandidate")
     @ResponseBody
     public Map<String, Object> cancelEmployCandidate (@RequestBody JobApplicationDTO jobApplicationDTO) {
-        System.out.println("jobApplicationDTO 확인 : "+ jobApplicationDTO);
 
         return businessDashService.cancelEmployCandidate(jobApplicationDTO);
     }

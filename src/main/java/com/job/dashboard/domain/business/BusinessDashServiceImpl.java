@@ -49,15 +49,6 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         int userNo = (int) sessionUtil.getAttribute("userNo");
         companyInfoDTO.setUserNo(userNo);
 
-        // 사업자 번호 체크
-//        int businessNumberCheck = businessDashMapper.checkBusinessNumByUserNo(companyInfoDTO.getBusinessNumber());
-//        System.out.println("businessNumberCheck:::   "+businessNumberCheck);
-//        if (businessNumberCheck > 0 ) {
-//            map.put("code", "businessNumError");
-//            map.put("message", "이미 사용중인 사업자 번호입니다.");
-//            return map;
-//        }
-
         //파일 아이디 조회
         if(companyInfoDTO.getFile() != null) {
             deleteFile(companyInfoDTO.getFileId());
@@ -122,7 +113,6 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
             //파일 확장자
             String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-            System.out.println("파일 확장자 확인 ::::  "+fileExtension);
 
             //파일 사이즈
             Long fileSize = file.getSize();
@@ -166,7 +156,6 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     private void validateFile(Map<String, Object> fileInfo ) throws CustomException {
         String[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
         String fileExtension = (String) fileInfo.get("fileExtension");
-        System.out.println("넘어온 파일 확장자:::::    "+fileExtension);
         Long fileSize = (Long) fileInfo.get("fileSize");
 
         String toLowerFileExtension = fileExtension.toLowerCase();
@@ -274,14 +263,12 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     //지원자 채용
     @Transactional
     public Map<String, Object> employCandidate(JobApplicationDTO jobApplicationDTO) {
-        System.out.println("tlqkfroQkrclsp?"+jobApplicationDTO); // jobId, 지원자 userNo
         Map<String, Object> map = new HashMap<>();
 
         businessDashMapper.employCandidate(jobApplicationDTO);
 
         // jobId로 공고 제목 가져오기
         JobPostDTO jobPost = businessDashMapper.getJobPostTile(jobApplicationDTO.getJobId());
-        System.out.println("? "+jobPost);
         int userNo = jobApplicationDTO.getUserNo(); //지원한 userNo
 
         // 공고 제목 가져오기

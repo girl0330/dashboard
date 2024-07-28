@@ -23,7 +23,6 @@ public class  MainController {
 
     @GetMapping("/")
     public String mainView(Model model) {
-        System.out.println("====메인 페이지====");
         if (sessionUtil.loginUserCheck()) {
             int userNo = (int) sessionUtil.getAttribute("userNo");
             //파일 조회

@@ -41,6 +41,7 @@ public class PersonalDashController {
         }
         //이름 노출 시키기
         UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
+        System.out.println("프로필 내용 확인 :;; "+myProfile);
         model.addAttribute("profile",myProfile);
 
         return "jsp/personal/personal-dashboard";
@@ -202,7 +203,6 @@ public class PersonalDashController {
         response.put("pageSize", likedJobsList.getPageSize());
         response.put("pages", likedJobsList.getPages());
 
-        System.out.println("response:::::    "+response);
         return response;
     }
 
