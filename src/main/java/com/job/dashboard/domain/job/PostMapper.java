@@ -1,6 +1,9 @@
 package com.job.dashboard.domain.job;
 
-import com.job.dashboard.domain.dto.*;
+import com.job.dashboard.domain.dto.JobApplicationDTO;
+import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.domain.dto.LikeDTO;
+import com.job.dashboard.domain.dto.UserInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -25,7 +28,7 @@ public interface PostMapper {
     void updateDeleteY(int jobId);
 
     // 로그인 회원의 프로필 유무확인
-     UserProfileInfoDTO profileCheck(UserProfileInfoDTO userProfileInfoDTO);
+     UserInfoDTO profileCheck(UserInfoDTO userInfoDTO);
 
     // 지원하기
     String application(JobApplicationDTO jobApplicationDTO);
@@ -56,17 +59,17 @@ public interface PostMapper {
 
 
     //like
-    int findLike(Map<String, Object> map); //like 있는지 확인
-    void likeUp(Map<String, Object> map); //like 증가
-    void deleteLike(Map<String, Object> map); //like 삭제
+    int findLike(JobPostDTO jobPostDTO); //like 있는지 확인
+    void likeUp(JobPostDTO jobPostDTO); //like 증가
+    void deleteLike(JobPostDTO jobPostDTO); //like 삭제
     List<LikeDTO> getLikeList(int userNo); //like 리스트 가져오기
 
     JobApplicationDTO getUserStatusCode(Map<String, Object> map);
 
-    int getCountUserStatusCode(Map<String, Object> map);
+    int getCountUserStatusCode(JobPostDTO jobPostDTO);
 
     //지원한 user이름 가져오기
-    UserProfileInfoDTO getUserName(int userNo);
+    UserInfoDTO getUserName(int userNo);
 
 
 

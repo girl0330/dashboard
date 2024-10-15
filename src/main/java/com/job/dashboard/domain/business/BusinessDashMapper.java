@@ -1,9 +1,6 @@
 package com.job.dashboard.domain.business;
 
-import com.job.dashboard.domain.dto.CompanyInfoDTO;
-import com.job.dashboard.domain.dto.FileDTO;
-import com.job.dashboard.domain.dto.JobApplicationDTO;
-import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.domain.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.io.IOException;
@@ -28,13 +25,16 @@ public interface BusinessDashMapper {
     void employCandidate(JobApplicationDTO jobApplicationDTO); //채용
     void cancelEmployCandidate(JobApplicationDTO jobApplicationDTO); //채용 취소
 
+    void updatePassword(UserDTO userDTO); //비밀번호 재설정
     //파일
-    void saveImage(FileDTO fileDTO) throws IOException; //저장
-    FileDTO getFiles(Map<String, Object> map); //가져오기
-    void deleteFile(int fileId); //삭제
+//    void saveImage(FileDTO fileDTO) throws IOException; //저장
+//    FileDTO getFiles(Map<String, Object> map); //가져오기
+//    void deleteFile(int fileId); //삭제
 
     //사업자 번호 체크
     int checkBusinessNumByUserNo(int userNo);
 
-    JobPostDTO getJobPostTile(int jobId);
+    JobPostDTO getJobPostTitle(int jobId);
+
+    String getSavedPassword(int userNo);
 }

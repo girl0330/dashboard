@@ -18,27 +18,19 @@ public class LogInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 요청 전 처리 로직
-        System.out.println("preHandle: 요청 처리 전");
-
         if (!sessionUtil.loginUserCheck()) {
+            // 현재 요청 URL 저장
+            String currentUrl = request.getRequestURI();
+            String queryString = request.getQueryString();
+            if (queryString != null) {
+                currentUrl += "?" + queryString;
+            }
+            sessionUtil.setRedirectUrl(currentUrl);
+
             response.sendRedirect("/user/login");
-            return false; // 페이지 접근 거부
+            return false; // 요청 처리를 중단하고 로그인 페이지로 이동
         }
-
-        String url = request.getRequestURI();
-        String userTypeCode = (String) sessionUtil.getAttribute("userTypeCode");
-
-        if (url.startsWith("/business") && !Objects.equals(userTypeCode, "20")) {
-            response.sendRedirect("/");
-            return false;
-        }
-
-        if (url.startsWith("/personal") && !Objects.equals(userTypeCode,"10")) {
-            response.sendRedirect("/");
-            return false;
-        }
-
-        return true; // false를 반환하면 요청 처리가 중단됨
+        return true;
     }
 
     @Override

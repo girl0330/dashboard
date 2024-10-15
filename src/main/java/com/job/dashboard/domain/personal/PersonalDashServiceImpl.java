@@ -4,11 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.business.BusinessDashService;
 import com.job.dashboard.domain.dto.*;
+import com.job.dashboard.domain.file.FileMapper;
+import com.job.dashboard.domain.file.FileService;
 import com.job.dashboard.exception.CustomException;
 import com.job.dashboard.exception.ExceptionErrorCode;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,52 +28,53 @@ public class PersonalDashServiceImpl implements PersonalDashService {
     private final SessionUtil sessionUtil;
     private final BusinessDashService businessDashService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final FileService fileService;
+    private final FileMapper fileMapper;
 
     //작성된 프로필 확인
-    public UserProfileInfoDTO getProfileInfo(int userNo) {
+    public UserInfoDTO getProfileInfo(int userNo) {
         return personalDashMapper.getProfileInfo(userNo);
     }
 
     // 프로필 저장하기
     @Transactional
-    public Map<Object, String> insertProfile(UserProfileInfoDTO userProfileInfoDTO) throws IOException {
+    public ApiResponse insertProfile(UserInfoDTO userInfoDTO) throws IOException {
 
-        Map<Object, String> map = new HashMap<>();
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
-        List<UserProfileInfoDTO> profile = personalDashMapper.profileInfoList(userNo); //userNo로 프로필 존재 확인
+        List<UserInfoDTO> profile = personalDashMapper.profileInfoList(userNo); //userNo로 프로필 존재 확인
 
         int personalProfile = profile.size();
 
         if (personalProfile == 0) { //프로필 없으면
             int profileSeq = personalDashMapper.getProfileIdSeq(userNo); //pk
-            userProfileInfoDTO.setProfileId(profileSeq);
+            userInfoDTO.setProfileId(profileSeq);
 
         } else { //프로필 있으면
-            userProfileInfoDTO.setProfileId(profile.get(0).getProfileId()); //pk
+            userInfoDTO.setProfileId(profile.get(0).getProfileId()); //pk
         }
-        userProfileInfoDTO.setUserNo(userNo);
+        userInfoDTO.setUserNo(userNo);
 
         //기존 프로필에 파일이 저장 되어 있는지 확인
-        Optional.ofNullable(userProfileInfoDTO.getFile())
-                .ifPresent(file -> businessDashService.deleteFile(userProfileInfoDTO.getFileId()));
+        Optional.ofNullable(userInfoDTO.getFile())
+                .ifPresent(file -> fileMapper.deleteFile(userInfoDTO.getFileId()));
 
         // 파일 저장
-        if (userProfileInfoDTO.getFile() != null) {
-            businessDashService.saveFile(userProfileInfoDTO.getFile()); // 파일 저장 됨.
+        if (userInfoDTO.getFile() != null) {
+            fileService.saveFile(userInfoDTO.getFile()); // 파일 저장 됨.
         }
 
         // systemRegisterId, systemUpdaterId 데이터는?? //pk가 없으면 insert 있으면 updateJobPost
-        personalDashMapper.insertProfile(userProfileInfoDTO);
+        personalDashMapper.insertProfile(userInfoDTO);
 
-        map.put("code", "success");
-        map.put("message", "프로필 저장 성공!");
-
-        return map;
+        return ApiResponse.builder()
+                .code(200)
+                .message("프로필이 저장되었습니다.")
+                .build();
     }
 
     // 비밀번호 업데이트
-    public Map<Object, Object> changePassword(UserDTO userDTO) {
+    public ApiResponse changePassword(UserDTO userDTO) {
         Map<Object, Object> map = new HashMap<>();
 
         String enteredPassword = userDTO.getPassword();
@@ -98,7 +100,10 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         map.put("code", "success");
         map.put("message", "비밀번호 변경 성공");
 
-        return map;
+        return ApiResponse.builder()
+                .code(200)
+                .message("비밀번호를 성공적으로 변경했습니다.")
+                .build();
     }
 
     //지원형황 리스트

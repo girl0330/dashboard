@@ -17,10 +17,6 @@
             const new_password = $('#newPassword').val();
             const password2 = $('#password2').val();
 
-            console.log("currentPassword:: "+ current_password);
-            console.log("newPassword:: "+new_password);
-            console.log("password2::::" + password2);
-
             let passwordRegex = /^[a-zA-Z0-9.!@#$%^&*]+$/;
             if (!passwordRegex.test(current_password)) {
                 alert("비밀번호 형식을 확인해주세요.")
@@ -47,35 +43,41 @@
                 return valid;
             }
             if (new_password !== password2 ) {
-                alert("입력한 비밀번호와 일치하지 않습니다.")
+                alert("새로운 비밀번호와 비밀번호 확인이 일치하지 않습니다.")
                 $('#password2').focus();
                 valid = false;
                 return valid;
             }
-            console.log("check all ok");
             return valid;
         },
 
         submitForm: function () {
+            console.log("비밀번호 변경 함수 실행")
             const formData = $('#changePassword').serializeArray();
-            console.log("formData " + JSON.stringify(formData));
-
             let jsonData = {};
+
             $.each(formData, function () {
                 jsonData[this.name] = this.value;
             });
+            console.log("formData " + JSON.stringify(formData));
 
             const options = {
-                url: '/personal/doChangePassword',
+                url: '/business/ajax/changePassword',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(jsonData),
 
                 done: function (response) {
-                    if (response.code === 'success') {
+                    console.log(response.data);
+                    if (response.code === 200) {
                         alert(response.message);
                         location.href='/business/changePassword'
                     }
+                },
+                fail: function(jqXHR) {
+                    console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+                    const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+                    alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
                 }
             };
 

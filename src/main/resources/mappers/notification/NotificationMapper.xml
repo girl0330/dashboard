@@ -2,14 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.job.dashboard.domain.notification.NotificationMapper">
 
+<!--  todo: 서브쿼리말고 join을 이용하기  -->
     <select id="findNotificationsByUserNo" resultType="com.job.dashboard.domain.dto.NotificationDTO">
         SELECT /* NotificationMapper.findNotificationsByUserNo */
-            ni.NOTIFY_ID,
-            ni.USER_NO,
-            ni.MESSAGE,
-            ni.NOTIFY_TYPE_CODE,
-            ni.SHOW_YN,
-            ni.system_register_id,
+            ni.notify_id,
+            ni.receiver_id,
+            ni.message,
+            ni.notify_type_code,
+            ni.is_read,
+            ni.giver_id,
             (
                 SELECT
                     ifnull(ci.company_name,upi.NAME)
@@ -17,20 +18,20 @@
                     user_info ui
                         LEFT JOIN company_info ci ON ui.user_no = ci.user_no
                         LEFT JOIN user_profile_info upi ON ui.user_no = upi.USER_NO
-                WHERE ui.user_no = ni.system_register_id
+                WHERE ui.user_no = ni.giver_id
             ) AS 'name',
-            ( SELECT ui.user_type_code FROM user_info ui WHERE ui.user_no = ni.user_no)AS user_type_code,
+                ( SELECT ui.user_type_code FROM user_info ui WHERE ui.user_no = ni.receiver_id)AS user_type_code,
             func_format_time_ago(ni.system_register_datetime) AS system_register_datetime
         FROM notification_info ni
-        WHERE ni.user_no = #{userNo}
-        AND ni.show_yn = 'N'
+        WHERE ni.receiver_id = #{userNo}
+          AND ni.is_read = 'N'
         ORDER BY ni.system_register_datetime DESC
     </select>
 
     <insert id="insertNotification" parameterType="com.job.dashboard.domain.dto.NotificationDTO">
         INSERT /* NotificationMapper.insertNotification */
-          INTO notification_info (user_no, message, NOTIFY_TYPE_CODE, system_register_id, system_updater_id, system_register_datetime)
-        VALUES (#{userNo}, #{message}, #{notifyTypeCode}, #{systemRegisterId}, #{systemRegisterId}, now())
+          INTO notification_info (receiver_id, message, NOTIFY_TYPE_CODE, giver_id, system_updater_id, system_register_datetime)
+        VALUES (#{receiverId}, #{message}, #{notifyTypeCode}, #{giverId}, #{giverId}, now())
     </insert>
 
 </mapper>

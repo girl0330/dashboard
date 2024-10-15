@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 public class SessionUtil {
     public static final String SESSION_ATTR_USER_NO = "userNo";
     public static final String SESSION_ATTR_USER_TYPE_CODE = "userTypeCode";
+    public static final String SESSION_ATTR_REDIRECT_URL = "redirectAfterLogin"; // 리다이렉트 URL 세션 속성
+
 
     private HttpSession getSession() {
         return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession();
@@ -60,5 +62,17 @@ public class SessionUtil {
      */
     public void setSessionTimeout(int seconds) {
         getSession().setMaxInactiveInterval(seconds);
+    }
+
+    public void setRedirectUrl(String url) {
+        setAttribute(SESSION_ATTR_REDIRECT_URL, url);
+    }
+
+    public String getRedirectUrl() {
+        return (String) getAttribute(SESSION_ATTR_REDIRECT_URL);
+    }
+
+    public void removeRedirectUrl() {
+        removeAttribute(SESSION_ATTR_REDIRECT_URL);
     }
 }

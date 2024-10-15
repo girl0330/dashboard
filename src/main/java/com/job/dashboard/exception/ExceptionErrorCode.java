@@ -15,7 +15,7 @@ public enum ExceptionErrorCode {
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
     UNAUTHORIZED_USER_TOKEN(HttpStatus.UNAUTHORIZED, "로그인 후 이용해주세요"),
-    PASSWORD_INCORRECT_TOKEN(HttpStatus.UNAUTHORIZED,"비밀번호가 존재하지 않거나, 일치하지 않습니다."),
+    PASSWORD_INCORRECT_TOKEN(HttpStatus.UNAUTHORIZED,"비밀번호가 일치하지 않습니다."),
 
     /* 403 FORBIDDEN : 서버가 요청을 이해했지만, 권한이 없어서 요청을 거부*/
     INVALID_MEMBER_TOKEN(HttpStatus.FORBIDDEN, "기업 회원만 이용가능한 서비스입니다."),

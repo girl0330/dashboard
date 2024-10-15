@@ -37,13 +37,18 @@
                 },
 
                 done: (response) => { //결과 받기
-                    console.log("확인 :; "+JSON.stringify(response.list))
+                    console.log(response)
                     // console.log("유저타입코드 확인 ::: "+JSON.stringify(response.list.userTypecode));
                     // console.log("유저코드 2;;;;"+JSON.stringify(response.list.get("userTypeCode")));
                     $('#amount').text(response.total); // 결과중 total만 따로 빼서 id='amount'에 text형태로 넣기
                     keywordSearch.renderJobs(response);
                     renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
                 },
+                fail: function(jqXHR) {
+                    console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+                    const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+                    alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
+                }
             };
 
             ajax.call(options);
@@ -111,26 +116,28 @@
             const jobId = $likeButton.data('job-id');
 
             const options = {
-                url: '/business/like/'+jobId,
+                url: '/business/ajax/like/'+jobId,
                 type: 'POST',
                 contentType: 'application/json',
                 data: '',
 
                 done: function (response) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-                    if (response.code === 'success') {
+                    if (response.code === 200) {
                         const like = $likeButton.find('i');
                         if (like.hasClass('far')) {
                             like.removeClass('far fa-heart').addClass('fas fa-heart text-danger');
                         } else {
                             like.removeClass('fas fa-heart text-danger').addClass('far fa-heart');
                         }
-                    } else if (response.code === 'error') {
-                        alert(response.message);
-                        console.log("response::::::  "+response);
-                        location.href = '/user/login';
                     }
                 },
+                fail: function(jqXHR) {
+                    console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+                    const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+                    alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
+                    location.href = '/user/login';
+                }
             };
 
             ajax.call(options);
@@ -165,9 +172,9 @@
 
         $(document).on('click', '.like-button', function (e) {
             e.preventDefault();
-            e.stopPropagation()
-
+            e.stopPropagation();
             const $likeButton = $(this);
+
             keywordSearch.likeButton($likeButton);
         });
 

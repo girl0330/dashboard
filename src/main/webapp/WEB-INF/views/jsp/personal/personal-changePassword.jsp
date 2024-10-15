@@ -47,7 +47,7 @@
                 return valid;
             }
             if (new_password !== password2 ) {
-                alert("입력한 비밀번호와 일치하지 않습니다.")
+                alert("새로운 비밀번호와 비밀번호 확인이 일치하지 않습니다.")
                 $('#password2').focus();
                 valid = false;
                 return valid;
@@ -67,32 +67,22 @@
             console.log("formData " + JSON.stringify(jsonData));
 
             const options = {
-                url: '/personal/doChangePassword',
+                url: '/personal/ajax/changePassword',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(jsonData),
 
-                beforeSend: () => {
-                    console.log('요청 전 작업 수행');
-                },
-                customFail: (response) => {
-                    console.error('커스텀 실패 처리:', response);
-                },
                 done: function (response) {
                     console.log(JSON.stringify(response));
-                    if (response.code === 'existError') {
+                    if (response.code === 200) {
                         alert(response.message);
-
-                    } else if (response.code === 'checkError') {
-                        alert(response.message);
-
-                    } else if (response.code === 'success') {
-                        alert(response.message);
-                        location.href='/personal/changePassword'
+                        location.href = '/personal/changePassword'
                     }
                 },
-                fail: () => {
-                    console.error('요청 실패');
+                fail: function(jqXHR) {
+                    console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+                    const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+                    alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
                 }
             };
 

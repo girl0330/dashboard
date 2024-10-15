@@ -58,7 +58,6 @@
               system_update_datetime
         FROM user_info
         WHERE email = #{email}
-          AND password = #{password}
     </select>
 
     <select id="getCheckEmail" parameterType="com.job.dashboard.domain.dto.UserDTO" resultType="int">
@@ -68,14 +67,28 @@
         WHERE email = #{email}
     </select>
 
-    <select id="getCheckIdentity" parameterType="com.job.dashboard.domain.dto.UserProfileInfoDTO" resultType="int">
-        SELECT /*UserMapper.getCheckIdentity*/
-            count(*) AS countIdentity
-        FROM user_info ui
-                 INNER JOIN user_profile_info upi ON ui.user_no = upi.user_no
-        WHERE ui.email = #{email}
-          AND upi.name = #{name}
-          AND upi.phone = #{phone}
+    <select id="getCheckIdentity" parameterType="com.job.dashboard.domain.dto.UserInfoDTO" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        user_info ui
+        <if test="userTypeCode == 10">
+            INNER JOIN user_profile_info upi ON ui.user_no = upi.user_no
+        </if>
+        <if test="userTypeCode == 20">
+            INNER JOIN company_info ci ON ui.user_no = ci.user_no
+        </if>
+        <where>
+            ui.email = #{email}
+            <if test="userTypeCode == 10">
+                AND upi.name = #{name}
+                AND upi.phone = #{phone}
+            </if>
+            <if test="userTypeCode == 20">
+                AND ci.company_name = #{name}
+                AND ci.office_phone = #{phone}
+            </if>
+        </where>
     </select>
 
     <select id="updatePassword" parameterType="com.job.dashboard.domain.dto.UserDTO">

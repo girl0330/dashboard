@@ -99,7 +99,7 @@
             }
 
             const options = {
-                url: "/business/insertProfile", // Spring 컨트롤러 URL
+                url: "/business/ajax/insertProfile", // Spring 컨트롤러 URL
                 type: 'POST',
                 contentType: false, // 파일 전송을 위해 false로 설정
                 processData: false, // 파일 전송을 위해 false로 설정
@@ -108,7 +108,7 @@
                 done: function(response) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
                     console.log(JSON.stringify(response));
-                    if (response.code === 'success'){
+                    if (response.code === 200){
                         alert(response.message);
                         location.href='/business/profile'
                     }

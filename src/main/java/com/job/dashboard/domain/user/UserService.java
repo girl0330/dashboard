@@ -1,27 +1,25 @@
 package com.job.dashboard.domain.user;
 
+import com.job.dashboard.domain.dto.ApiResponse;
 import com.job.dashboard.domain.dto.TermsInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
-import com.job.dashboard.domain.dto.UserProfileInfoDTO;
-
-import java.util.Map;
+import com.job.dashboard.domain.dto.UserInfoDTO;
 
 public interface UserService {
-    Map<String, Object> insertUser(UserDTO userDTO);
+    ApiResponse insertUser(UserDTO userDTO);
 
-    Map<String, Object> doLogin(UserDTO userDTO);
+    ApiResponse doLogin(UserDTO userDTO);
 
     // 이메일 중복인지 확인
-    Map<String, Object> emailDuplicateCheck(UserDTO userDTO);
+    ApiResponse checkEmailDuplication(UserDTO userDTO);
 
-    Boolean getCheckEmail(String email);
+    ApiResponse getCheckEmail(UserDTO userDTO);
 
-    Map<String, Object> getCheckIdentity(UserProfileInfoDTO userProfileInfoDTO);
+    ApiResponse getCheckIdentity(UserInfoDTO userInfoDTO);
 
-    Map<String, Object> passwordReset(UserDTO userDTO);
+    ApiResponse passwordReset(UserDTO userDTO);
 
     //이용약관 가져오기
     TermsInfoDTO getTermsTypeCode(int termsTypeCode);
-
 
 }

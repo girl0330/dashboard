@@ -10,7 +10,7 @@
         WHERE USER_NO = #{userNo}
     </select>
 
-    <select id="getProfileInfo" parameterType="int" resultType="com.job.dashboard.domain.dto.UserProfileInfoDTO">
+    <select id="getProfileInfo" parameterType="int" resultType="com.job.dashboard.domain.dto.UserInfoDTO">
         SELECT /* PersonalDashMapper.getProfileInfo */
             ui.email,
             ui.user_type_code,
@@ -32,7 +32,7 @@
         WHERE ui.USER_NO = #{userNo}
     </select>
 
-    <select id="profileInfoList" parameterType="int" resultType="com.job.dashboard.domain.dto.UserProfileInfoDTO">
+    <select id="profileInfoList" parameterType="int" resultType="com.job.dashboard.domain.dto.UserInfoDTO">
         SELECT /* PersonalDashMapper.profileInfoList */
             upi.PROFILE_ID,
             upi.USER_NO,
@@ -61,7 +61,7 @@
         FROM USER_PROFILE_INFO
     </select>
 
-    <insert id="insertProfile" parameterType="com.job.dashboard.domain.dto.UserProfileInfoDTO" >
+    <insert id="insertProfile" parameterType="com.job.dashboard.domain.dto.UserInfoDTO" >
         INSERT INTO /* PersonalDashMapper.insertProfile */
         USER_PROFILE_INFO
             (

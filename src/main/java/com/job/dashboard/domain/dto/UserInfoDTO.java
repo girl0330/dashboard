@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UserProfileInfoDTO extends UserDTO{
+public class UserInfoDTO extends UserDTO{
     private int profileId;
     private int userNo;
     private String name;
@@ -28,4 +28,5 @@ public class UserProfileInfoDTO extends UserDTO{
     private int profileCount;
     private String loginTypeCode;
     private String email;
+    private String userTypeCode;
 }

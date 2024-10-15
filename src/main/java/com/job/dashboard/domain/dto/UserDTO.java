@@ -3,7 +3,7 @@ package com.job.dashboard.domain.dto;
 import lombok.Data;
 
 @Data
-public class UserDTO {
+public class UserDTO { //모든
     private int userNo;
     private String email;
     private String password;

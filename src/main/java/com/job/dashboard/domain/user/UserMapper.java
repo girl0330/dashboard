@@ -2,13 +2,11 @@ package com.job.dashboard.domain.user;
 
 import com.job.dashboard.domain.dto.TermsInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
-import com.job.dashboard.domain.dto.UserProfileInfoDTO;
+import com.job.dashboard.domain.dto.UserInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface UserMapper {
-    // 이메일 중복인가 확인
-    int getEmailCount(UserDTO userDTO);
 
     //계정 등록(회원가입    )
     void insertUser(UserDTO userDTO);
@@ -26,7 +24,7 @@ public interface UserMapper {
     int getCheckEmail(String email);
 
     //이름, 핸드폰
-    int getCheckIdentity(UserProfileInfoDTO userProfileInfoDTO);
+    int getCheckIdentity(UserInfoDTO userInfoDTO);
 
 
     void updatePassword(UserDTO userDTO);

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+ <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--<script>--%>
 <%--    $(document).ready(function(){--%>
@@ -19,6 +19,14 @@
 <%--        });--%>
 <%--    });--%>
 <%--</script>--%>
+ <script>
+     $(document).ready(function() {
+         const path = window.location.pathname;
+         $('#menu li a').removeClass('active').filter(function() {
+             return $(this).attr('href') === path;
+         }).addClass('active');
+     });
+ </script>
 <!--=================================
 inner banner -->
 <div class="header-inner bg-light">
@@ -59,12 +67,9 @@ Dashboard Nav -->
                     <div class="secondary-menu">
                         <c:if  test="${userTypeCode == '20'}">
                             <ul class="list-unstyled mb-0" id="menu">
-<%--                                <li><a href="/business/dashboard">Dashboard</a></li>--%>
                                 <li><a href="/business/profile">프로필</a></li>
                                 <li><a href="/business/changePassword">비밀번호 변경</a></li>
-<%--                                <li><a href="/business/manageCandidate">지원자 관리</a></li>--%>
                                 <li><a href="/business/managePostJob">공고 관리</a></li>
-<%--                                <li><a href="/business/postAJob">새 공고 작성하기</a></li>--%>
                             </ul>
                         </c:if>
                     </div>
@@ -75,11 +80,3 @@ Dashboard Nav -->
 </section>
 <!--=================================
 Dashboard Nav -->
-<script>
-    $(document).ready(function() {
-        const path = window.location.pathname;
-        $('#menu li a').removeClass('active').filter(function() {
-            return $(this).attr('href') === path;
-        }).addClass('active');
-    });
-</script>

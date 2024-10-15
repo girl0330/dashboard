@@ -2,17 +2,18 @@ package com.job.dashboard.domain.business;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.job.dashboard.domain.dto.CompanyInfoDTO;
-import com.job.dashboard.domain.dto.FileDTO;
-import com.job.dashboard.domain.dto.JobApplicationDTO;
-import com.job.dashboard.domain.dto.JobPostDTO;
-import com.job.dashboard.domain.notification.NotificationService;
+import com.job.dashboard.domain.dto.*;
+import com.job.dashboard.domain.file.FileMapper;
+import com.job.dashboard.domain.file.FileService;
+//import com.job.dashboard.domain.notification.NotificationService;
 import com.job.dashboard.exception.CustomException;
 import com.job.dashboard.exception.ExceptionErrorCode;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,25 +34,22 @@ import static org.flywaydb.core.internal.util.StringUtils.getFileExtension;
 public class BusinessDashServiceImpl implements BusinessDashService{
     private final BusinessDashMapper businessDashMapper;
     private final SessionUtil sessionUtil;
-    private final NotificationService notificationService;
-
-    //파일 인스턴스 변수들
-    @Value("${image.upload.dir}")
-    private String uploadFolder; //yml에 작성한 업로드한 파일위치
-    private String rootPath = System.getProperty("user.dir");  // 루트 경로 불러오기
-    private String fileDir = rootPath + "/files/"; // 프로젝트 루트 경로에 있는 files 디렉토리
+//    private final NotificationService notificationService;
+    private final FileMapper fileMapper;
+    private final FileService fileService;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     //기업 프로필 작성
     @Transactional
-    public Map<String, Object>  insertProfile(CompanyInfoDTO companyInfoDTO) {
-        Map<String, Object> map = new HashMap<>();
+    public ApiResponse insertProfile(CompanyInfoDTO companyInfoDTO) {
+//        Map<String, Object> map = new HashMap<>();
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
         companyInfoDTO.setUserNo(userNo);
 
         //파일 아이디 조회
         if(companyInfoDTO.getFile() != null) {
-            deleteFile(companyInfoDTO.getFileId());
+            fileMapper.deleteFile(companyInfoDTO.getFileId());
         }
 
         //list로 프로필 가져옴
@@ -69,161 +67,58 @@ public class BusinessDashServiceImpl implements BusinessDashService{
         businessDashMapper.insertProfile(companyInfoDTO);
 
         // 파일 저장 부분
-        MultipartFile fileCheck = companyInfoDTO.getFile();
-        if (fileCheck != null) { //파일이 있음.
+        fileService.updateFile(companyInfoDTO.getFile());
 
-            map = saveFile(fileCheck);
-        }
-
-        map.put("code", "success");
-        map.put("message", "프로필 저장 성공!");
-
-        return map;
+        return ApiResponse.builder()
+                .code(200)
+                .message("프로필이 성공적으로 저장되었습니다.")
+                .build();
     }
 
     // 기업 프로필 가져오기
     public CompanyInfoDTO getBusinessProfileInfo() {
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
-        return businessDashMapper.getBusinessProfileInfo(userNo);
+        CompanyInfoDTO companyInfoDTO = businessDashMapper.getBusinessProfileInfo(userNo);
+
+        FileDTO file = fileService.getFile(userNo);
+        companyInfoDTO.setFileDTO(file);
+
+        return companyInfoDTO;
     }
 
+    public ApiResponse changePassword(UserDTO userDTO) {
+        System.out.println("userDTO = " + userDTO);
+        String currentPassword = userDTO.getPassword(); //todo: 재설정했는데 testtest123을 사용중인 비밀번호에 입력해도 넘어가버림.
 
-    //파일 저장
-    @Transactional
-    public Map<String, Object> saveFile(MultipartFile file){
 
-        // 결과 맵 생성
-        Map<String, Object> result = new HashMap<>();
-        int userNo = (int) sessionUtil.getAttribute("userNo");
+        String savedPassword = businessDashMapper.getSavedPassword(userDTO.getUserNo());
 
-        try {
-            // 파일을 저장할 디렉토리가 존재하지 않으면 생성
-            Path dirPath = Paths.get(uploadFolder);
-            if (!Files.exists(dirPath)) {
-                Files.createDirectories(dirPath);
-            }
-
-            byte[] bytes = file.getBytes(); // 업로드된 파일의 내용을 바이트 배열로 읽음
-
-            String originalFilename = file.getOriginalFilename();
-
-            Path path = Paths.get(uploadFolder + File.separator + file.getOriginalFilename()); // 경로 생성
-            Files.write(path, bytes); // 파일을 경로에 저장
-
-            //파일 확장자
-            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-
-            //파일 사이즈
-            Long fileSize = file.getSize();
-
-            Map<String, Object> fileInfo  = new HashMap<>();
-            fileInfo .put("fileExtension", fileExtension);
-            fileInfo .put("fileSize", fileSize);
-            validateFile(fileInfo );
-
-            // 파일 이름으로 쓸 UUID 생성
-            String uuid = UUID.randomUUID().toString();
-            String[] uuids = uuid.split("-");
-            String uniqueName = uuids[0];
-
-            // UUID와 결합
-            String savedName = uniqueName + fileExtension; // 저장될 이름
-
-            // 저장된 파일 이름으로 경로 갱신
-            Path savedPath = Paths.get(uploadFolder + File.separator + savedName);
-            Files.move(path, savedPath); // 원래 경로에서 새로운 이름의 파일 경로로 이동
-
-            // 데이터베이스에 파일 정보 저장
-            FileDTO fileDTO = new FileDTO();
-            fileDTO.setUserNo(userNo);
-            fileDTO.setOriginalFilename(file.getOriginalFilename());
-            fileDTO.setSavedFilename(savedName);
-            fileDTO.setFilePath(savedPath.toString());
-            fileDTO.setFileType(fileExtension);
-            fileDTO.setFileSize(fileSize);
-
-            businessDashMapper.saveImage(fileDTO);
-
-            result.put("url", "/business/uploadedFileGet/" + fileDTO.getFileId()); // 클라이언트에게 반환될 파일 URL
-        } catch (IOException | IllegalStateException e) {
-            e.printStackTrace();
+        boolean pwCheck = passwordEncoder.matches(currentPassword, savedPassword);
+        System.out.println("사용중인 비밀번호 확인 : "+pwCheck);
+        if (!pwCheck) {
+            throw new CustomException(ExceptionErrorCode.PASSWORD_INCORRECT_TOKEN);
         }
-        return result;
+
+        System.out.println("새로운 비밀번호 서로 확인 :"+Objects.equals(userDTO.getPassword2(), userDTO.getNewPassword()));
+        if (!Objects.equals(userDTO.getPassword2(), userDTO.getNewPassword())) {
+            throw new CustomException(ExceptionErrorCode.NEW_PASSWORD_MISMATCH_TOKEN);
+        }
+
+        System.out.println("재설정 전 비밀번호 확인 : ");
+        String encodedPassword = passwordEncoder.encode(userDTO.getPassword2());
+        userDTO.setPassword(encodedPassword);
+
+        System.out.println("재설정한 비밀번호가 잘 들어왔는지 확인 함: "  +userDTO);
+        businessDashMapper.updatePassword(userDTO);
+
+//        return null;
+        return ApiResponse.builder()
+                .code(200)
+                .message("비밀번호가 성공적으로 재설정 되었습니다.")
+                .data(userDTO)
+                .build();
     }
-
-    //파일 유효성 검사
-    private void validateFile(Map<String, Object> fileInfo ) throws CustomException {
-        String[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
-        String fileExtension = (String) fileInfo.get("fileExtension");
-        Long fileSize = (Long) fileInfo.get("fileSize");
-
-        String toLowerFileExtension = fileExtension.toLowerCase();
-
-        if (!Arrays.asList(allowedExtensions).contains(toLowerFileExtension)) {
-            throw new CustomException(ExceptionErrorCode.EXCEPTION_MESSAGE,"허용되지 않는 파일 형식입니다.");
-        }
-
-        long maxSize = 300 * 1024; // 5MB
-        if (fileSize > maxSize) {
-            throw new CustomException(ExceptionErrorCode.EXCEPTION_MESSAGE,"파일 크기가 허용된 한도를 초과했습니다.");
-        }
-    }
-
-
-    // 파일 가져오기
-    @Override
-    public byte[] loadFileAsBytes(int fileId) throws IOException {
-        Map<String, Object> map = new HashMap<>();
-        map.put("fileId",fileId);
-
-        FileDTO file = businessDashMapper.getFiles(map);
-
-        Path filePath = Paths.get(uploadFolder + File.separator + file.getSavedFilename());
-
-        if (!Files.exists(filePath)) {
-            throw new IOException("File not found: " +  file.getSavedFilename());
-        }
-
-        try (InputStream imageStream = new FileInputStream(filePath.toString())) {
-            return IOUtils.toByteArray(imageStream);
-        }
-    }
-
-    //파일 조회하기
-    public FileDTO getFile(int userNo) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("userNo",userNo);
-
-        return businessDashMapper.getFiles(map);
-    }
-
-    // 파일 삭제
-    @Transactional
-    public void deleteFile(int fileId) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("fileId", fileId);
-
-        FileDTO fileInfo = businessDashMapper.getFiles(map);
-
-        if (fileInfo != null) {
-            businessDashMapper.deleteFile(fileId);
-
-            // 로컬에서 파일 삭제
-            String filePathStr = uploadFolder + File.separator + fileInfo.getSavedFilename();
-            Path filePath = Paths.get(filePathStr);
-            File file = filePath.toFile();
-
-            if (file.delete()) {
-                System.out.println("파일이 성공적으로 삭제되었습니다: " + filePath);
-            } else {
-                System.err.println("파일 삭제 실패: " + filePath);
-            }
-        } else {
-            System.err.println("해당 파일 정보를 찾을 수 없습니다: " + fileId);
-        }
-    }
-
 
     // 기업 작성한 공고 리스트
      public PageInfo<JobPostDTO> getPostJobList(String keyword, int pageNum, int pageSize) {
@@ -262,40 +157,38 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
     //지원자 채용
     @Transactional
-    public Map<String, Object> employCandidate(JobApplicationDTO jobApplicationDTO) {
-        Map<String, Object> map = new HashMap<>();
-
+    public ApiResponse employCandidate(JobApplicationDTO jobApplicationDTO) {
         businessDashMapper.employCandidate(jobApplicationDTO);
+//        int userNo = (int)sessionUtil.getAttribute("userNo");
 
         // jobId로 공고 제목 가져오기
-        JobPostDTO jobPost = businessDashMapper.getJobPostTile(jobApplicationDTO.getJobId());
-        int userNo = jobApplicationDTO.getUserNo(); //지원한 userNo
+        JobPostDTO jobPost = businessDashMapper.getJobPostTitle(jobApplicationDTO.getJobId());
+        int userNo = jobApplicationDTO.getUserNo(); //지원자 userNo
 
-        // 공고 제목 가져오기
+        /** "맥도날드가 채용하였습니다." */
 
-        notificationService.sendNotification(userNo, jobPost.getTitle()+"에 채용 되었습니다.","hir"); // (개인유저한테 알려줘야함.)
+//        notificationService.notification(userNo, "님이" + jobPost.getTitle()+"에 채용하였습니다.","hir"); // (지원자한테 표시할 내용.)
 
-        map.put("code", "success");
-        map.put("message", "성공적으로 채용했습니다.");
-
-        return map;
+        return ApiResponse.builder()
+                .code(200)
+                .message("성공적으로 채용했습니다.")
+                .build();
     }
 
     //지원자 채용 취소
     @Transactional
-    public Map<String, Object> cancelEmployCandidate(JobApplicationDTO jobApplicationDTO) {
-        Map<String, Object> map = new HashMap<>();
-
+    public ApiResponse cancelEmployCandidate(JobApplicationDTO jobApplicationDTO) {
+        System.out.println("jobApplicationDTO = " + jobApplicationDTO);
         businessDashMapper.cancelEmployCandidate(jobApplicationDTO);
 
-        int userNo = jobApplicationDTO.getUserNo(); //지원한 userNo
-        JobPostDTO jobPost = businessDashMapper.getJobPostTile(jobApplicationDTO.getJobId());
-        notificationService.sendNotification(userNo, "\"" + jobPost.getTitle() + "\"에 채용 취소되었습니다.","hir"); // (개인유저한테 알려줘야함.)
+        int userNo = jobApplicationDTO.getUserNo(); //지원한 userNo(수신자)
+        JobPostDTO jobPost = businessDashMapper.getJobPostTitle(jobApplicationDTO.getJobId());
+//        notificationService.notification(userNo, "\"" + jobPost.getTitle() + "\"에 채용이 취소되었습니다.","hir"); // (개인유저한테 알려줘야함.)
 
-        map.put("code", "success");
-        map.put("message", "성공적으로 취소했습니다.");
-
-        return map;
+        return ApiResponse.builder()
+                .code(200)
+                .message("성공적으로 취소했습니다.")
+                .build();
     }
 
 }

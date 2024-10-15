@@ -16,7 +16,7 @@
 
         done: (response) => {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-          if (response.code === 'success') {
+          if (response.code === 200) {
             $("#exampleModalCenter").modal('show');
           }
 
@@ -39,32 +39,27 @@
       jsonData["jobId"] = $("#jobId").val();
       jsonData["motivationDescription"] = $("#motivationDescription").val();
 
-      console.log("jsonData: " + JSON.stringify(jsonData));
-
       const options = {
-        url: "/business/apply", // Spring 컨트롤러 URL
+        url: "/business/ajax/apply", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData),
 
         done: (response) => {
+          console.log(response);
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-          if (response.code === 'success') {
+          if (response.code === 200) {
             alert(response.message);
             location.reload();
           }
-
         },
         fail: function (jqXHR) {
           const jsonObj = JSON.parse(jqXHR.responseText);
           alert(jsonObj.userMessage);
           $(".modal-content").hide();
-          location.href = '/personal/myProfile';
         }
       };
-
       ajax.call(options);
-
     },
 
     cancel: function () {
@@ -76,7 +71,7 @@
       console.log("jsonData: " + JSON.stringify(jsonData));
 
       const options = {
-        url: '/business/applyCancel',
+        url: '/business/ajax/applyCancel',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData),
@@ -84,21 +79,18 @@
         done: (response) => {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
           console.log(JSON.stringify(response));
-          if (response.code === 'success') {
+          if (response.code === 200) {
             alert(response.message);
             location.reload();
-          } else if (response.code === 'error') {
-            alert(response.message);
-            location.reload();
-          } else if (response.code === 'loginError') {
-            alert(response.message);
-            location.href = '/user/login'
           }
         },
+        fail: function (jqXHR) {
+          const jsonObj = JSON.parse(jqXHR.responseText);
+          alert(jsonObj.userMessage);
+          $(".modal-content").hide();
+        }
       };
-
       ajax.call(options);
-
     },
 
 
@@ -106,21 +98,27 @@
       const jobId = $("#jobId").val();
 
       const options = {
-        url: "/business/like/"+jobId,
+        url: "/business/ajax/like/"+jobId,
         type: 'POST',
         contentType: 'application/json',
         data: '',
 
         done: function (response) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-          if (response.code === 'success') {
-            $('#likeIcon').removeClass().addClass(response.like === 1 ? 'fas fa-heart' : 'far fa-heart');
+          console.log(response);
+          if (response.code === 200) {
+            $('#likeIcon').removeClass().addClass(response.data === 1 ? 'fas fa-heart' : 'far fa-heart');
 
           } else if (response.code === 'error') {
             alert(response.message);
             location.href = '/user/login';
           }
         },
+        fail: function(jqXHR) {
+          console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+          const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+          alert(errorResponse.userMessage); // 사용자에게 에러 메시지 노출
+        }
       };
 
       ajax.call(options);

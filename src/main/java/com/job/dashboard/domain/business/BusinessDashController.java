@@ -2,10 +2,9 @@ package com.job.dashboard.domain.business;
 
 import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.common.CommonService;
-import com.job.dashboard.domain.dto.CompanyInfoDTO;
-import com.job.dashboard.domain.dto.FileDTO;
-import com.job.dashboard.domain.dto.JobApplicationDTO;
-import com.job.dashboard.domain.dto.JobPostDTO;
+import com.job.dashboard.domain.dto.*;
+import com.job.dashboard.domain.file.FileController;
+import com.job.dashboard.domain.file.FileService;
 import com.job.dashboard.domain.job.PostService;
 import com.job.dashboard.exception.CustomException;
 import com.job.dashboard.exception.ExceptionErrorCode;
@@ -35,49 +34,19 @@ public class BusinessDashController {
     private final BusinessDashService businessDashService;
     private final SessionUtil sessionUtil;
     private final CommonService commonService;
-
-    //파일 업로드
-    @PostMapping("/uploadedFile")
-    @ResponseBody
-    public Map<String, Object> profileFile(@RequestParam("file") MultipartFile file) throws IOException {
-        return businessDashService.saveFile(file);
-    }
-
-    //파일 삭제
-    @PostMapping("/deleteFile/{fileId}")
-    @ResponseBody
-    public Map<String, Object> profileFileDelete(@PathVariable("fileId") int fileId){
-        Map<String, Object> map = new HashMap<>();
-        businessDashService.deleteFile(fileId);
-
-        map.put("code", "success");
-        map.put("message", "프로필 삭제가 되었습니다.");
-        return map;
-    }
-
-    // fileId로 파일 가져오기
-    @GetMapping("/uploadedFileGet/{fileId}")
-    public ResponseEntity<byte[]> getImgView(@PathVariable("fileId") int fileId) {
-        try {
-            byte[] imageByteArray = businessDashService.loadFileAsBytes(fileId);
-            return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
-        } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+    private final FileService fileService;
 
     //프로필 페이지 - 데이터 있으면 보여줌
     @GetMapping("/profile")
     public String profileView(Model model)  {
 
         //기존 프로필 가져오기
-        int userNo = (int) sessionUtil.getAttribute("userNo");
         CompanyInfoDTO businessProfileInfo = businessDashService.getBusinessProfileInfo();
+        System.out.println("businessProfileInfo = " + businessProfileInfo);
 
         //파일 조회
-        FileDTO file = businessDashService.getFile(userNo);
-        if (file != null) {
-            model.addAttribute("fileId", file.getFileId());
+        if (businessProfileInfo.getFileDTO() != null) {
+            model.addAttribute("fileId", businessProfileInfo.getFileDTO().getFileId());
         }
 
         //common으로 option code가져오기
@@ -89,16 +58,18 @@ public class BusinessDashController {
     }
 
     //프로필 저장 (파일 같이)
-    @PostMapping("/insertProfile")
+    @PostMapping("/ajax/insertProfile")
     @ResponseBody
-    public Map<String, Object> insertProfile(CompanyInfoDTO companyInfoDTO) {
-
-        return businessDashService.insertProfile(companyInfoDTO);
+    public ResponseEntity<?> insertProfile(CompanyInfoDTO companyInfoDTO) {
+        System.out.println("companyInfoDTO = " + companyInfoDTO);
+        ApiResponse response = businessDashService.insertProfile(companyInfoDTO);
+        return ResponseEntity.ok(response);
     }
 
     //비밀번호 변경
     @GetMapping("/changePassword")
     public String changePasswordView(Model model)  {
+        System.out.println("비밀번호 변경하기 화면");
 
         //회사 이름
         CompanyInfoDTO businessProfile = businessDashService.getBusinessProfileInfo();
@@ -106,7 +77,7 @@ public class BusinessDashController {
 
         //파일 조회
         int userNo = (int) sessionUtil.getAttribute("userNo");
-        FileDTO file = businessDashService.getFile(userNo);
+        FileDTO file = fileService.getFile(userNo);
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
         }
@@ -114,11 +85,20 @@ public class BusinessDashController {
         return "jsp/business/business-changePassword";
     }
 
+    @PostMapping("/ajax/changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody UserDTO userDTO) {
+        int userNo = (int)sessionUtil.getAttribute("userNo");
+        userDTO.setUserNo(userNo);
+
+        ApiResponse response = businessDashService.changePassword(userDTO);
+        return ResponseEntity.ok(response);
+    }
+
 
     //공고 관리
     @GetMapping("/managePostJob")
     public String managePostJobView(Model model) {
-
+        System.out.println("공고관리 뷰");
         //프로필 작성 확인
         CompanyInfoDTO businessProfileInfo = businessDashService.getBusinessProfileInfo();
         if (businessProfileInfo == null) {
@@ -126,11 +106,11 @@ public class BusinessDashController {
         }
 
         //회사 이름
-        model.addAttribute("company", businessProfileInfo); //굳이 프로필 전부를 가져올 필요가 있을까?
+        model.addAttribute("company", businessProfileInfo);
 
         //파일 조회
         int userNo = (int) sessionUtil.getAttribute("userNo");
-        FileDTO file = businessDashService.getFile(userNo);
+        FileDTO file = fileService.getFile(userNo);
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
         }
@@ -143,12 +123,15 @@ public class BusinessDashController {
     public Map<String, Object> ajaxManagePostJob(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                                  @RequestParam(defaultValue = "1") int pageNum,
                                                  @RequestParam(defaultValue = "10") int pageSize) {
-
+        System.out.println("작성게 게시글 다운");
         PageInfo<JobPostDTO> postJobList = businessDashService.getPostJobList(keyword, pageNum, pageSize);
+
+        int userNo = (int)sessionUtil.getAttribute("userNo");
 
         Map<String, Object> response = new HashMap<>();
         response.put("list", postJobList.getList());
         response.put("total", postJobList.getTotal());
+        response.put("userNo",userNo);
         response.put("pageNum", postJobList.getPageNum());
         response.put("pageSize", postJobList.getPageSize());
         response.put("pages", postJobList.getPages());
@@ -158,7 +141,17 @@ public class BusinessDashController {
     //작성한 공고에 지원한 지원자 리스트
     @GetMapping("/candidateList")
     public String candidateListView (@RequestParam("jobId") int jobId, Model model) {
+        System.out.println("candidateList뷰");
 
+        int userNo = (int)sessionUtil.getAttribute("userNo");//로그인한 userNo
+        System.out.println("userNo확인 ; "+userNo); //10
+        FileDTO file = fileService.getFile(userNo);
+        if (file != null) {
+            System.out.println("파일아이디 확인 : "+file.getFileId());
+            model.addAttribute("fileId", file.getFileId());
+        }
+
+        model.addAttribute("userNo", userNo);
         model.addAttribute("id", jobId);
         return "jsp/business/business-manageCandidate";
     }
@@ -168,23 +161,46 @@ public class BusinessDashController {
     public Map<String, Object> ajaxCandidateList (@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                                   @RequestParam(defaultValue = "1") int pageNum,
                                                   @RequestParam(defaultValue = "10") int pageSize,
-                                                  @RequestParam(value = "jobNum") int jobId) {
+                                                  @RequestParam(value = "jobNum") int jobId,
+                                                  @RequestParam int userNo) {
+        System.out.println("ajax/candidateList 리스트 다운로드");
         PageInfo<JobApplicationDTO> candidateList = businessDashService.getCandidateList(keyword, pageNum, pageSize, jobId);
 
+        System.out.println("keyword = " + keyword + ", pageNum = " + pageNum + ", pageSize = " + pageSize + ", jobId = " + jobId + ", userNo = " + userNo);
         Map<String, Object> response = new HashMap<>();
         response.put("list", candidateList.getList());
+        response.put("loginUserNo", userNo);
         response.put("total", candidateList.getTotal());
         response.put("pageNum", candidateList.getPageNum());
         response.put("pageSize", candidateList.getPageSize());
         response.put("pages", candidateList.getPages());
 
-
         return response;
     }
 
     // 지원한 지원자 상세보기
-    @GetMapping("/candidateDetail")
+    @GetMapping("/candidateDetail") //todo: 이페이지에서 프로필 사진이 노출이 안됨
     public String candidateDetailView (@RequestParam("userNo") int userNo, @RequestParam("jobId") int jobId, Model model) {
+
+        System.out.println("userNo??? "+userNo);
+        int businessUserNo = (int) sessionUtil.getAttribute("userNo");
+        System.out.println("userNo 확인 : "+businessUserNo);
+
+        FileDTO file = fileService.getFile(businessUserNo);
+        if (file != null) {
+            System.out.println("파일Id확인 : "+file.getFileId());
+            model.addAttribute("fileId", file.getFileId());
+        }
+
+        //프로필 작성 확인
+        CompanyInfoDTO businessProfileInfo = businessDashService.getBusinessProfileInfo();
+        if (businessProfileInfo == null) {
+            return "redirect:/business/profile";
+        }
+
+        //회사 이름
+        model.addAttribute("company", businessProfileInfo);
+        model.addAttribute("userNo", businessUserNo);
 
         JobApplicationDTO candidateDetailInfo = businessDashService.getCandidateDetailInfo(userNo,jobId);
 
@@ -194,19 +210,19 @@ public class BusinessDashController {
     }
 
     // 채용
-    @PostMapping("/employCandidate")
+    @PostMapping("/ajax/employ")
     @ResponseBody
-    public Map<String, Object> employCandidate(@RequestBody JobApplicationDTO jobApplicationDTO) {
-
-        return businessDashService.employCandidate(jobApplicationDTO);
+    public ResponseEntity<?> employCandidate(@RequestBody JobApplicationDTO jobApplicationDTO) {
+        ApiResponse response = businessDashService.employCandidate(jobApplicationDTO);
+        return ResponseEntity.ok(response);
     }
 
     // 채용 취소
-    @PostMapping("/cancelEmployCandidate")
+    @PostMapping("/ajax/cancelEmploy")
     @ResponseBody
-    public Map<String, Object> cancelEmployCandidate (@RequestBody JobApplicationDTO jobApplicationDTO) {
-
-        return businessDashService.cancelEmployCandidate(jobApplicationDTO);
+    public ResponseEntity<?> cancelEmployCandidate (@RequestBody JobApplicationDTO jobApplicationDTO) {
+        ApiResponse response = businessDashService.cancelEmployCandidate(jobApplicationDTO);
+        return ResponseEntity.ok(response);
     }
 
 
