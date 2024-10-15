@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
-  //개인회원 이메일 중복검사
+  // 서버 전송하기 전 이메일 중복 확인
   const emailValid = {
     init: function() {
       this.duplicateCheck(function (isValid) {
@@ -20,20 +20,18 @@
         return;
       }
 
-
-      let jsonData = {};
+      let jsonData = {}; //json데이터로 받는 이유: 비동기 통신으로 url이 노출 되지 않기때문에
       jsonData['email'] = $("#email").val();
-
       console.log("jsonData : " + JSON.stringify(jsonData));
 
       const options = {
-        url: "/user/emailDuplicateCheck", // Spring 컨트롤러 URL
+        url: "/user/ajax/emailDuplicateCheck", // Spring 컨트롤러 URL
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
 
         done: function(response) {
-          if (response.code === 'success') {
+          if (response.code === 200) {
             $("#email").removeClass("is-invalid");
             $("#emailError").hide();
             callback(true);
@@ -151,7 +149,7 @@
 
       if (password !== password2) {
         $("#password, #password2").addClass("is-invalid");
-        $("#passwordError").text("입력한 비밀번호와 일치하지 않습니다.").show();
+        $("#passwordError").text("새로운 비밀번호와 비밀번호 확인이 일치하지 않습니다.").show();
         $('#password2').focus();
         valid = false;
         return valid;
@@ -206,7 +204,7 @@
           console.log(JSON.stringify(data));
           if(data.code === 'error') {
             alert(data.message);
-          } else if (data.code === 'success'){
+          } else if (data.code === 200){
             alert(data.message);
             location.href='/user/login'
           }

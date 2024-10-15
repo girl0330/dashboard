@@ -10,11 +10,11 @@ public interface PersonalDashService {
 
     //프로필
     int profileCountByUserNo(int userNo);
-    UserProfileInfoDTO getProfileInfo(int userNo); // 프로필 체크
-    Map<Object, String> insertProfile(UserProfileInfoDTO userProfileInfoDTO) throws IOException; // 새로운 프로필 저장
+    UserInfoDTO getProfileInfo(int userNo); // 프로필 체크
+    ApiResponse insertProfile(UserInfoDTO userInfoDTO) throws IOException; // 새로운 프로필 저장
 
     // 비밀번호 변경하기
-    Map<Object, Object> changePassword(UserDTO userDTO);
+    ApiResponse changePassword(UserDTO userDTO);
 
     //dashboard list -(지원한 공고)
     PageInfo<JobApplicationDTO> getDashboardList(String keyword, int pageNum, int pageSize);

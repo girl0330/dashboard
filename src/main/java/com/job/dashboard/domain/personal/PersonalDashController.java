@@ -3,8 +3,10 @@ package com.job.dashboard.domain.personal;
 import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.business.BusinessDashService;
 import com.job.dashboard.domain.dto.*;
+import com.job.dashboard.domain.file.FileService;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,28 +22,23 @@ public class PersonalDashController {
     private final PersonalDashService personalDashService;
     private final BusinessDashService businessDashService;
     private final SessionUtil sessionUtil;
+    private final FileService fileService;
 
     // dashboard 리스트
     @GetMapping("/dashboard")
     public String dashboardView(Model model) {
-
         int userNo = (int)sessionUtil.getAttribute("userNo");
 
-        // 프로필 작성 여부 확인
-        int profileCheck = personalDashService.profileCountByUserNo(userNo);
-        if (profileCheck == 0) {
-            return "redirect:/personal/myProfile";
-        }
-
         //파일 조회
-        FileDTO file = businessDashService.getFile(userNo);
+        FileDTO file = fileService.getFile(userNo);
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
         }
         //이름 노출 시키기
-        UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
-        System.out.println("프로필 내용 확인 :;; "+myProfile);
-        model.addAttribute("profile",myProfile);
+        UserInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
+        if (myProfile != null) {
+            model.addAttribute("profile", myProfile);
+        }
 
         return "jsp/personal/personal-dashboard";
     }
@@ -73,10 +69,10 @@ public class PersonalDashController {
 
         // 작성된 프로필 확인
         int userNo = (int) sessionUtil.getAttribute("userNo");
-        UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
+        UserInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
 
         //파일 조회
-        FileDTO file = businessDashService.getFile(userNo);
+        FileDTO file = fileService.getFile(userNo);
 
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
@@ -86,11 +82,13 @@ public class PersonalDashController {
         return "jsp/personal/personal-profile";
     }
 
-    @PostMapping("/insertProfile")
+    @PostMapping("/ajax/insertProfile")
     @ResponseBody
-    public Map<Object, String> insertProfile(UserProfileInfoDTO userProfileInfoDTO) throws IOException {
+    public ResponseEntity<?> insertProfile(UserInfoDTO userInfoDTO) throws IOException {
 
-        return personalDashService.insertProfile(userProfileInfoDTO);
+        System.out.println("userInfoDTO = " + userInfoDTO);
+         ApiResponse response = personalDashService.insertProfile(userInfoDTO);
+         return ResponseEntity.ok(response);
     }
 
     // 비밀번호 변경
@@ -99,25 +97,26 @@ public class PersonalDashController {
 
         //파일 조회
         int userNo = (int) sessionUtil.getAttribute("userNo");
-        FileDTO file = businessDashService.getFile(userNo);
+        FileDTO file = fileService.getFile(userNo);
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
         }
 
         //이름 노출 시키기
-        UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
+        UserInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
         model.addAttribute("profile",myProfile);
         return "jsp/personal/personal-changePassword";
     }
 
-    @PostMapping("/doChangePassword")
+    @PostMapping("/ajax/changePassword")
     @ResponseBody
-    public Map<Object, Object> changePassword(@RequestBody UserDTO userDTO) {
-
+    public ResponseEntity<?> changePassword(@RequestBody UserDTO userDTO) {
+        System.out.println("userDTO = " + userDTO);
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
         userDTO.setUserNo(userNo);
-        return personalDashService.changePassword(userDTO);
+        ApiResponse response = personalDashService.changePassword(userDTO);
+        return ResponseEntity.ok(response);
     }
 
     // manageJobsList
@@ -127,18 +126,17 @@ public class PersonalDashController {
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
         // 프로필 작성 여부 확인
-        int profileCheck = personalDashService.profileCountByUserNo(userNo);
-        if (profileCheck == 0) {
+        if (personalDashService.profileCountByUserNo(userNo) == 0) {
             return "redirect:/personal/myProfile";
         }
 
         //파일 조회
-        FileDTO file = businessDashService.getFile(userNo);
+        FileDTO file = fileService.getFile(userNo);
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
         }
         //이름 노출 시키기
-        UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
+        UserInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
         model.addAttribute("profile",myProfile);
 
         return "jsp/personal/personal-manageJobs";
@@ -176,12 +174,12 @@ public class PersonalDashController {
         }
 
         //파일 조회
-        FileDTO file = businessDashService.getFile(userNo);
+        FileDTO file = fileService.getFile(userNo);
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
         }
         //이름 노출 시키기
-        UserProfileInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
+        UserInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
         model.addAttribute("profile",myProfile);
 
         return "jsp/personal/personal-likedJobs";

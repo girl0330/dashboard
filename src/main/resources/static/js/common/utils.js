@@ -119,19 +119,19 @@ const validation = {
 			return valid;
 		}
 		if (password1.length > 15 || password1.length < 8) {
-			alert("사용중인 비밀번호를 8~15자로 사용해주세요")
-			$('#'+focusId1).focus()
+			alert("사용중인 비밀번호를 8~15자로 사용해주세요");
+			$('#'+focusId1).focus();
 			valid = false;
 			return valid;
 		}
 		if (password2.length > 15 || password2.length < 8) {
-			alert("새로 사용할를 8~15자로 사용해주세요")
+			alert("새로 사용할를 8~15자로 사용해주세요");
 			$('#'+focusId2).focus()
 			valid = false;
 			return valid;
 		}
 		if (password2 !== password3 ) {
-			alert("입력한 비밀번호와 일치하지 않습니다.")
+			alert("새로운 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
 			$('#'+focusId3).focus();
 			valid = false;
 			return valid;

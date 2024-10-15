@@ -17,20 +17,15 @@
                     pageSize: 10,
                     keyword: ''
                 },
-
-                beforeSend: () => {
-                    console.log('요청 전 작업 수행');
-                },
-                customFail: (response) => {
-                    console.error('커스텀 실패 처리:', response);
-                },
                 done: function(response) {
                     $("#amount").text(response.total); //총 게시물 개수
                     keywordSearch.renderJobs(response.list); //리스트 목록
                     renderPagination('pagination',response.pageNum, response.pageSize, response.total, response.pages); //페이징
                 },
-                fail: () => {
-                    console.error('요청 실패');
+                fail: function(jqXHR) {
+                    console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+                    const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+                    alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
                 }
             };
 

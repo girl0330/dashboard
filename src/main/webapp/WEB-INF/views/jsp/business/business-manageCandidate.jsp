@@ -13,6 +13,7 @@
         },
 
         keywordSearchSubmit: function (pageNum) {
+            const userNo = `${userNo}`;
             const keyword = $('#keyword').val(); // input 필드에서 값 가져오기
             const jobNum = $('#jobNum').val(); // jobId
 
@@ -20,25 +21,33 @@
                 url: '/business/ajax/candidateList',
                 type: 'GET',
                 data: {
+                    userNo: userNo,
                     pageNum: pageNum,
                     pageSize: 10,
                     keyword: keyword,
                     jobNum: jobNum
                 },
                 done: function(response) {
-                    console.log("response 확인 :: "+JSON.stringify(response));
+                    console.log(response);
                     // 성공 시 실행할 코드
-                    keywordSearch.renderJobsp(response.list);
+                    keywordSearch.renderJob(response.list, response.loginUserNo);
                     renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
                 },
+                fail: function(jqXHR) {
+                    console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+                    const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+                    alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
+                }
             };
 
             ajax.call(options);
 
         },
-        renderJobsp: function(list){
+        renderJob: function(list, loginUserNo){
             const container = $("#candidateList");
             container.empty();
+// 반복문 시작 전에 loginUserNo를 포함하는 <input> 요소를 먼저 추가
+            container.append('<input type="hidden" id="loginUserNo" name="" value="' + loginUserNo + '">');
 
             list.forEach(candidate => {
                 const tableHtml =
@@ -76,7 +85,11 @@
     });
 </script>
 <!--=================================
-Manage Jobs -->
+Dashboard Nav -->
+<%@ include file="businessMenuInclude.jsp"%>
+<!--=================================
+Dashboard Nav -->
+
 <section class="section-margin-top">
     <div class="container">
         <div class="row">

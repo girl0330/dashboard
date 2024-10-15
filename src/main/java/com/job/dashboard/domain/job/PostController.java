@@ -5,14 +5,17 @@ import com.github.pagehelper.PageInfo;
 import com.job.dashboard.domain.business.BusinessDashService;
 import com.job.dashboard.domain.common.CommonService;
 import com.job.dashboard.domain.dto.*;
-import com.job.dashboard.domain.notification.NotificationService;
+import com.job.dashboard.domain.file.FileService;
+//import com.job.dashboard.domain.notification.NotificationService;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,17 +28,21 @@ public class PostController {
     private final PostService postService;
     private final SessionUtil sessionUtil;
     private final CommonService commonService;
-    private final NotificationService notificationService;
+//    private final NotificationService notificationService;
     private final BusinessDashService businessDashService;
+    private final FileService fileService;
 
     //공고작성 페이지
     @GetMapping("/writePostJob")
-    public String writePostJobView(HttpServletRequest request, Model model) {
+    public String writePostJobView(HttpServletRequest request, HttpServletResponse response, Model model) {
+        System.out.println("공고 작성");
 
         //이전 페이지 session저장
         if (!sessionUtil.loginUserCheck()) { // 로그인 체크
-            String currentUrl = request.getRequestURL().toString();
-            request.getSession().setAttribute("prevPage", currentUrl);
+            System.out.println("로그인 안됨. 리다이렉트 저장되는지 확인 ");
+            String currentUrl = request.getRequestURI();
+            sessionUtil.setRedirectUrl(currentUrl);
+            System.out.println("리다이렉트 확인::: "+sessionUtil.getRedirectUrl());
             return "jsp/login";
         }
 
@@ -46,8 +53,7 @@ public class PostController {
             return "redirect:/business/profile";
         }
 
-        //파일 조회
-        FileDTO file = businessDashService.getFile(userNo);
+        FileDTO file = fileService.getFile(userNo);
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
         }
@@ -56,12 +62,12 @@ public class PostController {
     }
 
     //공고 작성
-    @PostMapping("/insertPost")
+    @PostMapping("/ajax/insertPost")
     @ResponseBody
-    public Map<String, Object> insertPost (@RequestBody JobPostDTO jobPostDTO) {
-
+    public ResponseEntity<?> insertPost (@RequestBody JobPostDTO jobPostDTO) {
          //로그인한 id를 직접 넣을거임
-        return postService.insertPost(jobPostDTO);
+        ApiResponse response = postService.insertPost(jobPostDTO);
+        return ResponseEntity.ok(response);
     }
 
 
@@ -72,7 +78,7 @@ public class PostController {
         if (sessionUtil.loginUserCheck()) {
             int userNo = (int) sessionUtil.getAttribute("userNo");
             //파일 조회
-            FileDTO file = businessDashService.getFile(userNo);
+            FileDTO file = fileService.getFile(userNo);
             if (file != null) {
                 model.addAttribute("fileId", file.getFileId());
             }
@@ -83,7 +89,7 @@ public class PostController {
     //ajax 공고 리스트
     @GetMapping("/ajax/postJobList")
     @ResponseBody
-    public Map<String, Object> ajaxJobPostList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+    public ResponseEntity<?> ajaxJobPostList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                                @RequestParam(defaultValue = "1") int pageNum,
                                                @RequestParam(defaultValue = "10") int pageSize) {
 
@@ -100,24 +106,31 @@ public class PostController {
         response.put("pageSize", jobList.getPageSize());
         response.put("pages", jobList.getPages());
 
-        return response;
+        return ResponseEntity.ok(response);
     }
 
 
     //공고 상세 페이지
     @GetMapping("/jobPostDetail")
     public String jobPostDetailView(@RequestParam("jobId") int jobId, Model model) {
-        Map<String, Object> map = new HashMap<>();
 
-        if (sessionUtil.loginUserCheck()) { // 로그인시
+        if (sessionUtil.loginUserCheck()) {
             int userNo = (int) sessionUtil.getAttribute("userNo");
-            map.put("userNo", userNo);
-            map.put("jobId", jobId);
 
-            int like = postService.findLike(map);
+            FileDTO file = fileService.getFile(userNo);
+            if (file != null) {
+                model.addAttribute("fileId", file.getFileId());
+            }
 
-            int userStatusCode = postService.getCountUserStatusCode(map);
-            model.addAttribute("userStatusCode",userStatusCode);
+            JobPostDTO jobPostDTO = new JobPostDTO();
+            jobPostDTO.setUserNo(userNo);
+            jobPostDTO.setJobId(jobId);
+
+            int like = postService.findLike(jobPostDTO); //todo:  dto 이름이 거슬리는데...
+
+            int userStatusCode = postService.getCountUserStatusCode(jobPostDTO);
+
+            model.addAttribute("userStatusCode",userStatusCode);//공고 지원상태 확인 (0: 지원/ 1: 지원안함)
             model.addAttribute("like", like);
         }
         JobPostDTO jobPostDetail = postService.getJobPostDetailInfo(jobId);
@@ -127,11 +140,11 @@ public class PostController {
     }
 
     //좋아요 관리
-    @PostMapping("/like/{jobId}")
+    @PostMapping("/ajax/like/{jobId}")
     @ResponseBody
-    public Map<String, Object> likeControl(@PathVariable int jobId, HttpServletRequest request) {
-
-        return postService.likeControl(jobId, request);
+    public ResponseEntity<?> likeControl(@PathVariable int jobId) {
+        ApiResponse response = postService.likeControl(jobId);
+        return ResponseEntity.ok(response);
     }
 
     //공고 수정
@@ -139,8 +152,8 @@ public class PostController {
     public String updateJobPostView(@RequestParam("jobId") int jobId, Model model) {
         int userNo = (int) sessionUtil.getAttribute("userNo"); //로그인한 userNo 가져옴
 
-        JobPostDTO initialData = postService.getJobPostDetailInfo(jobId);
-        if (initialData.getUserNo() != userNo) {
+        JobPostDTO jopPostDetail = postService.getJobPostDetailInfo(jobId); //todo: initialData-> jopPostDetail 바꾸기
+        if (jopPostDetail.getUserNo() != userNo) {
             return "redirect:/";
         }
 
@@ -149,58 +162,68 @@ public class PostController {
         model.addAttribute("employmentType",commonService.getSelectBoxOption("employment_type"));
         model.addAttribute("jobDayType",commonService.getSelectBoxOption("job_day_type"));
         model.addAttribute("statusType",commonService.getSelectBoxOption("status_type"));
-        model.addAttribute("initialData",initialData);
+        model.addAttribute("jopPostDetail",jopPostDetail);
 
         return "jsp/post/post-a-job-update";
     }
 
-    @PostMapping("/updateJobPost/{jobId}")
+    @PostMapping("/ajax/updateJobPost/{jobId}") //todo: 수정화면에서 프로필 이미지가 기본으로 노출중임
     @ResponseBody
-    public Map<String, Object> updateJobPost (@RequestBody JobPostDTO jobPostDTO ) {
-
-        int userNo = (int) sessionUtil.getAttribute("userNo");
-        return postService.updateJobPost(userNo, jobPostDTO);
+    public ResponseEntity<?> updateJobPost (@RequestBody JobPostDTO jobPostDTO ) {
+        ApiResponse response = postService.updateJobPost(jobPostDTO);
+        return ResponseEntity.ok(response);
     }
 
     //게시글 삭제
     @GetMapping("/deleteJobPost")
     public String deleteJobPost(@RequestParam("jobId") int jobId){
-
-        if (!sessionUtil.loginUserCheck()) { // 로그인 체크
-            return "redirect:/user/login";
-        }
-
         postService.deleteJobPost(jobId);
         return "jsp/post/job-list";
     }
-    @PostMapping("ajax/checkDuplicateApply")
+
+    /**
+     * 중복지원 체크하기
+     * @param jobApplicationDTO
+     * @return
+     */
+    @PostMapping("/ajax/checkDuplicateApply")
     @ResponseBody
-    public Map<String, Object> checkDuplicateApply(@RequestBody JobApplicationDTO jobApplicationDTO){ //jobId
-        return postService.checkDuplicateApply(jobApplicationDTO);
+    public ResponseEntity<?> checkDuplicateApply(@RequestBody JobApplicationDTO jobApplicationDTO){ //todo: ResponseEntity<?>로 전달하기
+        ApiResponse response = postService.checkDuplicateApply(jobApplicationDTO);
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/apply")
+    /**
+     * 지원하기
+     * @param jobApplicationDTO
+     * @return
+     */ //todo: ajax 비동기통신
+    @PostMapping("/ajax/apply")
     @ResponseBody
-    public Map<String, Object> applyJobPost(@RequestBody JobApplicationDTO jobApplicationDTO){ //jobId
-        return postService.applyJobPost(jobApplicationDTO);
+    public ResponseEntity<?> applyJobPost(@RequestBody JobApplicationDTO jobApplicationDTO){
+        ApiResponse response = postService.applyJobPost(jobApplicationDTO);
+        System.out.println("response확인 : "+response);
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/applyCancel")
+    //todo: ajax 비동기통신
+    @PostMapping("/ajax/applyCancel")//todo: ResponseEntity<?>로 전달하기
     @ResponseBody
-    public Map<String, Object> applyCancelJob(@RequestBody Integer jobId){
-        return postService.applyCancelJob(jobId);
+    public ResponseEntity<?> applyCancelJob(@RequestBody Integer jobId){
+        ApiResponse response = postService.applyCancelJob(jobId);
+        return ResponseEntity.ok(response);
     }
 
     //알람 리스트 api
-    @GetMapping("/api/notificationList")
-    @ResponseBody
-    public List<NotificationDTO> alramList() {
-
-        int userNo = (int) sessionUtil.getAttribute("userNo");
-
-        List<NotificationDTO> notificationList = notificationService.getNotificationsByUserId(userNo);
-
-        return notificationList;
-    }
+//    @GetMapping("/api/notificationList") //todo: 기능 다시 공부하기
+//    @ResponseBody
+//    public List<NotificationDTO> alramList() {
+//
+//        int userNo = (int) sessionUtil.getAttribute("userNo");
+//
+////        List<NotificationDTO> notificationList = notificationService.getNotificationsByUserId(userNo);
+//
+//        return notificationList;
+//    }
 
  }

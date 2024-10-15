@@ -4,6 +4,7 @@ import com.job.dashboard.domain.business.BusinessDashService;
 import com.job.dashboard.domain.dto.FileDTO;
 import com.job.dashboard.domain.dto.JobPostDTO;
 import com.job.dashboard.domain.dto.LikeDTO;
+import com.job.dashboard.domain.file.FileService;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,13 +21,21 @@ public class  MainController {
     private final MainService mainService;
     private final SessionUtil sessionUtil;
     private final BusinessDashService businessDashService;
+    private final FileService fileService;
 
+    /**
+     * 메인 페이지
+     * @param model
+     * @return
+     */
     @GetMapping("/")
     public String mainView(Model model) {
+
+        //로그인한 회원 정보
         if (sessionUtil.loginUserCheck()) {
             int userNo = (int) sessionUtil.getAttribute("userNo");
-            //파일 조회
-            FileDTO file = businessDashService.getFile(userNo);
+            //프로필 이미지 가져오기
+            FileDTO file = fileService.getFile(userNo);
             if (file != null) {
                 model.addAttribute("fileId", file.getFileId());
             }

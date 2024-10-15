@@ -17,23 +17,21 @@
                     pageSize: 10,
                     keyword: ''
                 },
-
-                beforeSend: () => {
-                    console.log('요청 전 작업 수행');
-                },
-                customFail: (response) => {
-                    console.error('커스텀 실패 처리:', response);
-                },
                 done: (response) => {
                     $('#amount').text(response.total);
                     keywordSearch.renderJobs(response.list);
                     renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
                 },
-                error: (status, responseText) => {
-                    // 기본 에러 처리
-                    const jsonObj = JSON.parse(responseText);
-                    alert(jsonObj.userMessage);
+                fail: function(jqXHR) {
+                    console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+                    const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+                    alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
                 }
+                // error: (status, responseText) => {
+                //     // 기본 에러 처리
+                //     const jsonObj = JSON.parse(responseText);
+                //     alert(jsonObj.userMessage);
+                // }
             };
 
             ajax.call(options);

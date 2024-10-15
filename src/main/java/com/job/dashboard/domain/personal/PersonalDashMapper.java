@@ -10,10 +10,10 @@ import java.util.Map;
 public interface PersonalDashMapper {
 
     // 프로필
-    UserProfileInfoDTO getProfileInfo(int userNo); // 기존 작성된 프로필 가져오기
-    List<UserProfileInfoDTO> profileInfoList(int userNo); // 저장된 프로필 있으면 가져오기
+    UserInfoDTO getProfileInfo(int userNo); // 기존 작성된 프로필 가져오기
+    List<UserInfoDTO> profileInfoList(int userNo); // 저장된 프로필 있으면 가져오기
     int getProfileIdSeq(int userNo); //프로필 pk
-    void insertProfile(UserProfileInfoDTO userProfileInfoDTO); //새 프로필 저장
+    void insertProfile(UserInfoDTO userInfoDTO); //새 프로필 저장
 
     // 비밀번호
     UserDTO getOldPassword(int userNo);

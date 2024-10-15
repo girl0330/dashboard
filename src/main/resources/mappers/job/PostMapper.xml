@@ -57,20 +57,24 @@
         SELECT /*PostMapper.getJobLists*/
             jpi.delete_yn,
             jpi.job_id,
-            jpi.USER_NO,
-            (SELECT  fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC LIMIT 1) AS file_id,
+            jpi.user_no,
+            fi.file_id,
             jpi.title,
             jpi.job_type_code,
-            func_get_detail_name('job_type', jpi.job_type_code) AS job_type_code_name,
+            func_get_detail_name('job_type', jpi.job_type_code)       AS job_type_code_name,
             jpi.address,
             jpi.salary_type_code,
             func_get_detail_name('salary_type', jpi.salary_type_code) AS salary_type_code_name,
             jpi.salary,
-            func_format_time_ago(jpi.system_register_datetime) AS system_register_datetime,
+            func_format_time_ago(jpi.system_register_datetime)        AS system_register_datetime,
             jpi.job_time,
             jpi.status_type_code,
             func_get_detail_name('status_type', jpi.status_type_code) AS status_type_code_name
         FROM job_post_info jpi
+                 LEFT JOIN (SELECT fi.user_no,
+                                   MAX(fi.file_id) AS file_id
+                            FROM file_info fi
+                            GROUP BY fi.user_no) fi ON fi.user_no = jpi.user_no
         WHERE jpi.title LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY jpi.system_register_datetime DESC
     </select>
@@ -80,19 +84,19 @@
             COUNT(*) FROM job_post_info
     </select>
 
-    <select id="findLike" parameterType="map" resultType="int">
+    <select id="findLike" parameterType="com.job.dashboard.domain.dto.JobPostDTO" resultType="int">
         SELECT /* PostMapper.findLike */
             COUNT(1) FROM job_like_info
         WHERE user_no = #{userNo} AND job_id = #{jobId}
     </select>
 
-    <delete id="deleteLike" parameterType="map">
+    <delete id="deleteLike" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
         DELETE /* PostMapper.deleteLike */
         FROM job_like_info
         WHERE user_no = #{userNo} AND job_id = #{jobId}
     </delete>
 
-    <insert id="likeUp" parameterType="map">
+    <insert id="likeUp" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
         INSERT INTO /*PostMapper.likeUp*/
             job_like_info (
                             user_no,
@@ -159,7 +163,7 @@
         WHERE user_no = #{userNo} AND job_id = #{jobId}
     </select>
 
-    <select id="getCountUserStatusCode" parameterType="map" resultType="int">
+    <select id="getCountUserStatusCode" parameterType="com.job.dashboard.domain.dto.JobPostDTO" resultType="int">
         SELECT /*PostMapper.getCountUserStatusCode*/
             COUNT(1)
         FROM job_application_info
@@ -196,7 +200,7 @@
 
     <select id="getPostInfo" resultType="com.job.dashboard.domain.dto.JobPostDTO" parameterType="com.job.dashboard.domain.dto.JobPostDTO">
         SELECT /*PostMapper.getPostInfo*/
-            USER_NO,
+            user_no,
             title
         FROM job_post_info
         WHERE job_id = #{jobId}
@@ -210,7 +214,7 @@
         WHERE job_id = #{job_id};
     </update>
 
-    <select id="profileCheck" parameterType="com.job.dashboard.domain.dto.UserProfileInfoDTO" resultType="int">
+    <select id="profileCheck" parameterType="com.job.dashboard.domain.dto.UserInfoDTO" resultType="int">
         SELECT /*PostMapper.profileCheck*/
             profile_id
         FROM USER_PROFILE_INFO
@@ -280,7 +284,7 @@
         WHERE user_no = #{userNo}
     </select>
 
-    <select id="getUserName" parameterType="int" resultType="com.job.dashboard.domain.dto.UserProfileInfoDTO">
+    <select id="getUserName" parameterType="int" resultType="com.job.dashboard.domain.dto.UserInfoDTO">
         SELECT  /*PostMapper.getUserName*/
             name
         FROM user_profile_info

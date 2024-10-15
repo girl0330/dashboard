@@ -81,27 +81,23 @@
             });
 
             const options = {
-                url: '/business/insertPost',
+                url: '/business/ajax/insertPost',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(jsonData),
 
-                beforeSend: () => {
-                    console.log('요청 전 작업 수행');
-                },
-                customFail: (response) => {
-                    console.error('커스텀 실패 처리:', response);
-                },
                 done: function(response) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
                     console.log(JSON.stringify(response));
-                   if (response.code === 'success'){
+                   if (response.code === 200){
                         alert(response.message);
                         location.href='/business/postJobList'
                    }
                 },
-                fail: () => {
-                    console.error('요청 실패');
+                fail: function(jqXHR) {
+                    console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+                    const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+                    alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
                 }
             };
 

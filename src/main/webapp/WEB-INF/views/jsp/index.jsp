@@ -150,14 +150,13 @@
   <div class="container">
     <div class="row">
       <div class="browse-job d-flex">
-        <h3 class="mb-3">Browse Listing </h3>
         <div class="justify-content-center flex-fill">
           <ul class="nav nav-tabs nav-tabs-02 justify-content-center d-flex mb-3 mb-md-0" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="Hot-tab" data-bs-toggle="tab" href="#Hot" role="tab" aria-controls="Hot" aria-selected="true">Hot Jobs</a>
+              <a class="nav-link active" id="Hot-tab" data-bs-toggle="tab" href="#Hot" role="tab" aria-controls="Hot" aria-selected="true">인기 공고</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="Recent-tab" data-bs-toggle="tab" href="#Recent" role="tab" aria-controls="Recent" aria-selected="false">Recent Jobs</a>
+              <a class="nav-link" id="Recent-tab" data-bs-toggle="tab" href="#Recent" role="tab" aria-controls="Recent" aria-selected="false">최신 공고</a>
             </li>
           </ul>
         </div>
@@ -187,7 +186,9 @@
                         </div>
                         <div class="job-list-option">
                           <ul class="list-unstyled">
-                            <li><a href="#"><i class="fas fa-filter pe-1"></i>${hotJob.jobTypeCodeName}</a></li>class="fas fa-suitcase pe-1"></i>${hotJob.salaryTypeCodeName}:${hotJob.salary}</a>
+                            <li><a href="#"><i class="fas fa-filter pe-1"></i>${hotJob.jobTypeCodeName}</a></li>
+                            <li><a class="freelance"><i
+                                    class="fas fa-suitcase pe-1"></i>${hotJob.salaryTypeCodeName}:${hotJob.salary}</a>
                             </li>
                           </ul>
                           <ul class="list-unstyled">

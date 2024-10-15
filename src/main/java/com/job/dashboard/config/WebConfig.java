@@ -19,7 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(logInterceptor) // 여기서 new Interceptor() 대신 주입받은 interceptor 사용
                 .addPathPatterns("/business/**", "/personal/**")
-                .excludePathPatterns("/business/uploadedFile", "/business/uploadedFileGet/{fileId}", "/business/ajax/*", "/business/postJobList", "/business/jobPostDetail","/business/api/notificationList","/business/like/*", "/business/apply", "/business/applyCancel"); // 특정 경로는 제외
-
+                .excludePathPatterns("/business/uploadedFile", "/business/uploadedFileGet/{fileId}", "/business/ajax/*", "/business/postJobList", "/business/jobPostDetail","/business/api/notificationList","/business/ajax/like/*"); // 특정 경로는 제외
     }
 }

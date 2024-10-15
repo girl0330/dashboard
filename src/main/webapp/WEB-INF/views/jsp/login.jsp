@@ -74,6 +74,8 @@
     formSubmit : function () {
       const formData = $("#userForm").serializeArray();
       console.log("data check :::" + JSON.stringify(formData));
+      // const userTypeCode = $('#userTypeCode').val();
+      // console.log("userTypeCode :: " +userTypeCode);
 
       // JSON 객체로 변환
       let jsonData = {};
@@ -92,12 +94,18 @@
         done: function(response) {
           // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
           console.log(JSON.stringify(response));
-          if (response.code === 'success') {
-            sessionStorage.setItem("LoginCheck", true);
-            location.href = '/'
-          } else if (response.code === 'redirect') {
-            window.location.href = response.redirectUrl;
+          if (response.code === 200) {
+            if (response.redirectUrl != null) {
+              window.location.href = response.redirectUrl;
+            } else {
+              location.href = '/'
+            }
           }
+        },
+        fail: function(jqXHR) {
+          console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+          const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+          alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
         }
       };
 
@@ -106,24 +114,36 @@
     }
   }
 
+  function updateFindPasswordLink() {
+    let userTypeCode = $("#userTypeCode").val();
+    let updateFindPasswordLink = "/user/findPassword?userTypeCode=" + userTypeCode;
+    console.log("Updated Link: " + updateFindPasswordLink);
+    $("#findPasswordLink").attr("href", updateFindPasswordLink)
+  }
+
   //DOM이 실행 후 실행 됨
   $(document).ready(function() {
     $("#user_login").on("click",function () {
       user_login.init();
     });
 
+    $("#userTypeCode").val("10");
+    updateFindPasswordLink();
+
     $("#personalTypeCode").on("click",function () {
       $("#userTypeCode").val("10");
+      updateFindPasswordLink();
     });
 
     $("#companyTypeCode").on("click",function () {
       $("#userTypeCode").val("20");
+      updateFindPasswordLink();
     });
 
-    // // Kakao 초기화
-    // Kakao.init('afcb905c7668725d0a22469ede432941'); // 카카오 앱 키 입력
-    // Kakao.isInitialized();
   });
+  // // Kakao 초기화
+  // Kakao.init('afcb905c7668725d0a22469ede432941'); // 카카오 앱 키 입력
+  // Kakao.isInitialized();
 
   // 카카오 로그인 함수
   // function loginWithKakao() {
@@ -220,8 +240,8 @@ Signin -->
                   </div>
                   <div class="col-md-6">
                     <div class="mt-3 mt-md-0 forgot-pass">
-                      <a href="/user/findPassword">비밀번호 찾기</a>
-                      <p class="mt-1">회원이 아니신가요? <a href="/user/signup"> 회원가입 하기</a></p>
+                      <a href="/user/findPassword?userTypeCode=" id="findPasswordLink">비밀번호 찾기</a>
+                      <p class="mt-1">회원이 아니신가요? <a href="/user/signUp" > 회원가입 하기</a></p>
                     </div>
                   </div>
                 </div>

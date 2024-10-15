@@ -54,6 +54,30 @@
         });
     }
 
+    // **SSE 연결 설정 코드 추가 시작**
+    // SSE 연결 설정
+    const eventSource = new EventSource('<%= request.getContextPath() %>/api/v1/notification/subscribe');
+
+    // 서버로부터 기본 메시지를 받을 때 처리하는 함수
+    eventSource.onmessage = function(event) {
+        console.log("Received message: ", event.data);
+    };
+
+    // 특정 이벤트 처리 (예: 알림 이벤트)
+    eventSource.addEventListener('notification', function(event) {
+        console.log("Notification: ", event.data);
+        // 새로운 알림이 도착했을 때 배지 업데이트 등의 로직을 추가할 수 있습니다.
+        // 예를 들어, 알림 아이콘 옆에 배지를 표시하거나 알림 목록을 갱신합니다.
+        notification(); // 알림 목록을 갱신하는 함수 호출
+    });
+
+    // SSE 연결 오류 처리
+    eventSource.onerror = function(event) {
+        console.error("SSE connection error:", event);
+        // 필요한 경우, 재연결 로직을 구현할 수 있습니다.
+    };
+    // **SSE 연결 설정 코드 추가 끝**
+
 </script>
 <style>
     body {
@@ -167,7 +191,7 @@
             <div class="col-md-6 text-end me-2">
                 <c:if test="${sessionScope.userNo == null || sessionScope.userNo == 0}">
                     <button type="button" class="btn btn-outline-primary rounded-pill me-2 px-4" onclick="window.location.href='/user/login'">로그인</button>
-                    <button type="button" class="btn btn-outline-primary rounded-pill me-2 px-3" onclick="window.location.href='/user/signup'">회원가입</button>
+                    <button type="button" class="btn btn-outline-primary rounded-pill me-2 px-3" onclick="window.location.href='/user/signUp'">회원가입</button>
                 </c:if>
             </div>
 

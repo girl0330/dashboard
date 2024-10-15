@@ -107,12 +107,23 @@
         WHERE USER_NO = #{userNo}
     </select>
 
-    <select id="getOldPassword" parameterType="int" resultType="com.job.dashboard.domain.dto.CompanyInfoDTO">
-        SELECT /* BusinessDashMapper.getOldPassword */
+    <select id="getSavedPassword" parameterType="int" resultType="String">
+        SELECT /* BusinessDashMapper.getSavedPassword */
             password
         FROM user_info
         WHERE USER_NO = #{userNo}
     </select>
+
+    <update id="updatePassword" parameterType="com.job.dashboard.domain.dto.UserDTO">
+        UPDATE /* BusinessDashMapper.updatePassword */
+            user_info
+        SET
+            PASSWORD = #{password},
+            SYSTEM_UPDATER_ID = #{userNo},
+            SYSTEM_UPDATE_DATETIME = now()
+        WHERE
+            USER_NO = #{userNo}
+    </update>
 
     <select id="getPostJobList" parameterType="map" resultType="com.job.dashboard.domain.dto.JobPostDTO">
         SELECT /* BusinessDashMapper.getPostJobList */
@@ -187,8 +198,8 @@
         AND jai.job_id = #{jobId}
     </select>
 
-    <select id="getJobPostTile" parameterType="com.job.dashboard.domain.dto.JobPostDTO" resultType="com.job.dashboard.domain.dto.JobPostDTO">
-        SELECT /* BusinessDashMapper.getJobPostTile */
+    <select id="getJobPostTitle" parameterType="com.job.dashboard.domain.dto.JobPostDTO" resultType="com.job.dashboard.domain.dto.JobPostDTO">
+        SELECT /* BusinessDashMapper.getJobPostTitle */
         title
         FROM job_post_info
         WHERE job_id = #{jobId}
@@ -212,56 +223,7 @@
           AND job_id = #{jobId}
     </update>
 
-    <insert id="saveImage" parameterType="com.job.dashboard.domain.dto.FileDTO" useGeneratedKeys="true" keyProperty="fileId">
-        INSERT INTO  /* BusinessDashMapper.saveImage */
-            file_info (
-                        user_no,
-                        original_filename,
-                        saved_filename,
-                        file_path,
-                        file_type,
-                        file_size,
-                        system_register_id,
-                        system_register_datetime
-        )
-        VALUES (
-                #{userNo},
-                #{originalFilename},
-                #{savedFilename},
-                #{filePath},
-                #{fileType},
-                #{fileSize},
-                #{userNo},
-                now()
-               )
-    </insert>
 
-    <select id="getFiles" parameterType="map" resultType="com.job.dashboard.domain.dto.FileDTO">
-        SELECT /* BusinessDashMapper.getFiles */
-            file_id,
-            user_no,
-            original_filename,
-            saved_filename,
-            file_path,
-            file_type,
-            file_size,
-            system_register_id,
-            system_register_datetime
-        FROM file_info
-        WHERE
-        1 = 1
-        <if test="fileId != null">
-            AND file_id = #{fileId}
-        </if>
-        <if test="userNo != null">
-            AND user_no = #{userNo}
-        </if>
-        ORDER BY file_id DESC LIMIT 1
-    </select>
 
-    <delete id="deleteFile" parameterType="int">
-        DELETE
-        FROM file_info
-        WHERE file_id = #{fileId}
-    </delete>
+
 </mapper>

@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <style>
     .nav-tabs.nav-tabs-03 li:after {
@@ -99,7 +100,7 @@
                 return valid;
             }
             if (password !== password2 ) {
-                alert("입력한 비밀번호와 일치하지 않습니다.")
+                alert("새로운 비밀번호와 비밀번호 확인이 일치하지 않습니다.")
                 $('#password2').focus();
                 valid = false;
                 return valid;
@@ -112,9 +113,10 @@
                 const jsonData = {
                     email: $("#userEmail").val()
                 };
+                console.log(JSON.stringify(jsonData));
 
                 const options = {
-                    url: "/user/checkEmail", // Spring 컨트롤러 URL
+                    url: "/user/ajax/checkEmail", // Spring 컨트롤러 URL
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
@@ -122,7 +124,7 @@
                     done: function(response) {
                         // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
                         console.log(response);
-                        if (response === true) {
+                        if (response.code === 200) {
                             // 이메일 입력 탭의 active 클래스 제거
                             $("#email_input_tab").removeClass("active");
                             $("#email_input").removeClass("active show");
@@ -132,9 +134,14 @@
                             $("#identity_check").addClass("active show");
 
                             // 탭이 전환되도록 이벤트 트리거
-                            var tab = new bootstrap.Tab(document.getElementById('identity_check_tab'));
+                            let tab = new bootstrap.Tab(document.getElementById('identity_check_tab'));
                             tab.show();
                         }
+                    },
+                    fail: function(jqXHR) {
+                        console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+                        const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+                        alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
                     }
                 };
 
@@ -144,24 +151,29 @@
             const jsonData = {
                 name: $("#userName").val(),
                 phone: $("#userPhone").val(),
-                email: $("#userEmail").val()
+                email: $("#userEmail").val(),
+                userTypeCode: $("#userTypeCode").val()
             };
 
             console.log("jsonData확인 ;;;;  "+JSON.stringify(jsonData));
 
             const options = {
-                url: "/user/checkIdentity", // Spring 컨트롤러 URL
+                url: "/user/ajax/checkIdentity", // Spring 컨트롤러 URL
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
+                data: JSON.stringify(jsonData),
 
                 done: function(response) {
-                    // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-                    console.log(response);
-                    alert(response.randomString);
-                    $("#randomString").val(response.randomString);
+                    console.log(response.data);
+                    $("#randomString").val(response.data);
                     $("#confirm_string_box").addClass("active show");
-
+                    alert(`인증번호 확인란에 해당 인증번호를 입력하세요.
+                        인증번호: ` + response.data);
+                },
+                fail: function(jqXHR) {
+                    console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+                    const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+                    alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
                 }
             };
             ajax.call(options);
@@ -173,7 +185,7 @@
             const confirmString = $("#confirmString").val();
 
             if(randomString !== confirmString) {
-                alert("인증번호를 확인해주세요");
+                alert("인증번호가 틀렸습니다. 다시 인증번호를 받아주세요");
                 valid = false;
                 return valid;
             }
@@ -186,7 +198,7 @@
             $("#password_reset").addClass("active show");
 
             // 탭이 전환되도록 이벤트 트리거
-            var tab = new bootstrap.Tab(document.getElementById('confirm'));
+            let tab = new bootstrap.Tab(document.getElementById('confirm'));
             tab.show();
         },
 
@@ -198,18 +210,23 @@
             };
             console.log("jsonData확인 ;;;;  "+JSON.stringify(jsonData));
             const options = {
-                url: "/user/passwordReset", // Spring 컨트롤러 URL
+                url: "/user/api/passwordReset", // Spring 컨트롤러 URL
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(jsonData), // JSON 형식으로 데이터 전송
 
                 done: function(response) {
                     // 성공적으로 서버로부터 응답을 받았을 때 실행할 코드
-                    alert(response.randomString);
-                    if (response.code === 'success'){
+                    console.log("넘어온 데이터 확인 : "+response);
+                    if (response.code === 200){
                         alert(response.message);
                         location.href='/user/login'
                     }
+                },
+                fail: function(jqXHR) {
+                    console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
+                    const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
+                    alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
                 }
             };
             ajax.call(options);
@@ -221,6 +238,7 @@
             findPassword.emailInput();
         })
         document.getElementById('identityCheckBtn').addEventListener("click", function () {
+            $("#confirm_string_box").addClass("active show");
             findPassword.identityInput();
         })
         document.getElementById('confirm').addEventListener("click", function () {
@@ -238,6 +256,7 @@
             <div class="col-12">
                 <div class="section-title text-center">
                     <h2 class="text-primary">비밀번호 찾기</h2>
+                    <input type="hidden" id="userTypeCode" value="${userTypeCode}">
                 </div>
             </div>
             <div class="col-md-8">
@@ -292,11 +311,11 @@
                 <div class="row">
                     <form class="row align-items-end justify-content-center mb-3">
                         <div class="form-group col-md-2 mb-md-0 mb-3">
-                            <label class="mb-2">이름</label>
+                            <label class="mb-2">이름(회사이름)</label>
                             <input type="text" id="userName" name="name" class="form-control" value="">
                         </div>
                         <div class="form-group col-md-3 mb-md-0 mb-3">
-                            <label class="mb-2">휴대폰 번호</label>
+                            <label class="mb-2">휴대폰 번호(회사 대표번호)</label>
                             <input type="text" class="form-control" id="userPhone" name="phone" value="">
                         </div>
                         <div class="col-md-2">

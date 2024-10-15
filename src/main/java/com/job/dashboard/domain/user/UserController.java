@@ -1,16 +1,15 @@
 package com.job.dashboard.domain.user;
 
+import com.job.dashboard.domain.dto.ApiResponse;
 import com.job.dashboard.domain.dto.TermsInfoDTO;
 import com.job.dashboard.domain.dto.UserDTO;
-import com.job.dashboard.domain.dto.UserProfileInfoDTO;
+import com.job.dashboard.domain.dto.UserInfoDTO;
 import com.job.dashboard.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,25 +18,30 @@ public class UserController {
     private final UserService userService;
     private final SessionUtil sessionUtil;
 
-    //회원가입 페이지
-    @GetMapping("/signup")
-    public String signupView() {
-        return "jsp/register";
+    /** 회원가입 페이지 */
+    @GetMapping("/signUp")
+    public String registerView() {
+        return "jsp/sign_up";
     }
 
-    // 이메일 중복 검사
-    @PostMapping("/emailDuplicateCheck")
+    /**
+     * 회원가입 전 이메일 검사
+     * @param userDTO: 이메일
+     * @return
+     */
+    @PostMapping("/ajax/emailDuplicateCheck")
     @ResponseBody
-    public Map<String, Object> emailDuplicateCheck(@RequestBody UserDTO userDTO) {
-
-        return userService.emailDuplicateCheck(userDTO);
+    public ResponseEntity<?> emailDuplicateCheck(@RequestBody UserDTO userDTO) {
+        ApiResponse response = userService.checkEmailDuplication(userDTO);
+        return ResponseEntity.ok(response);
     }
 
     //계정 등록
     @PostMapping("/insertSignUp")
     @ResponseBody
-    public Map<String, Object> insertSignUp(@RequestBody UserDTO userDTO) {
-        return userService.insertUser(userDTO);
+    public ResponseEntity<?> insertUser(@RequestBody UserDTO userDTO) {
+        ApiResponse response = userService.insertUser(userDTO);
+        return ResponseEntity.ok(response);
     }
 
     //로그인 페이지
@@ -46,43 +50,34 @@ public class UserController {
         return "jsp/login";
     }
 
+
     //로그인
     @PostMapping("/doLogin")
     @ResponseBody
-        public Map<String, Object> doLogin (@RequestBody UserDTO userDTO, HttpServletRequest request) {
+        public ResponseEntity<?> doLogin (@RequestBody UserDTO userDTO) { //todo: 이전페이지로 이동시킬 interceptor
+        //userDTO null체크
+        ApiResponse response = userService.doLogin(userDTO);
 
-        Map<String, Object> map = userService.doLogin(userDTO);
-        System.out.println("로그인 완");
-        System.out.println("map확인 ;::: "+map);
-
-        if (!"error".equals(map.get("code"))) {
-            sessionUtil.loginUser((UserDTO) map.get("userLoginInfo"));
+        if (response.getCode() == 200) {
+            sessionUtil.loginUser((UserDTO) response.getData());
         }
 
-        String prevPage = (String) request.getSession().getAttribute("prevPage");
-        String referer = request.getHeader("Referer");
+        String redirectUrl = sessionUtil.getRedirectUrl();
 
-        System.out.println("이전 페이지 url : " + prevPage);
-        System.out.println("Referer 헤더 값 : " + referer);
 
-        //이전 페이지 없음지 않거나,  이전 페이지는 있지만 referer은 없음. referer이 login을 포함 하면 이전 페이지로 이동시킬 필요 없음.
-        if (prevPage != null && (referer == null || !referer.contains("/login"))) {
-            System.out.println("이전 페이지 있음");
-            request.getSession().removeAttribute("prevPage");
-            map.put("code","redirect");
-            map.put("redirectUrl", prevPage);
-            return map;
-        } else if (prevPage != null) {
-            // Referer 헤더가 없더라도 prevPage 값이 있는 경우 처리
-            System.out.println("Referer 헤더가 없지만, 이전 페이지 있음");
-            request.getSession().removeAttribute("prevPage");
-            map.put("code","redirect");
-            map.put("redirectUrl", prevPage);
-            return map;
+        if (redirectUrl != null) {
+            System.out.println("리다이렉트 주소 있음: "+ redirectUrl);
+            sessionUtil.removeRedirectUrl(); // 세션에서 URL 제거
+
+            ApiResponse<UserDTO> apiResponse = ApiResponse.<UserDTO>builder()
+                    .code(200)
+                    .message("리다이렉트 주소가 있는 로그인")
+                    .redirectUrl(redirectUrl)
+                    .build();
+
+            return ResponseEntity.ok(apiResponse); // 리다이렉트할 URL을 응답에 포함
         }
-        System.out.println("map확인? ;::: "+map);
-
-        return map;
+        return ResponseEntity.ok(response);
     }
 
     //로그아웃
@@ -96,41 +91,43 @@ public class UserController {
 
     //비밀번호 재설정
     @GetMapping("/findPassword")
-    public String findPasswordView() {
-        return "jsp/user-findPassword";
+    public String findPasswordView(@RequestParam(value = "userTypeCode") String userTypeCode, Model model) {
+        System.out.println("userTypeCode = " + userTypeCode);
+        model.addAttribute("userTypeCode", userTypeCode);
+        return "jsp/findPassword";
     }
 
-    //재설정- 이메일 확인
-    @PostMapping("/checkEmail")
+    //재설정- 사용중인 이메일 확인
+    @PostMapping("/ajax/checkEmail")
     @ResponseBody
-    public Boolean getCheckEmail(@RequestBody UserDTO userDTO) {
-        return userService.getCheckEmail(userDTO.getEmail());
+    public ResponseEntity<?> getCheckEmail(@RequestBody UserDTO userDTO) {
+        ApiResponse response = userService.getCheckEmail(userDTO);
+        return ResponseEntity.ok(response);
     }
 
-    //재설정- 이름, 폰번호 확인
-    @PostMapping("/checkIdentity")
+    //재설정- 이름, 폰번호 확인  todo: ajax 비동기통신
+    @PostMapping("/ajax/checkIdentity")
     @ResponseBody
-    public Map<String, Object> checkIdntity(@RequestBody UserProfileInfoDTO userProfileInfoDTO, Model model) {
-        System.out.println("이름, 폰번호, email 확인 ::::  "+userProfileInfoDTO.getName() + "/" +userProfileInfoDTO.getPhone()+ "/" +userProfileInfoDTO.getEmail());
-        Map<String, Object> map = userService.getCheckIdentity(userProfileInfoDTO);
-
-        System.out.println("randomString확인 ::::  "+map.get("randomString"));
-        model.addAttribute("randomString", map.get("randomString"));
-        return map;
+    public ResponseEntity<?> checkIdentity(@RequestBody UserInfoDTO userInfoDTO) {
+        System.out.println(userInfoDTO);
+        ApiResponse response = userService.getCheckIdentity(userInfoDTO);
+        System.out.println("response 확인 : "+response);
+        return ResponseEntity.ok(response);
     }
 
-    //재설정- 비밀번호 재설정
-    @PostMapping("/passwordReset")
+    //재설정- 비밀번호 재설정 todo: 기업 비밀번호 찾기 수정필요
+    @PostMapping("/api/passwordReset")
     @ResponseBody
-    public Map<String, Object> passwordReset(@RequestBody UserDTO userDTO) {
-        System.out.println("넘어온 데이터 확인 ::::  "+userDTO);
-        return userService.passwordReset(userDTO);
+    public ResponseEntity<?> passwordReset(@RequestBody UserDTO userDTO) {
+        ApiResponse response = userService.passwordReset(userDTO);
+        return ResponseEntity.ok(response);
     }
 
-    //이용약관
+    //이용약관 todo: 이용약관
     @GetMapping("/terms")
     public String termsView(Model model) {
         System.out.println("약관동의 페이지 ");
+
 
         model.addAttribute("termsTypeCode10",userService.getTermsTypeCode(10)); // 이용약관
         model.addAttribute("termsTypeCode20",userService.getTermsTypeCode(20)); // 개인정보

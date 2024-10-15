@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.job.dashboard.domain.file.FileMapper">
+    <insert id="saveImage" parameterType="com.job.dashboard.domain.dto.FileDTO" useGeneratedKeys="true" keyProperty="fileId">
+        INSERT INTO  /* FileMapper.saveImage */
+            file_info (
+            user_no,
+            original_filename,
+            saved_filename,
+            file_path,
+            file_type,
+            file_size,
+            system_register_id,
+            system_register_datetime
+        )
+        VALUES (
+                   #{userNo},
+                   #{originalFilename},
+                   #{savedFilename},
+                   #{filePath},
+                   #{fileType},
+                   #{fileSize},
+                   #{userNo},
+                   now()
+               )
+    </insert>
+
+    <select id="getFiles" parameterType="map" resultType="com.job.dashboard.domain.dto.FileDTO">
+        SELECT /* FileMapper.getFiles */
+        file_id,
+        user_no,
+        original_filename,
+        saved_filename,
+        file_path,
+        file_type,
+        file_size,
+        system_register_id,
+        system_register_datetime
+        FROM file_info
+        WHERE
+        1 = 1
+        <if test="fileId != null">
+            AND file_id = #{fileId}
+        </if>
+        <if test="userNo != null">
+            AND user_no = #{userNo}
+        </if>
+        ORDER BY file_id DESC LIMIT 1
+    </select>
+
+    <delete id="deleteFile" parameterType="int">
+        DELETE /* FileMapper.deleteFile */
+        FROM file_info
+        WHERE file_id = #{fileId}
+    </delete>
+</mapper>
