@@ -70,10 +70,10 @@ public class PersonalDashController {
         // 작성된 프로필 확인
         int userNo = (int) sessionUtil.getAttribute("userNo");
         UserInfoDTO myProfile = personalDashService.getProfileInfo(userNo);
+        System.out.println("myProfile = " + myProfile);
 
         //파일 조회
         FileDTO file = fileService.getFile(userNo);
-
         if (file != null) {
             model.addAttribute("fileId", file.getFileId());
         }

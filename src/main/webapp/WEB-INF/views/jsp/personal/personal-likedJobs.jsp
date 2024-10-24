@@ -18,9 +18,11 @@
                     keyword: ''
                 },
                 done: (response) => {
-                    $('#amount').text(response.total);
-                    keywordSearch.renderJobs(response.list);
-                    renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages);
+                    if (response.list.length > 0) {
+                        $("#noResultsMessage").hide();
+                        keywordSearch.renderJobs(response.list); // 리스트 목록 렌더링
+                        renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages); // 페이징 처리
+                    }
                 },
                 fail: function(jqXHR) {
                     console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
@@ -97,38 +99,44 @@ Candidates Dashboard -->
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="row mb-3 mb-lg-5 mt-3 mt-lg-0">
-                    <div class="col-lg-4 mb-4 mb-lg-0">
-<%--                        <div class="btn btn-danger mb-2">--%>
-<%--                            <i class="fas fa-heart text-alt"></i> <span class="text-white" id="amount">00</span>--%>
-<%--                        </div>--%>
-                        <div class="candidates-feature-info bg-danger">
+<%--                <div class="row mb-3 mb-lg-5 mt-3 mt-lg-0">--%>
+<%--                    <div class="col-lg-4 mb-4 mb-lg-0">--%>
+<%--&lt;%&ndash;                        <div class="btn btn-danger mb-2">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            <i class="fas fa-heart text-alt"></i> <span class="text-white" id="amount">00</span>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                        </div>&ndash;%&gt;--%>
+<%--                        <div class="candidates-feature-info bg-danger">--%>
 
-                            <div class="candidates-info-icon text-white">
-                                <i class="fas fa-heart text-alt"></i>
-                            </div>
-                            <div class="candidates-info-content">
-                                <h5 class="candidates-info-title text-white">좋아요 한 공고들</h5>
-                            </div>
-                            <div class="candidates-info-count">
-                                <h3 class="mb-0 text-white" id="amount">00</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<%--                            <div class="candidates-info-icon text-white">--%>
+<%--                                <i class="fas fa-heart text-alt"></i>--%>
+<%--                            </div>--%>
+<%--                            <div class="candidates-info-content">--%>
+<%--                                <h5 class="candidates-info-title text-white">좋아요 한 공고들</h5>--%>
+<%--                            </div>--%>
+<%--                            <div class="candidates-info-count">--%>
+<%--                                <h3 class="mb-0 text-white" id="amount">00</h3>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
                 <div class="mb-0 pb-4">
                     <div class="section-title-02 mb-4">
-                        <h4>관심있는 공고</h4>
+                        <h4>관심 공고 목록</h4>
                     </div>
                     <div class="container">
                         <!-- applyList -->
                         <div class="row" id="likedJobList">
                         </div>
                     </div>
+                    <div class="col-12 text-center py-3" id="noResultsMessage">
+                        조회된 결과가 없습니다.
+                    </div>
                     <div class="row">
                         <div class="col-12 text-center mt-4 mt-sm-5">
                             <!-- page 시작 -->
                             <ul class="pagination justify-content-center mb-0" id="pagination" name="pagination">
+                                <li class="page-item disabled"> <span class="page-link b-radius-none">Prev</span> </li>
+                                <li class="page-item active" aria-current="page"><span class="page-link">1 </span> <span class="sr-only">(current)</span></li>
+                                <li class="page-item disabled"> <span class="page-link  b-radius-none">Next</span> </li>
                             </ul>
                         </div>
                     </div>

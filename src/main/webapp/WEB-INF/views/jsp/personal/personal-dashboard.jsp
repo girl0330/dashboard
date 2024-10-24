@@ -18,9 +18,12 @@
                     keyword: ''
                 },
                 success: function(response) {
-                        $("#amount").text(response.total); //총 게시물 개수
-                        keywordSearch.renderJobs(response.list); //리스트 목록
-                        renderPagination('pagination',response.pageNum, response.pageSize, response.total, response.pages); //페이징
+                    console.log(response);
+                    if (response.list.length > 0) {
+                        $("#noResultsMessage").hide();
+                        keywordSearch.renderJobs(response.list); // 리스트 목록 렌더링
+                        renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages); // 페이징 처리
+                    }
                 },
                 fail: function(jqXHR) {
                     console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
@@ -92,32 +95,33 @@ Candidates Dashboard -->
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="row mb-3 mb-lg-5 mt-3 mt-lg-0">
-                    <div class="col-lg-4 mb-4 mb-lg-0">
-                        <div class="candidates-feature-info bg-dark">
-                            <div class="candidates-info-icon text-white">
-                                <i class="fas fa-globe-asia"></i>
-                            </div>
-                            <div class="candidates-info-content">
-                                <h5 class="candidates-info-title text-white">  내가 지원한 공고들</h5>
-                            </div>
-                            <div class="candidates-info-count">
-                                <h3 class="mb-0 text-white" id="amount">0</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<%--                <div class="row mb-3 mb-lg-5 mt-3 mt-lg-0">--%>
+<%--                    <div class="col-lg-4 mb-4 mb-lg-0">--%>
+<%--                        <div class="candidates-feature-info bg-dark">--%>
+<%--                            <div class="candidates-info-icon text-white">--%>
+<%--                                <i class="fas fa-globe-asia"></i>--%>
+<%--                            </div>--%>
+<%--                            <div class="candidates-info-content">--%>
+<%--                                <h5 class="candidates-info-title text-white">  내가 지원한 공고들</h5>--%>
+<%--                            </div>--%>
+<%--                            <div class="candidates-info-count">--%>
+<%--                                <h3 class="mb-0 text-white" id="amount">0</h3>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
 
                 <div class="mb-0 pb-4">
                     <div class="section-title">
-                        <h4>최근 지원한 공고 목록</h4>
+                        <h4>지원 공고 목록</h4>
                     </div>
                     <div class="container">
                         <!-- applyList -->
                         <div class="row" id="recentlyApplyJobList">
-                            <div class="col-12 text-center py-3" id="noResultsMessage">
-                                조회된 결과가 없습니다.
-                            </div>
+
+                        </div>
+                        <div class="col-12 text-center py-3" id="noResultsMessage">
+                            조회된 결과가 없습니다.
                         </div>
                     </div>
                     <div class="row">

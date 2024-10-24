@@ -208,7 +208,7 @@ My Profile -->
                     </div>
                     <div class="cover-photo-contact mb-3 " >
                         <div class="cover-photo">
-                            <img class="img-fluid" id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="Uploaded Image" style="width: 225px; height: 225px;" >
+                            <img class="img-fluid" id="coverImage" src="/business/uploadedFileGet/${fileId}" alt="Uploaded Image">
                             <i class="fas fa-times-circle" id="fileDelete"><input id="fileId" type='hidden' value='${fileId}'></i>
                         </div>
                         <div class="upload-file">
@@ -224,7 +224,7 @@ My Profile -->
                                 <input type="text" class="form-control" value="${company.companyName}" id="companyName" name="companyName" data-valid="true" data-name="기업 이름">
                             </div>
                             <div class="form-group col-md-6 mb-3">
-                                <label class="form-label">기업 연락처 ['-'를 제외]<span class="font-danger">*</span></label>
+                                <label class="form-label">대표 연락처 ['-'를 제외]<span class="font-danger">*</span></label>
                                 <input type="text" class="form-control" value="${company.officePhone}" id="officePhoneNumber" name="officePhone" data-valid="true" data-name="기업 연락처">
                             </div>
                             <div class="form-group col-md-4 mb-3 select-border">

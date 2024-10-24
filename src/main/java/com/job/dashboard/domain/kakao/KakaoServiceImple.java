@@ -61,6 +61,7 @@ public class KakaoServiceImple implements KakaoService {
                         userDTO.setUserTypeCode("10"); //회원 유형 코드
                         userDTO.setLoginTypeCode("20"); //로그인 유형 코드
 
+                        userMapper.insertUser(userDTO);
                         UserDTO userInfo = userMapper.getLoginUserInfo(userDTO); //user_no, email, password, user_type_code...
                         handleExistingUser(userInfo, modelAndView);
 
@@ -89,7 +90,7 @@ public class KakaoServiceImple implements KakaoService {
             return node.get("access_token").asText();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            throw new RuntimeException("Failed to parse access token from response", e);
         }
     }
 

@@ -13,7 +13,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import static com.job.dashboard.exception.ExceptionErrorCode.*;
 
 @Slf4j
-@ControllerAdvice
+ @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {CustomException.class}) // CustomException 발생 시

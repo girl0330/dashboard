@@ -42,7 +42,6 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     //기업 프로필 작성
     @Transactional
     public ApiResponse insertProfile(CompanyInfoDTO companyInfoDTO) {
-//        Map<String, Object> map = new HashMap<>();
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
         companyInfoDTO.setUserNo(userNo);
@@ -79,37 +78,33 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     public CompanyInfoDTO getBusinessProfileInfo() {
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
-        CompanyInfoDTO companyInfoDTO = businessDashMapper.getBusinessProfileInfo(userNo);
+        CompanyInfoDTO companyInfo = businessDashMapper.getBusinessProfileInfo(userNo);
 
         FileDTO file = fileService.getFile(userNo);
-        companyInfoDTO.setFileDTO(file);
+        if (file != null){
+            companyInfo.setFileDTO(file);
+        }
 
-        return companyInfoDTO;
+        return companyInfo;
     }
 
     public ApiResponse changePassword(UserDTO userDTO) {
-        System.out.println("userDTO = " + userDTO);
-        String currentPassword = userDTO.getPassword(); //todo: 재설정했는데 testtest123을 사용중인 비밀번호에 입력해도 넘어가버림.
-
+        String currentPassword = userDTO.getPassword();
 
         String savedPassword = businessDashMapper.getSavedPassword(userDTO.getUserNo());
 
         boolean pwCheck = passwordEncoder.matches(currentPassword, savedPassword);
-        System.out.println("사용중인 비밀번호 확인 : "+pwCheck);
         if (!pwCheck) {
             throw new CustomException(ExceptionErrorCode.PASSWORD_INCORRECT_TOKEN);
         }
 
-        System.out.println("새로운 비밀번호 서로 확인 :"+Objects.equals(userDTO.getPassword2(), userDTO.getNewPassword()));
         if (!Objects.equals(userDTO.getPassword2(), userDTO.getNewPassword())) {
             throw new CustomException(ExceptionErrorCode.NEW_PASSWORD_MISMATCH_TOKEN);
         }
 
-        System.out.println("재설정 전 비밀번호 확인 : ");
         String encodedPassword = passwordEncoder.encode(userDTO.getPassword2());
         userDTO.setPassword(encodedPassword);
 
-        System.out.println("재설정한 비밀번호가 잘 들어왔는지 확인 함: "  +userDTO);
         businessDashMapper.updatePassword(userDTO);
 
 //        return null;
@@ -178,8 +173,6 @@ public class BusinessDashServiceImpl implements BusinessDashService{
     //지원자 채용 취소
     @Transactional
     public ApiResponse cancelEmployCandidate(JobApplicationDTO jobApplicationDTO) {
-        System.out.println("jobApplicationDTO = " + jobApplicationDTO);
-        businessDashMapper.cancelEmployCandidate(jobApplicationDTO);
 
         int userNo = jobApplicationDTO.getUserNo(); //지원한 userNo(수신자)
         JobPostDTO jobPost = businessDashMapper.getJobPostTitle(jobApplicationDTO.getJobId());

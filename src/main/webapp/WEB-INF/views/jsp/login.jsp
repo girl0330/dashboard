@@ -47,6 +47,8 @@
       let emailRegex = /^[a-zA-Z0-9.!@#$%^&*]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(loginId)) {
         alert("이메일을 확인해주세요.");
+        // $("#email").addClass("is-invalid");
+        // $("#emailError").text("유효한 이메일 형식으로 입력해주세요.").show();
         $('#email').focus();
         valid = false;
         return valid;
@@ -105,7 +107,7 @@
         fail: function(jqXHR) {
           console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
           const errorResponse = JSON.parse(jqXHR.responseText); // JSON 파싱
-          alert("에러 발생: " + errorResponse.userMessage); // 사용자에게 에러 메시지 노출
+          alert(errorResponse.userMessage); // 사용자에게 에러 메시지 노출
         }
       };
 
@@ -170,7 +172,7 @@ inner banner -->
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <h2 class="text-primary">Login</h2>
+        <h2 class="text-primary">로그인</h2>
         <ol class="breadcrumb mb-0 p-0">
           <li class="breadcrumb-item"><a href="/"> Home </a></li>
           <li class="breadcrumb-item active"> <i class="fas fa-chevron-right"></i> <span> Login </span></li>
@@ -250,11 +252,11 @@ Signin -->
           </div>
           <div class="mt-4">
             <fieldset>
-              <legend class="px-2">Login or Sign up with</legend>
+              <legend class="px-2">소셜 로그인 / 회원가입</legend>
               <!-- kakao button -->
               <div class="text-center">
                 <a href="/kakao/login">
-                  <img src="/images/kakao_login_medium_wide.png" alt="Kakao Login">
+                  <img src="/images/kakao_login_medium_wide.png" alt="KakaoLogin">
                 </a>
               </div>
             </fieldset>

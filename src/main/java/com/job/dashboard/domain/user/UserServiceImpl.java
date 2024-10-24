@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService{
 
         String savedUserTypeCode = userMapper.getUserTypeCode(email);
         if (!Objects.equals(savedUserTypeCode, enteredUserTypeCode)) {
-            throw new CustomException(ExceptionErrorCode.USER_TYPE_CODE_MISMATCH_TOKEN);
+            throw new CustomException(ExceptionErrorCode.USER_TYPE_CODE_MISMATCH_TOKEN); //todo: 화면에 노출될 경고 변경 -> 일치하는 회원이 없습니다. 확인 후 다시 시도해 주세요
         }
 
         UserDTO userInfo = userMapper.getLoginUserInfo(userDTO);
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService{
                 .build();
     }
 
-    // 이메일 확인 todo: 이메일검사4
+    // 이메일 확인
     public ApiResponse getCheckEmail(UserDTO userDTO) {
         int isEmail = userMapper.getCheckEmail(userDTO.getEmail());
         if (isEmail < 1) {
@@ -112,14 +112,12 @@ public class UserServiceImpl implements UserService{
     //신원 확인
     public ApiResponse getCheckIdentity(UserInfoDTO userInfoDTO) {
         int checkIdentity = userMapper.getCheckIdentity(userInfoDTO);
-        System.out.println("checkIdenttity:::"+checkIdentity);
 
         if(checkIdentity < 1) {
             throw new CustomException(ExceptionErrorCode.EXCEPTION_MESSAGE,"email과 일치하는 정보가 없습니다, 다시 확인해주세요");
         }
 
         String randomString = RandomString.generateRandomString(10);
-        System.out.println("Generated Random String:::" + randomString);
 
         return ApiResponse.builder()
                 .code(200)
@@ -128,7 +126,7 @@ public class UserServiceImpl implements UserService{
                 .build();
     }
 
-    // 비밀번호 재설정
+    // 비밀번호 재설정 todo: 개인정보를 저장하지 않은 회원은 비밀번호를 찾을 수 없음. 수정이 필요
     public ApiResponse passwordReset(UserDTO userDTO) {
         //비밀번호 1,2 동일 체크
         if (!Objects.equals(userDTO.getPassword(), userDTO.getPassword2())) {

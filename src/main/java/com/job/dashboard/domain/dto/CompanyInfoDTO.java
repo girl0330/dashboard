@@ -29,4 +29,7 @@ public class CompanyInfoDTO {
     private MultipartFile file;
     private FileDTO fileDTO;
     private int fileId;
+    private String loginTypeCode;
+    private String email;
+    private String userTypeCode;
 }

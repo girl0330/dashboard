@@ -39,21 +39,21 @@
         INSERT INTO /* BusinessDashMapper.insertProfile */
             company_info
             (
-             COMPANY_ID,
-             USER_NO,
-             COMPANY_NAME,
-             COMPANY_DESCRIPTION,
+             company_id,
+             user_no,
+             company_name,
+             company_description,
              zipcode,
              address,
              address_detail,
              longitude,
              latitude,
-             INDUSTRY_CODE,
-             BUSINESS_TYPE_CODE,
-             BUSINESS_NUMBER,
-             OFFICE_PHONE,
-             SYSTEM_REGISTER_ID,
-             SYSTEM_UPDATER_ID
+             industry_code,
+             business_type_code,
+             business_number,
+             office_phone,
+             system_register_id,
+             system_updater_id
             ) VALUES (
                       #{companyId},
                       #{userNo},
@@ -71,40 +71,41 @@
                       #{userNo},
                       #{userNo}
                      ) ON DUPLICATE KEY UPDATE
-            USER_NO             = #{userNo},
-            COMPANY_NAME        = #{companyName},
-            COMPANY_DESCRIPTION = #{companyDescription},
+            user_no             = #{userNo},
+            company_name        = #{companyName},
+            company_description = #{companyDescription},
             zipcode             = #{zipcode},
             address             = #{address},
             address_detail      = #{addressDetail},
             longitude           = #{longitude},
             latitude            = #{latitude},
-            INDUSTRY_CODE       = #{industryCode},
-            BUSINESS_TYPE_CODE  = #{businessTypeCode},
-            BUSINESS_NUMBER     = #{businessNumber},
-            OFFICE_PHONE        = #{officePhone},
-            SYSTEM_UPDATER_ID   = #{userNo}
+            industry_code       = #{industryCode},
+            business_type_code  = #{businessTypeCode},
+            business_number     = #{businessNumber},
+            office_phone        = #{officePhone},
+            system_updater_id   = #{userNo}
     </insert>
 
     <select id="getBusinessProfileInfo" parameterType="int" resultType="com.job.dashboard.domain.dto.CompanyInfoDTO">
         SELECT /* BusinessDashMapper.getBusinessProfileInfo */
-               COMPANY_ID,
-               USER_NO,
-               COMPANY_NAME,
-               COMPANY_DESCRIPTION,
-               ZIPCODE,
-               ADDRESS,
-               ADDRESS_DETAIL,
-               LONGITUDE,
-               LATITUDE,
-               INDUSTRY_CODE,
-               BUSINESS_TYPE_CODE,
-               BUSINESS_NUMBER,
-               OFFICE_PHONE,
-               SYSTEM_REGISTER_ID,
-               SYSTEM_UPDATER_ID
-        FROM COMPANY_INFO
-        WHERE USER_NO = #{userNo}
+            ui.email,
+            ui.user_type_code,
+            ui.login_type_code,
+            ci.company_name,
+            ci.office_phone,
+            ci.company_description,
+            ci.industry_code,
+            ci.business_type_code,
+            ci.business_number,
+            ci.zipcode,
+            ci.address,
+            ci.address_detail,
+            ci.latitude,
+            ci.latitude
+        FROM
+            user_info ui
+                LEFT JOIN company_info ci ON ui.user_no = ci.user_no
+        WHERE ui.user_no = #{userNo}
     </select>
 
     <select id="getSavedPassword" parameterType="int" resultType="String">
@@ -118,11 +119,11 @@
         UPDATE /* BusinessDashMapper.updatePassword */
             user_info
         SET
-            PASSWORD = #{password},
-            SYSTEM_UPDATER_ID = #{userNo},
-            SYSTEM_UPDATE_DATETIME = now()
+            password = #{password},
+            system_updater_id = #{userNo},
+            system_update_datetime = now()
         WHERE
-            USER_NO = #{userNo}
+            user_no = #{userNo}
     </update>
 
     <select id="getPostJobList" parameterType="map" resultType="com.job.dashboard.domain.dto.JobPostDTO">
@@ -174,7 +175,7 @@
         WHERE jpi.USER_NO = #{userNo}
           AND jai.Job_ID = #{jobId}
           AND jpi.title LIKE CONCAT('%', #{keyword}, '%')
-        ORDER BY jpi.system_register_datetime DESC
+        ORDER BY jai.system_register_datetime DESC
     </select>
 
     <select id="getCandidateDetailInfo" parameterType="int" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">

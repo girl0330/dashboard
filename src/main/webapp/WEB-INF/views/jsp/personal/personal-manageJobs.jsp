@@ -18,9 +18,11 @@
                     keyword: ''
                 },
                 done: function(response) {
-                    $("#amount").text(response.total); //총 게시물 개수
-                    keywordSearch.renderJobs(response.list); //리스트 목록
-                    renderPagination('pagination',response.pageNum, response.pageSize, response.total, response.pages); //페이징
+                    if (response.list.length > 0) {
+                        $("#noResultsMessage").hide();
+                        keywordSearch.renderJobs(response.list); // 리스트 목록 렌더링
+                        renderPagination('pagination', response.pageNum, response.pageSize, response.total, response.pages); // 페이징 처리
+                    }
                 },
                 fail: function(jqXHR) {
                     console.error('요청 실패:', jqXHR.responseText); // 서버에서 반환된 응답
@@ -102,13 +104,21 @@ Manage Jobs -->
                         </tr>
                         </thead>
                         <tbody id="applyStatusJobList">
+
                         <!-- 리스트 들어올 부분 -->
                         </tbody>
+
                     </table>
+                    <div class="col-12 text-center py-3" id="noResultsMessage">
+                        조회된 결과가 없습니다.
+                    </div>
                     <div class="row">
                         <div class="col-12 text-center mt-4 mt-sm-5">
                             <!-- page 시작 -->
                             <ul class="pagination justify-content-center mb-0" id="pagination" name="pagination">
+                                <li class="page-item disabled"> <span class="page-link b-radius-none">Prev</span> </li>
+                                <li class="page-item active" aria-current="page"><span class="page-link">1 </span> <span class="sr-only">(current)</span></li>
+                                <li class="page-item disabled"> <span class="page-link  b-radius-none">Next</span> </li>
                             </ul>
                         </div>
                     </div>

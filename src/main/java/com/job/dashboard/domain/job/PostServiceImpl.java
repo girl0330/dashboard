@@ -66,7 +66,11 @@ public class PostServiceImpl implements PostService {
 
     // 구인 공고 상세페이지
     public JobPostDTO getJobPostDetailInfo(int jobId) {
-        return postMapper.getJobPostDetailInfo(jobId);
+        JobPostDTO jopPostDetail = postMapper.getJobPostDetailInfo(jobId);
+        if (jopPostDetail == null) {
+            throw new CustomException(ExceptionErrorCode.PAGE_NOT_FOUND);
+        }
+        return jopPostDetail;
     }
 
     //like
@@ -84,7 +88,7 @@ public class PostServiceImpl implements PostService {
         jobPostDTO.setJobId(jobId);
 
         int like = postMapper.findLike(jobPostDTO);
-        if (like > 0) {// 좋아요 누른상테  todo: job_like_info컬럼에 like_yn 컬럼 추가해서 관리하기
+        if (like > 0) {// 좋아요 누른상테
             postMapper.deleteLike(jobPostDTO);
             like = 0;
         } else {
@@ -93,7 +97,7 @@ public class PostServiceImpl implements PostService {
         }
 
         return ApiResponse.builder()
-                .code(200) //todo: code의 값을 String으로 success로 작성해야하지 않을까?
+                .code(200)
                 .message("게시글 작성 성공하였습니다.")
                 .data(like)
                 .build();
@@ -107,7 +111,7 @@ public class PostServiceImpl implements PostService {
 //        map.put("code", "success");
 //        map.put("message", "게시글 수정 성공!");
         return ApiResponse.builder()
-                .code(200) //todo: code의 값을 String으로 success로 작성해야하지 않을까?
+                .code(200)
                 .message("게시글 수정 성공하였습니다.")
                 .build();
     }
@@ -121,11 +125,6 @@ public class PostServiceImpl implements PostService {
     // 공고 지원
     @Transactional
     public ApiResponse applyJobPost(JobApplicationDTO jobApplicationDTO) {
-
-//        //로그인 확인 todo: controller에서 체크하기
-//        if (!sessionUtil.loginUserCheck()) { // 로그인 체크
-//            throw new CustomException(ExceptionErrorCode.UNAUTHORIZED_USER_TOKEN);
-//        }
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
 
@@ -166,11 +165,6 @@ public class PostServiceImpl implements PostService {
     //공고취소하기
     @Transactional
     public ApiResponse applyCancelJob(int jobId) {
-
-//        //로그인 확인
-//        if (!sessionUtil.loginUserCheck()) { // 로그인 체크 todo: controller에서 체크하기
-//            throw new CustomException(ExceptionErrorCode.UNAUTHORIZED_USER_TOKEN);
-//        }
 
         int userNo = (int) sessionUtil.getAttribute("userNo");
 

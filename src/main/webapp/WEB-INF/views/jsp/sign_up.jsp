@@ -342,22 +342,12 @@ Register -->
           </div>
           <div class="mt-4">
             <fieldset>
-              <legend class="px-2">Login or Sign up with</legend>
-              <div class="social-login">
-                <ul class="list-unstyled d-flex mb-0">
-                  <li class="facebook text-center">
-                    <a href="/#"> <i class="fab fa-facebook-f me-4"></i>Login with Facebook</a>
-                  </li>
-                  <li class="twitter text-center">
-                    <a href="/#"> <i class="fab fa-twitter me-4"></i>Login with Twitter</a>
-                  </li>
-                  <li class="google text-center">
-                    <a href="/#"> <i class="fab fa-google me-4"></i>Login with Google</a>
-                  </li>
-                  <li class="linkedin text-center">
-                    <a href="/#"> <i class="fab fa-linkedin-in me-4"></i>Login with Linkedin</a>
-                  </li>
-                </ul>
+              <legend class="px-2">소셜 로그인 / 회원가입</legend>
+              <!-- kakao button -->
+              <div class="text-center">
+                <a href="/kakao/login">
+                  <img src="/images/kakao_login_medium_wide.png" alt="Kakao Login">
+                </a>
               </div>
             </fieldset>
           </div>
