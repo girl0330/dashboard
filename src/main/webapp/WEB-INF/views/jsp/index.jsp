@@ -70,13 +70,31 @@
 </style>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const personalMembers = new CountUp('personal-members', 168796);
-    const companyMembers = new CountUp('company-members', 3329);
-    const totalPositions = new CountUp('total-positions', 7452);
+    const options = {
+      url: "/ajax/getNumberCount", // Spring 컨트롤러 URL
+      type: 'GET',
+      contentType: 'application/json',
+      data:'', // JSON 형식으로 데이터 전송
 
-    personalMembers.start();
-    companyMembers.start();
-    totalPositions.start();
+      done: function(response) {
+        console.log(JSON.stringify(response));
+
+        const personalMembers = new CountUp('personal-members', response.data.personalMembersCount);
+        const companyMembers = new CountUp('company-members', response.data.companyMembersCount);
+        const totalPositions = new CountUp('total-positions', response.data.totalPostCount);
+
+        personalMembers.start();
+        companyMembers.start();
+        totalPositions.start();
+      },
+      fail: function(jqXHR) {
+        const jsonObj = JSON.parse(jqXHR.responseText);
+        console.log(jsonObj);
+      }
+    };
+    ajax.call(options);
+
+
   });
 </script>
 
@@ -87,8 +105,12 @@
         <div class="col-lg-9">
           <div class="px-md-5 px-4 pt-5 pt-lg-0">
             <div class="section-title">
-              <h2 class="title">Browse Hundreds of Jobs</h2>
-              <p class="lead">We are efficiently delivering tons of jobs straight to your pocket.</p>
+              <h2 class="title">여러분이 원하는 '일'들을 찾아보세요!</h2>
+              <p class="lead">
+                "우리는 여러분이 필요로 하는 것들을 가장 빠르고 효율적인 방법으로,<br>
+                원하는 '일'을 연결해드리겠습니다.<br>
+                더 이상 복잡한 절차 없이, 원하는 '일'를 손쉽게 찾아보세요."
+              </p>
             </div>
           </div>
         </div>
@@ -131,7 +153,7 @@
             </div>
             <div class="counter-content">
               <span class="timer mb-1 text-white" id="total-positions">0</span>
-              <label class="mb-0 text-white">최근 1년간 누적 구인구직 수</label>
+              <label class="mb-0 text-white">최근 1년간 누적 포지션 수</label>
             </div>
           </div>
         </div>
@@ -139,9 +161,9 @@
     </div>
 
     <div class="border-box">
-      <h2 class="text-primary fw-bold">OKKY Talent</h2>
-      <h3>지금 여기에서 멋진 만남이 시작됩니다.</h3>
-      <p class="text-muted">"OKKY Talent를 통해 새로운 기회를 만들어보세요!"</p>
+      <h2 class="text-primary fw-bold">JOBBER Trend</h2>
+      <h3>지금 여기에서 멋진 기회가 시작됩니다.</h3>
+      <p class="text-muted">"JOBBER trend로 새로운 기회를 가져보세요!"</p>
     </div>
   </div>
 </section>

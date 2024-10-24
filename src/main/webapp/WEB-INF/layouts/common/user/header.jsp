@@ -178,7 +178,7 @@
     <div class="container" >
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a class="navbar-brand" href="/">
-                <img class="img-fluid" src="/images/logo-dark.svg" alt="logo">
+                <img class="img-fluid" src="/images/logo-dark.svg" alt="logo" >
             </a>
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li class="nav-item dropdown ">

@@ -205,7 +205,7 @@ banner -->
                             </div>
                             <div class="col-lg-3 col-md-4 col-sm-12">
                                 <div class="form-group form-action mb-0">
-                                    <button type="button" class="btn btn-primary mt-0" id="searchButton"><i class="fas fa-search-location"></i> Find Employer</button>
+                                    <button type="button" class="btn btn-primary mt-0" id="searchButton"><i class="fas fa-search-location"></i>검색</button>
                                 </div>
                             </div>
                         </form>

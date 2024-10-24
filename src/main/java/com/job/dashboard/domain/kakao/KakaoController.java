@@ -21,14 +21,16 @@ public class KakaoController {
     @Value("${kakao.redirect-uri}")
     private String redirectUri;
 
-
+//카카오 로그인 화면 노출
     @GetMapping("/kakao/login")
     public String kakaoLoginView() {
+        System.out.println("카카오 로그인 01");
         return "redirect:" + kakaoAuthUrl + "?client_id=" + clientId + "&redirect_uri=" + redirectUri + "&response_type=code";
     }
 
     @GetMapping("/user/kakao/login")
     public ModelAndView kakaoCallback(@RequestParam String code) {
+        System.out.println("카카오 로그인 02" + code);
         return kakaoService.handleKakaoLogin(code);
     }
 

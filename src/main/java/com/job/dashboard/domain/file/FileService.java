@@ -167,7 +167,7 @@ public class FileService {
             File file = filePath.toFile();
 
             if (file.delete()) {
-                System.out.println("파일이 성공적으로 삭제되었습니다: " + filePath);
+                System.out.println("파일이 성공적으로 삭제되었습니다: " + filePath); //todo : ??
             } else {
                 System.err.println("파일 삭제 실패: " + filePath);
             }

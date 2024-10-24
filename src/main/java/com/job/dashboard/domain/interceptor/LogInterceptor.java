@@ -17,6 +17,7 @@ public class LogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("가로챔");
         // 요청 전 처리 로직
         if (!sessionUtil.loginUserCheck()) {
             // 현재 요청 URL 저장
@@ -30,6 +31,7 @@ public class LogInterceptor implements HandlerInterceptor {
             response.sendRedirect("/user/login");
             return false; // 요청 처리를 중단하고 로그인 페이지로 이동
         }
+
         return true;
     }
 

@@ -42,7 +42,6 @@ public class BusinessDashController {
 
         //기존 프로필 가져오기
         CompanyInfoDTO businessProfileInfo = businessDashService.getBusinessProfileInfo();
-        System.out.println("businessProfileInfo = " + businessProfileInfo);
 
         //파일 조회
         if (businessProfileInfo.getFileDTO() != null) {
@@ -61,7 +60,6 @@ public class BusinessDashController {
     @PostMapping("/ajax/insertProfile")
     @ResponseBody
     public ResponseEntity<?> insertProfile(CompanyInfoDTO companyInfoDTO) {
-        System.out.println("companyInfoDTO = " + companyInfoDTO);
         ApiResponse response = businessDashService.insertProfile(companyInfoDTO);
         return ResponseEntity.ok(response);
     }
@@ -69,7 +67,6 @@ public class BusinessDashController {
     //비밀번호 변경
     @GetMapping("/changePassword")
     public String changePasswordView(Model model)  {
-        System.out.println("비밀번호 변경하기 화면");
 
         //회사 이름
         CompanyInfoDTO businessProfile = businessDashService.getBusinessProfileInfo();
@@ -98,7 +95,6 @@ public class BusinessDashController {
     //공고 관리
     @GetMapping("/managePostJob")
     public String managePostJobView(Model model) {
-        System.out.println("공고관리 뷰");
         //프로필 작성 확인
         CompanyInfoDTO businessProfileInfo = businessDashService.getBusinessProfileInfo();
         if (businessProfileInfo == null) {
@@ -123,7 +119,6 @@ public class BusinessDashController {
     public Map<String, Object> ajaxManagePostJob(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                                  @RequestParam(defaultValue = "1") int pageNum,
                                                  @RequestParam(defaultValue = "10") int pageSize) {
-        System.out.println("작성게 게시글 다운");
         PageInfo<JobPostDTO> postJobList = businessDashService.getPostJobList(keyword, pageNum, pageSize);
 
         int userNo = (int)sessionUtil.getAttribute("userNo");
@@ -141,13 +136,10 @@ public class BusinessDashController {
     //작성한 공고에 지원한 지원자 리스트
     @GetMapping("/candidateList")
     public String candidateListView (@RequestParam("jobId") int jobId, Model model) {
-        System.out.println("candidateList뷰");
 
         int userNo = (int)sessionUtil.getAttribute("userNo");//로그인한 userNo
-        System.out.println("userNo확인 ; "+userNo); //10
         FileDTO file = fileService.getFile(userNo);
         if (file != null) {
-            System.out.println("파일아이디 확인 : "+file.getFileId());
             model.addAttribute("fileId", file.getFileId());
         }
 
@@ -163,10 +155,8 @@ public class BusinessDashController {
                                                   @RequestParam(defaultValue = "10") int pageSize,
                                                   @RequestParam(value = "jobNum") int jobId,
                                                   @RequestParam int userNo) {
-        System.out.println("ajax/candidateList 리스트 다운로드");
         PageInfo<JobApplicationDTO> candidateList = businessDashService.getCandidateList(keyword, pageNum, pageSize, jobId);
 
-        System.out.println("keyword = " + keyword + ", pageNum = " + pageNum + ", pageSize = " + pageSize + ", jobId = " + jobId + ", userNo = " + userNo);
         Map<String, Object> response = new HashMap<>();
         response.put("list", candidateList.getList());
         response.put("loginUserNo", userNo);
@@ -179,16 +169,13 @@ public class BusinessDashController {
     }
 
     // 지원한 지원자 상세보기
-    @GetMapping("/candidateDetail") //todo: 이페이지에서 프로필 사진이 노출이 안됨
+    @GetMapping("/candidateDetail")
     public String candidateDetailView (@RequestParam("userNo") int userNo, @RequestParam("jobId") int jobId, Model model) {
 
-        System.out.println("userNo??? "+userNo);
         int businessUserNo = (int) sessionUtil.getAttribute("userNo");
-        System.out.println("userNo 확인 : "+businessUserNo);
 
         FileDTO file = fileService.getFile(businessUserNo);
         if (file != null) {
-            System.out.println("파일Id확인 : "+file.getFileId());
             model.addAttribute("fileId", file.getFileId());
         }
 

@@ -1,4 +1,4 @@
-//[List page 생성]
+    //[List page 생성]
 function  renderPagination(containerId, currentPage, pageSize, totalJobs, totalPages) {
 	const $container = $('#'+containerId);
 	$container.empty();

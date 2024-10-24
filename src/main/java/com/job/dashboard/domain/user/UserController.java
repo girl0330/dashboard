@@ -54,7 +54,7 @@ public class UserController {
     //로그인
     @PostMapping("/doLogin")
     @ResponseBody
-        public ResponseEntity<?> doLogin (@RequestBody UserDTO userDTO) { //todo: 이전페이지로 이동시킬 interceptor
+        public ResponseEntity<?> doLogin (@RequestBody UserDTO userDTO) {
         //userDTO null체크
         ApiResponse response = userService.doLogin(userDTO);
 
@@ -66,7 +66,6 @@ public class UserController {
 
 
         if (redirectUrl != null) {
-            System.out.println("리다이렉트 주소 있음: "+ redirectUrl);
             sessionUtil.removeRedirectUrl(); // 세션에서 URL 제거
 
             ApiResponse<UserDTO> apiResponse = ApiResponse.<UserDTO>builder()
@@ -92,7 +91,6 @@ public class UserController {
     //비밀번호 재설정
     @GetMapping("/findPassword")
     public String findPasswordView(@RequestParam(value = "userTypeCode") String userTypeCode, Model model) {
-        System.out.println("userTypeCode = " + userTypeCode);
         model.addAttribute("userTypeCode", userTypeCode);
         return "jsp/findPassword";
     }
@@ -105,17 +103,15 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    //재설정- 이름, 폰번호 확인  todo: ajax 비동기통신
+    //재설정- 이름, 폰번호 확인
     @PostMapping("/ajax/checkIdentity")
     @ResponseBody
     public ResponseEntity<?> checkIdentity(@RequestBody UserInfoDTO userInfoDTO) {
-        System.out.println(userInfoDTO);
         ApiResponse response = userService.getCheckIdentity(userInfoDTO);
-        System.out.println("response 확인 : "+response);
         return ResponseEntity.ok(response);
     }
 
-    //재설정- 비밀번호 재설정 todo: 기업 비밀번호 찾기 수정필요
+    //재설정- 비밀번호 재설정
     @PostMapping("/api/passwordReset")
     @ResponseBody
     public ResponseEntity<?> passwordReset(@RequestBody UserDTO userDTO) {
@@ -126,9 +122,6 @@ public class UserController {
     //이용약관 todo: 이용약관
     @GetMapping("/terms")
     public String termsView(Model model) {
-        System.out.println("약관동의 페이지 ");
-
-
         model.addAttribute("termsTypeCode10",userService.getTermsTypeCode(10)); // 이용약관
         model.addAttribute("termsTypeCode20",userService.getTermsTypeCode(20)); // 개인정보
 
@@ -137,8 +130,6 @@ public class UserController {
     @GetMapping("/ajax/terms")
     @ResponseBody
     public TermsInfoDTO termsInfo(@RequestParam int termsTypeCode) {
-        System.out.println("ajax 약관동의 페이지 ");
-        System.out.println("termsTypeCode :::: " + termsTypeCode);
         TermsInfoDTO result = null;
 
         if (termsTypeCode == 10) {
@@ -153,8 +144,6 @@ public class UserController {
     //개인정보
     @GetMapping("/privacy")
     public String privacyView(Model model) {
-        System.out.println("개인정보 페이지 ");
-
         model.addAttribute("termsTypeCode10",userService.getTermsTypeCode(10)); // 이용약관
         model.addAttribute("termsTypeCode20",userService.getTermsTypeCode(20)); // 개인정보
 

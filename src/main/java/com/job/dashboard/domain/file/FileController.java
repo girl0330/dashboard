@@ -21,11 +21,10 @@ public class FileController {
     @PostMapping("/uploadedFile")
     @ResponseBody
     public Map<String, Object> profileFile(@RequestParam("file") MultipartFile file) throws IOException {
-        System.out.println("파일 업로드 실행확인");
         return fileService.saveFile(file);
     }
 
-    //파일 삭제 todo: ajax 비동기통신
+    //파일 삭제
     @PostMapping("/deleteFile/{fileId}")
     @ResponseBody
     public Map<String, Object> profileFileDelete(@PathVariable("fileId") int fileId){
@@ -39,7 +38,7 @@ public class FileController {
 
     // fileId로 파일 가져오기
     @GetMapping("/uploadedFileGet/{fileId}")
-    public ResponseEntity<byte[]> getImgView(@PathVariable("fileId") int fileId) {  //todo: 굳이 배열타입으로?
+    public ResponseEntity<byte[]> getImgView(@PathVariable("fileId") int fileId) {
         try {
             byte[] imageByteArray = fileService.loadFileAsBytes(fileId);
             return new ResponseEntity<>(imageByteArray, HttpStatus.OK);

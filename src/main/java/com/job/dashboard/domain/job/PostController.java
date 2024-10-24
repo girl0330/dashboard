@@ -35,14 +35,11 @@ public class PostController {
     //공고작성 페이지
     @GetMapping("/writePostJob")
     public String writePostJobView(HttpServletRequest request, HttpServletResponse response, Model model) {
-        System.out.println("공고 작성");
 
         //이전 페이지 session저장
         if (!sessionUtil.loginUserCheck()) { // 로그인 체크
-            System.out.println("로그인 안됨. 리다이렉트 저장되는지 확인 ");
             String currentUrl = request.getRequestURI();
             sessionUtil.setRedirectUrl(currentUrl);
-            System.out.println("리다이렉트 확인::: "+sessionUtil.getRedirectUrl());
             return "jsp/login";
         }
 
@@ -126,7 +123,7 @@ public class PostController {
             jobPostDTO.setUserNo(userNo);
             jobPostDTO.setJobId(jobId);
 
-            int like = postService.findLike(jobPostDTO); //todo:  dto 이름이 거슬리는데...
+            int like = postService.findLike(jobPostDTO);
 
             int userStatusCode = postService.getCountUserStatusCode(jobPostDTO);
 
@@ -152,9 +149,17 @@ public class PostController {
     public String updateJobPostView(@RequestParam("jobId") int jobId, Model model) {
         int userNo = (int) sessionUtil.getAttribute("userNo"); //로그인한 userNo 가져옴
 
-        JobPostDTO jopPostDetail = postService.getJobPostDetailInfo(jobId); //todo: initialData-> jopPostDetail 바꾸기
-        if (jopPostDetail.getUserNo() != userNo) {
-            return "redirect:/";
+        JobPostDTO jopPostDetail = postService.getJobPostDetailInfo(jobId);
+
+        //프로필 작성 확인
+        int profileCheck = postService.profileCheck(userNo);
+        if (profileCheck < 1) {
+            return "redirect:/business/profile";
+        }
+
+        FileDTO file = fileService.getFile(userNo);
+        if (file != null) {
+            model.addAttribute("fileId", file.getFileId());
         }
 
         model.addAttribute("jobType",commonService.getSelectBoxOption("job_type"));
@@ -167,7 +172,7 @@ public class PostController {
         return "jsp/post/post-a-job-update";
     }
 
-    @PostMapping("/ajax/updateJobPost/{jobId}") //todo: 수정화면에서 프로필 이미지가 기본으로 노출중임
+    @PostMapping("/ajax/updateJobPost/{jobId}")
     @ResponseBody
     public ResponseEntity<?> updateJobPost (@RequestBody JobPostDTO jobPostDTO ) {
         ApiResponse response = postService.updateJobPost(jobPostDTO);
@@ -188,7 +193,7 @@ public class PostController {
      */
     @PostMapping("/ajax/checkDuplicateApply")
     @ResponseBody
-    public ResponseEntity<?> checkDuplicateApply(@RequestBody JobApplicationDTO jobApplicationDTO){ //todo: ResponseEntity<?>로 전달하기
+    public ResponseEntity<?> checkDuplicateApply(@RequestBody JobApplicationDTO jobApplicationDTO){
         ApiResponse response = postService.checkDuplicateApply(jobApplicationDTO);
         return ResponseEntity.ok(response);
     }
@@ -197,17 +202,15 @@ public class PostController {
      * 지원하기
      * @param jobApplicationDTO
      * @return
-     */ //todo: ajax 비동기통신
+     */
     @PostMapping("/ajax/apply")
     @ResponseBody
     public ResponseEntity<?> applyJobPost(@RequestBody JobApplicationDTO jobApplicationDTO){
         ApiResponse response = postService.applyJobPost(jobApplicationDTO);
-        System.out.println("response확인 : "+response);
         return ResponseEntity.ok(response);
     }
 
-    //todo: ajax 비동기통신
-    @PostMapping("/ajax/applyCancel")//todo: ResponseEntity<?>로 전달하기
+    @PostMapping("/ajax/applyCancel")
     @ResponseBody
     public ResponseEntity<?> applyCancelJob(@RequestBody Integer jobId){
         ApiResponse response = postService.applyCancelJob(jobId);
