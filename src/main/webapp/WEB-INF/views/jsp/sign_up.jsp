@@ -149,7 +149,7 @@
 
       if (password !== password2) {
         $("#password, #password2").addClass("is-invalid");
-        $("#passwordError").text("새로운 비밀번호와 비밀번호 확인이 일치하지 않습니다.").show();
+        $("#passwordError").text("비밀번호와 비밀번호 재입력이 일치하지 않습니다.").show();
         $('#password2').focus();
         valid = false;
         return valid;

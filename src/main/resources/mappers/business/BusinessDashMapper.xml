@@ -87,7 +87,7 @@
     </insert>
 
     <select id="getBusinessProfileInfo" parameterType="int" resultType="com.job.dashboard.domain.dto.CompanyInfoDTO">
-        SELECT /* BusinessDashMapper.getBusinessProfileInfo */
+        SELECT  /* BusinessDashMapper.getBusinessProfileInfo */
             ui.email,
             ui.user_type_code,
             ui.login_type_code,
