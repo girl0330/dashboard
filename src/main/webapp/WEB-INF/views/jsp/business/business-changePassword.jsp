@@ -105,9 +105,6 @@ Change Password -->
         <div class="row">
             <div class="col-md-12">
                 <div class="user-dashboard-info-box">
-                    <div class="section-title-02 mb-4">
-                        <h3>비밀번호 변경</h3>
-                    </div>
                     <div class="row">
                         <form class="mt-4" id="changePassword" name="changePassword">
                             <div class="col-12">
@@ -128,7 +125,7 @@ Change Password -->
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <a class="btn btn-lg btn-primary" id="changeButton">비밀번호 변경</a>
+                    <a class="btn btn-lg btn-primary" id="changeButton">변경</a>
                 </div>
             </div>
         </div>

@@ -137,6 +137,14 @@ public class BusinessDashController {
     @GetMapping("/candidateList")
     public String candidateListView (@RequestParam("jobId") int jobId, Model model) {
 
+        CompanyInfoDTO businessProfileInfo = businessDashService.getBusinessProfileInfo();
+        if (businessProfileInfo == null) {
+            return "redirect:/business/profile";
+        }
+
+        //회사 이름
+        model.addAttribute("company", businessProfileInfo);
+
         int userNo = (int)sessionUtil.getAttribute("userNo");//로그인한 userNo
         FileDTO file = fileService.getFile(userNo);
         if (file != null) {
@@ -200,6 +208,7 @@ public class BusinessDashController {
     @PostMapping("/ajax/employ")
     @ResponseBody
     public ResponseEntity<?> employCandidate(@RequestBody JobApplicationDTO jobApplicationDTO) {
+        System.out.println("채용하기 버튼 클릭 후 들어오는 데이터 확인 ; "+ jobApplicationDTO);
         ApiResponse response = businessDashService.employCandidate(jobApplicationDTO);
         return ResponseEntity.ok(response);
     }
@@ -208,6 +217,7 @@ public class BusinessDashController {
     @PostMapping("/ajax/cancelEmploy")
     @ResponseBody
     public ResponseEntity<?> cancelEmployCandidate (@RequestBody JobApplicationDTO jobApplicationDTO) {
+        System.out.println("채용취소 버튼 클릭 후 들어오는 데이터 확인 ; "+ jobApplicationDTO);
         ApiResponse response = businessDashService.cancelEmployCandidate(jobApplicationDTO);
         return ResponseEntity.ok(response);
     }

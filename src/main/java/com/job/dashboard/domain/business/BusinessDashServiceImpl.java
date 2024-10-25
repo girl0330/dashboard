@@ -172,10 +172,10 @@ public class BusinessDashServiceImpl implements BusinessDashService{
 
     //지원자 채용 취소
     @Transactional
-    public ApiResponse cancelEmployCandidate(JobApplicationDTO jobApplicationDTO) {
+    public ApiResponse cancelEmployCandidate(JobApplicationDTO jobApplicationDTO) { //jobId, userNo
+        businessDashMapper.cancelEmployCandidate(jobApplicationDTO);
 
         int userNo = jobApplicationDTO.getUserNo(); //지원한 userNo(수신자)
-        JobPostDTO jobPost = businessDashMapper.getJobPostTitle(jobApplicationDTO.getJobId());
 //        notificationService.notification(userNo, "\"" + jobPost.getTitle() + "\"에 채용이 취소되었습니다.","hir"); // (개인유저한테 알려줘야함.)
 
         return ApiResponse.builder()

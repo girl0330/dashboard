@@ -100,7 +100,7 @@
                 return valid;
             }
             if (password !== password2 ) {
-                alert("새로운 비밀번호와 비밀번호 확인이 일치하지 않습니다.")
+                alert("새 비밀번호와 비밀번호 확인이 일치하지 않습니다.")
                 $('#password2').focus();
                 valid = false;
                 return valid;
@@ -345,7 +345,7 @@
                     <div class="col-md-12">
                         <div class="user-dashboard-info-box">
                             <div class="section-title-02 mb-4">
-                                <h4>Change Password</h4>
+                                <h4>비밀번호 재설정</h4>
                             </div>
                             <div class="row">
                                 <div class="col-12">
@@ -362,7 +362,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-lg btn-primary" id="passwordResetBtn" href="#">Change Password</a>
+                        <a class="btn btn-lg btn-primary" id="passwordResetBtn" href="#">변경</a>
                     </div>
                 </div>
             </div>
