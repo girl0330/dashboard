@@ -43,26 +43,6 @@ public class PersonalDashController {
         return "jsp/personal/personal-dashboard";
     }
 
-
-    //ajax dashboard 리스트 -(지원한 공고)
-    @GetMapping("/ajax/dashboardList")
-    @ResponseBody
-    public Map<String, Object> ajaxDashboardList(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
-                                               @RequestParam(defaultValue = "1") int pageNum,
-                                               @RequestParam(defaultValue = "10") int pageSize) {
-
-        PageInfo<JobApplicationDTO> dashboardList = personalDashService.getDashboardList(keyword, pageNum, pageSize);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("list", dashboardList.getList());
-        response.put("total", dashboardList.getTotal());
-        response.put("pageNum", dashboardList.getPageNum());
-        response.put("pageSize", dashboardList.getPageSize());
-        response.put("pages", dashboardList.getPages());
-
-        return response;
-    }
-
     // 프로필
     @GetMapping("/myProfile")
     public String myProfileView(Model model) {
@@ -150,7 +130,7 @@ public class PersonalDashController {
                                                @RequestParam(defaultValue = "10") int pageSize) {
 
         PageInfo<JobApplicationDTO> recentlyApplyJobList = personalDashService.applyStatusList(keyword, pageNum, pageSize);
-
+        System.out.println("recentlyApplyJobList = " + recentlyApplyJobList);
         Map<String, Object> response = new HashMap<>();
         response.put("list", recentlyApplyJobList.getList());
         response.put("total", recentlyApplyJobList.getTotal());

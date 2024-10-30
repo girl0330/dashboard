@@ -47,7 +47,6 @@ Dashboard Nav -->
                             <c:if test="${profile.loginTypeCode == '10'}">
                                 <li><a href="/personal/changePassword">비밀번호 변경</a></li>
                             </c:if>
-                            <li><a href="/personal/dashboard">지원 공고</a></li>
                             <li><a href="/personal/manageJobs">지원 현황</a></li>
                             <li><a href="/personal/likedJobs">관심 공고</a></li>
                         </ul>

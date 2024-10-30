@@ -121,20 +121,6 @@ public class PersonalDashServiceImpl implements PersonalDashService {
         return new PageInfo<>(applyStatusList);
     }
 
-    //dashboard list
-    public PageInfo<JobApplicationDTO> getDashboardList(String keyword, int pageNum, int pageSize) {
-
-        Map<String, Object> map = new HashMap<>();
-        int userNo = (int) sessionUtil.getAttribute("userNo");
-
-        map.put("userNo", userNo);
-        map.put("keyword", keyword);
-
-        PageHelper.startPage(pageNum, pageSize);
-        List<JobApplicationDTO> dashboardList = personalDashMapper.getDashboardList(map) ;
-        return new PageInfo<>(dashboardList);
-    }
-
     //졸아요 리스트
     public PageInfo<JobPostDTO> likedJobsList(String keyword, int pageNum, int pageSize) {
 

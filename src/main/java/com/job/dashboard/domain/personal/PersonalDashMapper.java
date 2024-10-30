@@ -22,9 +22,6 @@ public interface PersonalDashMapper {
     // 지원형황 리스트
     List<JobApplicationDTO> applyStatusList(Map<String, Object> map);
 
-    //dashboard list
-    List<JobApplicationDTO> getDashboardList(Map<String, Object> map);
-
 //    int getCountJobs();
 
     //좋아요 리스트
