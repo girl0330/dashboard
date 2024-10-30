@@ -53,6 +53,7 @@
                     '<th scope="row">' +
                     '<p class="mb-0">' + applyStatusJob.systemRegisterDatetime + '</p>' +
                     '</th>' +
+                    '<td>' + applyStatusJob.statusTypeCodeName2 + '</td>' +
                     '<td>' + applyStatusJob.statusTypeCodeName + '</td>' +
                     '</tr>'
 
@@ -101,6 +102,7 @@ Manage Jobs -->
                             <th scope="col">지원한 공고 제목</th>
                             <th scope="col">지원한 날짜</th>
                             <th scope="col">지원 현황</th>
+                            <th scope="col">기업 구인 현황</th>
                         </tr>
                         </thead>
                         <tbody id="applyStatusJobList">

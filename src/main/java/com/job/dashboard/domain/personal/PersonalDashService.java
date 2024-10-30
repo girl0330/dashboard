@@ -16,9 +16,6 @@ public interface PersonalDashService {
     // 비밀번호 변경하기
     ApiResponse changePassword(UserDTO userDTO);
 
-    //dashboard list -(지원한 공고)
-    PageInfo<JobApplicationDTO> getDashboardList(String keyword, int pageNum, int pageSize);
-
     // manageJobsList -(지원 현황)
     PageInfo<JobApplicationDTO> applyStatusList(String keyword, int pageNum, int pageSize);
 

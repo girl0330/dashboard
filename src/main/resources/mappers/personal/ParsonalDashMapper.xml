@@ -141,20 +141,22 @@
                     WHEN jpi.status_type_code = 'OPEN' THEN jai.status_type_code
                     ELSE jai.status_type_code
                     END
-                ) AS status_type_code,
+                ) AS status_type_code2,
             (
                 CASE
                     WHEN jpi.status_type_code = 'CLOSED' THEN func_get_detail_name('status_type', jpi.status_type_code)
                     WHEN jpi.status_type_code = 'OPEN' THEN func_get_detail_name('status_type', jai.status_type_code)
                     ELSE func_get_detail_name('status_type', jai.status_type_code)
                     END
-                ) AS status_type_code_name,
+                ) AS status_type_code_name2,
             DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime,
             jpi.title,
             jpi.zipcode,
             jpi.address,
             jpi.address_detail,
-            jpi.salary
+            jpi.salary,
+            jpi.status_type_code AS status_type_code,
+            func_get_detail_name('status_type', jpi.status_type_code) AS status_type_code_name
         FROM
             job_application_info jai
                 INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
@@ -172,32 +174,6 @@
         WHERE
             APPLICATION_ID = #{applicationId}
     </update>
-
-    <select id="getDashboardList" parameterType="map" resultType="com.job.dashboard.domain.dto.JobApplicationDTO">
-        SELECT /* PersonalDashMapper.getDashboardList*/
-            jpi.user_no,
-            (SELECT fi.file_id FROM file_info fi WHERE fi.user_no = jpi.user_no ORDER BY fi.file_id DESC limit 1) as file_id,
-            jpi.title,
-            jpi.job_type_code,
-            func_get_detail_name('job_type', jpi.job_type_code) AS job_type_code_name,
-            jpi.address,
-            jpi.address_detail,
-            jpi.salary,
-            jpi.salary_type_code,
-            func_get_detail_name('salary_type', jpi.salary_type_code) AS salary_type_code_name,
-            jpi.salary,
-            jpi.job_time,
-            jpi.status_type_code,
-            func_get_detail_name('status_type', jpi.status_type_code) AS status_type_code_name,
-            jai.application_id,
-            jai.job_id,
-            DATE_FORMAT(jai.system_register_datetime, '%Y-%m-%d') AS system_register_datetime
-        FROM job_application_info jai
-        INNER JOIN job_post_info jpi ON jai.job_id = jpi.job_id
-        WHERE jai.USER_NO = #{userNo}
-        AND jpi.title LIKE CONCAT('%', #{keyword}, '%')
-        ORDER BY jai.system_register_datetime DESC
-    </select>
 
     <select id="getLikeJobsList" parameterType="map" resultType="com.job.dashboard.domain.dto.JobPostDTO">
         SELECT /* PersonalDashMapper.getLikeJobsList*/
